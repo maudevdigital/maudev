@@ -1,8 +1,8 @@
 import { Link } from "wouter";
-import { ArrowRight, TrendingUp, BarChart2, Activity, Globe, Code, Smartphone, ChevronRight, Shield, Zap, Users } from "lucide-react";
+import { ArrowRight, TrendingUp, BarChart2, Activity, Globe, Code, Smartphone, ChevronRight, Shield, Zap, Users, Terminal, Lock, Cpu, Database } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Show, useUser } from "@clerk/react";
+import { useUser } from "@clerk/react";
 import { Redirect } from "wouter";
 import { useGetFeaturedProducts, useSubscribeEmail } from "@workspace/api-client-react";
 import { useState, useEffect, useRef } from "react";
@@ -33,7 +33,6 @@ const TERMINAL_STATUSES = [
 ];
 
 function formatPrice(pair: string, price: number): string {
-  if (pair === "BTC/USDT") return price.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   if (pair === "XAG/USD") return price.toFixed(3);
   return price.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
@@ -51,7 +50,6 @@ function useRealtimePrices() {
   const [ticks, setTicks] = useState<PriceTick[]>([]);
   const [loading, setLoading] = useState(true);
   const [lastUpdate, setLastUpdate] = useState<string>("");
-  const prevTicksRef = useRef<PriceTick[]>([]);
 
   const fetchPrices = async () => {
     try {
@@ -59,7 +57,6 @@ function useRealtimePrices() {
       if (!res.ok) return;
       const data: PricesResponse = await res.json();
       if (data.ticks.length > 0) {
-        prevTicksRef.current = ticks;
         setTicks(data.ticks);
         setLastUpdate(nowTimestamp());
         setLoading(false);
@@ -74,7 +71,7 @@ function useRealtimePrices() {
     return () => clearInterval(interval);
   }, []);
 
-  return { ticks, loading, lastUpdate, prevTicks: prevTicksRef.current };
+  return { ticks, loading, lastUpdate };
 }
 
 function HeroTerminal() {
@@ -85,9 +82,7 @@ function HeroTerminal() {
   const prevTicksRef = useRef<PriceTick[]>([]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setStatusIdx((i) => (i + 1) % TERMINAL_STATUSES.length);
-    }, 3000);
+    const interval = setInterval(() => setStatusIdx((i) => (i + 1) % TERMINAL_STATUSES.length), 3000);
     return () => clearInterval(interval);
   }, []);
 
@@ -136,7 +131,6 @@ function HeroTerminal() {
 
         {/* Price rows */}
         <div className="px-5 pb-2 space-y-2">
-          {/* Header */}
           <div className="flex items-center justify-between font-mono text-[10px] text-muted-foreground/50 px-3 pb-1 border-b border-border/20">
             <span className="w-24">PAIR</span>
             <span className="flex-1 text-right">PRICE</span>
@@ -168,31 +162,16 @@ function HeroTerminal() {
                   <span className={`w-20 text-right text-xs tabular-nums ${tick.up ? "text-green-400" : "text-red-400"}`}>
                     {tick.up ? "▲" : "▼"} {formatChange(tick.changePct, tick.up)}
                   </span>
-                  <span className="w-20 text-right text-muted-foreground/50 text-[10px]">
-                    {lastUpdate}
-                  </span>
+                  <span className="w-20 text-right text-muted-foreground/50 text-[10px]">{lastUpdate}</span>
                 </div>
               ))}
         </div>
 
         {/* Status line */}
-        <div className="mx-5 mb-4 mt-2 border border-primary/20 bg-primary/5 px-4 py-2.5 font-mono text-xs">
-          <div className="flex items-center gap-2 text-muted-foreground/60 mb-1 text-[10px]">
-            <span>PID 1337</span>
-            <span>·</span>
-            <span>feed v2.4.1</span>
-            {lastUpdate && (
-              <>
-                <span>·</span>
-                <span>last sync {lastUpdate}</span>
-              </>
-            )}
-          </div>
-          <div className="text-primary/80">
-            <span className="opacity-60">→ </span>
-            <span>{TERMINAL_STATUSES[statusIdx]}</span>
-            <span className={`ml-0.5 ${blink ? "opacity-100" : "opacity-0"}`}>█</span>
-          </div>
+        <div className="mx-5 mb-4 mt-2 border border-primary/20 bg-primary/5 px-4 py-2.5 font-mono text-xs text-primary/80">
+          <span className="opacity-60">→ </span>
+          <span>{TERMINAL_STATUSES[statusIdx]}</span>
+          <span className={`ml-0.5 ${blink ? "opacity-100" : "opacity-0"}`}>█</span>
         </div>
       </div>
     </div>
@@ -221,7 +200,6 @@ function HomeContent() {
   };
 
   const pineProducts = featuredProducts.filter((p) => p.category === "pine_script");
-  const serviceProducts = featuredProducts.filter((p) => p.category === "digital_service");
 
   return (
     <div className="flex flex-col">
@@ -243,9 +221,23 @@ function HomeContent() {
                 <span className="text-gradient-primary">traders serios</span>{" "}
                 y startups ambiciosos.
               </h1>
-              <p className="text-lg text-muted-foreground max-w-xl mb-10 leading-relaxed" data-testid="hero-subheadline">
-                Extensiones Pine Script de precisión para TradingView y soluciones digitales full-stack. Construido por desarrolladores, para profesionales que no se conforman con lo genérico.
+              <p className="text-lg text-muted-foreground max-w-xl mb-6 leading-relaxed" data-testid="hero-subheadline">
+                Indicadores profesionales para <span className="text-foreground font-medium">TradingView</span> y <span className="text-foreground font-medium">MetaTrader 5</span>, más soluciones digitales full-stack. Construido por desarrolladores, para profesionales que no se conforman con lo genérico.
               </p>
+
+              {/* Platform badges */}
+              <div className="flex flex-wrap gap-2 mb-8">
+                {[
+                  { label: "TradingView / Pine Script" },
+                  { label: "MetaTrader 5 / MQL5" },
+                  { label: "React · Node.js · PostgreSQL" },
+                ].map((p) => (
+                  <span key={p.label} className="font-mono text-[11px] border border-border/50 bg-card/60 text-muted-foreground px-2.5 py-1">
+                    {p.label}
+                  </span>
+                ))}
+              </div>
+
               <div className="flex flex-wrap gap-4">
                 <Link href="/products">
                   <Button size="lg" className="rounded-none font-mono text-sm group gap-2 glow-primary" data-testid="button-explore-products">
@@ -285,7 +277,7 @@ function HomeContent() {
         <div className="container max-w-screen-xl px-4 md:px-8">
           <div className="flex items-center justify-between mb-12">
             <div>
-              <p className="font-mono text-xs text-gradient-primary mb-2">PINE SCRIPT / TRADINGVIEW</p>
+              <p className="font-mono text-xs text-gradient-primary mb-2">PINE SCRIPT / TRADINGVIEW · MT5 / MQL5</p>
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Extensiones para traders profesionales</h2>
             </div>
             <Link href="/products?category=pine_script" className="hidden md:flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors font-mono">
@@ -328,49 +320,76 @@ function HomeContent() {
         </div>
       </section>
 
-      {/* Features / Why MauDev */}
-      <section className="py-24 border-t border-border/40">
-        <div className="container max-w-screen-xl px-4 md:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <p className="font-mono text-xs text-gradient-primary mb-2">POR QUÉ MAUDEV</p>
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-6">
-                Precisión técnica sin compromiso
-              </h2>
-              <p className="text-muted-foreground leading-relaxed mb-8">
-                Cada extensión y cada proyecto es desarrollado con atención obsesiva al detalle. No vendemos plantillas genéricas ni copiamos código de repositorios públicos. Todo lo que ve aquí fue construido desde cero con un propósito específico.
-              </p>
-              <div className="space-y-3">
-                {[
-                  { icon: Shield, title: "Código propio y auditado", desc: "Sin dependencias externas no verificadas. Tu estrategia, tu código, tu ventaja." },
-                  { icon: Zap, title: "Optimizado para tiempo real", desc: "Las extensiones Pine Script están optimizadas para correr sin lag en activos volátiles." },
-                  { icon: Users, title: "Soporte directo del desarrollador", desc: "Hablas directamente con quien escribió el código, no con soporte de nivel 1." },
-                ].map((feature) => (
-                  <div key={feature.title} className="flex gap-4 items-start p-4 border border-border/40 bg-card/50 hover-glow transition-all duration-300 group">
-                    <div className="p-2 bg-primary/10 border border-primary/20 shrink-0 mt-0.5">
-                      <feature.icon className="h-4 w-4 text-primary" />
-                    </div>
-                    <div>
-                      <div className="font-semibold text-sm mb-1">{feature.title}</div>
-                      <div className="text-sm text-muted-foreground">{feature.desc}</div>
-                    </div>
+      {/* Features / Why MauDev — redesigned */}
+      <section className="py-24 border-t border-border/40 relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid-pattern opacity-30 pointer-events-none" />
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-primary/5 blur-[120px] pointer-events-none" />
+        <div className="container max-w-screen-xl px-4 md:px-8 relative z-10">
+          <div className="text-center mb-16">
+            <p className="font-mono text-xs text-gradient-primary mb-3">POR QUÉ MAUDEV</p>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">Precisión técnica sin compromiso</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              Cada extensión y cada proyecto es desarrollado con atención obsesiva al detalle. Sin plantillas genéricas, sin código copiado. Todo construido desde cero con un propósito específico.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-border/30">
+            {[
+              {
+                icon: Shield,
+                tag: "SEGURIDAD",
+                title: "Código propio y auditado",
+                desc: "Sin dependencias externas no verificadas. Tu estrategia, tu código, tu ventaja competitiva.",
+                detail: "Revisión de seguridad en cada release.",
+              },
+              {
+                icon: Zap,
+                tag: "RENDIMIENTO",
+                title: "Optimizado para tiempo real",
+                desc: "Indicadores para TradingView y MT5 optimizados para correr sin lag en activos altamente volátiles.",
+                detail: "BTC · XAU · XAG · WTI",
+              },
+              {
+                icon: Users,
+                tag: "SOPORTE",
+                title: "Directo del desarrollador",
+                desc: "Hablas directamente con quien escribió el código. No hay soporte de nivel 1 ni bots de respuesta automática.",
+                detail: "Respuesta < 24h garantizada.",
+              },
+            ].map((feature) => (
+              <div key={feature.title} className="bg-background p-8 group hover:bg-card/60 transition-colors duration-300 flex flex-col gap-5">
+                <div className="flex items-start justify-between">
+                  <div className="p-2.5 bg-primary/10 border border-primary/20">
+                    <feature.icon className="h-5 w-5 text-primary" />
                   </div>
-                ))}
+                  <span className="font-mono text-[10px] text-primary/50 border border-primary/20 px-2 py-0.5">{feature.tag}</span>
+                </div>
+                <div>
+                  <h3 className="font-bold text-base mb-2">{feature.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{feature.desc}</p>
+                </div>
+                <div className="mt-auto pt-4 border-t border-border/30 font-mono text-[10px] text-muted-foreground/60">
+                  {feature.detail}
+                </div>
               </div>
-            </div>
-            <div className="grid grid-cols-2 gap-3">
+            ))}
+          </div>
+
+          {/* Platform compatibility strip */}
+          <div className="mt-px bg-border/30">
+            <div className="bg-card/30 grid grid-cols-2 md:grid-cols-4 gap-px">
               {[
-                { icon: TrendingUp, title: "Bitcoin", desc: "BTC/USDT" },
-                { icon: Activity, title: "Oro", desc: "XAU/USD" },
-                { icon: BarChart2, title: "Plata", desc: "XAG/USD" },
-                { icon: Activity, title: "Petróleo", desc: "WTI/USD" },
-              ].map((asset) => (
-                <div key={asset.title} className="border border-border/40 bg-card p-6 hover-glow transition-all duration-300 group" data-testid={`card-asset-${asset.title}`}>
-                  <div className="p-2 bg-primary/10 border border-primary/20 inline-block mb-4">
-                    <asset.icon className="h-5 w-5 text-primary" />
+                { icon: Terminal, label: "TradingView", sub: "Pine Script v5" },
+                { icon: Cpu, label: "MetaTrader 5", sub: "MQL5 / EAs" },
+                { icon: Database, label: "PostgreSQL", sub: "Full-stack apps" },
+                { icon: Lock, label: "Privacidad total", sub: "Código no compartido" },
+              ].map((item) => (
+                <div key={item.label} className="bg-background flex items-center gap-3 px-6 py-4 group hover:bg-card/60 transition-colors">
+                  <item.icon className="h-4 w-4 text-primary/60 shrink-0" />
+                  <div>
+                    <div className="font-mono text-xs font-semibold text-foreground">{item.label}</div>
+                    <div className="font-mono text-[10px] text-muted-foreground/60">{item.sub}</div>
                   </div>
-                  <div className="font-bold font-mono text-sm">{asset.title}</div>
-                  <div className="text-xs text-muted-foreground mt-1">{asset.desc}</div>
                 </div>
               ))}
             </div>
@@ -378,27 +397,72 @@ function HomeContent() {
         </div>
       </section>
 
-      {/* Digital Services */}
+      {/* Digital Services — redesigned */}
       <section className="py-24 border-t border-border/40 bg-card/10">
         <div className="container max-w-screen-xl px-4 md:px-8">
-          <div className="text-center mb-12">
-            <p className="font-mono text-xs text-gradient-primary mb-2">SOLUCIONES DIGITALES</p>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Construimos tu producto digital</h2>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start mb-16">
+            <div>
+              <p className="font-mono text-xs text-gradient-primary mb-3">SOLUCIONES DIGITALES</p>
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">Construimos tu producto digital</h2>
+              <p className="text-muted-foreground leading-relaxed">
+                Desde el diseño hasta el deploy. React, Node.js, PostgreSQL, React Native. Entregas rápidas, código limpio y arquitectura que escala.
+              </p>
+            </div>
+            <div className="flex items-center justify-end">
+              <Link href="/products?category=digital_service">
+                <Button variant="outline" className="rounded-none font-mono text-sm border-border/50 hover:border-primary/40 gap-2">
+                  VER TODOS LOS SERVICIOS <ArrowRight className="h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
           </div>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
-              { icon: Globe, title: "Landing Pages", desc: "Alta conversión, animaciones, SEO y formularios conectados. Entrega en 5-7 días.", href: "/products" },
-              { icon: Code, title: "Full Stack Apps", desc: "React + Node.js + PostgreSQL. Desde MVP hasta producto escalable con panel admin.", href: "/products" },
-              { icon: Smartphone, title: "Apps Móviles", desc: "iOS y Android con React Native / Expo. Diseño nativo, notificaciones, integraciones.", href: "/products" },
+              {
+                icon: Globe,
+                title: "Landing Pages",
+                tag: "5–7 días",
+                desc: "Alta conversión, animaciones, SEO técnico y formularios conectados a tu CRM.",
+                stack: ["React", "Vite", "Tailwind", "Vercel"],
+                href: "/products",
+              },
+              {
+                icon: Code,
+                title: "Full Stack Apps",
+                tag: "MVP → Producción",
+                desc: "Desde cero hasta producto escalable con panel admin, auth, pagos y base de datos.",
+                stack: ["React", "Node.js", "PostgreSQL", "Stripe"],
+                href: "/products",
+              },
+              {
+                icon: Smartphone,
+                title: "Apps Móviles",
+                tag: "iOS + Android",
+                desc: "Diseño nativo con React Native / Expo. Notificaciones push, cámara, geolocalización.",
+                stack: ["Expo", "React Native", "TypeScript", "RevenueCat"],
+                href: "/products",
+              },
             ].map((service) => (
               <Link key={service.title} href={service.href}>
-                <div className="border border-border/40 bg-card p-8 hover-glow transition-all duration-300 group cursor-pointer h-full flex flex-col" data-testid={`card-service-${service.title}`}>
-                  <div className="p-3 bg-primary/10 border border-primary/20 inline-block mb-6">
-                    <service.icon className="h-6 w-6 text-primary" />
+                <div
+                  className="border border-border/40 bg-card p-8 hover-glow transition-all duration-300 group cursor-pointer h-full flex flex-col"
+                  data-testid={`card-service-${service.title}`}
+                >
+                  <div className="flex items-start justify-between mb-6">
+                    <div className="p-3 bg-primary/10 border border-primary/20">
+                      <service.icon className="h-6 w-6 text-primary" />
+                    </div>
+                    <span className="font-mono text-[10px] text-primary/60 border border-primary/20 bg-primary/5 px-2 py-1">{service.tag}</span>
                   </div>
                   <h3 className="font-bold text-lg mb-3">{service.title}</h3>
-                  <p className="text-sm text-muted-foreground flex-1 leading-relaxed">{service.desc}</p>
-                  <div className="flex items-center gap-2 mt-6 text-sm font-mono text-primary">
+                  <p className="text-sm text-muted-foreground flex-1 leading-relaxed mb-6">{service.desc}</p>
+                  <div className="flex flex-wrap gap-1.5 mb-6">
+                    {service.stack.map((s) => (
+                      <span key={s} className="font-mono text-[10px] border border-border/40 bg-background/60 text-muted-foreground px-2 py-0.5">{s}</span>
+                    ))}
+                  </div>
+                  <div className="flex items-center gap-2 text-sm font-mono text-primary border-t border-border/30 pt-4">
                     VER MÁS <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                   </div>
                 </div>

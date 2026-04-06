@@ -11,6 +11,8 @@ import Products from "./pages/products";
 import ProductDetail from "./pages/products/[id]";
 import Checkout from "./pages/checkout";
 import Dashboard from "./pages/dashboard";
+import Terms from "./pages/terms";
+import Privacy from "./pages/privacy";
 import AdminDashboard from "./pages/admin";
 import AdminProducts from "./pages/admin/products";
 import AdminOrders from "./pages/admin/orders";
@@ -107,6 +109,8 @@ function ClerkProviderWithRoutes() {
                   <Route path="/products/:id" component={ProductDetail} />
                   <Route path="/checkout" component={Checkout} />
                   <Route path="/dashboard" component={Dashboard} />
+                  <Route path="/terms" component={Terms} />
+                  <Route path="/privacy" component={Privacy} />
                   <Route path="/sign-in/*?" component={SignInPage} />
                   <Route path="/sign-up/*?" component={SignUpPage} />
                   <Route component={NotFound} />
