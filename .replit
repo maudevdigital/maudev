@@ -1,4 +1,4 @@
-modules = ["nodejs-24"]
+modules = ["nodejs-24", "postgresql-16"]
 
 [[artifacts]]
 id = "artifacts/api-server"
@@ -24,3 +24,13 @@ expertMode = true
 [postMerge]
 path = "scripts/post-merge.sh"
 timeoutMs = 20000
+
+[userenv]
+
+[userenv.shared]
+FLOW_SANDBOX = "true"
+BASE_URL_PUBLIC = ""
+ADMIN_EMAILS = ""
+
+[nix]
+channel = "stable-25_05"
