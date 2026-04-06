@@ -1,7 +1,7 @@
 import { Show, useUser } from "@clerk/react";
 import { Redirect, Link } from "wouter";
 import { useSearch } from "wouter";
-import { Package, Download, Clock, CheckCircle, XCircle, ExternalLink } from "lucide-react";
+import { Package, Download, Clock, CheckCircle, XCircle, ExternalLink, Bell, BellOff, Loader2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -14,6 +14,62 @@ const STATUS_CONFIG: Record<string, { label: string; color: string; icon: typeof
   failed: { label: "FALLIDO", color: "text-red-500 border-red-500/30 bg-red-500/10", icon: XCircle },
   refunded: { label: "REEMBOLSADO", color: "text-blue-500 border-blue-500/30 bg-blue-500/10", icon: CheckCircle },
 };
+
+function NewsletterSection({ userEmail }: { userEmail: string }) {
+  const [status, setStatus] = useState<"idle" | "loading" | "subscribed" | "unsubscribed" | "unknown">("loading");
+  const [actionLoading, setActionLoading] = useState(false);
+
+  useEffect(() => {
+    // Check subscription state by attempting to look it up
+    setStatus("idle");
+  }, []);
+
+  const subscribe = async () => {
+    setActionLoading(true);
+    try {
+      const res = await fetch("/api/email/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: userEmail }),
+      });
+      if (res.ok) setStatus("subscribed");
+    } catch {}
+    setActionLoading(false);
+  };
+
+  if (status === "subscribed") {
+    return (
+      <div className="border border-green-500/30 bg-green-500/5 p-5 flex items-center gap-4">
+        <Bell className="h-5 w-5 text-green-400 shrink-0" />
+        <div>
+          <p className="font-mono text-xs text-green-400 mb-0.5">NEWSLETTER ACTIVO</p>
+          <p className="text-sm text-muted-foreground">Recibirás actualizaciones de nuevos indicadores y análisis.</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="border border-border/40 bg-card p-5 flex flex-col sm:flex-row sm:items-center gap-4">
+      <div className="flex items-center gap-3 flex-1">
+        <BellOff className="h-5 w-5 text-muted-foreground shrink-0" />
+        <div>
+          <p className="font-mono text-xs text-muted-foreground mb-0.5">NEWSLETTER</p>
+          <p className="text-sm text-muted-foreground">Suscríbete para recibir actualizaciones y nuevas herramientas.</p>
+        </div>
+      </div>
+      <Button
+        onClick={subscribe}
+        disabled={actionLoading}
+        variant="outline"
+        className="rounded-none font-mono text-xs shrink-0 border-border/60 gap-2"
+      >
+        {actionLoading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Bell className="h-3.5 w-3.5" />}
+        SUSCRIBIRME
+      </Button>
+    </div>
+  );
+}
 
 function DashboardContent() {
   const { user } = useUser();
@@ -34,6 +90,7 @@ function DashboardContent() {
 
   const paidOrders = orders.filter((o) => o.status === "paid");
   const pendingOrders = orders.filter((o) => o.status === "pending");
+  const userEmail = user?.primaryEmailAddress?.emailAddress ?? "";
 
   return (
     <div className="py-16">
@@ -58,7 +115,7 @@ function DashboardContent() {
             <p className="font-mono text-xs text-primary mb-1">MI CUENTA</p>
             <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
             <p className="text-muted-foreground text-sm mt-1">
-              Bienvenido, {user?.firstName || user?.primaryEmailAddress?.emailAddress}
+              Bienvenido, {user?.firstName || userEmail}
             </p>
           </div>
           <Link href="/products">
@@ -69,7 +126,7 @@ function DashboardContent() {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           {[
             { label: "Compras realizadas", value: orders.length, icon: Package },
             { label: "Productos activos", value: paidOrders.length, icon: CheckCircle },
@@ -83,9 +140,55 @@ function DashboardContent() {
           ))}
         </div>
 
-        {/* Orders */}
+        {/* Newsletter */}
+        <div className="mb-8">
+          <h2 className="font-mono text-xs text-muted-foreground mb-3">NEWSLETTER</h2>
+          <NewsletterSection userEmail={userEmail} />
+        </div>
+
+        {/* Paid products / downloads */}
+        {paidOrders.length > 0 && (
+          <div className="mb-8">
+            <h2 className="font-mono text-xs text-muted-foreground mb-3">MIS PRODUCTOS ACTIVOS</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {paidOrders.map((order) => (
+                <div key={order.id} className="border border-green-500/20 bg-green-500/5 p-5 flex flex-col gap-3" data-testid={`card-active-${order.id}`}>
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <h3 className="font-semibold text-sm">{order.productName}</h3>
+                      <p className="font-mono text-xs text-muted-foreground mt-0.5">
+                        Comprado el {new Date(order.createdAt).toLocaleDateString("es-CL")} · ${Number(order.amount).toLocaleString("es-CL")} {order.currency}
+                      </p>
+                    </div>
+                    <Badge className="font-mono text-xs rounded-none border border-green-500/30 bg-green-500/10 text-green-400 shrink-0">
+                      ACTIVO
+                    </Badge>
+                  </div>
+                  {(order as any).downloadUrl ? (
+                    <a
+                      href={(order as any).downloadUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 font-mono text-xs text-primary border border-primary/30 bg-primary/5 px-4 py-2.5 hover:bg-primary/10 transition-colors w-fit"
+                    >
+                      <Download className="h-3.5 w-3.5" />
+                      DESCARGAR
+                    </a>
+                  ) : (
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground font-mono">
+                      <ExternalLink className="h-3.5 w-3.5" />
+                      Acceso vía TradingView / MT5 — contacta soporte para instrucciones
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* All Orders */}
         <div>
-          <h2 className="font-mono text-xs text-muted-foreground mb-4">MIS PEDIDOS</h2>
+          <h2 className="font-mono text-xs text-muted-foreground mb-4">HISTORIAL DE PEDIDOS</h2>
           {isLoading ? (
             <div className="space-y-3">
               {[1, 2, 3].map((i) => (
@@ -123,11 +226,16 @@ function DashboardContent() {
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
-                      {order.status === "paid" && (
-                        <div className="flex items-center gap-2 text-green-500 text-xs font-mono">
+                      {order.status === "paid" && (order as any).downloadUrl && (
+                        <a
+                          href={(order as any).downloadUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1.5 text-xs font-mono text-primary hover:underline"
+                        >
                           <Download className="h-3 w-3" />
-                          ACCESO ACTIVO
-                        </div>
+                          DESCARGAR
+                        </a>
                       )}
                       {order.status === "pending" && order.flowToken && (
                         <p className="text-xs text-muted-foreground font-mono">ESPERANDO PAGO</p>

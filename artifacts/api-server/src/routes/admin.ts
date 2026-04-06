@@ -2,6 +2,7 @@ import { Router } from "express";
 import { eq, sum, count } from "drizzle-orm";
 import { db, ordersTable, emailSubscribersTable, productsTable } from "@workspace/db";
 import { requireAdmin } from "./auth";
+import { getUncachableResendClient } from "../lib/resend.js";
 
 const router = Router();
 
@@ -96,6 +97,69 @@ router.get("/admin/subscribers", requireAdmin, async (req, res) => {
   } catch (err) {
     req.log.error({ err }, "Failed to list subscribers");
     res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// POST /admin/email/campaign
+router.post("/admin/email/campaign", requireAdmin, async (req, res) => {
+  const { subject, html, previewText } = req.body as { subject?: string; html?: string; previewText?: string };
+
+  if (!subject || !html) {
+    res.status(400).json({ error: "subject y html son requeridos" });
+    return;
+  }
+
+  try {
+    const subscribers = await db
+      .select()
+      .from(emailSubscribersTable)
+      .where(eq(emailSubscribersTable.status, "active"));
+
+    if (subscribers.length === 0) {
+      res.json({ success: true, sent: 0, message: "No hay suscriptores activos." });
+      return;
+    }
+
+    const { client, fromEmail } = await getUncachableResendClient();
+
+    const baseUrl = process.env.APP_URL ?? "https://maudev.cl";
+
+    // Resend supports batch sending up to 100 emails at once
+    const BATCH_SIZE = 100;
+    let sent = 0;
+    let failed = 0;
+
+    for (let i = 0; i < subscribers.length; i += BATCH_SIZE) {
+      const batch = subscribers.slice(i, i + BATCH_SIZE);
+      const emails = batch.map((sub) => {
+        const unsubscribeUrl = `${baseUrl}/api/email/unsubscribe?token=${sub.unsubscribeToken ?? ""}`;
+        const bodyWithFooter = `${html}
+<hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+<p style="font-size:11px;color:#52525b;font-family:monospace;">
+  Recibes este correo porque estás suscrito en maudev.cl.<br>
+  <a href="${unsubscribeUrl}" style="color:#06b6d4;">Cancelar suscripción</a>
+</p>`;
+        return {
+          from: `MAUDEV <${fromEmail}>`,
+          to: [sub.email],
+          subject,
+          html: bodyWithFooter,
+        };
+      });
+
+      try {
+        await client.batch.send(emails);
+        sent += batch.length;
+      } catch (batchErr) {
+        req.log.warn({ batchErr }, `Batch ${i / BATCH_SIZE + 1} failed`);
+        failed += batch.length;
+      }
+    }
+
+    res.json({ success: true, sent, failed, total: subscribers.length });
+  } catch (err) {
+    req.log.error({ err }, "Failed to send campaign");
+    res.status(500).json({ error: "Error enviando la campaña" });
   }
 });
 

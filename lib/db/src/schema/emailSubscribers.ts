@@ -6,6 +6,8 @@ export const emailSubscribersTable = pgTable("email_subscribers", {
   id: serial("id").primaryKey(),
   email: text("email").notNull().unique(),
   name: text("name"),
+  status: text("status").notNull().default("active"),
+  unsubscribeToken: text("unsubscribe_token").unique(),
   subscribedAt: timestamp("subscribed_at").notNull().defaultNow(),
 });
 
