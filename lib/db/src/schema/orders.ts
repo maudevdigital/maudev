@@ -11,7 +11,8 @@ export const ordersTable = pgTable("orders", {
   amount: numeric("amount", { precision: 10, scale: 2 }).notNull(),
   currency: text("currency").notNull().default("CLP"),
   status: text("status").notNull().default("pending"), // pending | paid | failed | refunded
-  flowToken: text("flow_token"),
+  stripeSessionId: text("stripe_session_id"),
+  stripePaymentUrl: text("stripe_payment_url"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   paidAt: timestamp("paid_at"),
 });
