@@ -1,16 +1,31 @@
 import { Router } from "express";
 import { eq } from "drizzle-orm";
+import axios from "axios";
+import crypto from "crypto";
 import { db, ordersTable, productsTable } from "@workspace/db";
 import { CreateOrderBody, GetOrderParams } from "@workspace/api-zod";
 import { requireAuth } from "./auth";
-import { getUncachableStripeClient } from "../lib/stripeClient.js";
 
 const router = Router();
 
+const FLOW_API_KEY = process.env.FLOW_API_KEY || "";
+const FLOW_SECRET_KEY = process.env.FLOW_SECRET_KEY || "";
+const FLOW_API_URL = process.env.FLOW_SANDBOX === "true"
+  ? "https://sandbox.flow.cl/api"
+  : "https://www.flow.cl/api";
 const BASE_URL = process.env.BASE_URL_PUBLIC
   || (process.env.REPLIT_DOMAINS
     ? `https://${process.env.REPLIT_DOMAINS.split(",")[0]}`
     : "http://localhost:80");
+
+function signFlowParams(params: Record<string, string>): string {
+  const sorted = Object.keys(params).sort().reduce((acc: Record<string, string>, key) => {
+    acc[key] = params[key];
+    return acc;
+  }, {});
+  const toSign = Object.entries(sorted).map(([k, v]) => `${k}${v}`).join("");
+  return crypto.createHmac("sha256", FLOW_SECRET_KEY).update(toSign).digest("hex");
+}
 
 // GET /orders — user's orders
 router.get("/orders", requireAuth, async (req, res) => {
@@ -29,7 +44,7 @@ router.get("/orders", requireAuth, async (req, res) => {
   }
 });
 
-// POST /orders — create order + Stripe Checkout Session
+// POST /orders — create order + Flow payment
 router.post("/orders", requireAuth, async (req, res) => {
   try {
     const userId = (req as any).userId;
@@ -40,7 +55,6 @@ router.post("/orders", requireAuth, async (req, res) => {
       return res.status(404).json({ error: "Producto no encontrado" });
     }
 
-    // Create pending order first
     const [order] = await db.insert(ordersTable).values({
       userId,
       userEmail: body.userEmail,
@@ -51,80 +65,53 @@ router.post("/orders", requireAuth, async (req, res) => {
       status: "pending",
     }).returning();
 
-    // Determine currency for Stripe — CLP is zero-decimal (no cents)
-    const currency = (product.currency || "CLP").toLowerCase();
-    const unitAmount = currency === "clp"
-      ? Math.round(Number(product.price))
-      : Math.round(Number(product.price) * 100);
-
-    const successUrl = `${BASE_URL}/dashboard?payment=success&orderId=${order.id}`;
-    const cancelUrl = `${BASE_URL}/dashboard?payment=cancelled&orderId=${order.id}`;
-
-    try {
-      const stripe = await getUncachableStripeClient();
-      const session = await stripe.checkout.sessions.create({
-        payment_method_types: ["card"],
-        mode: "payment",
-        line_items: [
-          {
-            price_data: {
-              currency,
-              unit_amount: unitAmount,
-              product_data: {
-                name: product.name,
-                description: product.description?.slice(0, 255) ?? undefined,
-              },
-            },
-            quantity: 1,
-          },
-        ],
-        customer_email: body.userEmail,
-        success_url: successUrl,
-        cancel_url: cancelUrl,
-        metadata: {
-          orderId: String(order.id),
-          userId,
-          productId: String(product.id),
-        },
-      });
-
-      // Save session ID + URL on order
-      await db.update(ordersTable)
-        .set({ stripeSessionId: session.id, stripePaymentUrl: session.url })
-        .where(eq(ordersTable.id, order.id));
-
+    // Dev/mock mode — no Flow credentials configured
+    if (!FLOW_API_KEY || !FLOW_SECRET_KEY) {
+      const mockUrl = `${BASE_URL}/dashboard?payment=success&orderId=${order.id}&mock=true`;
       res.status(201).json({
-        order: {
-          ...order,
-          amount: Number(order.amount),
-          createdAt: order.createdAt.toISOString(),
-          paidAt: null,
-          stripeSessionId: session.id,
-          stripePaymentUrl: session.url,
-        },
-        paymentUrl: session.url,
+        order: { ...order, amount: Number(order.amount), createdAt: order.createdAt.toISOString(), paidAt: null },
+        paymentUrl: mockUrl,
       });
-    } catch (stripeErr: any) {
-      req.log.error({ stripeErr }, "Stripe session creation failed");
-      // Dev fallback: return order without payment URL
-      res.status(201).json({
-        order: {
-          ...order,
-          amount: Number(order.amount),
-          createdAt: order.createdAt.toISOString(),
-          paidAt: null,
-        },
-        paymentUrl: null,
-        error: `Stripe no configurado: ${stripeErr.message}`,
-      });
+      return;
     }
-  } catch (err) {
+
+    // Create Flow payment
+    const params: Record<string, string> = {
+      apiKey: FLOW_API_KEY,
+      amount: Math.round(Number(product.price)).toString(),
+      commerceOrder: String(order.id),
+      currency: product.currency || "CLP",
+      email: body.userEmail,
+      subject: `MauDev: ${product.name}`,
+      urlConfirmation: `${BASE_URL}/api/payments/flow/confirm`,
+      urlReturn: `${BASE_URL}/dashboard`,
+    };
+    params.s = signFlowParams(params);
+
+    const formData = new URLSearchParams(params);
+    const flowRes = await axios.post(`${FLOW_API_URL}/payment/create`, formData.toString(), {
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    });
+
+    const { token, url } = flowRes.data;
+    const paymentUrl = `${url}?token=${token}`;
+
+    // Store Flow token in stripeSessionId column and payment URL in stripePaymentUrl
+    await db.update(ordersTable)
+      .set({ stripeSessionId: token, stripePaymentUrl: paymentUrl })
+      .where(eq(ordersTable.id, order.id));
+
+    res.status(201).json({
+      order: { ...order, amount: Number(order.amount), createdAt: order.createdAt.toISOString(), paidAt: null },
+      paymentUrl,
+    });
+  } catch (err: any) {
     req.log.error({ err }, "Failed to create order");
-    res.status(500).json({ error: "Error interno del servidor" });
+    res.status(500).json({ error: err?.response?.data?.message || "Error interno del servidor" });
   }
 });
 
-// POST /orders/:id/retry — generate new Stripe session for an existing pending order
+// POST /orders/:id/retry — generate new Flow payment for existing pending order
 router.post("/orders/:id/retry", requireAuth, async (req, res) => {
   try {
     const userId = (req as any).userId;
@@ -138,55 +125,44 @@ router.post("/orders/:id/retry", requireAuth, async (req, res) => {
       return res.status(400).json({ error: "Este pedido ya está pagado" });
     }
 
-    const [product] = await db.select().from(productsTable).where(eq(productsTable.id, order.productId));
-    if (!product) {
-      return res.status(404).json({ error: "Producto no encontrado" });
+    if (!FLOW_API_KEY || !FLOW_SECRET_KEY) {
+      return res.json({ paymentUrl: `${BASE_URL}/dashboard?payment=success&orderId=${order.id}&mock=true` });
     }
 
-    const currency = (order.currency || "CLP").toLowerCase();
-    const unitAmount = currency === "clp"
-      ? Math.round(Number(order.amount))
-      : Math.round(Number(order.amount) * 100);
+    const [product] = await db.select().from(productsTable).where(eq(productsTable.id, order.productId));
+    if (!product) return res.status(404).json({ error: "Producto no encontrado" });
 
-    const stripe = await getUncachableStripeClient();
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card"],
-      mode: "payment",
-      line_items: [
-        {
-          price_data: {
-            currency,
-            unit_amount: unitAmount,
-            product_data: {
-              name: order.productName,
-              description: product.description?.slice(0, 255) ?? undefined,
-            },
-          },
-          quantity: 1,
-        },
-      ],
-      customer_email: order.userEmail,
-      success_url: `${BASE_URL}/dashboard?payment=success&orderId=${order.id}`,
-      cancel_url: `${BASE_URL}/dashboard?payment=cancelled&orderId=${order.id}`,
-      metadata: {
-        orderId: String(order.id),
-        userId,
-        productId: String(product.id),
-      },
+    const params: Record<string, string> = {
+      apiKey: FLOW_API_KEY,
+      amount: Math.round(Number(order.amount)).toString(),
+      commerceOrder: String(order.id),
+      currency: order.currency || "CLP",
+      email: order.userEmail,
+      subject: `MauDev: ${order.productName}`,
+      urlConfirmation: `${BASE_URL}/api/payments/flow/confirm`,
+      urlReturn: `${BASE_URL}/dashboard`,
+    };
+    params.s = signFlowParams(params);
+
+    const formData = new URLSearchParams(params);
+    const flowRes = await axios.post(`${FLOW_API_URL}/payment/create`, formData.toString(), {
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
     });
 
+    const { token, url } = flowRes.data;
+    const paymentUrl = `${url}?token=${token}`;
     await db.update(ordersTable)
-      .set({ stripeSessionId: session.id, stripePaymentUrl: session.url })
+      .set({ stripeSessionId: token, stripePaymentUrl: paymentUrl })
       .where(eq(ordersTable.id, order.id));
 
-    res.json({ paymentUrl: session.url });
-  } catch (err) {
+    res.json({ paymentUrl });
+  } catch (err: any) {
     req.log.error({ err }, "Failed to retry order checkout");
     res.status(500).json({ error: "Error al reintentar el pago" });
   }
 });
 
-// GET /orders/:id/verify — verify Stripe session and update status
+// GET /orders/:id/verify — verify order status (used after redirect)
 router.get("/orders/:id/verify", requireAuth, async (req, res) => {
   try {
     const userId = (req as any).userId;
@@ -197,29 +173,7 @@ router.get("/orders/:id/verify", requireAuth, async (req, res) => {
       return res.status(404).json({ error: "Pedido no encontrado" });
     }
 
-    if (order.status === "paid") {
-      return res.json({ status: "paid", order: { ...order, amount: Number(order.amount), createdAt: order.createdAt.toISOString(), paidAt: order.paidAt?.toISOString() ?? null } });
-    }
-
-    if (!order.stripeSessionId) {
-      return res.json({ status: order.status });
-    }
-
-    try {
-      const stripe = await getUncachableStripeClient();
-      const session = await stripe.checkout.sessions.retrieve(order.stripeSessionId);
-
-      if (session.payment_status === "paid") {
-        await db.update(ordersTable)
-          .set({ status: "paid", paidAt: new Date() })
-          .where(eq(ordersTable.id, orderId));
-        return res.json({ status: "paid" });
-      }
-
-      return res.json({ status: session.status ?? order.status });
-    } catch {
-      return res.json({ status: order.status });
-    }
+    res.json({ status: order.status });
   } catch (err) {
     req.log.error({ err }, "Failed to verify order");
     res.status(500).json({ error: "Internal server error" });

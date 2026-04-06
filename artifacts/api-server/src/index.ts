@@ -1,31 +1,25 @@
 import app from "./app";
 import { logger } from "./lib/logger";
-import { getUncachableStripeClient } from "./lib/stripeClient.js";
 
 const rawPort = process.env["PORT"];
 
 if (!rawPort) {
-  throw new Error(
-    "PORT environment variable is required but was not provided.",
-  );
+  throw new Error("PORT environment variable is required but was not provided.");
 }
 
 const port = Number(rawPort);
-
 if (Number.isNaN(port) || port <= 0) {
   throw new Error(`Invalid PORT value: "${rawPort}"`);
 }
 
-async function initStripe() {
-  try {
-    await getUncachableStripeClient();
-    logger.info("Stripe initialized — payments ready");
-  } catch (err) {
-    logger.warn({ err }, "Stripe credentials not available — payments disabled");
-  }
-}
+const isSandbox = process.env.FLOW_SANDBOX === "true";
+const hasFlow = !!(process.env.FLOW_API_KEY && process.env.FLOW_SECRET_KEY);
 
-await initStripe();
+if (hasFlow) {
+  logger.info({ sandbox: isSandbox }, "Flow payment gateway configured");
+} else {
+  logger.warn("FLOW_API_KEY / FLOW_SECRET_KEY not set — payments in mock mode");
+}
 
 app.listen(port, (err) => {
   if (err) {
