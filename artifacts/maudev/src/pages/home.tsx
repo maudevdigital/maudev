@@ -5,38 +5,193 @@ import { Badge } from "@/components/ui/badge";
 import { Show, useUser } from "@clerk/react";
 import { Redirect } from "wouter";
 import { useGetFeaturedProducts, useSubscribeEmail } from "@workspace/api-client-react";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
-const MOCK_TICKS = [
-  { pair: "BTC/USDT", val: "67,420.50", chg: "+2.14%", up: true },
-  { pair: "XAU/USD", val: "2,341.80", chg: "+0.87%", up: true },
-  { pair: "XAG/USD", val: "27.34", chg: "-0.32%", up: false },
-  { pair: "WTI/USD", val: "83.12", chg: "+1.05%", up: true },
+interface PriceTick {
+  pair: string;
+  symbol: string;
+  price: number;
+  change: number;
+  changePct: number;
+  up: boolean;
+}
+
+interface PricesResponse {
+  ticks: PriceTick[];
+  cachedAt: number;
+}
+
+const TERMINAL_STATUSES = [
+  "syncing with exchange feeds...",
+  "running indicator analysis...",
+  "computing momentum signals...",
+  "fetching order book depth...",
+  "updating volatility index...",
+  "scanning market microstructure...",
+  "calculating RSI divergence...",
+  "monitoring support/resistance levels...",
 ];
 
+function formatPrice(pair: string, price: number): string {
+  if (pair === "BTC/USDT") return price.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  if (pair === "XAG/USD") return price.toFixed(3);
+  return price.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function formatChange(changePct: number, up: boolean): string {
+  const sign = up ? "+" : "";
+  return `${sign}${changePct.toFixed(2)}%`;
+}
+
+function nowTimestamp(): string {
+  return new Date().toLocaleTimeString("en-US", { hour12: false });
+}
+
+function useRealtimePrices() {
+  const [ticks, setTicks] = useState<PriceTick[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [lastUpdate, setLastUpdate] = useState<string>("");
+  const prevTicksRef = useRef<PriceTick[]>([]);
+
+  const fetchPrices = async () => {
+    try {
+      const res = await fetch("/api/prices");
+      if (!res.ok) return;
+      const data: PricesResponse = await res.json();
+      if (data.ticks.length > 0) {
+        prevTicksRef.current = ticks;
+        setTicks(data.ticks);
+        setLastUpdate(nowTimestamp());
+        setLoading(false);
+      }
+    } catch {
+    }
+  };
+
+  useEffect(() => {
+    fetchPrices();
+    const interval = setInterval(fetchPrices, 15_000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return { ticks, loading, lastUpdate, prevTicks: prevTicksRef.current };
+}
+
 function HeroTerminal() {
+  const { ticks, loading, lastUpdate } = useRealtimePrices();
+  const [statusIdx, setStatusIdx] = useState(0);
+  const [blink, setBlink] = useState(true);
+  const [flashPairs, setFlashPairs] = useState<Set<string>>(new Set());
+  const prevTicksRef = useRef<PriceTick[]>([]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setStatusIdx((i) => (i + 1) % TERMINAL_STATUSES.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => setBlink((b) => !b), 530);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    if (ticks.length === 0) return;
+    const changed = new Set<string>();
+    ticks.forEach((tick) => {
+      const prev = prevTicksRef.current.find((p) => p.pair === tick.pair);
+      if (prev && prev.price !== tick.price) changed.add(tick.pair);
+    });
+    if (changed.size > 0) {
+      setFlashPairs(changed);
+      const timer = setTimeout(() => setFlashPairs(new Set()), 800);
+      prevTicksRef.current = ticks;
+      return () => clearTimeout(timer);
+    }
+    prevTicksRef.current = ticks;
+  }, [ticks]);
+
   return (
     <div className="relative hidden lg:block">
       <div className="absolute -inset-1 bg-primary/10 blur-xl rounded-sm" />
       <div className="relative border border-primary/20 bg-card/60 backdrop-blur overflow-hidden">
+        {/* Title bar */}
         <div className="flex items-center gap-2 px-4 py-3 border-b border-border/40 bg-background/40">
           <div className="w-2.5 h-2.5 rounded-full bg-destructive/70" />
           <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/70" />
           <div className="w-2.5 h-2.5 rounded-full bg-green-500/70" />
           <span className="ml-2 text-xs font-mono text-muted-foreground">maudev_terminal — live</span>
+          <span className="ml-auto text-xs font-mono text-green-400/70 flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse inline-block" />
+            LIVE
+          </span>
         </div>
-        <div className="p-5 space-y-3">
-          {MOCK_TICKS.map((tick) => (
-            <div key={tick.pair} className="flex items-center justify-between font-mono text-sm border border-border/30 bg-background/30 px-4 py-2.5">
-              <span className="text-muted-foreground">{tick.pair}</span>
-              <span className="text-foreground font-bold">{tick.val}</span>
-              <span className={tick.up ? "text-green-400" : "text-red-400"}>{tick.chg}</span>
-            </div>
-          ))}
-          <div className="mt-4 border border-primary/30 bg-primary/5 px-4 py-3 font-mono text-xs text-primary">
-            <span className="opacity-60">$ </span>
-            <span className="animate-pulse">█</span>
-            <span className="ml-1 opacity-80">running indicator analysis...</span>
+
+        {/* Command line */}
+        <div className="px-5 pt-4 pb-2 font-mono text-xs">
+          <span className="text-primary/60">$ </span>
+          <span className="text-primary/80">live-feed --assets BTC XAU XAG WTI --interval 15s</span>
+        </div>
+
+        {/* Price rows */}
+        <div className="px-5 pb-2 space-y-2">
+          {/* Header */}
+          <div className="flex items-center justify-between font-mono text-[10px] text-muted-foreground/50 px-3 pb-1 border-b border-border/20">
+            <span className="w-24">PAIR</span>
+            <span className="flex-1 text-right">PRICE</span>
+            <span className="w-20 text-right">CHG%</span>
+            <span className="w-20 text-right">TIME</span>
+          </div>
+
+          {loading
+            ? [1, 2, 3, 4].map((i) => (
+                <div key={i} className="flex items-center justify-between font-mono text-sm border border-border/20 bg-background/30 px-3 py-2.5 animate-pulse">
+                  <span className="w-24 h-3 bg-muted rounded" />
+                  <span className="flex-1 h-3 bg-muted rounded mx-4" />
+                  <span className="w-16 h-3 bg-muted rounded" />
+                </div>
+              ))
+            : ticks.map((tick) => (
+                <div
+                  key={tick.pair}
+                  className={`flex items-center justify-between font-mono text-sm border px-3 py-2.5 transition-all duration-300 ${
+                    flashPairs.has(tick.pair)
+                      ? "border-primary/50 bg-primary/10"
+                      : "border-border/20 bg-background/30"
+                  }`}
+                >
+                  <span className="w-24 text-muted-foreground text-xs">{tick.pair}</span>
+                  <span className="flex-1 text-right text-foreground font-bold tabular-nums">
+                    {formatPrice(tick.pair, tick.price)}
+                  </span>
+                  <span className={`w-20 text-right text-xs tabular-nums ${tick.up ? "text-green-400" : "text-red-400"}`}>
+                    {tick.up ? "▲" : "▼"} {formatChange(tick.changePct, tick.up)}
+                  </span>
+                  <span className="w-20 text-right text-muted-foreground/50 text-[10px]">
+                    {lastUpdate}
+                  </span>
+                </div>
+              ))}
+        </div>
+
+        {/* Status line */}
+        <div className="mx-5 mb-4 mt-2 border border-primary/20 bg-primary/5 px-4 py-2.5 font-mono text-xs">
+          <div className="flex items-center gap-2 text-muted-foreground/60 mb-1 text-[10px]">
+            <span>PID 1337</span>
+            <span>·</span>
+            <span>feed v2.4.1</span>
+            {lastUpdate && (
+              <>
+                <span>·</span>
+                <span>last sync {lastUpdate}</span>
+              </>
+            )}
+          </div>
+          <div className="text-primary/80">
+            <span className="opacity-60">→ </span>
+            <span>{TERMINAL_STATUSES[statusIdx]}</span>
+            <span className={`ml-0.5 ${blink ? "opacity-100" : "opacity-0"}`}>█</span>
           </div>
         </div>
       </div>
