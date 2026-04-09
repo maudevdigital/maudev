@@ -19,6 +19,7 @@ function stripSensitiveFields(p: any) {
     ...safe,
     price: Number(safe.price),
     originalPrice: safe.originalPrice ? Number(safe.originalPrice) : null,
+    mediaUrls: safe.mediaUrls ?? [],
     createdAt: safe.createdAt.toISOString(),
   };
 }
@@ -70,13 +71,14 @@ router.post("/products", requireAdmin, async (req, res) => {
         ...body,
         price: String(body.price),
         originalPrice: body.originalPrice != null ? String(body.originalPrice) : null,
+        mediaUrls: body.mediaUrls ?? [],
         featured: body.featured ?? false,
         active: body.active ?? true,
         downloadUrl: body.downloadUrl ?? null,
         manualUrl: body.manualUrl ?? null,
       })
       .returning();
-    res.status(201).json({ ...product, price: Number(product.price), originalPrice: product.originalPrice ? Number(product.originalPrice) : null, createdAt: product.createdAt.toISOString() });
+    res.status(201).json({ ...product, price: Number(product.price), originalPrice: product.originalPrice ? Number(product.originalPrice) : null, mediaUrls: product.mediaUrls ?? [], createdAt: product.createdAt.toISOString() });
   } catch (err) {
     req.log.error({ err }, "Failed to create product");
     res.status(400).json({ error: "Invalid data" });
@@ -107,13 +109,14 @@ router.put("/products/:id", requireAdmin, async (req, res) => {
         ...body,
         price: body.price !== undefined ? String(body.price) : undefined,
         originalPrice: body.originalPrice !== undefined ? (body.originalPrice != null ? String(body.originalPrice) : null) : undefined,
+        mediaUrls: body.mediaUrls !== undefined ? (body.mediaUrls ?? []) : undefined,
         downloadUrl: body.downloadUrl ?? null,
         manualUrl: body.manualUrl ?? null,
       })
       .where(eq(productsTable.id, id))
       .returning();
     if (!product) return res.status(404).json({ error: "Not found" });
-    res.json({ ...product, price: Number(product.price), originalPrice: product.originalPrice ? Number(product.originalPrice) : null, createdAt: product.createdAt.toISOString() });
+    res.json({ ...product, price: Number(product.price), originalPrice: product.originalPrice ? Number(product.originalPrice) : null, mediaUrls: product.mediaUrls ?? [], createdAt: product.createdAt.toISOString() });
   } catch (err) {
     req.log.error({ err }, "Failed to update product");
     res.status(400).json({ error: "Invalid data" });

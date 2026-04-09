@@ -448,6 +448,20 @@ components:
           type: string
         imageUrl:
           type: string
+        mediaUrls:
+          type: array
+          nullable: true
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+              type:
+                type: string
+                enum: [image, video]
+            required:
+              - url
+              - type
         featured:
           type: boolean
         active:
@@ -494,6 +508,20 @@ components:
           type: string
         imageUrl:
           type: string
+        mediaUrls:
+          type: array
+          nullable: true
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+              type:
+                type: string
+                enum: [image, video]
+            required:
+              - url
+              - type
         featured:
           type: boolean
         active:

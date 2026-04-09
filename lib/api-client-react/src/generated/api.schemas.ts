@@ -17,6 +17,19 @@ export const ProductCategory = {
   digital_service: "digital_service",
 } as const;
 
+export type ProductMediaUrlsItemType =
+  (typeof ProductMediaUrlsItemType)[keyof typeof ProductMediaUrlsItemType];
+
+export const ProductMediaUrlsItemType = {
+  image: "image",
+  video: "video",
+} as const;
+
+export type ProductMediaUrlsItem = {
+  url: string;
+  type: ProductMediaUrlsItemType;
+};
+
 export interface Product {
   id: number;
   name: string;
@@ -27,6 +40,7 @@ export interface Product {
   category: ProductCategory;
   subcategory: string;
   imageUrl: string;
+  mediaUrls?: ProductMediaUrlsItem[] | null;
   featured: boolean;
   active: boolean;
   downloadUrl?: string | null;
@@ -42,6 +56,19 @@ export const CreateProductBodyCategory = {
   digital_service: "digital_service",
 } as const;
 
+export type CreateProductBodyMediaUrlsItemType =
+  (typeof CreateProductBodyMediaUrlsItemType)[keyof typeof CreateProductBodyMediaUrlsItemType];
+
+export const CreateProductBodyMediaUrlsItemType = {
+  image: "image",
+  video: "video",
+} as const;
+
+export type CreateProductBodyMediaUrlsItem = {
+  url: string;
+  type: CreateProductBodyMediaUrlsItemType;
+};
+
 export interface CreateProductBody {
   name: string;
   description: string;
@@ -51,6 +78,7 @@ export interface CreateProductBody {
   category: CreateProductBodyCategory;
   subcategory: string;
   imageUrl: string;
+  mediaUrls?: CreateProductBodyMediaUrlsItem[] | null;
   featured?: boolean;
   active?: boolean;
   downloadUrl?: string | null;

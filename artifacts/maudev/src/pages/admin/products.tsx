@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { FileUploadField } from "@/components/FileUploadField";
+import { MediaUploadGrid } from "@/components/MediaUploadGrid";
 import {
   useCreateProduct,
   useUpdateProduct,
@@ -21,6 +22,7 @@ type ProductForm = {
   category: "trading_scripts" | "digital_service";
   subcategory: string;
   imageUrl: string;
+  mediaUrls: Array<{ url: string; type: "image" | "video" }>;
   featured: boolean;
   active: boolean;
   downloadUrl: string | null;
@@ -36,6 +38,7 @@ const DEFAULT_FORM: ProductForm = {
   category: "trading_scripts",
   subcategory: "",
   imageUrl: "",
+  mediaUrls: [],
   featured: false,
   active: true,
   downloadUrl: null,
@@ -70,7 +73,7 @@ function AdminProductsContent() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const data = { ...form, originalPrice: form.originalPrice || null, downloadUrl: form.downloadUrl || null, manualUrl: form.manualUrl || null };
+    const data = { ...form, originalPrice: form.originalPrice || null, downloadUrl: form.downloadUrl || null, manualUrl: form.manualUrl || null, mediaUrls: form.mediaUrls };
     if (editingId !== null) {
       updateProduct.mutate(
         { id: editingId, data },
@@ -107,6 +110,7 @@ function AdminProductsContent() {
       category: product.category as "trading_scripts" | "digital_service",
       subcategory: product.subcategory,
       imageUrl: product.imageUrl,
+      mediaUrls: product.mediaUrls ?? [],
       featured: product.featured,
       active: product.active,
       downloadUrl: product.downloadUrl ?? null,
@@ -221,6 +225,12 @@ function AdminProductsContent() {
                 required
                 className="w-full border border-border/60 bg-background px-3 py-2 text-sm font-mono outline-none focus:border-primary/60 transition-colors resize-none"
                 data-testid="input-description"
+              />
+            </div>
+            <div className="col-span-1 md:col-span-2">
+              <MediaUploadGrid
+                value={form.mediaUrls}
+                onChange={(items) => setForm({ ...form, mediaUrls: items })}
               />
             </div>
             <div className="flex items-center gap-6">

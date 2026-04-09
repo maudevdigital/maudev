@@ -19,6 +19,7 @@ router.get("/admin/products", requireAdmin, async (req, res) => {
       ...p,
       price: Number(p.price),
       originalPrice: p.originalPrice ? Number(p.originalPrice) : null,
+      mediaUrls: p.mediaUrls ?? [],
       createdAt: p.createdAt.toISOString(),
     })));
   } catch (err) {

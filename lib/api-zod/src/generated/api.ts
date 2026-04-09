@@ -32,6 +32,14 @@ export const ListProductsResponseItem = zod.object({
   category: zod.enum(["trading_scripts", "digital_service"]),
   subcategory: zod.string(),
   imageUrl: zod.string(),
+  mediaUrls: zod
+    .array(
+      zod.object({
+        url: zod.string(),
+        type: zod.enum(["image", "video"]),
+      }),
+    )
+    .nullish(),
   featured: zod.boolean(),
   active: zod.boolean(),
   downloadUrl: zod.string().nullish(),
@@ -52,6 +60,14 @@ export const CreateProductBody = zod.object({
   category: zod.enum(["trading_scripts", "digital_service"]),
   subcategory: zod.string(),
   imageUrl: zod.string(),
+  mediaUrls: zod
+    .array(
+      zod.object({
+        url: zod.string(),
+        type: zod.enum(["image", "video"]),
+      }),
+    )
+    .nullish(),
   featured: zod.boolean().optional(),
   active: zod.boolean().optional(),
   downloadUrl: zod.string().nullish(),
@@ -75,6 +91,14 @@ export const GetProductResponse = zod.object({
   category: zod.enum(["trading_scripts", "digital_service"]),
   subcategory: zod.string(),
   imageUrl: zod.string(),
+  mediaUrls: zod
+    .array(
+      zod.object({
+        url: zod.string(),
+        type: zod.enum(["image", "video"]),
+      }),
+    )
+    .nullish(),
   featured: zod.boolean(),
   active: zod.boolean(),
   downloadUrl: zod.string().nullish(),
@@ -98,6 +122,14 @@ export const UpdateProductBody = zod.object({
   category: zod.enum(["trading_scripts", "digital_service"]),
   subcategory: zod.string(),
   imageUrl: zod.string(),
+  mediaUrls: zod
+    .array(
+      zod.object({
+        url: zod.string(),
+        type: zod.enum(["image", "video"]),
+      }),
+    )
+    .nullish(),
   featured: zod.boolean().optional(),
   active: zod.boolean().optional(),
   downloadUrl: zod.string().nullish(),
@@ -114,6 +146,14 @@ export const UpdateProductResponse = zod.object({
   category: zod.enum(["trading_scripts", "digital_service"]),
   subcategory: zod.string(),
   imageUrl: zod.string(),
+  mediaUrls: zod
+    .array(
+      zod.object({
+        url: zod.string(),
+        type: zod.enum(["image", "video"]),
+      }),
+    )
+    .nullish(),
   featured: zod.boolean(),
   active: zod.boolean(),
   downloadUrl: zod.string().nullish(),
@@ -141,6 +181,14 @@ export const GetFeaturedProductsResponseItem = zod.object({
   category: zod.enum(["trading_scripts", "digital_service"]),
   subcategory: zod.string(),
   imageUrl: zod.string(),
+  mediaUrls: zod
+    .array(
+      zod.object({
+        url: zod.string(),
+        type: zod.enum(["image", "video"]),
+      }),
+    )
+    .nullish(),
   featured: zod.boolean(),
   active: zod.boolean(),
   downloadUrl: zod.string().nullish(),

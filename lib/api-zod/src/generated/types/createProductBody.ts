@@ -6,6 +6,7 @@
  * OpenAPI spec version: 0.1.0
  */
 import type { CreateProductBodyCategory } from "./createProductBodyCategory";
+import type { CreateProductBodyMediaUrlsItem } from "./createProductBodyMediaUrlsItem";
 
 export interface CreateProductBody {
   name: string;
@@ -16,6 +17,7 @@ export interface CreateProductBody {
   category: CreateProductBodyCategory;
   subcategory: string;
   imageUrl: string;
+  mediaUrls?: CreateProductBodyMediaUrlsItem[] | null;
   featured?: boolean;
   active?: boolean;
   downloadUrl?: string | null;

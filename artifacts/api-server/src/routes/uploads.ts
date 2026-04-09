@@ -45,6 +45,7 @@ const ALLOWED_EXTENSIONS = [
   ".pine", ".txt", ".mq5", ".ex5", ".mq4", ".ex4",
   ".pdf", ".doc", ".docx", ".zip", ".rar",
   ".png", ".jpg", ".jpeg", ".webp", ".gif",
+  ".mp4", ".webm", ".mov",
 ];
 
 const storage = multer.diskStorage({
@@ -58,7 +59,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage,
-  limits: { fileSize: 50 * 1024 * 1024 }, // 50MB max
+  limits: { fileSize: 100 * 1024 * 1024 }, // 100MB max
   fileFilter: (_req, file, cb) => {
     const ext = path.extname(file.originalname).toLowerCase();
     if (ALLOWED_EXTENSIONS.includes(ext)) {
@@ -174,6 +175,9 @@ router.get("/uploads/files/:filename", async (req, res) => {
     ".jpeg": "image/jpeg",
     ".webp": "image/webp",
     ".gif": "image/gif",
+    ".mp4": "video/mp4",
+    ".webm": "video/webm",
+    ".mov": "video/quicktime",
     ".txt": "text/plain",
     ".pine": "application/octet-stream",
     ".mq5": "application/octet-stream",
@@ -189,8 +193,10 @@ router.get("/uploads/files/:filename", async (req, res) => {
   const asciiName = originalName.replace(/[^\x20-\x7E]/g, "_");
   const utf8Name = encodeURIComponent(originalName).replace(/['()]/g, (c) => "%" + c.charCodeAt(0).toString(16));
 
+  const isMediaFile = [".png",".jpg",".jpeg",".webp",".gif",".mp4",".webm",".mov"].includes(ext);
+
   res.setHeader("Content-Type", contentTypes[ext] || "application/octet-stream");
-  res.setHeader("Content-Disposition", `attachment; filename="${asciiName}"; filename*=UTF-8''${utf8Name}`);
+  res.setHeader("Content-Disposition", isMediaFile ? "inline" : `attachment; filename="${asciiName}"; filename*=UTF-8''${utf8Name}`);
   res.setHeader("X-Content-Type-Options", "nosniff");
   res.setHeader("Cache-Control", matchingProduct ? "private, no-cache" : "public, max-age=3600");
 

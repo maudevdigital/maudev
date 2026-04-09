@@ -7,6 +7,7 @@ import { Show } from "@clerk/react";
 import { useGetProduct, getGetProductQueryKey } from "@workspace/api-client-react";
 import { Link } from "wouter";
 import SEOHead from "@/components/seo-head";
+import { MediaCarousel } from "@/components/MediaCarousel";
 
 export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
@@ -118,16 +119,13 @@ export default function ProductDetail() {
         </Link>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Image */}
+          {/* Media Carousel */}
           <div>
-            <div className="border border-border/40 overflow-hidden">
-              <img
-                src={product.imageUrl}
-                alt={product.name}
-                className="w-full h-80 object-cover"
-                data-testid="img-product"
-              />
-            </div>
+            <MediaCarousel
+              imageUrl={product.imageUrl}
+              mediaUrls={(product as any).mediaUrls}
+              productName={product.name}
+            />
           </div>
 
           {/* Details */}

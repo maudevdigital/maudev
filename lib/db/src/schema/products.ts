@@ -1,4 +1,4 @@
-import { pgTable, serial, text, numeric, boolean, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, serial, text, numeric, boolean, timestamp, jsonb } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 
@@ -12,6 +12,7 @@ export const productsTable = pgTable("products", {
   category: text("category").notNull(), // trading_scripts | digital_service
   subcategory: text("subcategory").notNull(),
   imageUrl: text("image_url").notNull(),
+  mediaUrls: jsonb("media_urls").$type<Array<{ url: string; type: "image" | "video" }>>().default([]),
   featured: boolean("featured").notNull().default(false),
   active: boolean("active").notNull().default(true),
   downloadUrl: text("download_url"),

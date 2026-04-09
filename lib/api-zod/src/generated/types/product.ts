@@ -6,6 +6,7 @@
  * OpenAPI spec version: 0.1.0
  */
 import type { ProductCategory } from "./productCategory";
+import type { ProductMediaUrlsItem } from "./productMediaUrlsItem";
 
 export interface Product {
   id: number;
@@ -17,6 +18,7 @@ export interface Product {
   category: ProductCategory;
   subcategory: string;
   imageUrl: string;
+  mediaUrls?: ProductMediaUrlsItem[] | null;
   featured: boolean;
   active: boolean;
   downloadUrl?: string | null;
