@@ -15,7 +15,7 @@ function estimateReadingTime(html: string): number {
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
   const { data: post, isLoading, isError } = useGetBlogPost(slug || "", {
-    query: { enabled: !!slug },
+    query: { enabled: !!slug } as any,
   });
 
   if (isLoading) {

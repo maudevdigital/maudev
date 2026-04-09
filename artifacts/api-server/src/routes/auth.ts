@@ -27,7 +27,7 @@ async function resolveUserEmail(auth: any): Promise<string> {
       headers: { Authorization: `Bearer ${CLERK_SECRET_KEY}` },
     });
     if (!resp.ok) return "";
-    const user = await resp.json();
+    const user = (await resp.json()) as { email_addresses?: { id: string; email_address: string }[]; primary_email_address_id?: string };
     const primary = user.email_addresses?.find(
       (e: any) => e.id === user.primary_email_address_id
     );
