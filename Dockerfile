@@ -33,7 +33,7 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 
 # Build frontend (needs VITE_ env vars at build time)
-ARG VITE_CLERK_PUBLISHABLE_KEY
+ARG VITE_CLERK_PUBLISHABLE_KEY=pk_live_Y2xlcmsubWF1ZGV2LmNsJA
 ENV VITE_CLERK_PUBLISHABLE_KEY=$VITE_CLERK_PUBLISHABLE_KEY
 
 RUN cd artifacts/maudev && pnpm run build
