@@ -13,6 +13,11 @@ import { db, blogPostsTable } from "@workspace/db";
 
 const app: Express = express();
 
+// Trust proxy in production (Railway, etc.)
+if (process.env.NODE_ENV === "production") {
+  app.set("trust proxy", 1);
+}
+
 // HTTPS redirect in production
 if (process.env.NODE_ENV === "production") {
   app.use((req, res, next) => {
@@ -145,7 +150,7 @@ app.use("/api", router);
 
 // ── Serve frontend static files in production ──
 if (process.env.NODE_ENV === "production") {
-  const frontendDir = path.resolve(process.cwd(), "artifacts/maudev/dist/public");
+  const frontendDir = path.resolve(__dirname, "../../../artifacts/maudev/dist/public");
   app.use(express.static(frontendDir, { maxAge: "1y", immutable: true }));
   app.get("/{*path}", (_req, res) => {
     res.sendFile(path.join(frontendDir, "index.html"));
