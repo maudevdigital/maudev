@@ -196,12 +196,7 @@ router.post("/orders", requireAuth, createOrderLimit, async (req, res) => {
     });
   } catch (err: any) {
     req.log.error({ err }, "Failed to create order");
-    const apiMessage = err?.response?.data?.message;
-    const apiErrors: string[] = err?.response?.data?.errors;
-    const detail = apiErrors?.length ? apiErrors.join(". ") : apiMessage;
-    res.status(err?.response?.status || 500).json({
-      error: detail || "Error interno del servidor",
-    });
+    res.status(500).json({ error: err?.response?.data?.message || "Error interno del servidor" });
   }
 });
 

@@ -194,8 +194,7 @@ export default function Checkout() {
                     <p className="text-xs font-mono text-red-400">NO SE PUDO INICIAR EL PAGO</p>
                   </div>
                   <p className="text-xs text-muted-foreground pl-6">
-                    {(createOrder.error as any)?.response?.data?.error ||
-                      "Hubo un problema al conectar con el procesador de pagos. Verifica tu conexión e intenta nuevamente. Si el problema persiste, contáctanos."}
+                    Hubo un problema al conectar con el procesador de pagos. Verifica tu conexión e intenta nuevamente. Si el problema persiste, contáctanos.
                   </p>
                 </div>
               )}
