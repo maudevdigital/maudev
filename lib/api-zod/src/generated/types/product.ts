@@ -17,7 +17,7 @@ export interface Product {
   currency: string;
   category: ProductCategory;
   subcategory: string;
-  imageUrl: string;
+  imageUrl?: string | null;
   mediaUrls?: ProductMediaUrlsItem[] | null;
   featured: boolean;
   active: boolean;

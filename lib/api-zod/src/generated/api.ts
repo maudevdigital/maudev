@@ -31,7 +31,7 @@ export const ListProductsResponseItem = zod.object({
   currency: zod.string(),
   category: zod.enum(["trading_scripts", "digital_service"]),
   subcategory: zod.string(),
-  imageUrl: zod.string(),
+  imageUrl: zod.string().nullish(),
   mediaUrls: zod
     .array(
       zod.object({
@@ -59,7 +59,7 @@ export const CreateProductBody = zod.object({
   currency: zod.string(),
   category: zod.enum(["trading_scripts", "digital_service"]),
   subcategory: zod.string(),
-  imageUrl: zod.string(),
+  imageUrl: zod.string().nullish(),
   mediaUrls: zod
     .array(
       zod.object({
@@ -90,7 +90,7 @@ export const GetProductResponse = zod.object({
   currency: zod.string(),
   category: zod.enum(["trading_scripts", "digital_service"]),
   subcategory: zod.string(),
-  imageUrl: zod.string(),
+  imageUrl: zod.string().nullish(),
   mediaUrls: zod
     .array(
       zod.object({
@@ -121,7 +121,7 @@ export const UpdateProductBody = zod.object({
   currency: zod.string(),
   category: zod.enum(["trading_scripts", "digital_service"]),
   subcategory: zod.string(),
-  imageUrl: zod.string(),
+  imageUrl: zod.string().nullish(),
   mediaUrls: zod
     .array(
       zod.object({
@@ -145,7 +145,7 @@ export const UpdateProductResponse = zod.object({
   currency: zod.string(),
   category: zod.enum(["trading_scripts", "digital_service"]),
   subcategory: zod.string(),
-  imageUrl: zod.string(),
+  imageUrl: zod.string().nullish(),
   mediaUrls: zod
     .array(
       zod.object({
@@ -180,7 +180,7 @@ export const GetFeaturedProductsResponseItem = zod.object({
   currency: zod.string(),
   category: zod.enum(["trading_scripts", "digital_service"]),
   subcategory: zod.string(),
-  imageUrl: zod.string(),
+  imageUrl: zod.string().nullish(),
   mediaUrls: zod
     .array(
       zod.object({

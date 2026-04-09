@@ -11,7 +11,7 @@ export const productsTable = pgTable("products", {
   currency: text("currency").notNull().default("CLP"),
   category: text("category").notNull(), // trading_scripts | digital_service
   subcategory: text("subcategory").notNull(),
-  imageUrl: text("image_url").notNull(),
+  imageUrl: text("image_url"),
   mediaUrls: jsonb("media_urls").$type<Array<{ url: string; type: "image" | "video" }>>().default([]),
   featured: boolean("featured").notNull().default(false),
   active: boolean("active").notNull().default(true),

@@ -159,7 +159,7 @@ function AdminProductsContent() {
               { key: "name", label: "Nombre", type: "text", required: true },
               { key: "price", label: "Precio actual (CLP)", type: "number", required: true },
               { key: "originalPrice", label: "Precio anterior (CLP) — tachado/descuento", type: "number", required: false },
-              { key: "imageUrl", label: "URL Imagen", type: "url", required: true },
+              { key: "imageUrl", label: "URL Imagen", type: "url", required: false },
             ].map((field) => (
               <div key={field.key}>
                 <label className="text-xs font-mono text-muted-foreground block mb-1">{field.label}</label>

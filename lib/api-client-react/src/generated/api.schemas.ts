@@ -39,7 +39,7 @@ export interface Product {
   currency: string;
   category: ProductCategory;
   subcategory: string;
-  imageUrl: string;
+  imageUrl?: string | null;
   mediaUrls?: ProductMediaUrlsItem[] | null;
   featured: boolean;
   active: boolean;
@@ -77,7 +77,7 @@ export interface CreateProductBody {
   currency: string;
   category: CreateProductBodyCategory;
   subcategory: string;
-  imageUrl: string;
+  imageUrl?: string | null;
   mediaUrls?: CreateProductBodyMediaUrlsItem[] | null;
   featured?: boolean;
   active?: boolean;

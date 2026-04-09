@@ -16,7 +16,7 @@ export interface CreateProductBody {
   currency: string;
   category: CreateProductBodyCategory;
   subcategory: string;
-  imageUrl: string;
+  imageUrl?: string | null;
   mediaUrls?: CreateProductBodyMediaUrlsItem[] | null;
   featured?: boolean;
   active?: boolean;
