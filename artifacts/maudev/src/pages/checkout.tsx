@@ -146,17 +146,13 @@ export default function Checkout() {
                 </button>
                 <button
                   type="button"
-                  onClick={() => setPaymentMethod("coingate")}
-                  className={`flex items-center gap-3 p-4 border transition-colors ${
-                    paymentMethod === "coingate"
-                      ? "border-primary bg-primary/10"
-                      : "border-border/40 hover:border-border/60"
-                  }`}
+                  disabled
+                  className="flex items-center gap-3 p-4 border border-border/40 opacity-50 cursor-not-allowed relative"
                 >
                   <Bitcoin className="h-5 w-5 text-orange-400 shrink-0" />
                   <div className="text-left">
                     <p className="text-sm font-semibold">Crypto</p>
-                    <p className="text-xs text-muted-foreground">Bitcoin, ETH, USDT</p>
+                    <p className="text-xs text-muted-foreground">Próximamente</p>
                   </div>
                 </button>
               </div>
