@@ -50,7 +50,7 @@ export default function ProductDetail() {
     setLocation(`/checkout?productId=${product.id}`);
   };
 
-  const features = product.subcategory === "mt5_mql5"
+  const defaultFeatures = product.subcategory === "mt5_mql5"
     ? [
         "Compatible con MetaTrader 5 (archivo .ex5)",
         "Estructura de mercado: BOS y CHoCH automáticos",
@@ -86,20 +86,27 @@ export default function ProductDetail() {
         "Soporte post-entrega",
       ];
 
+  const features = ((product as any).features?.length > 0) ? (product as any).features : defaultFeatures;
+
+  const seoTitle = (product as any).seoTitle || product.name;
+  const seoDescription = (product as any).seoDescription || product.description;
+  const seoKeywords = (product as any).seoKeywords || `${product.name}, ${product.subcategory === "mt5_mql5" ? "MetaTrader 5, MQL5" : product.subcategory === "market_structure" ? "Pine Script, TradingView" : "desarrollo web"}, MauDev, Chile`;
+  const firstImage = product.imageUrl || ((product as any).mediaUrls?.[0]?.url) || null;
+
   return (
     <div className="py-16">
       <SEOHead
-        title={product.name}
-        description={product.description}
-        keywords={`${product.name}, ${product.subcategory === "mt5_mql5" ? "MetaTrader 5, MQL5" : product.subcategory === "market_structure" ? "Pine Script, TradingView" : "desarrollo web"}, MauDev, Chile`}
+        title={seoTitle}
+        description={seoDescription}
+        keywords={seoKeywords}
         canonical={`https://maudev.cl/products/${product.id}`}
-        ogImage={product.imageUrl}
+        ogImage={firstImage ?? undefined}
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "Product",
           "name": product.name,
-          "description": product.description,
-          "image": product.imageUrl,
+          "description": seoDescription,
+          "image": firstImage,
           "brand": { "@type": "Brand", "name": "MauDev" },
           "offers": {
             "@type": "Offer",

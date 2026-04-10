@@ -17,6 +17,10 @@ export const productsTable = pgTable("products", {
   active: boolean("active").notNull().default(true),
   downloadUrl: text("download_url"),
   manualUrl: text("manual_url"),
+  features: jsonb("features").$type<string[]>().default([]),
+  seoTitle: text("seo_title"),
+  seoDescription: text("seo_description"),
+  seoKeywords: text("seo_keywords"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 

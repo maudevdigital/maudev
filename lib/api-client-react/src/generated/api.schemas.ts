@@ -45,6 +45,10 @@ export interface Product {
   active: boolean;
   downloadUrl?: string | null;
   manualUrl?: string | null;
+  features?: string[] | null;
+  seoTitle?: string | null;
+  seoDescription?: string | null;
+  seoKeywords?: string | null;
   createdAt: string;
 }
 
@@ -83,6 +87,10 @@ export interface CreateProductBody {
   active?: boolean;
   downloadUrl?: string | null;
   manualUrl?: string | null;
+  features?: string[] | null;
+  seoTitle?: string | null;
+  seoDescription?: string | null;
+  seoKeywords?: string | null;
 }
 
 export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus];

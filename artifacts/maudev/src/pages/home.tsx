@@ -333,11 +333,15 @@ function HomeContent() {
                   <Link key={product.id} href={`/products/${product.id}`}>
                     <div className="border border-border/40 bg-card hover-glow transition-all duration-300 group cursor-pointer" data-testid={`card-product-${product.id}`}>
                       <div className="h-40 overflow-hidden bg-muted relative">
-                        <img
-                          src={product.imageUrl}
-                          alt={product.name}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
+                        {(product.imageUrl || (product as any).mediaUrls?.[0]?.url) ? (
+                          <img
+                            src={product.imageUrl || (product as any).mediaUrls[0].url}
+                            alt={product.name}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-muted-foreground/30 text-xs font-mono">SIN IMAGEN</div>
+                        )}
                         <div className="absolute inset-0 bg-linear-to-t from-card/60 to-transparent" />
                       </div>
                       <div className="p-5">

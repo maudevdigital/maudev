@@ -122,11 +122,17 @@ export default function Products() {
                   data-testid={`card-product-${product.id}`}
                 >
                   <div className="h-48 overflow-hidden bg-muted relative">
-                    <img
-                      src={product.imageUrl}
-                      alt={product.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
+                    {(product.imageUrl || (product as any).mediaUrls?.[0]?.url) ? (
+                      <img
+                        src={product.imageUrl || (product as any).mediaUrls[0].url}
+                        alt={product.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-muted-foreground/30">
+                        <Search className="h-8 w-8" />
+                      </div>
+                    )}
                     {product.featured && (
                       <div className="absolute top-3 left-3">
                         <Badge className="font-mono text-xs rounded-none border-0 bg-primary text-primary-foreground px-2">

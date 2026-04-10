@@ -44,6 +44,10 @@ export const ListProductsResponseItem = zod.object({
   active: zod.boolean(),
   downloadUrl: zod.string().nullish(),
   manualUrl: zod.string().nullish(),
+  features: zod.array(zod.string()).nullish(),
+  seoTitle: zod.string().nullish(),
+  seoDescription: zod.string().nullish(),
+  seoKeywords: zod.string().nullish(),
   createdAt: zod.string(),
 });
 export const ListProductsResponse = zod.array(ListProductsResponseItem);
@@ -72,6 +76,10 @@ export const CreateProductBody = zod.object({
   active: zod.boolean().optional(),
   downloadUrl: zod.string().nullish(),
   manualUrl: zod.string().nullish(),
+  features: zod.array(zod.string()).nullish(),
+  seoTitle: zod.string().nullish(),
+  seoDescription: zod.string().nullish(),
+  seoKeywords: zod.string().nullish(),
 });
 
 /**
@@ -103,6 +111,10 @@ export const GetProductResponse = zod.object({
   active: zod.boolean(),
   downloadUrl: zod.string().nullish(),
   manualUrl: zod.string().nullish(),
+  features: zod.array(zod.string()).nullish(),
+  seoTitle: zod.string().nullish(),
+  seoDescription: zod.string().nullish(),
+  seoKeywords: zod.string().nullish(),
   createdAt: zod.string(),
 });
 
@@ -134,6 +146,10 @@ export const UpdateProductBody = zod.object({
   active: zod.boolean().optional(),
   downloadUrl: zod.string().nullish(),
   manualUrl: zod.string().nullish(),
+  features: zod.array(zod.string()).nullish(),
+  seoTitle: zod.string().nullish(),
+  seoDescription: zod.string().nullish(),
+  seoKeywords: zod.string().nullish(),
 });
 
 export const UpdateProductResponse = zod.object({
@@ -158,6 +174,10 @@ export const UpdateProductResponse = zod.object({
   active: zod.boolean(),
   downloadUrl: zod.string().nullish(),
   manualUrl: zod.string().nullish(),
+  features: zod.array(zod.string()).nullish(),
+  seoTitle: zod.string().nullish(),
+  seoDescription: zod.string().nullish(),
+  seoKeywords: zod.string().nullish(),
   createdAt: zod.string(),
 });
 
@@ -193,6 +213,10 @@ export const GetFeaturedProductsResponseItem = zod.object({
   active: zod.boolean(),
   downloadUrl: zod.string().nullish(),
   manualUrl: zod.string().nullish(),
+  features: zod.array(zod.string()).nullish(),
+  seoTitle: zod.string().nullish(),
+  seoDescription: zod.string().nullish(),
+  seoKeywords: zod.string().nullish(),
   createdAt: zod.string(),
 });
 export const GetFeaturedProductsResponse = zod.array(

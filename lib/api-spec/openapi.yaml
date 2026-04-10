@@ -473,6 +473,20 @@ components:
         manualUrl:
           type: string
           nullable: true
+        features:
+          type: array
+          nullable: true
+          items:
+            type: string
+        seoTitle:
+          type: string
+          nullable: true
+        seoDescription:
+          type: string
+          nullable: true
+        seoKeywords:
+          type: string
+          nullable: true
         createdAt:
           type: string
       required:
@@ -531,6 +545,20 @@ components:
           type: string
           nullable: true
         manualUrl:
+          type: string
+          nullable: true
+        features:
+          type: array
+          nullable: true
+          items:
+            type: string
+        seoTitle:
+          type: string
+          nullable: true
+        seoDescription:
+          type: string
+          nullable: true
+        seoKeywords:
           type: string
           nullable: true
       required:

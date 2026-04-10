@@ -20,6 +20,10 @@ function stripSensitiveFields(p: any) {
     price: Number(safe.price),
     originalPrice: safe.originalPrice ? Number(safe.originalPrice) : null,
     mediaUrls: safe.mediaUrls ?? [],
+    features: safe.features ?? [],
+    seoTitle: safe.seoTitle ?? null,
+    seoDescription: safe.seoDescription ?? null,
+    seoKeywords: safe.seoKeywords ?? null,
     createdAt: safe.createdAt.toISOString(),
   };
 }
@@ -76,6 +80,10 @@ router.post("/products", requireAdmin, async (req, res) => {
         active: body.active ?? true,
         downloadUrl: body.downloadUrl ?? null,
         manualUrl: body.manualUrl ?? null,
+        features: body.features ?? [],
+        seoTitle: body.seoTitle ?? null,
+        seoDescription: body.seoDescription ?? null,
+        seoKeywords: body.seoKeywords ?? null,
       })
       .returning();
     res.status(201).json({ ...product, price: Number(product.price), originalPrice: product.originalPrice ? Number(product.originalPrice) : null, mediaUrls: product.mediaUrls ?? [], createdAt: product.createdAt.toISOString() });
@@ -112,6 +120,10 @@ router.put("/products/:id", requireAdmin, async (req, res) => {
         mediaUrls: body.mediaUrls !== undefined ? (body.mediaUrls ?? []) : undefined,
         downloadUrl: body.downloadUrl ?? null,
         manualUrl: body.manualUrl ?? null,
+        features: body.features !== undefined ? (body.features ?? []) : undefined,
+        seoTitle: body.seoTitle ?? null,
+        seoDescription: body.seoDescription ?? null,
+        seoKeywords: body.seoKeywords ?? null,
       })
       .where(eq(productsTable.id, id))
       .returning();

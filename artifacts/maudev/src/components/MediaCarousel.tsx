@@ -7,14 +7,14 @@ interface MediaItem {
 }
 
 interface MediaCarouselProps {
-  imageUrl: string;
+  imageUrl?: string | null;
   mediaUrls?: MediaItem[];
   productName: string;
 }
 
 export function MediaCarousel({ imageUrl, mediaUrls = [], productName }: MediaCarouselProps) {
   const allMedia: MediaItem[] = [
-    { url: imageUrl, type: "image" },
+    ...(imageUrl ? [{ url: imageUrl, type: "image" as const }] : []),
     ...mediaUrls,
   ];
 
@@ -41,6 +41,16 @@ export function MediaCarousel({ imageUrl, mediaUrls = [], productName }: MediaCa
 
   const item = allMedia[current];
   const showControls = allMedia.length > 1;
+
+  if (allMedia.length === 0) {
+    return (
+      <div className="relative">
+        <div className="border border-border/40 overflow-hidden bg-black/20 relative aspect-[16/10] flex items-center justify-center">
+          <ImageIcon className="h-12 w-12 text-muted-foreground/30" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative group">

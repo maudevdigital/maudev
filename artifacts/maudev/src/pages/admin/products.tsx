@@ -27,6 +27,10 @@ type ProductForm = {
   active: boolean;
   downloadUrl: string | null;
   manualUrl: string | null;
+  features: string[];
+  seoTitle: string | null;
+  seoDescription: string | null;
+  seoKeywords: string | null;
 };
 
 const DEFAULT_FORM: ProductForm = {
@@ -43,6 +47,10 @@ const DEFAULT_FORM: ProductForm = {
   active: true,
   downloadUrl: null,
   manualUrl: null,
+  features: [],
+  seoTitle: null,
+  seoDescription: null,
+  seoKeywords: null,
 };
 
 function AdminProductsContent() {
@@ -115,6 +123,10 @@ function AdminProductsContent() {
       active: product.active,
       downloadUrl: product.downloadUrl ?? null,
       manualUrl: product.manualUrl ?? null,
+      features: product.features ?? [],
+      seoTitle: product.seoTitle ?? null,
+      seoDescription: product.seoDescription ?? null,
+      seoKeywords: product.seoKeywords ?? null,
     });
     setEditingId(product.id);
     setShowForm(true);
@@ -232,6 +244,65 @@ function AdminProductsContent() {
                 value={form.mediaUrls}
                 onChange={(items) => setForm({ ...form, mediaUrls: items })}
               />
+            </div>
+
+            {/* Features / Características */}
+            <div className="col-span-1 md:col-span-2">
+              <label className="text-xs font-mono text-muted-foreground block mb-1">CARACTERÍSTICAS DEL PRODUCTO</label>
+              <p className="text-xs text-muted-foreground/60 font-mono mb-2">Una característica por línea — se muestran con ✓ en la página del producto</p>
+              <textarea
+                value={form.features.join("\n")}
+                onChange={(e) => setForm({ ...form, features: e.target.value.split("\n").filter(Boolean) })}
+                rows={5}
+                placeholder={"Compatible con TradingView Pine Script v5\nEstructura de mercado: BOS y CHoCH automáticos\nAlertas automáticas configurables"}
+                className="w-full border border-border/60 bg-background px-3 py-2 text-sm font-mono outline-none focus:border-primary/60 transition-colors resize-none"
+                data-testid="input-features"
+              />
+            </div>
+
+            {/* SEO Fields */}
+            <div className="col-span-1 md:col-span-2 border border-border/30 bg-background/50 p-4">
+              <p className="font-mono text-xs text-primary mb-3">SEO — OPTIMIZACIÓN PARA BUSCADORES</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="col-span-1 md:col-span-2">
+                  <label className="text-xs font-mono text-muted-foreground block mb-1">TÍTULO SEO</label>
+                  <input
+                    type="text"
+                    value={form.seoTitle ?? ""}
+                    onChange={(e) => setForm({ ...form, seoTitle: e.target.value || null })}
+                    placeholder={form.name || "Título optimizado para Google..."}
+                    maxLength={70}
+                    className="w-full border border-border/60 bg-background px-3 py-2 text-sm font-mono outline-none focus:border-primary/60 transition-colors"
+                    data-testid="input-seoTitle"
+                  />
+                  <p className="text-xs text-muted-foreground/60 font-mono mt-1">{(form.seoTitle ?? "").length}/70 caracteres — déjalo vacío para usar el nombre</p>
+                </div>
+                <div className="col-span-1 md:col-span-2">
+                  <label className="text-xs font-mono text-muted-foreground block mb-1">DESCRIPCIÓN SEO</label>
+                  <textarea
+                    value={form.seoDescription ?? ""}
+                    onChange={(e) => setForm({ ...form, seoDescription: e.target.value || null })}
+                    placeholder="Descripción optimizada para buscadores (155 chars máx)..."
+                    rows={2}
+                    maxLength={160}
+                    className="w-full border border-border/60 bg-background px-3 py-2 text-sm font-mono outline-none focus:border-primary/60 transition-colors resize-none"
+                    data-testid="input-seoDescription"
+                  />
+                  <p className="text-xs text-muted-foreground/60 font-mono mt-1">{(form.seoDescription ?? "").length}/160 caracteres — déjalo vacío para usar la descripción</p>
+                </div>
+                <div className="col-span-1 md:col-span-2">
+                  <label className="text-xs font-mono text-muted-foreground block mb-1">KEYWORDS SEO</label>
+                  <input
+                    type="text"
+                    value={form.seoKeywords ?? ""}
+                    onChange={(e) => setForm({ ...form, seoKeywords: e.target.value || null })}
+                    placeholder="pine script, tradingview, indicador, smart money concepts..."
+                    className="w-full border border-border/60 bg-background px-3 py-2 text-sm font-mono outline-none focus:border-primary/60 transition-colors"
+                    data-testid="input-seoKeywords"
+                  />
+                  <p className="text-xs text-muted-foreground/60 font-mono mt-1">Separadas por coma — déjalo vacío para keywords automáticas</p>
+                </div>
+              </div>
             </div>
             <div className="flex items-center gap-6">
               <label className="flex items-center gap-2 text-sm cursor-pointer">
