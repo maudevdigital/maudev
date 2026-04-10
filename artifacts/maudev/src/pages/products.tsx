@@ -35,6 +35,7 @@ export default function Products() {
   return (
     <div className="py-16">
       <SEOHead
+        tabPrefix="📦"
         title="Productos y Servicios"
         description="Trading scripts profesionales para TradingView y MetaTrader 5, más soluciones de desarrollo digital a medida. Indicadores Pine Script v5, Expert Advisors MQL5 y más."
         keywords="pine script, tradingview, metatrader 5, indicadores trading, desarrollo web, servicios digitales, Chile"

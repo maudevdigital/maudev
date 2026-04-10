@@ -1,3 +1,17 @@
 <svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="180" height="180" rx="36" fill="#FF3C00"/>
+  <!-- Background -->
+  <rect width="180" height="180" rx="32" fill="#0D0D0D"/>
+  <!-- Subtle grid pattern (tech feel) -->
+  <line x1="60" y1="0" x2="60" y2="180" stroke="#00D4FF" stroke-opacity="0.06" stroke-width="1"/>
+  <line x1="120" y1="0" x2="120" y2="180" stroke="#00D4FF" stroke-opacity="0.06" stroke-width="1"/>
+  <line x1="0" y1="60" x2="180" y2="60" stroke="#00D4FF" stroke-opacity="0.06" stroke-width="1"/>
+  <line x1="0" y1="120" x2="180" y2="120" stroke="#00D4FF" stroke-opacity="0.06" stroke-width="1"/>
+  <!-- Terminal cursor bracket < /> -->
+  <text x="90" y="72" text-anchor="middle" font-family="monospace" font-weight="700" font-size="28" fill="#00D4FF" opacity="0.5">&lt;/&gt;</text>
+  <!-- M letterform — bold, geometric -->
+  <path d="M38 130V68L63 100L88 68V130" stroke="#00D4FF" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- D letterform -->
+  <path d="M104 68H126C143 68 152 82 152 99C152 116 143 130 126 130H104V68Z" stroke="white" stroke-opacity="0.85" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- Bottom accent line -->
+  <rect x="32" y="148" width="116" height="3" rx="1.5" fill="#00D4FF" opacity="0.4"/>
 </svg>

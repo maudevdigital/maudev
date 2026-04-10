@@ -96,6 +96,7 @@ export default function ProductDetail() {
   return (
     <div className="py-16">
       <SEOHead
+        tabPrefix="🛒"
         title={seoTitle}
         description={seoDescription}
         keywords={seoKeywords}

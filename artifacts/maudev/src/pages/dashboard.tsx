@@ -374,7 +374,7 @@ function DashboardContent() {
 
   return (
     <div className="py-16">
-      <SEOHead title="Mi Panel" noindex={true} />
+      <SEOHead tabPrefix="📊" title="Mi Panel" noindex={true} />
       <div className="container max-w-7xl mx-auto px-4 md:px-8">
         {showPaymentStatus && payment === "success" && (
           <div className="mb-8 border border-green-500/30 bg-green-500/5 overflow-hidden" data-testid="text-payment-success">

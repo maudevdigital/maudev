@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet-async";
 const SITE_NAME = "MauDev";
 const SITE_URL = "https://maudev.cl";
 const DEFAULT_DESCRIPTION = "Plataforma chilena de herramientas de trading: indicadores Pine Script para TradingView, scripts MQL5 para MetaTrader 5, y servicios de desarrollo digital.";
+const DEFAULT_IMAGE = `${SITE_URL}/opengraph.jpg`;
 
 interface SEOHeadProps {
   title?: string;
@@ -16,6 +17,8 @@ interface SEOHeadProps {
   modifiedTime?: string;
   noindex?: boolean;
   jsonLd?: Record<string, unknown>;
+  /** Emoji or text shown before the title in the browser tab */
+  tabPrefix?: string;
 }
 
 export default function SEOHead({
@@ -30,9 +33,12 @@ export default function SEOHead({
   modifiedTime,
   noindex = false,
   jsonLd,
+  tabPrefix,
 }: SEOHeadProps) {
-  const fullTitle = title ? `${title} — ${SITE_NAME}` : `${SITE_NAME} — Indicadores de Trading, Pine Script & Herramientas MT5`;
+  const baseTitle = title ? `${title} — ${SITE_NAME}` : `${SITE_NAME} — Indicadores de Trading, Pine Script & Herramientas MT5`;
+  const fullTitle = tabPrefix ? `${tabPrefix} ${baseTitle}` : baseTitle;
   const canonicalUrl = canonical || `${SITE_URL}${window.location.pathname}`;
+  const image = ogImage || DEFAULT_IMAGE;
 
   return (
     <Helmet>
@@ -43,18 +49,22 @@ export default function SEOHead({
       <meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow"} />
       <link rel="canonical" href={canonicalUrl} />
 
+      {/* Theme color for mobile browsers */}
+      <meta name="theme-color" content="#0D0D0D" />
+      <meta name="msapplication-TileColor" content="#00D4FF" />
+
       <meta property="og:type" content={ogType} />
-      <meta property="og:title" content={fullTitle} />
+      <meta property="og:title" content={baseTitle} />
       <meta property="og:description" content={description} />
       <meta property="og:url" content={canonicalUrl} />
       <meta property="og:site_name" content={SITE_NAME} />
       <meta property="og:locale" content="es_CL" />
-      {ogImage && <meta property="og:image" content={ogImage} />}
+      <meta property="og:image" content={image} />
 
-      <meta name="twitter:card" content={ogImage ? "summary_large_image" : "summary"} />
-      <meta name="twitter:title" content={fullTitle} />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={baseTitle} />
       <meta name="twitter:description" content={description} />
-      {ogImage && <meta name="twitter:image" content={ogImage} />}
+      <meta name="twitter:image" content={image} />
 
       {publishedTime && <meta property="article:published_time" content={publishedTime} />}
       {modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}

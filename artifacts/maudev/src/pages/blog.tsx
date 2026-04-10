@@ -52,6 +52,7 @@ export default function Blog() {
   return (
     <div className="py-16">
       <SEOHead
+        tabPrefix="📝"
         title="Blog"
         description="Art├¡culos sobre trading, indicadores Pine Script, herramientas MQL5, an├ílisis de mercado y desarrollo de software. Aprende estrategias y t├®cnicas de los expertos."
         keywords="trading, pine script, indicadores, mql5, metatrader, an├ílisis de mercado, desarrollo web, blog trading chile"

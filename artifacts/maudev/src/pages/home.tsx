@@ -224,6 +224,7 @@ function HomeContent() {
   return (
     <div className="flex flex-col">
       <SEOHead
+        tabPrefix="⚡"
         title="Indicadores Pine Script & MetaTrader 5 | Trading Tools & Desarrollo Digital"
         description="Indicadores profesionales para TradingView Pine Script v5 y MetaTrader 5. Scripts de trading para BTC, XAU, XAG, WTI + servicios de desarrollo digital a medida. Santiago, Chile."
         keywords="pine script, tradingview, metatrader 5, mql5, indicadores trading, BTC, XAU, XAG, Chile, desarrollo web, landing page"

@@ -118,6 +118,7 @@ export default function BlogPost() {
   return (
     <article className="py-16" itemScope itemType="https://schema.org/Article">
       <SEOHead
+        tabPrefix="📰"
         title={metaTitle}
         description={metaDescription}
         keywords={metaKeywords}
