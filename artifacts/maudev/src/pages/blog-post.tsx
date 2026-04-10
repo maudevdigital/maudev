@@ -1,7 +1,7 @@
 import { useParams, Link } from "wouter";
-import { ArrowLeft, Calendar, Clock, Tag, User } from "lucide-react";
+import { ArrowLeft, Calendar, Clock, Tag, User, ShoppingBag } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useGetBlogPost } from "@workspace/api-client-react";
+import { useGetBlogPost, useListProducts } from "@workspace/api-client-react";
 import SEOHead from "@/components/seo-head";
 
 const SITE_URL = "https://maudev.cl";
@@ -17,6 +17,11 @@ export default function BlogPost() {
   const { data: post, isLoading, isError } = useGetBlogPost(slug || "", {
     query: { enabled: !!slug } as any,
   });
+
+  const relatedProductIds: number[] = (post as any)?.relatedProductIds || [];
+  const adsenseSlotId: string | null = (post as any)?.adsenseSlotId || null;
+  const { data: allProducts } = useListProducts();
+  const relatedProducts = allProducts?.filter((p: any) => relatedProductIds.includes(p.id)) || [];
 
   if (isLoading) {
     return (
@@ -214,6 +219,50 @@ export default function BlogPost() {
               dangerouslySetInnerHTML={{ __html: post.content.replace(/\n/g, "<br>") }}
             />
           </div>
+
+          {adsenseSlotId && (
+            <div className="my-8">
+              <ins
+                className="adsbygoogle"
+                style={{ display: "block" }}
+                data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                data-ad-slot={adsenseSlotId}
+                data-ad-format="auto"
+                data-full-width-responsive="true"
+              />
+              <script dangerouslySetInnerHTML={{ __html: "(adsbygoogle = window.adsbygoogle || []).push({});" }} />
+            </div>
+          )}
+
+          {relatedProducts.length > 0 && (
+            <div className="border-t border-border/40 mt-12 pt-8">
+              <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
+                <ShoppingBag className="h-5 w-5" />
+                Productos Relacionados
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {relatedProducts.map((product: any) => {
+                  const imgSrc = product.imageUrl || product.mediaUrls?.[0]?.url;
+                  return (
+                    <Link key={product.id} href={`/products/${product.id}`} className="block group border border-border/40 bg-card hover:border-primary/40 transition-colors">
+                      {imgSrc && (
+                        <img src={imgSrc} alt={product.name} className="w-full h-40 object-cover" />
+                      )}
+                      <div className="p-4">
+                        <p className="font-semibold text-sm group-hover:text-primary transition-colors">{product.name}</p>
+                        <div className="flex items-center gap-2 mt-1">
+                          {product.originalPrice && Number(product.originalPrice) > Number(product.price) && (
+                            <span className="text-xs text-muted-foreground line-through">${Number(product.originalPrice).toLocaleString("es-CL")}</span>
+                          )}
+                          <span className="text-sm font-mono text-primary">${Number(product.price).toLocaleString("es-CL")} CLP</span>
+                        </div>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
           <footer className="border-t border-border/40 mt-12 pt-8">
             <div className="flex items-center justify-between">

@@ -18,4 +18,6 @@ export interface CreateBlogPostBody {
   canonicalUrl?: string | null;
   author?: string | null;
   tags?: string | null;
+  adsenseSlotId?: string | null;
+  relatedProductIds?: number[] | null;
 }

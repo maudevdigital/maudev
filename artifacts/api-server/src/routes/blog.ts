@@ -86,7 +86,7 @@ function estimateReadingTime(html: string): number {
 
 router.post("/admin/blog", requireAdmin, async (req, res) => {
   try {
-    const { title, content, excerpt, imageUrl, published, metaTitle, metaDescription, metaKeywords, canonicalUrl, author, tags } = req.body as {
+    const { title, content, excerpt, imageUrl, published, metaTitle, metaDescription, metaKeywords, canonicalUrl, author, tags, adsenseSlotId, relatedProductIds } = req.body as {
       title?: string;
       content?: string;
       excerpt?: string;
@@ -98,6 +98,8 @@ router.post("/admin/blog", requireAdmin, async (req, res) => {
       canonicalUrl?: string;
       author?: string;
       tags?: string;
+      adsenseSlotId?: string;
+      relatedProductIds?: number[];
     };
 
     if (!title || !content || !excerpt) {
@@ -122,6 +124,8 @@ router.post("/admin/blog", requireAdmin, async (req, res) => {
       author: author || "MauDev",
       readingTimeMin: estimateReadingTime(sanitizedContent),
       tags: tags || null,
+      adsenseSlotId: adsenseSlotId || null,
+      relatedProductIds: relatedProductIds || null,
     }).returning();
 
     res.status(201).json(serializePost(post));
@@ -134,7 +138,7 @@ router.post("/admin/blog", requireAdmin, async (req, res) => {
 router.put("/admin/blog/:id", requireAdmin, async (req, res) => {
   try {
     const id = Number(req.params.id);
-    const { title, content, excerpt, imageUrl, published, metaTitle, metaDescription, metaKeywords, canonicalUrl, author, tags } = req.body as {
+    const { title, content, excerpt, imageUrl, published, metaTitle, metaDescription, metaKeywords, canonicalUrl, author, tags, adsenseSlotId, relatedProductIds } = req.body as {
       title?: string;
       content?: string;
       excerpt?: string;
@@ -146,6 +150,8 @@ router.put("/admin/blog/:id", requireAdmin, async (req, res) => {
       canonicalUrl?: string;
       author?: string;
       tags?: string;
+      adsenseSlotId?: string;
+      relatedProductIds?: number[];
     };
 
     const [existing] = await db.select().from(blogPostsTable).where(eq(blogPostsTable.id, id));
@@ -171,6 +177,8 @@ router.put("/admin/blog/:id", requireAdmin, async (req, res) => {
     if (canonicalUrl !== undefined) updates.canonicalUrl = canonicalUrl || null;
     if (author !== undefined) updates.author = author || "MauDev";
     if (tags !== undefined) updates.tags = tags || null;
+    if (adsenseSlotId !== undefined) updates.adsenseSlotId = adsenseSlotId || null;
+    if (relatedProductIds !== undefined) updates.relatedProductIds = relatedProductIds || null;
 
     const [post] = await db.update(blogPostsTable).set(updates).where(eq(blogPostsTable.id, id)).returning();
     res.json(serializePost(post));

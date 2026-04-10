@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useListAdminBlogPosts, useCreateBlogPost, useUpdateBlogPost, useDeleteBlogPost } from "@workspace/api-client-react";
+import { useListAdminBlogPosts, useCreateBlogPost, useUpdateBlogPost, useDeleteBlogPost, useListProducts } from "@workspace/api-client-react";
 import { Button } from "@/components/ui/button";
-import { Plus, Pencil, Trash2, Eye, EyeOff, X, Search, Tag, Clock } from "lucide-react";
+import { Plus, Pencil, Trash2, Eye, EyeOff, X, Search, Tag, Clock, DollarSign, ShoppingBag } from "lucide-react";
 
 interface BlogFormData {
   title: string;
@@ -15,11 +15,14 @@ interface BlogFormData {
   canonicalUrl: string;
   author: string;
   tags: string;
+  adsenseSlotId: string;
+  relatedProductIds: number[];
 }
 
 const emptyForm: BlogFormData = {
   title: "", content: "", excerpt: "", imageUrl: "", published: false,
   metaTitle: "", metaDescription: "", canonicalUrl: "", metaKeywords: "", author: "MauDev", tags: "",
+  adsenseSlotId: "", relatedProductIds: [],
 };
 
 function countWords(html: string): number {
@@ -28,6 +31,7 @@ function countWords(html: string): number {
 
 export default function AdminBlog() {
   const { data: posts, refetch } = useListAdminBlogPosts();
+  const { data: products } = useListProducts();
   const createPost = useCreateBlogPost();
   const updatePost = useUpdateBlogPost();
   const deletePost = useDeleteBlogPost();
@@ -57,6 +61,8 @@ export default function AdminBlog() {
       canonicalUrl: post.canonicalUrl || "",
       author: post.author || "MauDev",
       tags: post.tags || "",
+      adsenseSlotId: post.adsenseSlotId || "",
+      relatedProductIds: post.relatedProductIds || [],
     });
     setEditing(post.id);
     setPreview(false);
@@ -71,6 +77,8 @@ export default function AdminBlog() {
       if (!payload.metaDescription) delete payload.metaDescription;
       if (!payload.metaKeywords) delete payload.metaKeywords;
       if (!payload.canonicalUrl) delete payload.canonicalUrl;
+      if (!payload.adsenseSlotId) delete payload.adsenseSlotId;
+      if (!payload.relatedProductIds || payload.relatedProductIds.length === 0) delete payload.relatedProductIds;
 
       if (editing === "new") {
         await createPost.mutateAsync({ data: payload });
@@ -282,6 +290,47 @@ export default function AdminBlog() {
                 placeholder="Escribe el contenido del post..."
               />
               <p className="text-[10px] text-muted-foreground/60 mt-1">{wordCount} palabras ┬À {readingTime} min lectura. Usa h2, h3, listas, y enlaces internos para mejor SEO.</p>
+            </div>
+            <div>
+              <label className="text-xs font-mono text-muted-foreground block mb-2">
+                <span className="inline-flex items-center gap-1"><DollarSign className="h-3 w-3" /> ADSENSE SLOT ID (OPCIONAL)</span>
+              </label>
+              <input
+                value={form.adsenseSlotId}
+                onChange={(e) => setForm({ ...form, adsenseSlotId: e.target.value })}
+                className="w-full border border-border/60 bg-background px-4 py-2 text-sm font-mono outline-none focus:border-primary/60"
+                placeholder="1234567890"
+              />
+              <p className="text-[10px] text-muted-foreground/60 mt-1">ID del bloque de anuncios de Google AdSense. Se mostrara entre secciones del post.</p>
+            </div>
+            <div>
+              <label className="text-xs font-mono text-muted-foreground block mb-2">
+                <span className="inline-flex items-center gap-1"><ShoppingBag className="h-3 w-3" /> PRODUCTOS RELACIONADOS (OPCIONAL)</span>
+              </label>
+              <div className="border border-border/60 bg-background p-3 space-y-2 max-h-48 overflow-y-auto">
+                {products && products.length > 0 ? products.map((p: any) => (
+                  <label key={p.id} className="flex items-center gap-3 cursor-pointer hover:bg-muted/30 p-1.5 transition-colors">
+                    <input
+                      type="checkbox"
+                      checked={form.relatedProductIds.includes(p.id)}
+                      onChange={(e) => {
+                        setForm({
+                          ...form,
+                          relatedProductIds: e.target.checked
+                            ? [...form.relatedProductIds, p.id]
+                            : form.relatedProductIds.filter((id: number) => id !== p.id),
+                        });
+                      }}
+                      className="rounded-none accent-primary"
+                    />
+                    <span className="text-sm font-mono truncate">{p.name}</span>
+                    <span className="text-[10px] text-muted-foreground ml-auto">${Number(p.price).toLocaleString("es-CL")}</span>
+                  </label>
+                )) : (
+                  <p className="text-[10px] text-muted-foreground font-mono">No hay productos disponibles</p>
+                )}
+              </div>
+              <p className="text-[10px] text-muted-foreground/60 mt-1">Se mostraran como tarjetas al final del post.</p>
             </div>
             <div className="flex items-center gap-3">
               <button

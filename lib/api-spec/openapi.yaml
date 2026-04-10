@@ -759,6 +759,14 @@ components:
         tags:
           type: string
           nullable: true
+        adsenseSlotId:
+          type: string
+          nullable: true
+        relatedProductIds:
+          type: array
+          items:
+            type: integer
+          nullable: true
       required:
         - id
         - title
@@ -800,6 +808,14 @@ components:
           nullable: true
         tags:
           type: string
+          nullable: true
+        adsenseSlotId:
+          type: string
+          nullable: true
+        relatedProductIds:
+          type: array
+          items:
+            type: integer
           nullable: true
       required:
         - title

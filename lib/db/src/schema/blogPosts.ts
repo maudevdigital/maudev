@@ -1,4 +1,4 @@
-import { pgTable, serial, text, timestamp, boolean, integer } from "drizzle-orm/pg-core";
+import { pgTable, serial, text, timestamp, boolean, integer, jsonb } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 
@@ -20,6 +20,8 @@ export const blogPostsTable = pgTable("blog_posts", {
   author: text("author").default("MauDev"),
   readingTimeMin: integer("reading_time_min"),
   tags: text("tags"),
+  adsenseSlotId: text("adsense_slot_id"),
+  relatedProductIds: jsonb("related_product_ids").$type<number[]>(),
 });
 
 export const insertBlogPostSchema = createInsertSchema(blogPostsTable).omit({ id: true, createdAt: true, updatedAt: true });

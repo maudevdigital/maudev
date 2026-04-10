@@ -24,4 +24,6 @@ export interface BlogPost {
   author?: string | null;
   readingTimeMin?: number | null;
   tags?: string | null;
+  adsenseSlotId?: string | null;
+  relatedProductIds?: number[] | null;
 }

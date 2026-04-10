@@ -378,6 +378,8 @@ export const ListBlogPostsResponseItem = zod.object({
   author: zod.string().nullish(),
   readingTimeMin: zod.number().nullish(),
   tags: zod.string().nullish(),
+  adsenseSlotId: zod.string().nullish(),
+  relatedProductIds: zod.array(zod.number()).nullish(),
 });
 export const ListBlogPostsResponse = zod.array(ListBlogPostsResponseItem);
 
@@ -406,6 +408,8 @@ export const GetBlogPostResponse = zod.object({
   author: zod.string().nullish(),
   readingTimeMin: zod.number().nullish(),
   tags: zod.string().nullish(),
+  adsenseSlotId: zod.string().nullish(),
+  relatedProductIds: zod.array(zod.number()).nullish(),
 });
 
 /**
@@ -429,6 +433,8 @@ export const ListAdminBlogPostsResponseItem = zod.object({
   author: zod.string().nullish(),
   readingTimeMin: zod.number().nullish(),
   tags: zod.string().nullish(),
+  adsenseSlotId: zod.string().nullish(),
+  relatedProductIds: zod.array(zod.number()).nullish(),
 });
 export const ListAdminBlogPostsResponse = zod.array(
   ListAdminBlogPostsResponseItem,
@@ -449,6 +455,8 @@ export const CreateBlogPostBody = zod.object({
   canonicalUrl: zod.string().nullish(),
   author: zod.string().nullish(),
   tags: zod.string().nullish(),
+  adsenseSlotId: zod.string().nullish(),
+  relatedProductIds: zod.array(zod.number()).nullish(),
 });
 
 /**
@@ -470,6 +478,8 @@ export const UpdateBlogPostBody = zod.object({
   canonicalUrl: zod.string().nullish(),
   author: zod.string().nullish(),
   tags: zod.string().nullish(),
+  adsenseSlotId: zod.string().nullish(),
+  relatedProductIds: zod.array(zod.number()).nullish(),
 });
 
 export const UpdateBlogPostResponse = zod.object({
@@ -490,6 +500,8 @@ export const UpdateBlogPostResponse = zod.object({
   author: zod.string().nullish(),
   readingTimeMin: zod.number().nullish(),
   tags: zod.string().nullish(),
+  adsenseSlotId: zod.string().nullish(),
+  relatedProductIds: zod.array(zod.number()).nullish(),
 });
 
 /**
