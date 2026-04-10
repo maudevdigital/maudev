@@ -225,7 +225,7 @@ export default function BlogPost() {
               <ins
                 className="adsbygoogle"
                 style={{ display: "block" }}
-                data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                data-ad-client="ca-pub-9062385247942411"
                 data-ad-slot={adsenseSlotId}
                 data-ad-format="auto"
                 data-full-width-responsive="true"
