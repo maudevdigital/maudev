@@ -356,7 +356,13 @@ function AdminProductsContent() {
             products.map((product) => (
               <div key={product.id} className="p-4 flex items-center justify-between gap-4" data-testid={`card-product-${product.id}`}>
                 <div className="flex items-center gap-4 flex-1 min-w-0">
-                  <img src={product.imageUrl || (product as any).mediaUrls?.[0]?.url} alt={product.name} className="h-12 w-16 object-cover shrink-0" />
+                  {(product.imageUrl || (product as any).mediaUrls?.[0]?.url) ? (
+                    <img src={product.imageUrl || (product as any).mediaUrls?.[0]?.url} alt={product.name} className="h-12 w-16 object-cover shrink-0" />
+                  ) : (
+                    <div className="h-12 w-16 shrink-0 bg-muted flex items-center justify-center">
+                      <span className="text-[10px] font-mono text-muted-foreground">SIN IMG</span>
+                    </div>
+                  )}
                   <div className="min-w-0">
                     <div className="flex items-center gap-2 mb-0.5">
                       <p className="font-semibold text-sm truncate">{product.name}</p>
