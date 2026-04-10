@@ -171,6 +171,7 @@ export default function BlogPost() {
                 className="w-full h-64 md:h-80 object-cover"
                 itemProp="image"
                 loading="eager"
+                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
               />
             </figure>
           )}

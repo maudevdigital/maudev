@@ -107,6 +107,7 @@ export default function Blog() {
                         className="w-full h-48 object-cover"
                         itemProp="image"
                         loading="lazy"
+                        onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                       />
                     )}
                     <div className="p-6">
