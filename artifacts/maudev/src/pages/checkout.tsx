@@ -75,28 +75,79 @@ export default function Checkout() {
                   <Skeleton className="h-5 w-full" />
                   <Skeleton className="h-4 w-1/2" />
                 </div>
-              ) : product ? (
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-semibold" data-testid="text-checkout-product">{product.name}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {product.category === "trading_scripts" ? "Trading Script" : "Servicio Digital"}
-                    </p>
-                  </div>
-                  <span className="font-mono font-bold text-primary text-xl" data-testid="text-checkout-price">
-                    ${Number(product.price).toLocaleString("es-CL")} {product.currency}
-                  </span>
-                </div>
-              ) : null}
+              ) : product ? (() => {
+                const price = Number(product.price);
+                const originalPrice = product.originalPrice ? Number(product.originalPrice) : null;
+                const hasDiscount = originalPrice && originalPrice > price;
+                const discount = hasDiscount ? originalPrice - price : 0;
+                const discountPct = hasDiscount ? Math.round((discount / originalPrice) * 100) : 0;
+                const fmt = (n: number) => `$${n.toLocaleString("es-CL")}`;
 
-              <div className="border-t border-border/40 mt-4 pt-4">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Total</span>
-                  <span className="font-mono font-bold text-lg">
-                    {product ? `$${Number(product.price).toLocaleString("es-CL")} ${product.currency}` : "—"}
-                  </span>
-                </div>
-              </div>
+                return (
+                  <>
+                    {/* Product */}
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="min-w-0">
+                        <p className="font-semibold truncate" data-testid="text-checkout-product">{product.name}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {product.category === "trading_scripts" ? "Trading Script" : "Servicio Digital"}
+                        </p>
+                      </div>
+                      {hasDiscount ? (
+                        <span className="font-mono text-sm text-muted-foreground line-through shrink-0">
+                          {fmt(originalPrice)} {product.currency}
+                        </span>
+                      ) : (
+                        <span className="font-mono font-bold text-primary text-lg shrink-0" data-testid="text-checkout-price">
+                          {fmt(price)} {product.currency}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Price breakdown */}
+                    <div className="border-t border-border/40 mt-4 pt-4 space-y-2">
+                      {hasDiscount && (
+                        <>
+                          <div className="flex items-center justify-between text-sm">
+                            <span className="text-muted-foreground">Precio normal</span>
+                            <span className="font-mono text-muted-foreground">{fmt(originalPrice)}</span>
+                          </div>
+                          <div className="flex items-center justify-between text-sm">
+                            <span className="text-green-400 flex items-center gap-1.5">
+                              Descuento
+                              <span className="font-mono text-[10px] bg-green-500/15 text-green-400 px-1.5 py-0.5">
+                                -{discountPct}%
+                              </span>
+                            </span>
+                            <span className="font-mono text-green-400">-{fmt(discount)}</span>
+                          </div>
+                        </>
+                      )}
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-muted-foreground">Subtotal</span>
+                        <span className="font-mono">{fmt(price)}</span>
+                      </div>
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-muted-foreground">IVA (incluido)</span>
+                        <span className="font-mono text-muted-foreground">Incluido</span>
+                      </div>
+                    </div>
+
+                    {/* Total */}
+                    <div className="border-t border-border/40 mt-3 pt-3">
+                      <div className="flex items-center justify-between">
+                        <span className="font-semibold">Total a pagar</span>
+                        <span className="font-mono font-bold text-primary text-xl" data-testid="text-checkout-total">
+                          {fmt(price)} {product.currency}
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-muted-foreground mt-1 font-mono">
+                        * Precio final con IVA incluido. No se aplican cargos adicionales.
+                      </p>
+                    </div>
+                  </>
+                );
+              })() : null}
             </div>
 
             {/* Contact Info */}
