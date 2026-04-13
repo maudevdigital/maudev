@@ -3,6 +3,8 @@ import { ArrowLeft, Calendar, Clock, Tag, User, ShoppingBag } from "lucide-react
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGetBlogPost, useListProducts } from "@workspace/api-client-react";
 import SEOHead from "@/components/seo-head";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 const SITE_URL = "https://maudev.cl";
 
@@ -215,10 +217,11 @@ export default function BlogPost() {
 
           <div className="border-t border-border/40 pt-8">
             <div
-              className="prose prose-invert max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-p:text-muted-foreground prose-p:leading-relaxed prose-a:text-primary prose-strong:text-foreground prose-code:text-primary prose-code:bg-primary/10 prose-code:px-1 prose-code:py-0.5 prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3 prose-ul:text-muted-foreground prose-ol:text-muted-foreground prose-li:marker:text-primary prose-img:rounded-none prose-img:w-full"
+              className="prose prose-invert max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-p:text-muted-foreground prose-p:leading-relaxed prose-a:text-primary prose-strong:text-foreground prose-code:text-primary prose-code:bg-primary/10 prose-code:px-1 prose-code:py-0.5 prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3 prose-ul:text-muted-foreground prose-ol:text-muted-foreground prose-li:marker:text-primary prose-img:rounded-none prose-img:w-full prose-table:border-collapse prose-th:border prose-th:border-border/60 prose-th:px-3 prose-th:py-2 prose-th:bg-muted/30 prose-td:border prose-td:border-border/60 prose-td:px-3 prose-td:py-2"
               itemProp="articleBody"
-              dangerouslySetInnerHTML={{ __html: post.content.replace(/\n/g, "<br>") }}
-            />
+            >
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.content}</ReactMarkdown>
+            </div>
           </div>
 
           {adsenseSlotId && (
