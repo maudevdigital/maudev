@@ -1,7 +1,8 @@
 import { useState, useRef } from "react";
 import { useListAdminBlogPosts, useCreateBlogPost, useUpdateBlogPost, useDeleteBlogPost, useListProducts } from "@workspace/api-client-react";
 import { Button } from "@/components/ui/button";
-import { Plus, Pencil, Trash2, Eye, EyeOff, X, Search, Tag, Clock, DollarSign, ShoppingBag, Upload } from "lucide-react";
+import { Plus, Pencil, Trash2, Eye, EyeOff, X, Search, Tag, Clock, DollarSign, ShoppingBag, Upload, ImagePlus, Loader2 } from "lucide-react";
+import { useAuth } from "@clerk/react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -38,11 +39,68 @@ export default function AdminBlog() {
   const updatePost = useUpdateBlogPost();
   const deletePost = useDeleteBlogPost();
 
+  const { getToken } = useAuth();
   const [editing, setEditing] = useState<number | "new" | null>(null);
   const [form, setForm] = useState<BlogFormData>(emptyForm);
   const [preview, setPreview] = useState(false);
   const [showSeo, setShowSeo] = useState(false);
+  const [uploadingCover, setUploadingCover] = useState(false);
+  const [uploadingInline, setUploadingInline] = useState(false);
   const mdInputRef = useRef<HTMLInputElement>(null);
+  const coverInputRef = useRef<HTMLInputElement>(null);
+  const inlineImgRef = useRef<HTMLInputElement>(null);
+  const contentRef = useRef<HTMLTextAreaElement>(null);
+
+  const uploadImage = async (file: File): Promise<string | null> => {
+    try {
+      const token = await getToken();
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await fetch("/api/uploads/file", {
+        method: "POST",
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+        body: formData,
+      });
+      if (!res.ok) throw new Error("Upload failed");
+      const { filePath } = await res.json();
+      return filePath;
+    } catch {
+      return null;
+    }
+  };
+
+  const handleCoverUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingCover(true);
+    const url = await uploadImage(file);
+    if (url) setForm((prev) => ({ ...prev, imageUrl: url }));
+    setUploadingCover(false);
+    e.target.value = "";
+  };
+
+  const handleInlineImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingInline(true);
+    const url = await uploadImage(file);
+    if (url) {
+      const md = `![${file.name}](${url})`;
+      const ta = contentRef.current;
+      if (ta) {
+        const start = ta.selectionStart;
+        const end = ta.selectionEnd;
+        const before = form.content.slice(0, start);
+        const after = form.content.slice(end);
+        const nl = before.length > 0 && !before.endsWith("\n") ? "\n" : "";
+        setForm((prev) => ({ ...prev, content: before + nl + md + "\n" + after }));
+      } else {
+        setForm((prev) => ({ ...prev, content: prev.content + "\n" + md + "\n" }));
+      }
+    }
+    setUploadingInline(false);
+    e.target.value = "";
+  };
 
   const handleImportMd = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -289,23 +347,69 @@ export default function AdminBlog() {
               />
             </div>
             <div>
-              <label className="text-xs font-mono text-muted-foreground block mb-2">IMAGEN URL (OPCIONAL)</label>
+              <label className="text-xs font-mono text-muted-foreground block mb-2">IMAGEN DE PORTADA</label>
+              <input ref={coverInputRef} type="file" accept="image/*" className="hidden" onChange={handleCoverUpload} />
+              {form.imageUrl ? (
+                <div className="relative border border-border/60 bg-background">
+                  <img src={form.imageUrl} alt="Portada" className="w-full h-40 object-cover" />
+                  <div className="absolute top-2 right-2 flex gap-1">
+                    <button
+                      onClick={() => coverInputRef.current?.click()}
+                      className="p-1.5 bg-background/80 backdrop-blur-sm border border-border/60 text-muted-foreground hover:text-foreground transition-colors"
+                      disabled={uploadingCover}
+                    >
+                      {uploadingCover ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <ImagePlus className="h-3.5 w-3.5" />}
+                    </button>
+                    <button
+                      onClick={() => setForm({ ...form, imageUrl: "" })}
+                      className="p-1.5 bg-background/80 backdrop-blur-sm border border-border/60 text-muted-foreground hover:text-red-400 transition-colors"
+                    >
+                      <X className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <Button
+                  variant="outline"
+                  className="w-full rounded-none font-mono text-xs gap-2 border-dashed border-border/60 h-24 justify-center"
+                  onClick={() => coverInputRef.current?.click()}
+                  disabled={uploadingCover}
+                >
+                  {uploadingCover ? (
+                    <><Loader2 className="h-4 w-4 animate-spin" /> SUBIENDO...</>
+                  ) : (
+                    <><ImagePlus className="h-4 w-4" /> SUBIR IMAGEN DE PORTADA</>
+                  )}
+                </Button>
+              )}
               <input
                 value={form.imageUrl}
                 onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
-                className="w-full border border-border/60 bg-background px-4 py-2 text-sm font-mono outline-none focus:border-primary/60"
-                placeholder="https://..."
+                className="w-full border border-border/60 border-t-0 bg-background px-4 py-1.5 text-[10px] font-mono text-muted-foreground outline-none focus:border-primary/60"
+                placeholder="...o pega una URL directamente"
               />
             </div>
             <div>
               <div className="flex items-center justify-between mb-2">
                 <label className="text-xs font-mono text-muted-foreground">CONTENIDO (MARKDOWN)</label>
-                <input ref={mdInputRef} type="file" accept=".md,.markdown,.txt" className="hidden" onChange={handleImportMd} />
-                <Button variant="outline" size="sm" className="rounded-none font-mono text-[10px] gap-1 h-7" onClick={() => mdInputRef.current?.click()}>
-                  <Upload className="h-3 w-3" /> IMPORTAR .MD
-                </Button>
+                <div className="flex gap-1">
+                  <input ref={inlineImgRef} type="file" accept="image/*" className="hidden" onChange={handleInlineImage} />
+                  <Button
+                    variant="outline" size="sm"
+                    className="rounded-none font-mono text-[10px] gap-1 h-7"
+                    onClick={() => inlineImgRef.current?.click()}
+                    disabled={uploadingInline}
+                  >
+                    {uploadingInline ? <Loader2 className="h-3 w-3 animate-spin" /> : <ImagePlus className="h-3 w-3" />} IMAGEN
+                  </Button>
+                  <input ref={mdInputRef} type="file" accept=".md,.markdown,.txt" className="hidden" onChange={handleImportMd} />
+                  <Button variant="outline" size="sm" className="rounded-none font-mono text-[10px] gap-1 h-7" onClick={() => mdInputRef.current?.click()}>
+                    <Upload className="h-3 w-3" /> IMPORTAR .MD
+                  </Button>
+                </div>
               </div>
               <textarea
+                ref={contentRef}
                 value={form.content}
                 onChange={(e) => setForm({ ...form, content: e.target.value })}
                 rows={16}
