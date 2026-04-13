@@ -3,6 +3,7 @@ import { useParams, Link } from "wouter";
 import { ArrowLeft, Calendar, Clock, Tag, User, ShoppingBag } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGetBlogPost, useListProducts } from "@workspace/api-client-react";
+import { useUser } from "@clerk/react";
 import SEOHead from "@/components/seo-head";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -80,6 +81,7 @@ export default function BlogPost() {
   const { data: post, isLoading, isError } = useGetBlogPost(slug || "", {
     query: { enabled: !!slug } as any,
   });
+  const { isSignedIn } = useUser();
 
   const relatedProductIds: number[] = (post as any)?.relatedProductIds || [];
   const adsenseSlotId: string | null = (post as any)?.adsenseSlotId || null;
@@ -285,7 +287,7 @@ export default function BlogPost() {
             </div>
           </div>
 
-          {adsenseSlotId ? <AdSlot slotId={adsenseSlotId} /> : <AdSlotAuto />}
+          {!isSignedIn && (adsenseSlotId ? <AdSlot slotId={adsenseSlotId} /> : <AdSlotAuto />)}
 
           {relatedProducts.length > 0 && (
             <div className="border-t border-border/40 mt-12 pt-8">
