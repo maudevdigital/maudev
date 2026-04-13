@@ -11,6 +11,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   const { signOut } = useClerk();
   const { isSignedIn, isLoaded: authLoaded, getToken } = useAuth();
   const [adminStatus, setAdminStatus] = useState<"loading" | "admin" | "denied">("loading");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     if (!authLoaded || !isSignedIn) return;
@@ -97,8 +98,6 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
       </div>
     );
   }
-
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <div className="min-h-[100dvh] flex bg-background text-foreground">
