@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { useParams, Link } from "wouter";
 import { ArrowLeft, Calendar, Clock, Tag, User, ShoppingBag } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -7,6 +8,65 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 const SITE_URL = "https://maudev.cl";
+
+declare global {
+  interface Window { adsbygoogle: any[]; }
+}
+
+function AdSlot({ slotId }: { slotId: string }) {
+  const adRef = useRef<HTMLModElement>(null);
+  const pushed = useRef(false);
+
+  useEffect(() => {
+    if (pushed.current) return;
+    try {
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+      pushed.current = true;
+    } catch {
+      // AdSense not loaded or ad blocker
+    }
+  }, []);
+
+  return (
+    <div className="my-8">
+      <ins
+        ref={adRef}
+        className="adsbygoogle"
+        style={{ display: "block" }}
+        data-ad-client="ca-pub-9062385247942411"
+        data-ad-slot={slotId}
+        data-ad-format="auto"
+        data-full-width-responsive="true"
+      />
+    </div>
+  );
+}
+
+function AdSlotAuto() {
+  const pushed = useRef(false);
+
+  useEffect(() => {
+    if (pushed.current) return;
+    try {
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+      pushed.current = true;
+    } catch {
+      // AdSense not loaded or ad blocker
+    }
+  }, []);
+
+  return (
+    <div className="my-8">
+      <ins
+        className="adsbygoogle"
+        style={{ display: "block" }}
+        data-ad-client="ca-pub-9062385247942411"
+        data-ad-format="autorelaxed"
+        data-full-width-responsive="true"
+      />
+    </div>
+  );
+}
 
 function estimateReadingTime(html: string): number {
   const text = html.replace(/<[^>]+>/g, "");
@@ -224,19 +284,7 @@ export default function BlogPost() {
             </div>
           </div>
 
-          {adsenseSlotId && (
-            <div className="my-8">
-              <ins
-                className="adsbygoogle"
-                style={{ display: "block" }}
-                data-ad-client="ca-pub-9062385247942411"
-                data-ad-slot={adsenseSlotId}
-                data-ad-format="auto"
-                data-full-width-responsive="true"
-              />
-              <script dangerouslySetInnerHTML={{ __html: "(adsbygoogle = window.adsbygoogle || []).push({});" }} />
-            </div>
-          )}
+          {adsenseSlotId ? <AdSlot slotId={adsenseSlotId} /> : <AdSlotAuto />}
 
           {relatedProducts.length > 0 && (
             <div className="border-t border-border/40 mt-12 pt-8">
