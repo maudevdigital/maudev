@@ -61,7 +61,8 @@ function AdSlotAuto() {
         className="adsbygoogle"
         style={{ display: "block" }}
         data-ad-client="ca-pub-9062385247942411"
-        data-ad-format="autorelaxed"
+        data-ad-slot="9016235491"
+        data-ad-format="auto"
         data-full-width-responsive="true"
       />
     </div>
