@@ -1,6 +1,6 @@
 import { ReactNode, useEffect, useState } from "react";
 import { Link, useLocation } from "wouter";
-import { LayoutDashboard, Package, ShoppingCart, Users, LogOut, ArrowLeft, FileText, Loader2, ShieldX, Send } from "lucide-react";
+import { LayoutDashboard, Package, ShoppingCart, Users, LogOut, ArrowLeft, FileText, Loader2, ShieldX, Send, Menu, X } from "lucide-react";
 import { useClerk, useAuth, SignIn } from "@clerk/react";
 
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
@@ -98,6 +98,8 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     );
   }
 
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   return (
     <div className="min-h-[100dvh] flex bg-background text-foreground">
       <aside className="w-64 border-r border-border/40 bg-card hidden md:flex flex-col">
@@ -148,10 +150,53 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           <span className="text-lg font-mono font-bold tracking-tighter text-primary">
             MAU<span className="text-foreground">ADMIN</span>
           </span>
-          <Link href="~/">
-            <span className="text-sm font-medium text-muted-foreground">Exit</span>
-          </Link>
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+          >
+            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
         </header>
+
+        {mobileMenuOpen && (
+          <div className="md:hidden border-b border-border/40 bg-card px-4 py-4">
+            <nav className="flex flex-col gap-1">
+              {links.map((link) => {
+                const isActive = location === link.href;
+                const Icon = link.icon;
+                return (
+                  <Link key={link.href} href={link.href} onClick={() => setMobileMenuOpen(false)}>
+                    <div
+                      className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer ${
+                        isActive
+                          ? "bg-primary/10 text-primary"
+                          : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                      }`}
+                    >
+                      <Icon className="h-4 w-4" />
+                      {link.label}
+                    </div>
+                  </Link>
+                );
+              })}
+              <div className="h-px bg-border/40 my-2" />
+              <Link href="~/" onClick={() => setMobileMenuOpen(false)}>
+                <div className="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-colors cursor-pointer">
+                  <ArrowLeft className="h-4 w-4" />
+                  Volver a la App
+                </div>
+              </Link>
+              <button
+                onClick={() => { signOut(); setMobileMenuOpen(false); }}
+                className="w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-colors cursor-pointer"
+              >
+                <LogOut className="h-4 w-4" />
+                Cerrar sesion
+              </button>
+            </nav>
+          </div>
+        )}
+
         <div className="flex-1 overflow-auto p-4 md:p-8">
           {children}
         </div>
