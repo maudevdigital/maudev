@@ -15,7 +15,7 @@ declare global {
 }
 
 function AdSlot({ slotId }: { slotId: string }) {
-  const adRef = useRef<HTMLModElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const pushed = useRef(false);
 
   useEffect(() => {
@@ -26,12 +26,19 @@ function AdSlot({ slotId }: { slotId: string }) {
     } catch {
       // AdSense not loaded or ad blocker
     }
+    // Collapse if ad didn't fill after 3s
+    const timer = setTimeout(() => {
+      const ins = containerRef.current?.querySelector("ins");
+      if (ins && ins.getAttribute("data-ad-status") === "unfilled") {
+        containerRef.current!.style.display = "none";
+      }
+    }, 3000);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
-    <div className="my-8">
+    <div ref={containerRef} className="my-8">
       <ins
-        ref={adRef}
         className="adsbygoogle"
         style={{ display: "block" }}
         data-ad-client="ca-pub-9062385247942411"
@@ -44,6 +51,7 @@ function AdSlot({ slotId }: { slotId: string }) {
 }
 
 function AdSlotAuto() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const pushed = useRef(false);
 
   useEffect(() => {
@@ -54,10 +62,17 @@ function AdSlotAuto() {
     } catch {
       // AdSense not loaded or ad blocker
     }
+    const timer = setTimeout(() => {
+      const ins = containerRef.current?.querySelector("ins");
+      if (ins && ins.getAttribute("data-ad-status") === "unfilled") {
+        containerRef.current!.style.display = "none";
+      }
+    }, 3000);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
-    <div className="my-8">
+    <div ref={containerRef} className="my-8">
       <ins
         className="adsbygoogle"
         style={{ display: "block", textAlign: "center" }}
