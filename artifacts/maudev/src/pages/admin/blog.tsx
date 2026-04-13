@@ -108,7 +108,40 @@ export default function AdminBlog() {
     const reader = new FileReader();
     reader.onload = (ev) => {
       const text = ev.target?.result as string;
-      if (text) setForm((prev) => ({ ...prev, content: text }));
+      if (!text) return;
+
+      // Try to parse structured fields from the MD file
+      const contentSeparator = /={3,}\s*\n\s*CONTENIDO\s*\(MARKDOWN\)\s*\n\s*={3,}\n/i;
+      const parts = text.split(contentSeparator);
+
+      if (parts.length >= 2) {
+        // Structured MD with field headers + content
+        const header = parts[0];
+        const content = parts.slice(1).join("").trim();
+
+        const extract = (label: string): string => {
+          const re = new RegExp(`${label}:\\s*\\n([\\s\\S]*?)(?=\\n[A-ZÁ-Ú ]+:\\s*\\n|\\n={3,}|$)`, "i");
+          const m = header.match(re);
+          return m ? m[1].trim() : "";
+        };
+
+        setForm((prev) => ({
+          ...prev,
+          title: extract("TITULO") || prev.title,
+          excerpt: extract("EXTRACTO") || prev.excerpt,
+          metaTitle: extract("META TITULO") || prev.metaTitle,
+          metaDescription: extract("META DESCRIPCION") || prev.metaDescription,
+          metaKeywords: extract("KEYWORDS") || prev.metaKeywords,
+          tags: extract("TAGS") || prev.tags,
+          author: extract("AUTOR") || prev.author,
+          canonicalUrl: extract("URL CANONICA") || prev.canonicalUrl,
+          content,
+        }));
+        setShowSeo(true);
+      } else {
+        // Plain markdown — dump into content only
+        setForm((prev) => ({ ...prev, content: text }));
+      }
     };
     reader.readAsText(file);
     e.target.value = "";
