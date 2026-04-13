@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useListAdminBlogPosts, useCreateBlogPost, useUpdateBlogPost, useDeleteBlogPost, useListProducts } from "@workspace/api-client-react";
 import { Button } from "@/components/ui/button";
-import { Plus, Pencil, Trash2, Eye, EyeOff, X, Search, Tag, Clock, DollarSign, ShoppingBag } from "lucide-react";
+import { Plus, Pencil, Trash2, Eye, EyeOff, X, Search, Tag, Clock, DollarSign, ShoppingBag, Upload } from "lucide-react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 interface BlogFormData {
   title: string;
@@ -40,6 +42,19 @@ export default function AdminBlog() {
   const [form, setForm] = useState<BlogFormData>(emptyForm);
   const [preview, setPreview] = useState(false);
   const [showSeo, setShowSeo] = useState(false);
+  const mdInputRef = useRef<HTMLInputElement>(null);
+
+  const handleImportMd = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const text = ev.target?.result as string;
+      if (text) setForm((prev) => ({ ...prev, content: text }));
+    };
+    reader.readAsText(file);
+    e.target.value = "";
+  };
 
   const startNew = () => {
     setForm(emptyForm);
@@ -164,7 +179,9 @@ export default function AdminBlog() {
                 ))}
               </div>
             )}
-            <div className="prose prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: form.content.replace(/\n/g, "<br>") }} />
+            <div className="prose prose-invert max-w-none">
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>{form.content}</ReactMarkdown>
+            </div>
           </div>
         ) : showSeo ? (
           <div className="space-y-4">
@@ -281,15 +298,21 @@ export default function AdminBlog() {
               />
             </div>
             <div>
-              <label className="text-xs font-mono text-muted-foreground block mb-2">CONTENIDO (HTML O TEXTO)</label>
+              <div className="flex items-center justify-between mb-2">
+                <label className="text-xs font-mono text-muted-foreground">CONTENIDO (MARKDOWN)</label>
+                <input ref={mdInputRef} type="file" accept=".md,.markdown,.txt" className="hidden" onChange={handleImportMd} />
+                <Button variant="outline" size="sm" className="rounded-none font-mono text-[10px] gap-1 h-7" onClick={() => mdInputRef.current?.click()}>
+                  <Upload className="h-3 w-3" /> IMPORTAR .MD
+                </Button>
+              </div>
               <textarea
                 value={form.content}
                 onChange={(e) => setForm({ ...form, content: e.target.value })}
                 rows={16}
                 className="w-full border border-border/60 bg-background px-4 py-2 text-sm font-mono outline-none focus:border-primary/60 resize-y"
-                placeholder="Escribe el contenido del post..."
+                placeholder="Escribe el contenido en Markdown..."
               />
-              <p className="text-[10px] text-muted-foreground/60 mt-1">{wordCount} palabras ┬À {readingTime} min lectura. Usa h2, h3, listas, y enlaces internos para mejor SEO.</p>
+              <p className="text-[10px] text-muted-foreground/60 mt-1">{wordCount} palabras · {readingTime} min lectura. Soporta Markdown con tablas, listas, encabezados y más.</p>
             </div>
             <div>
               <label className="text-xs font-mono text-muted-foreground block mb-2">
