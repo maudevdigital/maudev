@@ -59,11 +59,11 @@ function AdSlotAuto() {
     <div className="my-8">
       <ins
         className="adsbygoogle"
-        style={{ display: "block" }}
+        style={{ display: "block", textAlign: "center" }}
+        data-ad-layout="in-article"
+        data-ad-format="fluid"
         data-ad-client="ca-pub-9062385247942411"
-        data-ad-slot="9016235491"
-        data-ad-format="auto"
-        data-full-width-responsive="true"
+        data-ad-slot="4202340208"
       />
     </div>
   );
