@@ -556,8 +556,8 @@ export default function AdminBlog() {
                     </div>
                     <p className="text-xs text-muted-foreground mt-1 truncate">{post.excerpt}</p>
                     <p className="text-[10px] text-muted-foreground/60 mt-1 font-mono">
-                      {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString("es-CL") : "Sin publicar"} ┬À /{post.slug}
-                      {(post as any).readingTimeMin && ` ┬À ${(post as any).readingTimeMin} min`}
+                      {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString("es-CL") : "Sin publicar"} &middot; /{post.slug}
+                      {(post as any).readingTimeMin && ` \u00B7 ${(post as any).readingTimeMin} min`}
                     </p>
                   </div>
                   <div className="flex gap-1 shrink-0">
