@@ -7,83 +7,9 @@ import { useUser } from "@clerk/react";
 import SEOHead from "@/components/seo-head";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { AdSlot, AdSlotAuto } from "@/components/adsense";
 
 const SITE_URL = "https://maudev.cl";
-
-declare global {
-  interface Window { adsbygoogle: any[]; }
-}
-
-function AdSlot({ slotId }: { slotId: string }) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const pushed = useRef(false);
-
-  useEffect(() => {
-    if (pushed.current) return;
-    try {
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-      pushed.current = true;
-    } catch {
-      // AdSense not loaded or ad blocker
-    }
-    // Collapse if ad didn't fill after 3s
-    const timer = setTimeout(() => {
-      const ins = containerRef.current?.querySelector("ins");
-      if (ins && ins.getAttribute("data-ad-status") === "unfilled") {
-        containerRef.current!.style.display = "none";
-      }
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  return (
-    <div ref={containerRef} className="my-8">
-      <ins
-        className="adsbygoogle"
-        style={{ display: "block" }}
-        data-ad-client="ca-pub-9062385247942411"
-        data-ad-slot={slotId}
-        data-ad-format="auto"
-        data-full-width-responsive="true"
-      />
-    </div>
-  );
-}
-
-function AdSlotAuto() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const pushed = useRef(false);
-
-  useEffect(() => {
-    if (pushed.current) return;
-    try {
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-      pushed.current = true;
-    } catch {
-      // AdSense not loaded or ad blocker
-    }
-    const timer = setTimeout(() => {
-      const ins = containerRef.current?.querySelector("ins");
-      if (ins && ins.getAttribute("data-ad-status") === "unfilled") {
-        containerRef.current!.style.display = "none";
-      }
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  return (
-    <div ref={containerRef} className="my-8">
-      <ins
-        className="adsbygoogle"
-        style={{ display: "block", textAlign: "center" }}
-        data-ad-layout="in-article"
-        data-ad-format="fluid"
-        data-ad-client="ca-pub-9062385247942411"
-        data-ad-slot="4202340208"
-      />
-    </div>
-  );
-}
 
 function estimateReadingTime(html: string): number {
   const text = html.replace(/<[^>]+>/g, "");

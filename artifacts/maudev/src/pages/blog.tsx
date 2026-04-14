@@ -3,6 +3,7 @@ import { Calendar, ArrowRight, Clock } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useListBlogPosts } from "@workspace/api-client-react";
 import SEOHead from "@/components/seo-head";
+import { AdSlotAuto } from "@/components/adsense";
 
 const SITE_URL = "https://maudev.cl";
 
@@ -139,6 +140,13 @@ export default function Blog() {
               );
             })}
           </section>
+        )}
+
+        {/* Ad slot at the bottom of the blog listing */}
+        {!isLoading && posts && posts.length > 0 && (
+          <div className="max-w-3xl mx-auto">
+            <AdSlotAuto />
+          </div>
         )}
       </div>
     </div>
