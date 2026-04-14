@@ -1,6 +1,6 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { useParams, Link } from "wouter";
-import { ArrowLeft, Calendar, Clock, Tag, User, ShoppingBag } from "lucide-react";
+import { ArrowLeft, Calendar, Clock, Tag, User, ShoppingBag, X, ZoomIn, ZoomOut } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGetBlogPost, useListProducts } from "@workspace/api-client-react";
 import { useUser } from "@clerk/react";
@@ -91,12 +91,75 @@ function estimateReadingTime(html: string): number {
   return Math.max(1, Math.ceil(words / 200));
 }
 
+function ImageLightbox({ src, alt, onClose }: { src: string; alt: string; onClose: () => void }) {
+  const [zoom, setZoom] = useState(1);
+  const [pan, setPan] = useState({ x: 0, y: 0 });
+  const dragging = useRef(false);
+  const lastPos = useRef({ x: 0, y: 0 });
+
+  const handleWheel = useCallback((e: React.WheelEvent) => {
+    e.preventDefault();
+    setZoom((z) => Math.min(4, Math.max(1, z + (e.deltaY > 0 ? -0.25 : 0.25))));
+  }, []);
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+      if (e.key === "+" || e.key === "=") setZoom((z) => Math.min(4, z + 0.25));
+      if (e.key === "-") setZoom((z) => Math.max(1, z - 0.25));
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [onClose]);
+
+  useEffect(() => {
+    if (zoom <= 1) setPan({ x: 0, y: 0 });
+  }, [zoom]);
+
+  const handlePointerDown = (e: React.PointerEvent) => {
+    if (zoom <= 1) return;
+    dragging.current = true;
+    lastPos.current = { x: e.clientX, y: e.clientY };
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+  };
+  const handlePointerMove = (e: React.PointerEvent) => {
+    if (!dragging.current) return;
+    setPan((p) => ({ x: p.x + e.clientX - lastPos.current.x, y: p.y + e.clientY - lastPos.current.y }));
+    lastPos.current = { x: e.clientX, y: e.clientY };
+  };
+  const handlePointerUp = () => { dragging.current = false; };
+
+  return (
+    <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center" onClick={onClose}>
+      <div className="absolute top-4 right-4 flex gap-2 z-10">
+        <button onClick={(e) => { e.stopPropagation(); setZoom((z) => Math.min(4, z + 0.5)); }} className="p-2 bg-white/10 hover:bg-white/20 text-white rounded-sm transition-colors"><ZoomIn className="h-5 w-5" /></button>
+        <button onClick={(e) => { e.stopPropagation(); setZoom((z) => Math.max(1, z - 0.5)); }} className="p-2 bg-white/10 hover:bg-white/20 text-white rounded-sm transition-colors"><ZoomOut className="h-5 w-5" /></button>
+        <button onClick={onClose} className="p-2 bg-white/10 hover:bg-white/20 text-white rounded-sm transition-colors"><X className="h-5 w-5" /></button>
+      </div>
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/60 text-xs font-mono">{Math.round(zoom * 100)}% — Scroll para zoom, arrastra para mover</div>
+      <img
+        src={src}
+        alt={alt}
+        className="max-w-[90vw] max-h-[90vh] object-contain select-none"
+        style={{ transform: `scale(${zoom}) translate(${pan.x / zoom}px, ${pan.y / zoom}px)`, cursor: zoom > 1 ? "grab" : "zoom-in", transition: dragging.current ? "none" : "transform 0.2s" }}
+        onClick={(e) => { e.stopPropagation(); if (zoom <= 1) setZoom(2); else { setZoom(1); setPan({ x: 0, y: 0 }); } }}
+        onWheel={handleWheel}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        draggable={false}
+      />
+    </div>
+  );
+}
+
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
   const { data: post, isLoading, isError } = useGetBlogPost(slug || "", {
     query: { enabled: !!slug } as any,
   });
   const { isSignedIn } = useUser();
+  const [lightboxSrc, setLightboxSrc] = useState<{ src: string; alt: string } | null>(null);
 
   const relatedProductIds: number[] = (post as any)?.relatedProductIds || [];
   const adsenseSlotId: string | null = (post as any)?.adsenseSlotId || null;
@@ -298,9 +361,39 @@ export default function BlogPost() {
               className="prose prose-invert max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-p:text-muted-foreground prose-p:leading-relaxed prose-a:text-primary prose-strong:text-foreground prose-code:text-primary prose-code:bg-primary/10 prose-code:px-1 prose-code:py-0.5 prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3 prose-ul:text-muted-foreground prose-ol:text-muted-foreground prose-li:marker:text-primary prose-img:rounded-none prose-img:w-full prose-table:border-collapse prose-th:border prose-th:border-border/60 prose-th:px-3 prose-th:py-2 prose-th:bg-muted/30 prose-td:border prose-td:border-border/60 prose-td:px-3 prose-td:py-2"
               itemProp="articleBody"
             >
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.content}</ReactMarkdown>
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                components={{
+                  img: ({ src, alt, ...props }) => (
+                    <figure className="my-6">
+                      <img
+                        src={src}
+                        alt={alt || ""}
+                        className="w-full cursor-zoom-in hover:opacity-90 transition-opacity"
+                        loading="lazy"
+                        onClick={() => src && setLightboxSrc({ src, alt: alt || "" })}
+                        onError={(e) => {
+                          const el = e.target as HTMLImageElement;
+                          el.style.display = "none";
+                          const fallback = el.nextElementSibling;
+                          if (fallback) (fallback as HTMLElement).style.display = "flex";
+                        }}
+                        {...props}
+                      />
+                      <div className="hidden items-center justify-center h-48 border border-border/40 bg-muted/20 text-muted-foreground text-sm font-mono">
+                        Imagen no disponible: {alt || src}
+                      </div>
+                      {alt && <figcaption className="text-center text-xs text-muted-foreground/60 mt-2 font-mono">{alt}</figcaption>}
+                    </figure>
+                  ),
+                }}
+              >
+                {post.content}
+              </ReactMarkdown>
             </div>
           </div>
+
+          {lightboxSrc && <ImageLightbox src={lightboxSrc.src} alt={lightboxSrc.alt} onClose={() => setLightboxSrc(null)} />}
 
           {!isSignedIn && (adsenseSlotId ? <AdSlot slotId={adsenseSlotId} /> : <AdSlotAuto />)}
 

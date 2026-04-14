@@ -50,6 +50,10 @@ export default function AdminBlog() {
   const coverInputRef = useRef<HTMLInputElement>(null);
   const inlineImgRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
+  const pendingImgRef = useRef<HTMLInputElement>(null);
+  const pendingImgIdx = useRef<number>(-1);
+  const [pendingImages, setPendingImages] = useState<{alt: string; name: string}[]>([]);
+  const [uploadingPendingIdx, setUploadingPendingIdx] = useState<number | null>(null);
 
   const uploadImage = async (file: File): Promise<string | null> => {
     try {
@@ -102,6 +106,43 @@ export default function AdminBlog() {
     e.target.value = "";
   };
 
+  const triggerPendingUpload = (idx: number) => {
+    pendingImgIdx.current = idx;
+    pendingImgRef.current?.click();
+  };
+
+  const handlePendingImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const idx = pendingImgIdx.current;
+    if (idx < 0 || idx >= pendingImages.length) return;
+    setUploadingPendingIdx(idx);
+    const url = await uploadImage(file);
+    if (url) {
+      const imgName = pendingImages[idx].name;
+      setForm((prev) => ({
+        ...prev,
+        content: prev.content.split(`](${imgName})`).join(`](${url})`),
+      }));
+      setPendingImages((prev) => prev.filter((_, i) => i !== idx));
+    }
+    setUploadingPendingIdx(null);
+    e.target.value = "";
+  };
+
+  const detectLocalImages = (content: string) => {
+    const imgRegex = /!\[([^\]]*)\]\(([^)]+)\)/g;
+    const localImgs: {alt: string; name: string}[] = [];
+    let m;
+    while ((m = imgRegex.exec(content)) !== null) {
+      const url = m[2];
+      if (!url.startsWith("http://") && !url.startsWith("https://") && !url.startsWith("/api/")) {
+        localImgs.push({ alt: m[1], name: url });
+      }
+    }
+    setPendingImages(localImgs);
+  };
+
   const handleImportMd = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -138,9 +179,11 @@ export default function AdminBlog() {
           content,
         }));
         setShowSeo(true);
+        detectLocalImages(content);
       } else {
         // Plain markdown — dump into content only
         setForm((prev) => ({ ...prev, content: text }));
+        detectLocalImages(text);
       }
     };
     reader.readAsText(file);
@@ -152,6 +195,7 @@ export default function AdminBlog() {
     setEditing("new");
     setPreview(false);
     setShowSeo(false);
+    setPendingImages([]);
   };
 
   const startEdit = (post: any) => {
@@ -173,6 +217,7 @@ export default function AdminBlog() {
     setEditing(post.id);
     setPreview(false);
     setShowSeo(false);
+    setPendingImages([]);
   };
 
   const handleSave = async () => {
@@ -224,7 +269,7 @@ export default function AdminBlog() {
               {preview ? <EyeOff className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
               {preview ? "EDITAR" : "PREVIEW"}
             </Button>
-            <Button variant="outline" size="sm" className="rounded-none font-mono text-xs gap-1" onClick={() => { setEditing(null); setForm(emptyForm); }}>
+            <Button variant="outline" size="sm" className="rounded-none font-mono text-xs gap-1" onClick={() => { setEditing(null); setForm(emptyForm); setPendingImages([]); }}>
               <X className="h-3 w-3" /> CANCELAR
             </Button>
           </div>
@@ -451,6 +496,32 @@ export default function AdminBlog() {
               />
               <p className="text-[10px] text-muted-foreground/60 mt-1">{wordCount} palabras · {readingTime} min lectura. Soporta Markdown con tablas, listas, encabezados y más.</p>
             </div>
+            {pendingImages.length > 0 && (
+              <div className="border border-yellow-500/30 bg-yellow-500/5 p-4 space-y-3">
+                <p className="font-mono text-xs text-yellow-400">⚠ IMÁGENES LOCALES DETECTADAS</p>
+                <p className="text-xs text-muted-foreground">El markdown importado referencia imágenes locales. Sube cada una para que se muestren en el blog.</p>
+                <input ref={pendingImgRef} type="file" accept="image/*" className="hidden" onChange={handlePendingImageUpload} />
+                {pendingImages.map((img, idx) => (
+                  <div key={idx} className="flex items-center gap-3 border border-border/40 bg-background/50 p-2">
+                    <ImagePlus className="h-4 w-4 text-yellow-400 shrink-0" />
+                    <span className="font-mono text-[10px] text-muted-foreground truncate flex-1" title={img.name}>{img.name}</span>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="rounded-none font-mono text-[10px] gap-1 h-7 shrink-0"
+                      onClick={() => triggerPendingUpload(idx)}
+                      disabled={uploadingPendingIdx !== null}
+                    >
+                      {uploadingPendingIdx === idx ? (
+                        <><Loader2 className="h-3 w-3 animate-spin" /> SUBIENDO...</>
+                      ) : (
+                        <><Upload className="h-3 w-3" /> SUBIR</>
+                      )}
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            )}
             <div>
               <label className="text-xs font-mono text-muted-foreground block mb-2">
                 <span className="inline-flex items-center gap-1"><DollarSign className="h-3 w-3" /> ADSENSE SLOT ID (OPCIONAL)</span>
