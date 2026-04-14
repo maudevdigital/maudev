@@ -364,14 +364,17 @@ export default function BlogPost() {
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 components={{
-                  img: ({ src, alt, ...props }) => (
+                  img: ({ src, alt, ...props }) => {
+                    // Resolve relative image paths to /images/blog/
+                    const resolvedSrc = src && !src.startsWith("/") && !src.startsWith("http") ? `/images/blog/${src}` : src;
+                    return (
                     <figure className="my-6">
                       <img
-                        src={src}
+                        src={resolvedSrc}
                         alt={alt || ""}
                         className="w-full cursor-zoom-in hover:opacity-90 transition-opacity"
                         loading="lazy"
-                        onClick={() => src && setLightboxSrc({ src, alt: alt || "" })}
+                        onClick={() => resolvedSrc && setLightboxSrc({ src: resolvedSrc, alt: alt || "" })}
                         onError={(e) => {
                           const el = e.target as HTMLImageElement;
                           el.style.display = "none";
@@ -385,7 +388,8 @@ export default function BlogPost() {
                       </div>
                       {alt && <figcaption className="text-center text-xs text-muted-foreground/60 mt-2 font-mono">{alt}</figcaption>}
                     </figure>
-                  ),
+                    );
+                  },
                 }}
               >
                 {post.content}
