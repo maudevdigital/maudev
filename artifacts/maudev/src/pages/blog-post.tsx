@@ -8,6 +8,7 @@ import SEOHead from "@/components/seo-head";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { AdSlot, AdSlotAuto } from "@/components/adsense";
+import { AffiliateDisclosure } from "@/components/affiliate-disclosure";
 
 const SITE_URL = "https://maudev.cl";
 
@@ -357,7 +358,8 @@ export default function BlogPost() {
             </div>
           )}
 
-          <footer className="border-t border-border/40 mt-12 pt-8">
+          <footer className="border-t border-border/40 mt-12 pt-8 space-y-6">
+            <AffiliateDisclosure variant="compact" />
             <div className="flex items-center justify-between">
               <Link href="/blog" className="inline-flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors font-mono">
                 <ArrowLeft className="h-4 w-4" />
