@@ -151,8 +151,21 @@ app.use("/api", router);
 // ── Serve frontend static files in production ──
 if (process.env.NODE_ENV === "production") {
   const frontendDir = path.resolve(__dirname, "../../../artifacts/maudev/dist/public");
-  app.use(express.static(frontendDir, { maxAge: "1y", immutable: true }));
+  app.use(express.static(frontendDir, {
+    maxAge: "1y",
+    immutable: true,
+    setHeaders: (res, filePath) => {
+      if (filePath.endsWith("index.html") || filePath.endsWith(".html")) {
+        res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        res.setHeader("Pragma", "no-cache");
+        res.setHeader("Expires", "0");
+      }
+    },
+  }));
   app.get("/{*path}", (_req, res) => {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.setHeader("Pragma", "no-cache");
+    res.setHeader("Expires", "0");
     res.sendFile(path.join(frontendDir, "index.html"));
   });
 }
