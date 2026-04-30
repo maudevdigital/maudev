@@ -22,6 +22,7 @@ import AdminBlog from "./pages/admin/blog";
 import AdminCampaigns from "./pages/admin/campaigns";
 import Blog from "./pages/blog";
 import BlogPost from "./pages/blog-post";
+import HerramientasSEO from "./pages/herramientas-seo";
 import NotFound from "./pages/not-found";
 import RootLayout from "./components/layout/root-layout";
 import AdminLayout from "./components/layout/admin-layout";
@@ -159,6 +160,7 @@ function ClerkProviderWithRoutes() {
                   <Route path="/dashboard" component={Dashboard} />
                   <Route path="/blog/:slug" component={BlogPost} />
                   <Route path="/blog" component={Blog} />
+                  <Route path="/herramientas-seo" component={HerramientasSEO} />
                   <Route path="/terms" component={Terms} />
                   <Route path="/privacy" component={Privacy} />
                   <Route path="/sign-in/*?" component={SignInPage} />
