@@ -135,6 +135,11 @@ app.get("/sitemap.xml", async (req, res) => {
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>${BASE_URL}/herramientas-seo</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
 ${postUrls.join("\n")}
 </urlset>`;
 
