@@ -3,9 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5" />
-    <title>⚡ MauDev | Indicadores Pine Script & MetaTrader 5 | Trading Tools & Desarrollo Digital</title>
-    <meta name="description" content="Indicadores profesionales para TradingView Pine Script v5 y MetaTrader 5. Scripts de trading para BTC, XAU, XAG, WTI + servicios de desarrollo digital a medida. Santiago, Chile." />
-    <meta name="keywords" content="pine script, tradingview, metatrader 5, mql5, indicadores trading, BTC, XAU, XAG, Chile, desarrollo web, landing page" />
+    <title>MauDev | Herramientas Digitales para Emprendedores en LATAM — Comparativas y Reseñas</title>
+    <meta name="description" content="Comparativas honestas de hosting, SEO y marketing digital para emprendedores en Chile y LATAM. Hostinger, SEMrush, Systeme.io y más — probados y recomendados." />
+    <meta name="keywords" content="mejor hosting chile, hostinger review, semrush precio, systeme io review, herramientas digitales latam, marketing digital chile, hosting barato argentina, seo tools español" />
     <meta name="author" content="MauDev" />
     <meta name="robots" content="index, follow" />
     <meta name="google-adsense-account" content="ca-pub-9062385247942411" />
@@ -17,23 +17,29 @@
     <!-- Impact.com site verification (Semrush affiliate program via Impact) -->
     <meta name="impact-site-verification" content="04330ae5-612c-4f07-986c-bd7f82cb77b6" />
 
+    <!-- Google Search Console verification -->
+    <!-- TODO: reemplazar con tu meta tag de Search Console -->
+    <!-- <meta name="google-site-verification" content="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" /> -->
+
     <link rel="canonical" href="https://maudev.cl/" />
     <link rel="alternate" hreflang="es-CL" href="https://maudev.cl/" />
+    <link rel="alternate" hreflang="es-AR" href="https://maudev.cl/" />
     <link rel="alternate" hreflang="x-default" href="https://maudev.cl/" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://maudev.cl/" />
-    <meta property="og:title" content="MauDev — Trading Scripts & Desarrollo Digital" />
-    <meta property="og:description" content="Indicadores profesionales Pine Script v5, Expert Advisors MQL5 y servicios de desarrollo full-stack. Entrega inmediata." />
+    <meta property="og:title" content="MauDev — Herramientas Digitales para Emprendedores en LATAM" />
+    <meta property="og:description" content="Comparativas honestas de hosting, SEO y marketing digital. Probadas y recomendadas para emprendedores en Chile, Argentina y LATAM." />
     <meta property="og:image" content="https://maudev.cl/opengraph.jpg" />
     <meta property="og:locale" content="es_CL" />
+    <meta property="og:locale:alternate" content="es_AR" />
     <meta property="og:site_name" content="MauDev" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="MauDev — Trading Scripts & Desarrollo Digital" />
-    <meta name="twitter:description" content="Pine Script v5, MQL5 indicators + desarrollo web. Santiago, Chile." />
+    <meta name="twitter:title" content="MauDev — Herramientas para Emprendedores en LATAM" />
+    <meta name="twitter:description" content="Comparativas de hosting, SEO y marketing digital para Chile y LATAM. Hostinger, SEMrush, Systeme.io." />
     <meta name="twitter:image" content="https://maudev.cl/opengraph.jpg" />
 
     <!-- Favicon -->
@@ -45,13 +51,41 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Google Analytics 4 — MauDev property (G-5R3Z9C6Y9Q) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5R3Z9C6Y9Q"></script>
+    <!--
+    ════════════════════════════════════════════════════════════
+    GOOGLE TAG MANAGER
+    ════════════════════════════════════════════════════════════
+    PASOS para configurar:
+    1. Ir a tagmanager.google.com → Crear cuenta → Crear contenedor "maudev.cl"
+    2. Copiar el GTM-XXXXXXX de tu contenedor
+    3. Reemplazar GTM-XXXXXXX abajo
+    4. En GTM, crear tags:
+       a) GA4 Configuration tag → usar G-5R3Z9C6Y9Q
+       b) Google Ads Global Site Tag → usar tu AW-XXXXXXXXXX
+       c) Conversion Linker tag
+    5. Publicar el contenedor
+
+    Por ahora el tracking corre directamente vía gtag (abajo).
+    Cuando configures GTM, reemplaza el bloque gtag por el snippet GTM.
+    ════════════════════════════════════════════════════════════
+    -->
+    <!-- GTM snippet (activar cuando tengas el ID real):
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
+    -->
+
+    <!-- Google Analytics 4 — MauDev property (G-9R2M5TJJ29) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9R2M5TJJ29"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      // Consent Mode v2 — denegado por defecto hasta que el usuario acepte (cumple GDPR/LGPD/Ley 19.628)
+
+      // Consent Mode v2 — denegado por defecto.
+      // El ConsentBanner en React actualiza esto cuando el usuario acepta.
       gtag('consent', 'default', {
         ad_storage: 'denied',
         ad_user_data: 'denied',
@@ -59,13 +93,32 @@
         analytics_storage: 'denied',
         wait_for_update: 500
       });
-      gtag('config', 'G-5R3Z9C6Y9Q', { anonymize_ip: true });
+
+      // GA4 config
+      gtag('config', 'G-9R2M5TJJ29', { anonymize_ip: true });
+
+      // ════════════════════════════════════════════════════════
+      // GOOGLE ADS — configurar cuando tengas cuenta activa
+      // ════════════════════════════════════════════════════════
+      // PASOS:
+      // 1. Crear cuenta en ads.google.com
+      // 2. Vincular con GA4 property G-5R3Z9C6Y9Q
+      // 3. Ir a Herramientas → Conversiones → Importar desde GA4
+      //    → Importar evento "affiliate_click" como conversión
+      // 4. Obtener Conversion ID (AW-XXXXXXXXXX)
+      // 5. Reemplazar AW-XXXXXXXXXX abajo
+      //
+      // gtag('config', 'AW-XXXXXXXXXX');
+      //
+      // Para remarketing (mostrar ads a visitantes anteriores):
+      // gtag('config', 'AW-XXXXXXXXXX', { send_page_view: true });
+      // ════════════════════════════════════════════════════════
     </script>
 
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9062385247942411" crossorigin="anonymous"></script>
 
-    <!-- Facebook Pixel — replace XXXXXXXXXXXXXXX with your Pixel ID -->
+    <!-- Facebook Pixel — activar si vas a hacer Meta Ads -->
     <!--
     <script>
       !function(f,b,e,v,n,t,s)
@@ -76,7 +129,7 @@
       t.src=v;s=b.getElementsByTagName(e)[0];
       s.parentNode.insertBefore(t,s)}(window, document,'script',
       'https://connect.facebook.net/en_US/fbevents.js');
-      fbq('init', 'XXXXXXXXXXXXXXX');
+      fbq('init', 'XXXXXXXXXXXXXXX'); // TODO: reemplazar con tu Pixel ID
       fbq('track', 'PageView');
     </script>
     <noscript><img height="1" width="1" style="display:none"
@@ -91,7 +144,7 @@
       "name": "MauDev",
       "url": "https://maudev.cl",
       "logo": "https://maudev.cl/favicon.svg",
-      "description": "Indicadores profesionales de trading para TradingView y MetaTrader 5, y servicios de desarrollo digital",
+      "description": "Comparativas y reseñas de herramientas digitales para emprendedores en Chile y LATAM",
       "foundingDate": "2024",
       "address": {
         "@type": "PostalAddress",
@@ -103,14 +156,41 @@
         "@type": "ContactPoint",
         "email": "lucasmaulenr@gmail.com",
         "contactType": "customer service",
-        "availableLanguage": ["es", "en"]
+        "availableLanguage": ["es"]
       },
       "sameAs": [],
-      "knowsAbout": ["Pine Script", "MetaTrader 5", "MQL5", "Trading Algorithms", "Web Development"]
+      "knowsAbout": [
+        "Web Hosting",
+        "SEO",
+        "Email Marketing",
+        "Digital Marketing",
+        "Web Development",
+        "Entrepreneurship"
+      ]
+    }
+    </script>
+
+    <!-- JSON-LD WebSite with SearchAction -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "MauDev",
+      "url": "https://maudev.cl",
+      "description": "Comparativas honestas de herramientas digitales para emprendedores en LATAM",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://maudev.cl/blog?search={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
     }
     </script>
   </head>
   <body>
+    <!-- GTM noscript (activar junto con el snippet del head):
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    -->
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

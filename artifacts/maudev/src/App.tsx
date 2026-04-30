@@ -23,6 +23,8 @@ import AdminCampaigns from "./pages/admin/campaigns";
 import Blog from "./pages/blog";
 import BlogPost from "./pages/blog-post";
 import NotFound from "./pages/not-found";
+import Herramientas from "./pages/herramientas";
+import MejorHosting from "./pages/comparativas/mejor-hosting";
 import RootLayout from "./components/layout/root-layout";
 import AdminLayout from "./components/layout/admin-layout";
 
@@ -153,6 +155,8 @@ function ClerkProviderWithRoutes() {
               <RootLayout>
                 <Switch>
                   <Route path="/" component={Home} />
+                  <Route path="/herramientas" component={Herramientas} />
+                  <Route path="/comparativas/mejor-hosting" component={MejorHosting} />
                   <Route path="/products" component={Products} />
                   <Route path="/products/:id" component={ProductDetail} />
                   <Route path="/checkout" component={Checkout} />

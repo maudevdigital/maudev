@@ -40,12 +40,20 @@ export function Navbar() {
           </Link>
           <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
             <Link
-              href="/products"
+              href="/herramientas"
               className={`font-mono text-xs transition-colors hover:text-primary ${
-                location.startsWith("/products") ? "text-primary" : "text-muted-foreground"
+                location.startsWith("/herramientas") ? "text-primary" : "text-muted-foreground"
               }`}
             >
-              PRODUCTOS
+              HERRAMIENTAS
+            </Link>
+            <Link
+              href="/comparativas/mejor-hosting"
+              className={`font-mono text-xs transition-colors hover:text-primary ${
+                location.startsWith("/comparativas") ? "text-primary" : "text-muted-foreground"
+              }`}
+            >
+              COMPARATIVAS
             </Link>
             <Link
               href="/blog"
@@ -104,11 +112,18 @@ export function Navbar() {
         <div className="md:hidden border-t border-border/40 bg-background/95 backdrop-blur-md px-4 py-4 max-w-7xl mx-auto">
           <nav className="flex flex-col gap-4">
             <Link
-              href="/products"
+              href="/herramientas"
               className="text-sm font-mono text-muted-foreground hover:text-primary transition-colors"
               onClick={() => setMobileMenuOpen(false)}
             >
-              PRODUCTOS
+              HERRAMIENTAS
+            </Link>
+            <Link
+              href="/comparativas/mejor-hosting"
+              className="text-sm font-mono text-muted-foreground hover:text-primary transition-colors"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              COMPARATIVAS
             </Link>
             <Link
               href="/blog"

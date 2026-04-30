@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { Navbar } from "./navbar";
 import { Footer } from "./footer";
+import ConsentBanner from "@/components/consent-banner";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
@@ -10,6 +11,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         {children}
       </main>
       <Footer />
+      <ConsentBanner />
     </div>
   );
 }
