@@ -27,8 +27,8 @@ const services = [
     features: [
       "Levantamiento de requerimientos",
       "Diseño técnico + maquetas",
-      "Desarrollo full stack (React + Node/Firebase)",
-      "Despliegue en Cloudflare/Vercel/Firebase",
+      "Desarrollo full stack (React + Node/Supabase)",
+      "Despliegue en Cloudflare/Vercel",
       "Soporte post-entrega",
     ],
   },

@@ -9,7 +9,7 @@ const values = [
   {
     icon: Code2,
     title: "Construimos lo que prometemos",
-    text: "Stack moderno (React, Firebase, Cloudflare). Código mantenible, no soluciones desechables.",
+    text: "Stack moderno (React, Supabase, Cloudflare). Código mantenible, no soluciones desechables.",
   },
   {
     icon: Lightbulb,

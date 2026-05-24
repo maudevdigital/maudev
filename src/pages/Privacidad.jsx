@@ -57,7 +57,7 @@ export default function Privacidad() {
               <h2 className="text-xl font-bold text-foreground mb-2">4. Compartición con terceros</h2>
               <p>
                 Tus datos se almacenan en servicios de terceros que cumplen estándares internacionales de
-                seguridad (Google Firebase, Cloudflare). No vendemos, alquilamos ni cedemos tus datos a
+                seguridad (Supabase, Cloudflare). No vendemos, alquilamos ni cedemos tus datos a
                 terceros con fines comerciales.
               </p>
             </section>
