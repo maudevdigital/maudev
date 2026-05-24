@@ -16,7 +16,7 @@ export default function BlogPreview({ blogImage }) {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    api.entities.BlogPost.filter({ status: "published" }, "-created_date", 3).then(setPosts);
+    api.entities.BlogPost.filter({ status: "published" }, "-created_date", 3).then(setPosts).catch(() => {});
   }, []);
 
   if (posts.length === 0) return null;
