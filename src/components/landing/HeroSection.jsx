@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { ArrowRight, Zap, Globe, Bot, CheckCircle, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -33,10 +33,41 @@ const floatY = {
 };
 
 export default function HeroSection({ heroImage }) {
+  const videoRef = useRef(null);
   const [step, setStep] = useState(0);
   const [selected, setSelected] = useState(null);
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    let direction = 1;
+    let rafId;
+
+    const tick = () => {
+      if (direction === 1) {
+        if (!video.paused && video.duration && video.currentTime >= video.duration - 0.1) {
+          direction = -1;
+          video.pause();
+        }
+      } else {
+        const next = video.currentTime - 1 / 30;
+        if (next <= 0) {
+          direction = 1;
+          video.currentTime = 0;
+          video.play().catch(() => {});
+        } else {
+          video.currentTime = next;
+        }
+      }
+      rafId = requestAnimationFrame(tick);
+    };
+
+    video.play().catch(() => {});
+    rafId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafId);
+  }, []);
 
   const handleSubmit = async () => {
     if (!email) return;
@@ -62,9 +93,8 @@ export default function HeroSection({ heroImage }) {
   return (
     <section className="relative min-h-screen flex items-center pt-16 overflow-hidden">
       <video
-        autoPlay
+        ref={videoRef}
         muted
-        loop
         playsInline
         className="absolute inset-0 w-full h-full object-cover opacity-15 mix-blend-luminosity pointer-events-none"
       >
