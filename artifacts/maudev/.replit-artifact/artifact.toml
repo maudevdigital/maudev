@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "MauDev"
+version = "1.0.0"
+id = "artifacts/maudev"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 20866
+
+[services.development]
+run = "pnpm --filter @workspace/maudev run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/maudev", "run", "build" ]
+publicDir = "artifacts/maudev/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "20866"
+BASE_PATH = "/"

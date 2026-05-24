@@ -1,0 +1,17 @@
+<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="180" height="180" rx="32" fill="#0D0D0D"/>
+  <line x1="60" y1="0" x2="60" y2="180" stroke="#00D4FF" stroke-opacity="0.07" stroke-width="1"/>
+  <line x1="120" y1="0" x2="120" y2="180" stroke="#00D4FF" stroke-opacity="0.07" stroke-width="1"/>
+  <line x1="0" y1="60" x2="180" y2="60" stroke="#00D4FF" stroke-opacity="0.07" stroke-width="1"/>
+  <line x1="0" y1="120" x2="180" y2="120" stroke="#00D4FF" stroke-opacity="0.07" stroke-width="1"/>
+  <!-- Code brackets </> as paths -->
+  <path d="M56 38L40 50L56 62" stroke="#00D4FF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/>
+  <line x1="82" y1="34" x2="98" y2="66" stroke="#00D4FF" stroke-width="3" stroke-linecap="round" opacity="0.35"/>
+  <path d="M124 38L140 50L124 62" stroke="#00D4FF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/>
+  <!-- M letterform -->
+  <path d="M32 140V76L62 112L92 76V140" stroke="#00D4FF" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- D letterform -->
+  <path d="M110 76H130C149 76 160 92 160 108C160 124 149 140 130 140H110V76Z" stroke="white" stroke-opacity="0.85" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- Accent line -->
+  <rect x="28" y="156" width="124" height="3" rx="1.5" fill="#00D4FF" opacity="0.5"/>
+</svg>

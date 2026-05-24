@@ -1,0 +1,14 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "VE1_F5T16vqEAljJ7i0D7"
+uri = "file://artifacts/maudev/src/assets/hero-bg.png"
+type = "image"
+title = "Hero code dev imagery"
+
+[[generated]]
+id = "tDbDWBSTRaRfQXn6tW9AG"
+uri = "file://artifacts/maudev/src/assets/trading-chart.png"
+type = "image"
+title = "Trading chart visualization"

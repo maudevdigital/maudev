@@ -1,0 +1,853 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: MauDev API specification
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: products
+    description: Product catalog operations
+  - name: orders
+    description: Order management
+  - name: payments
+    description: Payment operations
+  - name: email
+    description: Email marketing
+  - name: admin
+    description: Admin operations
+  - name: blog
+    description: Blog operations
+  - name: Storage
+    description: Object storage upload and serving endpoints.
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  /products:
+    get:
+      operationId: listProducts
+      tags: [products]
+      summary: List all products
+      parameters:
+        - name: category
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: featured
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: List of products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Product"
+    post:
+      operationId: createProduct
+      tags: [products]
+      summary: Create a product (admin only)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateProductBody"
+      responses:
+        "201":
+          description: Created product
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+
+  /products/{id}:
+    get:
+      operationId: getProduct
+      tags: [products]
+      summary: Get product by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Product details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "404":
+          description: Not found
+    put:
+      operationId: updateProduct
+      tags: [products]
+      summary: Update a product (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateProductBody"
+      responses:
+        "200":
+          description: Updated product
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+    delete:
+      operationId: deleteProduct
+      tags: [products]
+      summary: Delete a product (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /products/featured:
+    get:
+      operationId: getFeaturedProducts
+      tags: [products]
+      summary: Get featured products for homepage
+      responses:
+        "200":
+          description: Featured products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Product"
+
+  /orders:
+    get:
+      operationId: listOrders
+      tags: [orders]
+      summary: List user orders
+      responses:
+        "200":
+          description: List of orders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Order"
+    post:
+      operationId: createOrder
+      tags: [orders]
+      summary: Create an order and initiate payment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateOrderBody"
+      responses:
+        "201":
+          description: Order created with payment URL
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderWithPayment"
+
+  /orders/{id}:
+    get:
+      operationId: getOrder
+      tags: [orders]
+      summary: Get order by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Order details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+
+  /payments/flow/confirm:
+    get:
+      operationId: confirmFlowPayment
+      tags: [payments]
+      summary: Flow payment confirmation callback
+      parameters:
+        - name: token
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "302":
+          description: Redirect to order success/fail page
+
+  /payments/flow/webhook:
+    post:
+      operationId: flowWebhook
+      tags: [payments]
+      summary: Flow payment webhook
+      responses:
+        "200":
+          description: OK
+
+  /email/subscribe:
+    post:
+      operationId: subscribeEmail
+      tags: [email]
+      summary: Subscribe to newsletter
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubscribeEmailBody"
+      responses:
+        "200":
+          description: Subscribed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubscribeEmailResponse"
+
+  /admin/stats:
+    get:
+      operationId: getAdminStats
+      tags: [admin]
+      summary: Admin statistics dashboard
+      responses:
+        "200":
+          description: Admin stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminStats"
+
+  /admin/orders:
+    get:
+      operationId: listAllOrders
+      tags: [admin]
+      summary: List all orders (admin)
+      responses:
+        "200":
+          description: All orders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Order"
+
+  /admin/subscribers:
+    get:
+      operationId: listSubscribers
+      tags: [admin]
+      summary: List email subscribers (admin)
+      responses:
+        "200":
+          description: All email subscribers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/EmailSubscriber"
+
+  /blog:
+    get:
+      operationId: listBlogPosts
+      tags: [blog]
+      summary: List published blog posts
+      responses:
+        "200":
+          description: Published blog posts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BlogPost"
+
+  /blog/{slug}:
+    get:
+      operationId: getBlogPost
+      tags: [blog]
+      summary: Get blog post by slug
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Blog post
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BlogPost"
+        "404":
+          description: Not found
+
+  /admin/blog:
+    get:
+      operationId: listAdminBlogPosts
+      tags: [admin]
+      summary: List all blog posts (admin)
+      responses:
+        "200":
+          description: All blog posts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BlogPost"
+    post:
+      operationId: createBlogPost
+      tags: [admin]
+      summary: Create a blog post (admin)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateBlogPostBody"
+      responses:
+        "201":
+          description: Created blog post
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BlogPost"
+
+  /admin/blog/{id}:
+    put:
+      operationId: updateBlogPost
+      tags: [admin]
+      summary: Update a blog post (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateBlogPostBody"
+      responses:
+        "200":
+          description: Updated blog post
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BlogPost"
+    delete:
+      operationId: deleteBlogPost
+      tags: [admin]
+      summary: Delete a blog post (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /storage/uploads/request-url:
+    post:
+      tags: [Storage]
+      operationId: requestUploadUrl
+      summary: Request a presigned URL for file upload
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UploadUrlRequest'
+      responses:
+        '200':
+          description: Presigned upload URL generated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadUrlResponse'
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        originalPrice:
+          type: number
+          nullable: true
+        currency:
+          type: string
+        category:
+          type: string
+          enum: [trading_scripts, digital_service]
+        subcategory:
+          type: string
+        imageUrl:
+          type: string
+          nullable: true
+        mediaUrls:
+          type: array
+          nullable: true
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+              type:
+                type: string
+                enum: [image, video]
+            required:
+              - url
+              - type
+        featured:
+          type: boolean
+        active:
+          type: boolean
+        downloadUrl:
+          type: string
+          nullable: true
+        manualUrl:
+          type: string
+          nullable: true
+        features:
+          type: array
+          nullable: true
+          items:
+            type: string
+        seoTitle:
+          type: string
+          nullable: true
+        seoDescription:
+          type: string
+          nullable: true
+        seoKeywords:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+      required:
+        - id
+        - name
+        - description
+        - price
+        - currency
+        - category
+        - subcategory
+        - featured
+        - active
+        - createdAt
+
+    CreateProductBody:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        originalPrice:
+          type: number
+          nullable: true
+        currency:
+          type: string
+        category:
+          type: string
+          enum: [trading_scripts, digital_service]
+        subcategory:
+          type: string
+        imageUrl:
+          type: string
+          nullable: true
+        mediaUrls:
+          type: array
+          nullable: true
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+              type:
+                type: string
+                enum: [image, video]
+            required:
+              - url
+              - type
+        featured:
+          type: boolean
+        active:
+          type: boolean
+        downloadUrl:
+          type: string
+          nullable: true
+        manualUrl:
+          type: string
+          nullable: true
+        features:
+          type: array
+          nullable: true
+          items:
+            type: string
+        seoTitle:
+          type: string
+          nullable: true
+        seoDescription:
+          type: string
+          nullable: true
+        seoKeywords:
+          type: string
+          nullable: true
+      required:
+        - name
+        - description
+        - price
+        - currency
+        - category
+        - subcategory
+
+    Order:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: string
+        userEmail:
+          type: string
+        productId:
+          type: integer
+        productName:
+          type: string
+        amount:
+          type: number
+        currency:
+          type: string
+        status:
+          type: string
+          enum: [pending, paid, failed, refunded]
+        flowToken:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+        paidAt:
+          type: string
+          nullable: true
+      required:
+        - id
+        - userId
+        - userEmail
+        - productId
+        - productName
+        - amount
+        - currency
+        - status
+        - createdAt
+
+    CreateOrderBody:
+      type: object
+      properties:
+        productId:
+          type: integer
+        userEmail:
+          type: string
+        paymentMethod:
+          type: string
+          enum: [flow, coingate]
+          default: flow
+      required:
+        - productId
+        - userEmail
+
+    OrderWithPayment:
+      type: object
+      properties:
+        order:
+          $ref: "#/components/schemas/Order"
+        paymentUrl:
+          type: string
+      required:
+        - order
+        - paymentUrl
+
+    SubscribeEmailBody:
+      type: object
+      properties:
+        email:
+          type: string
+        name:
+          type: string
+      required:
+        - email
+
+    SubscribeEmailResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+      required:
+        - success
+        - message
+
+    AdminStats:
+      type: object
+      properties:
+        totalRevenue:
+          type: number
+        totalOrders:
+          type: integer
+        paidOrders:
+          type: integer
+        pendingOrders:
+          type: integer
+        totalSubscribers:
+          type: integer
+        totalProducts:
+          type: integer
+        revenueByCategory:
+          type: array
+          items:
+            type: object
+            properties:
+              category:
+                type: string
+              revenue:
+                type: number
+            required:
+              - category
+              - revenue
+        recentOrders:
+          type: array
+          items:
+            $ref: "#/components/schemas/Order"
+      required:
+        - totalRevenue
+        - totalOrders
+        - paidOrders
+        - pendingOrders
+        - totalSubscribers
+        - totalProducts
+        - revenueByCategory
+        - recentOrders
+
+    EmailSubscriber:
+      type: object
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        name:
+          type: string
+          nullable: true
+        subscribedAt:
+          type: string
+      required:
+        - id
+        - email
+        - subscribedAt
+
+    BlogPost:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        slug:
+          type: string
+        content:
+          type: string
+        excerpt:
+          type: string
+        imageUrl:
+          type: string
+          nullable: true
+        published:
+          type: boolean
+        publishedAt:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        metaTitle:
+          type: string
+          nullable: true
+        metaDescription:
+          type: string
+          nullable: true
+        metaKeywords:
+          type: string
+          nullable: true
+        canonicalUrl:
+          type: string
+          nullable: true
+        author:
+          type: string
+          nullable: true
+        readingTimeMin:
+          type: integer
+          nullable: true
+        tags:
+          type: string
+          nullable: true
+        adsenseSlotId:
+          type: string
+          nullable: true
+        relatedProductIds:
+          type: array
+          items:
+            type: integer
+          nullable: true
+      required:
+        - id
+        - title
+        - slug
+        - content
+        - excerpt
+        - published
+        - createdAt
+        - updatedAt
+
+    CreateBlogPostBody:
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        excerpt:
+          type: string
+        imageUrl:
+          type: string
+          nullable: true
+        published:
+          type: boolean
+        metaTitle:
+          type: string
+          nullable: true
+        metaDescription:
+          type: string
+          nullable: true
+        metaKeywords:
+          type: string
+          nullable: true
+        canonicalUrl:
+          type: string
+          nullable: true
+        author:
+          type: string
+          nullable: true
+        tags:
+          type: string
+          nullable: true
+        adsenseSlotId:
+          type: string
+          nullable: true
+        relatedProductIds:
+          type: array
+          items:
+            type: integer
+          nullable: true
+      required:
+        - title
+        - content
+        - excerpt
+
+    UploadUrlRequest:
+      type: object
+      required: [name, size, contentType]
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: Original file name.
+        size:
+          type: integer
+          minimum: 1
+          description: File size in bytes.
+        contentType:
+          type: string
+          minLength: 1
+          description: MIME type of the file.
+    UploadUrlResponse:
+      type: object
+      required: [uploadURL, objectPath]
+      properties:
+        uploadURL:
+          type: string
+          format: uri
+          description: Presigned GCS URL for PUT upload.
+        objectPath:
+          type: string
+          description: Normalized object path. Store this in your database.
+        metadata:
+          $ref: '#/components/schemas/UploadUrlRequest'
