@@ -42,31 +42,29 @@ export default function HeroSection({ heroImage }) {
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-    let direction = 1;
     let rafId;
 
-    const tick = () => {
-      if (direction === 1) {
-        if (!video.paused && video.duration && video.currentTime >= video.duration - 0.1) {
-          direction = -1;
-          video.pause();
-        }
-      } else {
+    const startReverse = () => {
+      const step = () => {
         const next = video.currentTime - 1 / 30;
         if (next <= 0) {
-          direction = 1;
           video.currentTime = 0;
           video.play().catch(() => {});
         } else {
           video.currentTime = next;
+          rafId = requestAnimationFrame(step);
         }
-      }
-      rafId = requestAnimationFrame(tick);
+      };
+      rafId = requestAnimationFrame(step);
     };
 
+    video.addEventListener("ended", startReverse);
     video.play().catch(() => {});
-    rafId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(rafId);
+
+    return () => {
+      video.removeEventListener("ended", startReverse);
+      cancelAnimationFrame(rafId);
+    };
   }, []);
 
   const handleSubmit = async () => {
