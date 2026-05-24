@@ -40,4 +40,3 @@ Write-Host "`n=== Push a origin/main ===" -ForegroundColor Cyan
 git push origin main
 
 Write-Host "`n=== Listo ===" -ForegroundColor Green
-Write-Host "Si Railway tiene auto-deploy on, en 2-5 min deberías ver el nuevo deploy en railway.app"

@@ -13,7 +13,7 @@ import { db, blogPostsTable } from "@workspace/db";
 
 const app: Express = express();
 
-// Trust proxy in production (Railway, etc.)
+// Trust proxy in production (Cloudflare, Vercel, etc.)
 if (process.env.NODE_ENV === "production") {
   app.set("trust proxy", 1);
 }
