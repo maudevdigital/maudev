@@ -1,0 +1,117 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn()
+        && request.auth.token.email != null
+        && request.auth.token.email.lower() == 'maudevchile@gmail.com';
+    }
+
+    function hasEmail(value) {
+      return value is string
+        && value.size() >= 5
+        && value.size() <= 254
+        && value.matches('^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$');
+    }
+
+    function optionalText(data, key, maxSize) {
+      return !(key in data) || (data[key] is string && data[key].size() <= maxSize);
+    }
+
+    function optionalBool(data, key) {
+      return !(key in data) || data[key] is bool;
+    }
+
+    function validAttribution(data) {
+      return optionalText(data, 'page_path', 200)
+        && optionalText(data, 'utm_source', 120)
+        && optionalText(data, 'utm_medium', 120)
+        && optionalText(data, 'utm_campaign', 120)
+        && optionalText(data, 'utm_term', 120)
+        && optionalText(data, 'utm_content', 120);
+    }
+
+    function validLeadCreate() {
+      let data = request.resource.data;
+      return data.keys().hasOnly([
+          'name', 'email', 'interest', 'message', 'source', 'status', 'consent',
+          'page_path', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content',
+          'created_date', 'updated_date'
+        ])
+        && data.keys().hasAll(['email', 'interest', 'source', 'status', 'created_date', 'updated_date'])
+        && hasEmail(data.email)
+        && data.interest in ['marketing_funnel', 'seo_landing', 'trading_script', 'web_app', 'bot_automation', 'general']
+        && data.source in ['hero_funnel', 'contact_form', 'newsletter', 'blog_cta']
+        && data.status == 'new'
+        && optionalText(data, 'name', 120)
+        && optionalText(data, 'message', 2000)
+        && optionalBool(data, 'consent')
+        && validAttribution(data)
+        && data.created_date == request.time
+        && data.updated_date == request.time;
+    }
+
+    function validOrderCreate() {
+      let data = request.resource.data;
+      return data.keys().hasOnly([
+          'product_id', 'product_title', 'customer_email', 'customer_name', 'amount',
+          'status', 'source', 'page_path', 'utm_source', 'utm_medium', 'utm_campaign',
+          'utm_term', 'utm_content', 'created_date', 'updated_date'
+        ])
+        && data.keys().hasAll([
+          'product_id', 'product_title', 'customer_email', 'customer_name', 'amount',
+          'status', 'created_date', 'updated_date'
+        ])
+        && data.product_id is string
+        && data.product_id.size() <= 120
+        && data.product_title is string
+        && data.product_title.size() <= 200
+        && data.customer_name is string
+        && data.customer_name.size() <= 120
+        && hasEmail(data.customer_email)
+        && data.amount is number
+        && data.amount >= 0
+        && data.amount <= 100000
+        && data.status == 'pending'
+        && optionalText(data, 'source', 80)
+        && validAttribution(data)
+        && data.created_date == request.time
+        && data.updated_date == request.time;
+    }
+
+    match /products/{id} {
+      allow read: if isAdmin() || resource.data.status == 'active';
+      allow write: if isAdmin();
+    }
+
+    match /blog_posts/{id} {
+      allow read: if isAdmin() || resource.data.status == 'published';
+      allow write: if isAdmin();
+    }
+
+    match /leads/{id} {
+      allow create: if validLeadCreate();
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /orders/{id} {
+      allow create: if validOrderCreate();
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /mail/{id} {
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

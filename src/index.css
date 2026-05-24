@@ -1,0 +1,174 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-success: hsl(var(--success));
+  --color-sidebar: hsl(var(--sidebar-background));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+  --color-chart-1: hsl(var(--chart-1));
+  --color-chart-2: hsl(var(--chart-2));
+  --color-chart-3: hsl(var(--chart-3));
+  --color-chart-4: hsl(var(--chart-4));
+  --color-chart-5: hsl(var(--chart-5));
+}
+
+@layer base {
+  :root {
+    --font-sans: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+
+    --background: 240 10% 3.9%;
+    --foreground: 210 40% 98%;
+    --card: 240 6% 8%;
+    --card-foreground: 210 40% 98%;
+    --popover: 240 6% 8%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 186 100% 50%;
+    --primary-foreground: 240 10% 3.9%;
+    --secondary: 240 4% 16%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 240 4% 16%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 186 100% 50%;
+    --accent-foreground: 240 10% 3.9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 4% 16%;
+    --input: 240 4% 16%;
+    --ring: 186 100% 50%;
+    --chart-1: 186 100% 50%;
+    --chart-2: 142 71% 45%;
+    --chart-3: 215 20% 65%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+    --success: 142 71% 45%;
+    --sidebar-background: 240 6% 6%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 186 100% 50%;
+    --sidebar-primary-foreground: 240 10% 3.9%;
+    --sidebar-accent: 240 4% 12%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 240 4% 16%;
+    --sidebar-ring: 186 100% 50%;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 210 40% 98%;
+    --card: 240 6% 8%;
+    --card-foreground: 210 40% 98%;
+    --popover: 240 6% 8%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 186 100% 50%;
+    --primary-foreground: 240 10% 3.9%;
+    --secondary: 240 4% 16%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 240 4% 16%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 186 100% 50%;
+    --accent-foreground: 240 10% 3.9%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 4% 16%;
+    --input: 240 4% 16%;
+    --ring: 186 100% 50%;
+    --chart-1: 186 100% 50%;
+    --chart-2: 142 71% 45%;
+    --chart-3: 215 20% 65%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --sidebar-background: 240 6% 6%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 186 100% 50%;
+    --sidebar-primary-foreground: 240 10% 3.9%;
+    --sidebar-accent: 240 4% 12%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 240 4% 16%;
+    --sidebar-ring: 186 100% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: hsl(240 6% 8%);
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(240 4% 20%);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(186 100% 50% / 0.4);
+}
+
+/* Grid background pattern */
+.grid-pattern {
+  background-image: 
+    linear-gradient(rgba(0, 245, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 245, 255, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* Glow effects */
+.glow-cyan {
+  box-shadow: 0 0 20px rgba(0, 245, 255, 0.15), 0 0 40px rgba(0, 245, 255, 0.05);
+}
+
+.glow-text {
+  text-shadow: 0 0 30px rgba(0, 245, 255, 0.3);
+}
+
+.pulse-border {
+  animation: pulseBorder 2s ease-in-out infinite;
+}
+
+@keyframes pulseBorder {
+  0%, 100% { border-color: hsl(186 100% 50% / 0.2); }
+  50% { border-color: hsl(186 100% 50% / 0.6); }
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
