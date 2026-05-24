@@ -61,6 +61,15 @@ export default function HeroSection({ heroImage }) {
 
   return (
     <section className="relative min-h-screen flex items-center pt-16 overflow-hidden">
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover opacity-15 mix-blend-luminosity pointer-events-none"
+      >
+        <source src="https://d8j0ntlcm91z4.cloudfront.net/user_3EBs78pPEwjVNce6L8iQL3AZlSz/hf_20260524_230658_9d03efa8-5c5b-4f99-aae7-4b1af7342a86.mp4" type="video/mp4" />
+      </video>
       <div className="absolute inset-0 grid-pattern opacity-50" />
       <div className="absolute top-1/3 left-1/4 w-125 h-125 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 w-100 h-100 bg-blue-500/5 rounded-full blur-3xl pointer-events-none" />
