@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 const services = [
   {
     icon: Globe,
+    slug: "web_dev",
     title: "Sitios y landings web",
     price: "Desde $390.000 CLP",
     description: "Sitios corporativos, landings de conversión, blogs y portfolios. Diseño responsive, SEO técnico básico y formulario de captura.",
@@ -21,6 +22,7 @@ const services = [
   },
   {
     icon: Zap,
+    slug: "web_app",
     title: "Software a medida",
     price: "Cotización por proyecto",
     description: "Sistemas internos, portales de clientes, plataformas SaaS, integraciones con APIs y dashboards de gestión.",
@@ -34,6 +36,7 @@ const services = [
   },
   {
     icon: Wrench,
+    slug: "automation",
     title: "Automatización de procesos",
     price: "Desde $290.000 CLP",
     description: "Conectamos tus herramientas (correo, planillas, CRM, WhatsApp) y eliminamos trabajo manual repetitivo.",
@@ -47,6 +50,7 @@ const services = [
   },
   {
     icon: BarChart3,
+    slug: "support",
     title: "Mantención y soporte",
     price: "Desde $49.000 CLP / mes",
     description: "Plan mensual para mantener tu sitio o sistema actualizado, seguro y con mejoras continuas.",
@@ -106,7 +110,7 @@ export default function Servicios() {
                     </li>
                   ))}
                 </ul>
-                <Link to="/contacto">
+                <Link to={`/contacto?servicio=${s.slug}`}>
                   <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
                     Solicitar cotización
                     <ArrowRight className="ml-2 h-4 w-4" />
@@ -125,13 +129,4 @@ export default function Servicios() {
               <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">
                 Agendar diagnóstico gratis
                 <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <Footer />
-    </div>
-  );
-}
+              </Butto

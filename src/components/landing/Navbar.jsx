@@ -18,7 +18,11 @@ export default function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <Link to="/" className="flex items-center gap-2.5 text-primary">
+          <Link
+            to="/"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="flex items-center gap-2.5 text-primary"
+          >
             <Logo size={32} />
             <span className="text-lg font-bold tracking-tight text-foreground">
               mau<span className="text-primary">dev</span>
@@ -70,9 +74,4 @@ export default function Navbar() {
                 Agendar diagnóstico
               </Button>
             </Link>
-          </div>
-        </div>
-      )}
-    </nav>
-  );
-}
+    

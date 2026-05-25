@@ -1,10 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
-  <rect width="64" height="64" rx="14" fill="#0a0a0a"/>
-  <rect x="2" y="2" width="60" height="60" rx="13" fill="none" stroke="#22d3ee" stroke-opacity="0.35" stroke-width="1.5"/>
-  <g font-family="ui-monospace, Menlo, Consolas, monospace" font-weight="800" fill="#22d3ee">
-    <text x="10" y="42" font-size="22">m</text>
-    <text x="28" y="42" font-size="22">/</text>
-    <text x="40" y="42" font-size="22">d</text>
-  </g>
-  <circle cx="54" cy="14" r="3" fill="#22d3ee"/>
-</svg>
+  <style>
+    /* Monocromo adaptativo: en modo claro tile negro con glifo blanco;
+       en modo oscuro se invierte (tile blanco con glifo negro). */
+    .tile { fill: #0a0a0a; }
+    .glyph { fill: #fafafa; }
+    .edge { stroke: #fafafa; stroke-opacity: 0.25; }
+    @media (prefers-color-scheme: dark) {
+      .tile { fill: #fafafa; }
+      .glyph { fill: #0a0a0a; }
+      .edge { stroke: #0a0a0a; stroke-opacity: 0.25; }
+    }
+  </style>
+  <rect class="tile" width="64" height="6

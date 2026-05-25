@@ -19,16 +19,16 @@ export default function Dashboard() {
   }, []);
 
   const cards = [
-    { label: "Proyectos", value: projects.length, icon: Briefcase, color: "text-primary", link: "/admin/portafolio" },
-    { label: "Blog Posts", value: stats.posts, icon: FileText, color: "text-blue-400", link: "/admin/blog" },
-    { label: "Leads", value: stats.leads, icon: Users, color: "text-green-400", link: "/admin/leads" },
+    { label: "Proyectos", value: projects.length, icon: Briefcase, color: "text-foreground", link: "/admin/portafolio" },
+    { label: "Blog Posts", value: stats.posts, icon: FileText, color: "text-foreground", link: "/admin/blog" },
+    { label: "Leads", value: stats.leads, icon: Users, color: "text-foreground", link: "/admin/leads" },
   ];
 
   const statusColors = {
-    new: "bg-primary/10 text-primary border-primary/20",
-    contacted: "bg-blue-500/10 text-blue-400 border-blue-500/20",
-    qualified: "bg-green-500/10 text-green-400 border-green-500/20",
-    converted: "bg-primary/10 text-primary border-primary/20",
+    new: "bg-secondary text-foreground border-border",
+    contacted: "bg-secondary text-muted-foreground border-foreground/30",
+    qualified: "bg-foreground text-background border-transparent",
+    converted: "bg-foreground text-background border-transparent",
   };
 
   return (
@@ -78,6 +78,4 @@ export default function Dashboard() {
           </div>
         )}
       </div>
-    </div>
-  );
-}
+    

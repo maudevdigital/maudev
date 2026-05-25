@@ -6,11 +6,11 @@ import { toast } from "sonner";
 import moment from "moment";
 
 const statusColors = {
-  new: "bg-primary/10 text-primary border-primary/20",
-  contacted: "bg-blue-500/10 text-blue-400 border-blue-500/20",
-  qualified: "bg-green-500/10 text-green-400 border-green-500/20",
-  converted: "bg-primary/10 text-primary border-primary/20",
-  lost: "bg-red-500/10 text-red-400 border-red-500/20",
+  new: "bg-secondary text-foreground border-border",
+  contacted: "bg-secondary text-muted-foreground border-foreground/30",
+  qualified: "bg-foreground text-background border-transparent",
+  converted: "bg-foreground text-background border-transparent",
+  lost: "bg-muted text-muted-foreground border-border line-through",
 };
 
 const interestLabels = {
@@ -135,6 +135,3 @@ export default function AdminLeads() {
           </table>
         </div>
       </div>
-    </div>
-  );
-}

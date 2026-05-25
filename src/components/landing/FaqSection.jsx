@@ -64,12 +64,4 @@ export default function FaqSection() {
               {open === i && (
                 <div className="px-5 pb-5">
                   <p className="text-sm text-muted-foreground leading-relaxed">{faq.a}</p>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
+    

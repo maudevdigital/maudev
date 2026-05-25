@@ -2,21 +2,20 @@ import { useState, useEffect } from "react";
 import { api } from "@/api/maudev";
 import { ArrowRight, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
+import { blogPosts as staticPosts, blogCategories as categoryLabels } from "@/data/blogPosts";
 import moment from "moment";
 
-const categoryLabels = {
-  trading: "Trading",
-  desarrollo: "Desarrollo",
-  automatizacion: "Automatización",
-  fintech: "Fintech",
-  tutoriales: "Tutoriales",
-};
+const latestStatic = [...staticPosts]
+  .sort((a, b) => new Date(b.created_date) - new Date(a.created_date))
+  .slice(0, 3);
 
 export default function BlogPreview({ blogImage }) {
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState(latestStatic);
 
   useEffect(() => {
-    api.entities.BlogPost.filter({ status: "published" }, "-created_date", 3).then(setPosts).catch(() => {});
+    api.entities.BlogPost.filter({ status: "published" }, "-created_date", 3)
+      .then((data) => setPosts(data && data.length > 0 ? data : latestStatic))
+      .catch(() => setPosts(latestStatic));
   }, []);
 
   if (posts.length === 0) return null;
@@ -54,7 +53,7 @@ export default function BlogPreview({ blogImage }) {
               ) : null}
               <div className="p-5">
                 <div className="flex items-center gap-3 mb-3">
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-primary/10 text-primary border border-primary/20">
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-secondary text-foreground border border-border">
                     {categoryLabels[post.category] || post.category}
                   </span>
                   <span className="text-[10px] text-muted-foreground flex items-center gap-1">
@@ -72,11 +71,4 @@ export default function BlogPreview({ blogImage }) {
         </div>
 
         <div className="sm:hidden mt-6 text-center">
-          <Link to="/blog" className="text-sm text-primary font-medium inline-flex items-center gap-2">
-            Ver blog completo <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
-      </div>
-    </section>
-  );
-}
+          <Link to="/blog" className="text-sm text-primary font-medium inline-flex items-c

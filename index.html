@@ -3,6 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="color-scheme" content="light dark" />
+    <!-- Color de la barra superior del navegador móvil según preferencia del sistema -->
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
     <script>
       // Adapta el tema (blanco/negro) al sistema del usuario y reacciona en vivo a los cambios.
       (function () {
@@ -22,25 +25,4 @@
     <meta name="robots" content="index, follow" />
     <meta property="og:title" content="Maudev · Desarrollo web, software y automatización en Chile" />
     <meta property="og:description" content="Sitios web, sistemas a medida y automatización para PYMEs y emprendedores en Chile. Diseño, código y soporte en un solo equipo." />
-    <meta property="og:type" content="website" />
-    <meta property="og:locale" content="es_CL" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <title>Maudev · Desarrollo web, software y automatización en Chile</title>
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "ProfessionalService",
-        "name": "Maudev",
-        "description": "Desarrollo web, software a medida y automatización para PYMEs y emprendedores en Chile.",
-        "areaServed": "CL",
-        "email": "contacto@maudev.cl",
-        "url": "https://maudev.cl",
-        "serviceType": ["Desarrollo Web", "Software a Medida", "Automatización de Procesos", "Consultoría TI"]
-      }
-    </script>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
-</html>
+    <meta pr

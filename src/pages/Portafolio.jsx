@@ -129,10 +129,4 @@ export default function Portafolio() {
               </Button>
             </Link>
           </div>
-        </div>
-      </section>
-
-      <Footer />
-    </div>
-  );
-}
+        </di

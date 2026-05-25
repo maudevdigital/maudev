@@ -168,10 +168,4 @@
 
 @keyframes pulseBorder {
   0%, 100% { border-color: hsl(var(--foreground) / 0.15); }
-  50% { border-color: hsl(var(--foreground) / 0.45); }
-}
-
-/* Smooth scroll */
-html {
-  scroll-behavior: smooth;
-}
+  

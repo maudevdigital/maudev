@@ -5,15 +5,8 @@ import { ArrowLeft, Clock, Tag, Calendar } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import Navbar from "../components/landing/Navbar";
 import Footer from "../components/landing/Footer";
+import { getBlogPostById, blogCategories as categoryLabels } from "@/data/blogPosts";
 import moment from "moment";
-
-const categoryLabels = {
-  trading: "Trading",
-  desarrollo: "Desarrollo",
-  automatizacion: "Automatización",
-  fintech: "Fintech",
-  tutoriales: "Tutoriales",
-};
 
 export default function BlogPostDetail() {
   const { postId } = useParams();
@@ -21,10 +14,12 @@ export default function BlogPostDetail() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let active = true;
     api.entities.BlogPost.get(postId)
-      .then(setPost)
-      .catch(() => setPost(null))
-      .finally(() => setLoading(false));
+      .then((data) => { if (active) setPost(data || getBlogPostById(postId) || null); })
+      .catch(() => { if (active) setPost(getBlogPostById(postId) || null); })
+      .finally(() => { if (active) setLoading(false); });
+    return () => { active = false; };
   }, [postId]);
 
   if (loading) {
@@ -95,12 +90,5 @@ export default function BlogPostDetail() {
             </div>
           )}
 
-          <div className="prose prose-invert prose-sm sm:prose-base max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-a:text-primary prose-code:text-primary prose-code:bg-secondary prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-card prose-pre:border prose-pre:border-border">
-            <ReactMarkdown>{post.content}</ReactMarkdown>
-          </div>
-        </div>
-      </article>
-      <Footer />
-    </div>
-  );
-}
+          <div className="prose dark:prose-invert prose-sm sm:prose-base max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-a:text-primary prose-code:text-primary prose-code:bg-secondary prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-card prose-pre:border prose-pre:border-border">
+            <ReactMarkdown>{post.content

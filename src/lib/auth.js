@@ -10,4 +10,4 @@ export const ADMIN_EMAIL = ADMIN_EMAILS[0];
 
 export const normalizeEmail = (email = '') => email.trim().toLowerCase();
 
-export const isAdminEmail = (email) => ADMIN_EMAILS.includes(normalizeEmail(email));
+export const isAdminEmail = (email) => ADMIN_EMAILS.includes(

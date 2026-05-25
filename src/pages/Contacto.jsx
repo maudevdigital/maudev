@@ -1,22 +1,53 @@
 import { useEffect, useState } from "react";
-import { Mail, MessageCircle, Calendar, CheckCircle, Send } from "lucide-react";
+import { useSearchParams } from "react-router-dom";
+import { Mail, MessageCircle, Calendar, CheckCircle, Send, ShieldCheck } from "lucide-react";
 import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { api } from "@/api/maudev";
 import { getLeadAttribution } from "@/lib/lead-tracking";
 import { toast } from "sonner";
 
-// Reemplaza con tu link real de Google Calendar appointment scheduling.
+// ⚙️ Reemplaza con tu link real de Google Calendar appointment scheduling.
 // Ej: https://calendar.google.com/calendar/appointments/schedules/AcZssZ.....
 const GOOGLE_CALENDAR_URL = "https://calendar.google.com/calendar/u/0/appointments/schedules/maudev";
-const CONTACT_EMAIL = "maudevchile@gmail.com";
+const CONTACT_EMAIL = "contacto@maudev.cl";
+
+const COUNTRIES = [
+  { code: "CL", flag: "🇨🇱", label: "Chile", dial: "+56", placeholder: "9 1234 5678", min: 8, max: 9 },
+  { code: "US", flag: "🇺🇸", label: "Estados Unidos", dial: "+1", placeholder: "(555) 123-4567", min: 10, max: 10 },
+  { code: "MX", flag: "🇲🇽", label: "México", dial: "+52", placeholder: "55 1234 5678", min: 10, max: 10 },
+  { code: "CO", flag: "🇨🇴", label: "Colombia", dial: "+57", placeholder: "300 123 4567", min: 10, max: 10 },
+  { code: "PE", flag: "🇵🇪", label: "Perú", dial: "+51", placeholder: "987 654 321", min: 9, max: 9 },
+  { code: "AR", flag: "🇦🇷", label: "Argentina", dial: "+54", placeholder: "11 1234 5678", min: 10, max: 11 },
+];
+
+const INTERESTS = [
+  { value: "web_dev", label: "Sitio o landing web" },
+  { value: "web_app", label: "Software a medida" },
+  { value: "automation", label: "Automatización" },
+  { value: "payments", label: "Integración de pagos / APIs" },
+  { value: "support", label: "Mantención y soporte" },
+  { value: "general", label: "Consulta general" },
+];
+const VALID_INTERESTS = INTERESTS.map((i) => i.value);
+
+const inputClass =
+  "w-full h-11 rounded-md border border-input bg-background px-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors";
 
 export default function Contacto() {
-  const [form, setForm] = useState({ name: "", email: "", whatsapp: "", interest: "", message: "" });
+  const [searchParams] = useSearchParams();
+  const preselected = searchParams.get("servicio");
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    country: "CL",
+    phone: "",
+    interest: VALID_INTERESTS.includes(preselected) ? preselected : "",
+    message: "",
+  });
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
 
@@ -24,17 +55,35 @@ export default function Contacto() {
     document.title = "Contacto · Maudev";
   }, []);
 
+  // Si el usuario llega con ?servicio=... preselecciona el objetivo.
+  useEffect(() => {
+    if (preselected && VALID_INTERESTS.includes(preselected)) {
+      setForm((f) => ({ ...f, interest: preselected }));
+    }
+  }, [preselected]);
+
+  const country = COUNTRIES.find((c) => c.code === form.country) || COUNTRIES[0];
+  const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.name || !form.email) return;
+    if (!form.name.trim() || !form.email.trim() || !form.phone.trim() || !form.interest || !form.message.trim()) {
+      toast.error("Completa todos los campos para enviar tu mensaje.");
+      return;
+    }
+    const digits = form.phone.replace(/\D/g, "");
+    if (digits.length < country.min || digits.length > country.max) {
+      toast.error(`El teléfono de ${country.label} no parece válido. Revisa el número.`);
+      return;
+    }
     setLoading(true);
     try {
       await api.entities.Lead.create({
-        name: form.name,
-        email: form.email,
-        whatsapp: form.whatsapp,
-        interest: form.interest || "general",
-        message: form.message,
+        name: form.name.trim(),
+        email: form.email.trim(),
+        whatsapp: `${country.dial} ${form.phone.trim()}`,
+        interest: form.interest,
+        message: form.message.trim(),
         source: "contact_page",
         status: "new",
         consent: true,
@@ -73,29 +122,29 @@ export default function Contacto() {
               href={GOOGLE_CALENDAR_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-card border border-border rounded-2xl p-6 hover:border-primary/50 transition-colors group"
+              className="bg-card border border-border rounded-2xl p-6 hover:border-foreground/30 transition-colors group"
             >
-              <div className="h-10 w-10 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center mb-4">
-                <Calendar className="h-5 w-5 text-primary" />
+              <div className="h-10 w-10 rounded-lg bg-secondary border border-border flex items-center justify-center mb-4">
+                <Calendar className="h-5 w-5 text-foreground" />
               </div>
-              <h3 className="font-bold mb-1 group-hover:text-primary transition-colors">Agendar reunión</h3>
-              <p className="text-sm text-muted-foreground">Bloque de 20 min en Google Calendar.</p>
+              <h3 className="font-bold mb-1">Agendar videollamada</h3>
+              <p className="text-sm text-muted-foreground">Bloque de 20 min por Google Meet.</p>
             </a>
 
             <a
               href={`mailto:${CONTACT_EMAIL}`}
-              className="bg-card border border-border rounded-2xl p-6 hover:border-primary/50 transition-colors group"
+              className="bg-card border border-border rounded-2xl p-6 hover:border-foreground/30 transition-colors group"
             >
-              <div className="h-10 w-10 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center mb-4">
-                <Mail className="h-5 w-5 text-primary" />
+              <div className="h-10 w-10 rounded-lg bg-secondary border border-border flex items-center justify-center mb-4">
+                <Mail className="h-5 w-5 text-foreground" />
               </div>
-              <h3 className="font-bold mb-1 group-hover:text-primary transition-colors">Correo</h3>
+              <h3 className="font-bold mb-1">Correo</h3>
               <p className="text-sm text-muted-foreground break-all">{CONTACT_EMAIL}</p>
             </a>
 
             <div className="bg-card border border-border rounded-2xl p-6">
-              <div className="h-10 w-10 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center mb-4">
-                <MessageCircle className="h-5 w-5 text-primary" />
+              <div className="h-10 w-10 rounded-lg bg-secondary border border-border flex items-center justify-center mb-4">
+                <MessageCircle className="h-5 w-5 text-foreground" />
               </div>
               <h3 className="font-bold mb-1">WhatsApp</h3>
               <p className="text-sm text-muted-foreground">Déjanos tu número en el formulario y te escribimos.</p>
@@ -110,122 +159,70 @@ export default function Contacto() {
             <div className="bg-card border border-border rounded-2xl p-6 sm:p-8">
               <h2 className="text-2xl font-bold mb-2">Envíanos un mensaje</h2>
               <p className="text-sm text-muted-foreground mb-6">
-                Te respondemos por correo y, si dejas tu WhatsApp, también por ahí.
+                Te respondemos por correo y, con tu número, también por WhatsApp.
               </p>
 
               {sent ? (
                 <div className="flex flex-col items-center justify-center py-12 text-center">
-                  <div className="h-16 w-16 rounded-full bg-green-500/10 border border-green-500/30 flex items-center justify-center mb-4">
-                    <CheckCircle className="h-8 w-8 text-green-500" />
+                  <div className="h-16 w-16 rounded-full bg-secondary border border-border flex items-center justify-center mb-4">
+                    <CheckCircle className="h-8 w-8 text-foreground" />
                   </div>
                   <h3 className="text-lg font-semibold mb-2">Mensaje recibido</h3>
                   <p className="text-sm text-muted-foreground mb-6">Te respondemos en menos de 24h hábiles.</p>
                   <a href={GOOGLE_CALENDAR_URL} target="_blank" rel="noopener noreferrer">
                     <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
                       <Calendar className="mr-2 h-4 w-4" />
-                      Mientras tanto, agenda una reunión
+                      Mientras tanto, agenda una videollamada
                     </Button>
                   </a>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-5">
+                <form onSubmit={handleSubmit} className="space-y-5" noValidate>
                   <div>
                     <label className="text-xs font-mono text-muted-foreground mb-1.5 block">nombre *</label>
-                    <Input
-                      value={form.name}
-                      onChange={(e) => setForm({ ...form, name: e.target.value })}
-                      placeholder="Tu nombre"
-                      className="bg-background border-border h-11"
-                      required
-                    />
+                    <Input value={form.name} onChange={set("name")} placeholder="Tu nombre" className="bg-background border-border h-11" required />
                   </div>
                   <div>
                     <label className="text-xs font-mono text-muted-foreground mb-1.5 block">email *</label>
-                    <Input
-                      type="email"
-                      value={form.email}
-                      onChange={(e) => setForm({ ...form, email: e.target.value })}
-                      placeholder="tu@email.com"
-                      className="bg-background border-border h-11"
-                      required
-                    />
+                    <Input type="email" value={form.email} onChange={set("email")} placeholder="tu@email.com" className="bg-background border-border h-11" required />
                   </div>
                   <div>
-                    <label className="text-xs font-mono text-muted-foreground mb-1.5 block">whatsapp (opcional)</label>
-                    <Input
-                      type="tel"
-                      value={form.whatsapp}
-                      onChange={(e) => setForm({ ...form, whatsapp: e.target.value })}
-                      placeholder="+56 9 ..."
-                      className="bg-background border-border h-11"
-                    />
+                    <label className="text-xs font-mono text-muted-foreground mb-1.5 block">teléfono / whatsapp *</label>
+                    <div className="flex gap-2">
+                      <select
+                        value={form.country}
+                        onChange={set("country")}
+                        className="h-11 rounded-md border border-input bg-background px-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring shrink-0"
+                        aria-label="País"
+                      >
+                        {COUNTRIES.map((c) => (
+                          <option key={c.code} value={c.code}>
+                            {c.flag} {c.dial}
+                          </option>
+                        ))}
+                      </select>
+                      <Input
+                        type="tel"
+                        value={form.phone}
+                        onChange={set("phone")}
+                        placeholder={country.placeholder}
+                        className="bg-background border-border h-11 flex-1"
+                        required
+                      />
+                    </div>
                   </div>
                   <div>
-                    <label className="text-xs font-mono text-muted-foreground mb-1.5 block">qué necesitas</label>
-                    <Select value={form.interest} onValueChange={(v) => setForm({ ...form, interest: v })}>
-                      <SelectTrigger className="bg-background border-border h-11">
-                        <SelectValue placeholder="Selecciona una opción" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="web_dev">Sitio o landing web</SelectItem>
-                        <SelectItem value="web_app">Software a medida</SelectItem>
-                        <SelectItem value="automation">Automatización</SelectItem>
-                        <SelectItem value="consulting">Consultoría TI</SelectItem>
-                        <SelectItem value="general">Consulta general</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <label className="text-xs font-mono text-muted-foreground mb-1.5 block">qué necesitas *</label>
+                    <select value={form.interest} onChange={set("interest")} className={inputClass} required>
+                      <option value="" disabled>
+                        Selecciona una opción
+                      </option>
+                      {INTERESTS.map((o) => (
+                        <option key={o.value} value={o.value}>
+                          {o.label}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                   <div>
-                    <label className="text-xs font-mono text-muted-foreground mb-1.5 block">mensaje</label>
-                    <Textarea
-                      value={form.message}
-                      onChange={(e) => setForm({ ...form, message: e.target.value })}
-                      placeholder="Cuéntanos brevemente sobre tu proyecto..."
-                      className="bg-background border-border min-h-[120px]"
-                    />
-                  </div>
-                  <p className="text-[11px] text-muted-foreground">
-                    Al enviar aceptas nuestra <a href="/privacidad" className="text-primary hover:underline">política de privacidad</a>.
-                  </p>
-                  <Button
-                    type="submit"
-                    disabled={loading}
-                    className="w-full h-12 bg-primary text-primary-foreground hover:bg-primary/90 font-semibold"
-                  >
-                    {loading ? "Enviando..." : "Enviar mensaje"}
-                    <Send className="ml-2 h-4 w-4" />
-                  </Button>
-                </form>
-              )}
-            </div>
-
-            <div className="bg-card border border-border rounded-2xl p-6 sm:p-8 flex flex-col">
-              <h2 className="text-2xl font-bold mb-2">Agenda directo</h2>
-              <p className="text-sm text-muted-foreground mb-6">
-                Reserva un bloque de 20 minutos en nuestro Google Calendar. Sin compromiso.
-              </p>
-              <div className="flex-1 rounded-xl border border-border overflow-hidden bg-background min-h-[500px]">
-                <iframe
-                  src={GOOGLE_CALENDAR_URL}
-                  title="Agendar reunión con Maudev"
-                  className="w-full h-full min-h-[500px]"
-                  frameBorder="0"
-                />
-              </div>
-              <a
-                href={GOOGLE_CALENDAR_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-4 inline-flex items-center justify-center gap-2 text-sm text-primary font-medium hover:underline"
-              >
-                Abrir calendario en pestaña nueva →
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <Footer />
-    </div>
-  );
-}
+                    <label className="text-xs font-mono text-mute

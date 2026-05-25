@@ -16,7 +16,7 @@ export const projects = [
     industry: "SaaS / Marketing",
     role: "Producto propio · diseño, desarrollo, infraestructura",
     image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1000&q=70",
-    url: "https://systempro.app",
+    url: "https://systemepro.com",
     featured: true,
   },
   {
@@ -38,14 +38,4 @@ export const projects = [
     tagline: "Portal de servicios para residentes y turistas",
     description:
       "Plataforma web orientada a facilitar trámites y servicios para residentes extranjeros y turistas en Paraguay. Captura de leads, contenido SEO y formularios de contacto multi-servicio.",
-    stack: ["React", "Vite", "Supabase", "Tailwind"],
-    industry: "Servicios / Migración",
-    role: "Desarrollo y diseño",
-    image: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1000&q=70",
-    url: "https://paraguayaccess.com",
-    featured: true,
-  },
-];
-
-export const getFeaturedProjects = () => projects.filter((p) => p.featured);
-export const getProjectById = (id) => projects.find((p) => p.id === id);
+    stack: ["React", "

@@ -25,11 +25,11 @@ const defaultForm = {
 };
 
 const COLORS = [
-  "from-primary/20 to-primary/5",
-  "from-blue-500/20 to-blue-500/5",
-  "from-purple-500/20 to-purple-500/5",
-  "from-green-500/20 to-green-500/5",
-  "from-orange-500/20 to-orange-500/5",
+  "from-foreground/10 to-foreground/5",
+  "from-foreground/10 to-foreground/5",
+  "from-foreground/10 to-foreground/5",
+  "from-foreground/10 to-foreground/5",
+  "from-foreground/10 to-foreground/5",
 ];
 
 export default function AdminPortfolio() {
@@ -167,7 +167,7 @@ export default function AdminPortfolio() {
                   <span
                     className={`text-[10px] font-mono px-2 py-0.5 rounded border ${
                       p.status === "published"
-                        ? "bg-green-500/10 text-green-400 border-green-500/20"
+                        ? "bg-foreground text-background border-transparent"
                         : "bg-secondary text-muted-foreground border-border"
                     }`}
                   >
@@ -216,7 +216,7 @@ export default function AdminPortfolio() {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="h-7 px-2 text-xs gap-1 text-red-400 hover:text-red-500 hover:bg-red-500/10"
+                    className="h-7 px-2 text-xs gap-1 text-muted-foreground hover:text-foreground hover:bg-secondary"
                     onClick={() => handleDelete(p.id)}
                   >
                     <Trash2 className="h-3 w-3" /> Eliminar
@@ -395,6 +395,3 @@ export default function AdminPortfolio() {
           </div>
         </DialogContent>
       </Dialog>
-    </div>
-  );
-}

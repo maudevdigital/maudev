@@ -126,8 +126,8 @@ export default function AdminBlog() {
                   </td>
                   <td className="p-4">
                     <span className={`text-[10px] font-mono px-2 py-0.5 rounded border ${
-                      p.status === "published" ? "bg-green-500/10 text-green-400 border-green-500/20" :
-                      "bg-yellow-500/10 text-yellow-400 border-yellow-500/20"
+                      p.status === "published" ? "bg-foreground text-background border-transparent" :
+                      "bg-secondary text-muted-foreground border-border"
                     }`}>
                       {p.status}
                     </span>
@@ -234,4 +234,4 @@ export default function AdminBlog() {
       </Dialog>
     </div>
   );
-}
+}       

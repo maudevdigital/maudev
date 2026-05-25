@@ -30,30 +30,4 @@ El esquema completo está en [`supabase/schema.sql`](supabase/schema.sql). Ejec�
 
 Para storage de imágenes crea un bucket público llamado `uploads` (Supabase → Storage).
 
-## Admin
-
-Los correos autorizados para el panel `/admin` se definen en dos lugares que deben mantenerse sincronizados:
-
-- Frontend: `src/lib/auth.js` (`ADMIN_EMAILS`) — `AdminGuard` bloquea cualquier otra cuenta.
-- Backend: función `public.is_admin()` en `supabase/schema.sql` — las políticas RLS solo permiten a esos correos leer/editar datos privados.
-
-Admins actuales:
-
-```txt
-maudevchile@gmail.com
-lucasmaulenr@gmail.com
-```
-
-El login del panel usa Google OAuth vía Supabase Auth (`api.auth.redirectToLogin`).
-
-## Tema (blanco y negro, adaptativo)
-
-El diseño es monocromo y se adapta automáticamente al sistema del usuario (claro/oscuro) mediante `prefers-color-scheme`. La detección está en el script inline de `index.html`, que aplica la clase `.dark` y reacciona en vivo a los cambios del sistema. Las variables de color viven en `src/index.css` (`:root` = tema claro, `.dark` = tema oscuro).
-
-## Producción
-
-```bash
-npm run build
-```
-
-Publica la carpeta `dist/` en tu hosting (Vercel, Netlify, Cloudflare Pages, etc.). Recuerda definir las variables `VITE_SUPABASE_*` en el panel del hosting.
+## 

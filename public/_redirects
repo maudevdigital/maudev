@@ -1,0 +1,4 @@
+# Cloudflare Pages — fallback SPA.
+# Cualquier ruta que no sea un archivo estático sirve index.html (200),
+# para que el enrutado de React Router funcione en /servicios, /portafolio, etc.
+/*    /index.html   200
