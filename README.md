@@ -1,6 +1,8 @@
 # Maudev
 
-Landing y panel admin para Maudev, construido con React, Vite, Tailwind CSS v4 y Firebase.
+Landing y panel admin para **Maudev**, construido con React 19, Vite, Tailwind CSS v4 y **Supabase** (base de datos, autenticación y storage).
+
+> Backend único: **Supabase**. El proyecto no usa Firebase/Firestore. Toda la lógica de datos pasa por `src/api/maudev.js` sobre el cliente de `src/lib/supabase.js`.
 
 ## Desarrollo
 
@@ -9,53 +11,49 @@ npm install
 npm run dev
 ```
 
+## Variables de entorno
+
+Copia `.env.local.example` a `.env.local` y completa con los datos de tu proyecto (Supabase → Settings → API):
+
+```txt
+VITE_SUPABASE_URL=https://YOUR_PROJECT.supabase.co
+VITE_SUPABASE_ANON_KEY=eyJhbGciOi....
+```
+
+## Base de datos
+
+El esquema completo está en [`supabase/schema.sql`](supabase/schema.sql). Ejecútalo en **Supabase → SQL Editor → New query**. Crea tres tablas con Row Level Security (RLS):
+
+- `leads` — captación desde la landing (incluye campos UTM para atribución de campañas: `utm_source`, `utm_medium`, `utm_campaign`, `utm_term`, `utm_content`). Cualquiera puede insertar; solo los admin pueden leer/editar.
+- `blog_posts` — contenido del blog (público lee solo `published`).
+- `projects` — portafolio (público lee solo `published`).
+
+Para storage de imágenes crea un bucket público llamado `uploads` (Supabase → Storage).
+
 ## Admin
 
-El único correo autorizado para el panel `/admin` es:
+Los correos autorizados para el panel `/admin` se definen en dos lugares que deben mantenerse sincronizados:
+
+- Frontend: `src/lib/auth.js` (`ADMIN_EMAILS`) — `AdminGuard` bloquea cualquier otra cuenta.
+- Backend: función `public.is_admin()` en `supabase/schema.sql` — las políticas RLS solo permiten a esos correos leer/editar datos privados.
+
+Admins actuales:
 
 ```txt
 maudevchile@gmail.com
+lucasmaulenr@gmail.com
 ```
 
-La protección está aplicada en dos capas:
+El login del panel usa Google OAuth vía Supabase Auth (`api.auth.redirectToLogin`).
 
-- Frontend: `AdminGuard` bloquea cualquier cuenta distinta.
-- Firestore Rules: solo ese email puede leer o modificar colecciones privadas y contenido admin.
+## Tema (blanco y negro, adaptativo)
 
-Después de cambiar reglas:
-
-```bash
-firebase deploy --only firestore:rules,firestore:indexes
-```
-
-## Email automático
-
-Las Cloud Functions escuchan nuevos documentos en `leads` y `orders`, y escriben correos en la colección `mail`.
-
-Para enviar esos correos instala/configura la extensión de Firebase **Trigger Email from Firestore** usando:
-
-- Colección: `mail`
-- Destinatario admin: `maudevchile@gmail.com`
-- SMTP: el proveedor que uses para enviar correos
-
-Deploy de funciones:
-
-```bash
-cd functions
-npm install
-firebase deploy --only functions
-```
-
-Por seguridad, la respuesta automática al lead está desactivada por defecto. Para activarla:
-
-```bash
-echo SEND_AUTOREPLY=true > functions/.env
-firebase deploy --only functions
-```
+El diseño es monocromo y se adapta automáticamente al sistema del usuario (claro/oscuro) mediante `prefers-color-scheme`. La detección está en el script inline de `index.html`, que aplica la clase `.dark` y reacciona en vivo a los cambios del sistema. Las variables de color viven en `src/index.css` (`:root` = tema claro, `.dark` = tema oscuro).
 
 ## Producción
 
 ```bash
 npm run build
-firebase deploy --only hosting
 ```
+
+Publica la carpeta `dist/` en tu hosting (Vercel, Netlify, Cloudflare Pages, etc.). Recuerda definir las variables `VITE_SUPABASE_*` en el panel del hosting.

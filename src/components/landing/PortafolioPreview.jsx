@@ -14,14 +14,7 @@ const cardVariants = {
   }),
 };
 
-const CARD_GRADIENTS = [
-  "from-primary/25 via-primary/10 to-transparent",
-  "from-blue-500/25 via-blue-500/10 to-transparent",
-  "from-purple-500/25 via-purple-500/10 to-transparent",
-  "from-emerald-500/25 via-emerald-500/10 to-transparent",
-  "from-orange-500/25 via-orange-500/10 to-transparent",
-  "from-pink-500/25 via-pink-500/10 to-transparent",
-];
+const PLACEHOLDER_GRADIENT = "from-foreground/10 via-foreground/5 to-transparent";
 
 export default function PortafolioPreview() {
   const [projects, setProjects] = useState(
@@ -79,27 +72,29 @@ export default function PortafolioPreview() {
               variants={cardVariants}
               className="group bg-card border border-border rounded-2xl overflow-hidden hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 flex flex-col"
             >
-              {/* Imagen o gradient placeholder */}
-              <div className={`relative aspect-video overflow-hidden bg-linear-to-br ${CARD_GRADIENTS[i % CARD_GRADIENTS.length]}`}>
-                {p.image_url ? (
+              {/* Imagen sobre placeholder monocromo (fallback si la imagen falla) */}
+              <div className={`relative aspect-video overflow-hidden bg-linear-to-br ${PLACEHOLDER_GRADIENT}`}>
+                {/* Placeholder de fondo: visible si no hay imagen o si falla la carga */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
+                  <span className="text-3xl font-black tracking-tight text-foreground/20 select-none">
+                    {p.title?.slice(0, 2).toUpperCase()}
+                  </span>
+                  <div className="flex gap-1.5">
+                    {(p.stack || []).slice(0, 3).map((s) => (
+                      <span key={s} className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-background/40 text-foreground/50 border border-border/40">
+                        {s}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                {p.image_url && (
                   <img
                     src={p.image_url}
                     alt={p.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                    onError={(e) => { e.currentTarget.style.display = "none"; }}
+                    className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"
                   />
-                ) : (
-                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
-                    <span className="text-3xl font-black tracking-tight text-foreground/20 select-none">
-                      {p.title?.slice(0, 2).toUpperCase()}
-                    </span>
-                    <div className="flex gap-1.5">
-                      {(p.stack || []).slice(0, 3).map((s) => (
-                        <span key={s} className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-background/40 text-foreground/50 border border-border/40">
-                          {s}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
                 )}
                 {/* Overlay con link */}
                 <div className="absolute inset-0 bg-background/0 group-hover:bg-background/10 transition-colors" />

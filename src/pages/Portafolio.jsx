@@ -7,13 +7,7 @@ import { Button } from "@/components/ui/button";
 import { api } from "@/api/maudev";
 import { projects as staticProjects } from "@/data/projects";
 
-const GRADIENTS = [
-  "from-primary/20 to-primary/5",
-  "from-blue-500/20 to-blue-500/5",
-  "from-purple-500/20 to-purple-500/5",
-  "from-emerald-500/20 to-emerald-500/5",
-  "from-orange-500/20 to-orange-500/5",
-];
+const PLACEHOLDER_GRADIENT = "from-foreground/10 to-foreground/5";
 
 export default function Portafolio() {
   const [projects, setProjects] = useState(
@@ -54,27 +48,28 @@ export default function Portafolio() {
                 idx % 2 === 1 ? "lg:[&>*:first-child]:order-2" : ""
               }`}
             >
-              {/* Imagen o gradient placeholder */}
-              <div className={`aspect-video rounded-2xl overflow-hidden border border-border bg-linear-to-br ${GRADIENTS[idx % GRADIENTS.length]} flex items-center justify-center relative`}>
-                {p.image_url ? (
+              {/* Imagen sobre placeholder monocromo (fallback si la imagen falla) */}
+              <div className={`group aspect-video rounded-2xl overflow-hidden border border-border bg-linear-to-br ${PLACEHOLDER_GRADIENT} flex items-center justify-center relative`}>
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
+                  <span className="text-5xl lg:text-6xl font-black tracking-tight text-foreground/15 select-none">
+                    {p.title?.slice(0, 2).toUpperCase()}
+                  </span>
+                  <div className="flex flex-wrap gap-2 justify-center px-8">
+                    {(p.stack || []).slice(0, 4).map((s) => (
+                      <span key={s} className="text-xs font-mono px-2 py-1 rounded bg-background/40 border border-border/40 text-foreground/50">
+                        {s}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                {p.image_url && (
                   <img
                     src={p.image_url}
                     alt={p.title}
-                    className="w-full h-full object-cover"
+                    loading="lazy"
+                    onError={(e) => { e.currentTarget.style.display = "none"; }}
+                    className="absolute inset-0 w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
                   />
-                ) : (
-                  <div className="flex flex-col items-center gap-4">
-                    <span className="text-5xl lg:text-6xl font-black tracking-tight text-foreground/15 select-none">
-                      {p.title?.slice(0, 2).toUpperCase()}
-                    </span>
-                    <div className="flex flex-wrap gap-2 justify-center px-8">
-                      {(p.stack || []).slice(0, 4).map((s) => (
-                        <span key={s} className="text-xs font-mono px-2 py-1 rounded bg-background/40 border border-border/40 text-foreground/50">
-                          {s}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
                 )}
               </div>
 

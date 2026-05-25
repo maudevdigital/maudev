@@ -2,6 +2,20 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
+    <meta name="color-scheme" content="light dark" />
+    <script>
+      // Adapta el tema (blanco/negro) al sistema del usuario y reacciona en vivo a los cambios.
+      (function () {
+        var mq = window.matchMedia('(prefers-color-scheme: dark)');
+        var apply = function (isDark) {
+          document.documentElement.classList.toggle('dark', isDark);
+        };
+        apply(mq.matches);
+        mq.addEventListener
+          ? mq.addEventListener('change', function (e) { apply(e.matches); })
+          : mq.addListener(function (e) { apply(e.matches); });
+      })();
+    </script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Desarrollamos sitios web, software a medida y automatización de procesos para emprendedores y PYMEs en Chile. Diagnóstico gratis." />
@@ -19,7 +33,7 @@
         "name": "Maudev",
         "description": "Desarrollo web, software a medida y automatización para PYMEs y emprendedores en Chile.",
         "areaServed": "CL",
-        "email": "maudevchile@gmail.com",
+        "email": "contacto@maudev.cl",
         "url": "https://maudev.cl",
         "serviceType": ["Desarrollo Web", "Software a Medida", "Automatización de Procesos", "Consultoría TI"]
       }

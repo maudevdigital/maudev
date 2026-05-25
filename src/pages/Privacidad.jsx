@@ -20,7 +20,7 @@ export default function Privacidad() {
             <section>
               <h2 className="text-xl font-bold text-foreground mb-2">1. Responsable del tratamiento</h2>
               <p>
-                Maudev, con domicilio en Chile y correo de contacto <a href="mailto:maudevchile@gmail.com" className="text-primary hover:underline">maudevchile@gmail.com</a>,
+                Maudev, con domicilio en Chile y correo de contacto <a href="mailto:contacto@maudev.cl" className="text-primary hover:underline">contacto@maudev.cl</a>,
                 es responsable del tratamiento de los datos personales recopilados a través de este sitio.
                 Esta política cumple con la Ley N° 19.628 sobre Protección de la Vida Privada de Chile.
               </p>
@@ -32,7 +32,7 @@ export default function Privacidad() {
               <ul className="list-disc list-inside space-y-1 mt-2 ml-2">
                 <li>Nombre</li>
                 <li>Correo electrónico</li>
-                <li>Número de WhatsApp / teléfono (opcional)</li>
+                <li>Número de WhatsApp / teléfono y país</li>
                 <li>Tipo de interés o servicio solicitado</li>
                 <li>Mensaje libre</li>
                 <li>Datos técnicos: dirección IP, navegador, parámetros UTM</li>
@@ -74,7 +74,7 @@ export default function Privacidad() {
               <h2 className="text-xl font-bold text-foreground mb-2">6. Tus derechos</h2>
               <p>
                 Tienes derecho a acceder, rectificar, cancelar y oponerte al tratamiento de tus datos
-                personales. Para ejercer estos derechos, escríbenos a <a href="mailto:maudevchile@gmail.com" className="text-primary hover:underline">maudevchile@gmail.com</a>
+                personales. Para ejercer estos derechos, escríbenos a <a href="mailto:contacto@maudev.cl" className="text-primary hover:underline">contacto@maudev.cl</a>
                 con el asunto "Datos personales". Respondemos en un plazo máximo de 5 días hábiles.
               </p>
             </section>

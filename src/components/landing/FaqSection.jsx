@@ -4,27 +4,27 @@ import { ChevronDown } from "lucide-react";
 const faqs = [
   {
     q: "¿Qué tipos de proyectos desarrollan?",
-    a: "Trabajamos en todo el espectro del software: landing pages con SEO, aplicaciones web y SaaS, sistemas internos y dashboards, bots y automatizaciones, indicadores Pine Script para TradingView y Expert Advisors en MQL5 para MetaTrader 5. Si tiene lógica digital, lo construimos.",
+    a: "Landing pages con SEO, aplicaciones web y plataformas SaaS, sistemas internos y dashboards, automatización de procesos con bots e integraciones, y conexión de pasarelas de pago y APIs. Si tu negocio tiene un proceso digital, lo diseñamos, construimos y dejamos funcionando.",
   },
   {
     q: "¿Cuánto cuesta un proyecto?",
-    a: "El precio depende del alcance y la complejidad. Una landing optimizada para SEO puede partir desde $300 USD, un indicador técnico desde $80 USD, y una plataforma SaaS completa requiere un presupuesto acordado en el roadmap. Siempre recibes cotización detallada antes de comenzar, sin letra chica.",
+    a: "Depende del alcance. Una landing de conversión parte desde $390.000 CLP y un proyecto de automatización desde $290.000 CLP; el software a medida se cotiza por proyecto. En el diagnóstico inicial defines el alcance y recibes un precio fijo por escrito antes de empezar, sin costos ocultos.",
   },
   {
     q: "¿Cuánto tiempo tarda la entrega?",
-    a: "Una landing o indicador básico: 5-10 días. Proyectos medianos (apps, bots, sistemas): 2-4 semanas. Plataformas completas: plazos definidos en el roadmap inicial. Los tiempos siempre se establecen antes de comenzar y se cumplen.",
+    a: "Una landing: aproximadamente 5 a 10 días. Proyectos medianos como apps, bots o sistemas internos: 2 a 4 semanas. Plataformas completas: el plazo se define en el roadmap inicial. Los tiempos se acuerdan antes de comenzar y se respetan.",
   },
   {
     q: "¿El código me pertenece al 100%?",
-    a: "Sí. Todo el código fuente te es entregado junto con documentación técnica. No dependes de nosotros para hacer cambios, y puedes llevarlo a cualquier otro desarrollador sin restricciones.",
+    a: "Sí. Al cierre del proyecto recibes todo el código fuente y la documentación técnica. No quedas atado a nosotros: puedes seguir el desarrollo por tu cuenta o con cualquier otro equipo, sin restricciones.",
   },
   {
     q: "¿Puedo solicitar cambios durante el desarrollo?",
-    a: "Sí. El proceso es iterativo con entregas parciales para que valides y ajustes antes de la versión final. Cambios dentro del alcance acordado no tienen costo adicional. Si el alcance crece, lo discutimos y ajustamos el precio de forma transparente.",
+    a: "Sí. Trabajamos de forma iterativa con entregas parciales para que revises y ajustes antes de la versión final. Los cambios dentro del alcance acordado no tienen costo adicional; si el alcance crece, lo conversamos y ajustamos el presupuesto de forma transparente.",
   },
   {
-    q: "¿Trabajan con clientes fuera de Chile?",
-    a: "Sí. Trabajamos con clientes en toda Latinoamérica, España, Estados Unidos y Europa. La comunicación es en español o inglés según lo prefiera el cliente. El trabajo es 100% remoto.",
+    q: "¿Con qué clientes trabajan y cómo se paga?",
+    a: "Trabajamos 100% remoto con clientes en Chile, Latinoamérica y Estados Unidos, en español o inglés. En Chile aceptamos transferencia en CLP; para clientes internacionales recibimos pagos en USD o en USDT (cripto). El esquema de pago se acuerda en el roadmap antes de comenzar.",
   },
 ];
 

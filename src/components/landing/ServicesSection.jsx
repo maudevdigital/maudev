@@ -1,4 +1,4 @@
-import { TrendingUp, Globe, Bot, CreditCard, BarChart3, Code2, ArrowRight } from "lucide-react";
+import { Globe, Bot, CreditCard, Code2, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 
 const cardVariants = {
@@ -17,8 +17,6 @@ const services = [
     title: "Landing pages & SEO",
     desc: "Páginas de alta conversión posicionadas en Google. Diseño profesional, carga rápida, métricas integradas y formularios de captura de leads desde el primer día.",
     tags: ["SEO", "Conversión", "CRO"],
-    color: "from-primary/20 to-primary/5 border-primary/20",
-    iconColor: "text-primary bg-primary/10",
   },
   {
     icon: Code2,
@@ -26,8 +24,6 @@ const services = [
     title: "Software y apps a medida",
     desc: "Dashboards, CRMs, plataformas SaaS y sistemas internos. Desde el prototipo hasta el despliegue en producción con escalabilidad real.",
     tags: ["React", "Node.js", "Supabase"],
-    color: "from-blue-500/20 to-blue-500/5 border-blue-500/20",
-    iconColor: "text-blue-400 bg-blue-500/10",
   },
   {
     icon: Bot,
@@ -35,35 +31,13 @@ const services = [
     title: "Automatización de procesos",
     desc: "Workflows que eliminan trabajo manual: bots de calificación, respuestas automáticas, integraciones entre herramientas y pipelines de datos en tiempo real.",
     tags: ["Webhooks", "n8n", "CRM"],
-    color: "from-purple-500/20 to-purple-500/5 border-purple-500/20",
-    iconColor: "text-purple-400 bg-purple-500/10",
-  },
-  {
-    icon: TrendingUp,
-    num: "04",
-    title: "Scripts TradingView",
-    desc: "Indicadores y estrategias en Pine Script con lógica personalizada, alertas inteligentes y backtesting para tomar decisiones con datos.",
-    tags: ["Pine Script", "Alertas", "Backtesting"],
-    color: "from-emerald-500/20 to-emerald-500/5 border-emerald-500/20",
-    iconColor: "text-emerald-400 bg-emerald-500/10",
-  },
-  {
-    icon: BarChart3,
-    num: "05",
-    title: "Expert Advisors MT5",
-    desc: "EAs e indicadores personalizados para MetaTrader 5 en MQL5. Trading algorítmico, gestión de riesgo automática y reportes de rendimiento.",
-    tags: ["MQL5", "EA", "Risk Mgmt"],
-    color: "from-orange-500/20 to-orange-500/5 border-orange-500/20",
-    iconColor: "text-orange-400 bg-orange-500/10",
   },
   {
     icon: CreditCard,
-    num: "06",
+    num: "04",
     title: "Integración de pagos y APIs",
-    desc: "Pasarelas de cobro, suscripciones recurrentes, facturación automática y conexión con cualquier API externa. El dinero fluye sin fricción.",
-    tags: ["Stripe", "MercadoPago", "APIs"],
-    color: "from-pink-500/20 to-pink-500/5 border-pink-500/20",
-    iconColor: "text-pink-400 bg-pink-500/10",
+    desc: "Pasarelas de cobro, suscripciones recurrentes y facturación automática. Conectamos Stripe, MercadoPago o pagos en USDT con cualquier API externa.",
+    tags: ["Stripe", "MercadoPago", "USDT"],
   },
 ];
 
@@ -85,7 +59,7 @@ export default function ServicesSection() {
         </div>
 
         <motion.div
-          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6"
+          className="grid sm:grid-cols-2 gap-px bg-border rounded-2xl overflow-hidden border border-border"
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-100px" }}
@@ -95,19 +69,19 @@ export default function ServicesSection() {
               key={i}
               custom={i}
               variants={cardVariants}
-              className={`group relative bg-linear-to-br ${s.color} border rounded-2xl p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5`}
+              className="group relative bg-card p-8 transition-colors duration-300 hover:bg-secondary/40"
             >
-              <div className="flex items-start justify-between mb-4">
-                <div className={`h-11 w-11 rounded-xl ${s.iconColor} flex items-center justify-center`}>
-                  <s.icon className="h-5 w-5" />
-                </div>
-                <span className="text-xs font-mono text-muted-foreground/60 font-bold tracking-widest">{s.num}</span>
+              <span className="absolute top-6 right-6 text-xs font-mono text-muted-foreground/40 font-bold tracking-widest">
+                {s.num}
+              </span>
+              <div className="h-12 w-12 rounded-xl border border-border bg-secondary/60 flex items-center justify-center mb-5 transition-colors group-hover:border-foreground/30">
+                <s.icon className="h-5 w-5 text-foreground" />
               </div>
-              <h3 className="text-base font-bold mb-2">{s.title}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed mb-4">{s.desc}</p>
+              <h3 className="text-lg font-bold mb-2.5">{s.title}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed mb-5">{s.desc}</p>
               <div className="flex flex-wrap gap-1.5">
                 {s.tags.map((t) => (
-                  <span key={t} className="text-[10px] font-mono px-2 py-1 rounded-md bg-background/50 border border-border/60 text-muted-foreground">
+                  <span key={t} className="text-[10px] font-mono px-2 py-1 rounded-md bg-secondary border border-border/60 text-muted-foreground">
                     {t}
                   </span>
                 ))}

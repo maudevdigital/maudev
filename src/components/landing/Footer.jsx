@@ -42,11 +42,11 @@ export default function Footer() {
           <div>
             <h4 className="text-xs font-mono text-primary uppercase tracking-wider mb-4">Contacto</h4>
             <a
-              href="mailto:maudevchile@gmail.com"
+              href="mailto:contacto@maudev.cl"
               className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors mb-3"
             >
               <Mail className="h-3.5 w-3.5" />
-              maudevchile@gmail.com
+              contacto@maudev.cl
             </a>
             <Link to="/contacto" className="block text-sm text-primary font-medium hover:underline">
               Agendar diagnóstico →

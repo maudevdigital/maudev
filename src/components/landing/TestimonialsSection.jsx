@@ -4,13 +4,12 @@ import { motion } from "framer-motion";
 const testimonials = [
   {
     name: "Carlos R.",
-    role: "Trader independiente",
-    location: "Argentina",
-    text: "El indicador MT5 que desarrollaron cambió completamente mi forma de operar. Preciso, rápido y con exactamente la lógica que necesitaba. El soporte post-entrega fue excelente.",
+    role: "Gerente de operaciones",
+    location: "Santiago, Chile",
+    text: "Automatizaron el flujo de cotizaciones que antes hacíamos a mano en planillas. Hoy los pedidos entran al sistema solos y respondemos en minutos. El soporte post-entrega fue excelente.",
     rating: 5,
-    tag: "Indicador MT5",
+    tag: "Automatización",
     initials: "CR",
-    color: "from-primary/30 to-primary/10 border-primary/30 text-primary",
   },
   {
     name: "Valentina M.",
@@ -20,17 +19,15 @@ const testimonials = [
     rating: 5,
     tag: "Landing Page",
     initials: "VM",
-    color: "from-blue-500/30 to-blue-500/10 border-blue-500/30 text-blue-400",
   },
   {
     name: "Diego F.",
-    role: "Comunidad crypto",
+    role: "E-commerce de repuestos",
     location: "México",
-    text: "El bot para Discord maneja automáticamente el acceso a nuestra comunidad premium. Ahorramos horas de trabajo manual cada semana. Muy buena comunicación durante todo el proyecto.",
+    text: "Desarrollaron nuestra tienda con búsqueda por modelo de vehículo y pagos integrados. Vendemos sin fricción y el panel de administración nos ahorra horas cada semana. Muy buena comunicación.",
     rating: 5,
-    tag: "Bot Discord",
+    tag: "E-commerce",
     initials: "DF",
-    color: "from-purple-500/30 to-purple-500/10 border-purple-500/30 text-purple-400",
   },
 ];
 
@@ -77,8 +74,8 @@ export default function TestimonialsSection() {
               <div className="flex items-center justify-between pt-4 border-t border-border/40">
                 <div className="flex items-center gap-3">
                   {/* Avatar con iniciales */}
-                  <div className={`h-9 w-9 rounded-xl bg-linear-to-br ${t.color} border flex items-center justify-center shrink-0`}>
-                    <span className="text-xs font-bold">{t.initials}</span>
+                  <div className="h-9 w-9 rounded-xl bg-secondary border border-border flex items-center justify-center shrink-0">
+                    <span className="text-xs font-bold text-foreground">{t.initials}</span>
                   </div>
                   <div>
                     <p className="text-sm font-semibold leading-tight">{t.name}</p>

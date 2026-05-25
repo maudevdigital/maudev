@@ -1,6 +1,7 @@
 // Lista blanca de emails admin. Mantener sincronizado con
 // la función is_admin() de supabase/schema.sql
 export const ADMIN_EMAILS = [
+  'contacto@maudev.cl',
   'maudevchile@gmail.com',
   'lucasmaulenr@gmail.com',
 ];

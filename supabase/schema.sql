@@ -11,6 +11,7 @@ stable
 as $$
   select coalesce(
     (auth.jwt() ->> 'email') in (
+      'contacto@maudev.cl',
       'maudevchile@gmail.com',
       'lucasmaulenr@gmail.com'
     ),

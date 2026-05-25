@@ -71,8 +71,8 @@ export default function HeroSection({ heroImage }) {
         <source src="https://d8j0ntlcm91z4.cloudfront.net/user_3EBs78pPEwjVNce6L8iQL3AZlSz/hf_20260524_230658_9d03efa8-5c5b-4f99-aae7-4b1af7342a86.mp4" type="video/mp4" />
       </video>
       <div className="absolute inset-0 grid-pattern opacity-50" />
-      <div className="absolute top-1/3 left-1/4 w-125 h-125 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 w-100 h-100 bg-blue-500/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/3 left-1/4 w-125 h-125 bg-foreground/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/4 right-1/4 w-100 h-100 bg-foreground/5 rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-20 lg:py-0">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -123,7 +123,7 @@ export default function HeroSection({ heroImage }) {
               className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground font-mono mb-8"
             >
               <span className="flex items-center gap-2">
-                <div className="h-2 w-2 rounded-full bg-green-500" />
+                <div className="h-2 w-2 rounded-full bg-foreground" />
                 +25 proyectos entregados
               </span>
               <span className="flex items-center gap-2">
@@ -131,7 +131,7 @@ export default function HeroSection({ heroImage }) {
                 SEO técnico incluido
               </span>
               <span className="flex items-center gap-2">
-                <div className="h-2 w-2 rounded-full bg-blue-400" />
+                <div className="h-2 w-2 rounded-full bg-muted-foreground" />
                 Respuesta en 24h
               </span>
             </motion.div>
@@ -158,8 +158,8 @@ export default function HeroSection({ heroImage }) {
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1.2 }}
                 className="flex items-center gap-3"
               >
-                <div className="h-8 w-8 rounded-lg bg-green-500/10 border border-green-500/20 flex items-center justify-center shrink-0">
-                  <CheckCircle className="h-4 w-4 text-green-400" />
+                <div className="h-8 w-8 rounded-lg bg-secondary border border-border flex items-center justify-center shrink-0">
+                  <CheckCircle className="h-4 w-4 text-foreground" />
                 </div>
                 <div>
                   <p className="text-xs font-semibold leading-none mb-0.5">Lead calificado</p>
@@ -181,8 +181,8 @@ export default function HeroSection({ heroImage }) {
                 transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
                 className="flex items-center gap-3"
               >
-                <div className="h-8 w-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
-                  <TrendingUp className="h-4 w-4 text-primary" />
+                <div className="h-8 w-8 rounded-lg bg-secondary border border-border flex items-center justify-center shrink-0">
+                  <TrendingUp className="h-4 w-4 text-foreground" />
                 </div>
                 <div>
                   <p className="text-xs font-semibold leading-none mb-0.5">+40% conversión</p>
@@ -198,9 +198,9 @@ export default function HeroSection({ heroImage }) {
               className="relative bg-card border border-border rounded-2xl p-6 sm:p-8 glow-cyan"
             >
               <div className="flex items-center gap-2 mb-6">
-                <div className="h-3 w-3 rounded-full bg-red-500/60" />
-                <div className="h-3 w-3 rounded-full bg-yellow-500/60" />
-                <div className="h-3 w-3 rounded-full bg-green-500/60" />
+                <div className="h-3 w-3 rounded-full bg-foreground/20" />
+                <div className="h-3 w-3 rounded-full bg-foreground/30" />
+                <div className="h-3 w-3 rounded-full bg-foreground/40" />
                 <span className="ml-2 text-xs font-mono text-muted-foreground">maudev_funnel</span>
               </div>
 
@@ -268,8 +268,8 @@ export default function HeroSection({ heroImage }) {
 
               {step === 2 && (
                 <div className="text-center py-8">
-                  <div className="h-16 w-16 rounded-full bg-green-500/10 border border-green-500/30 flex items-center justify-center mx-auto mb-4">
-                    <Zap className="h-8 w-8 text-green-500" />
+                  <div className="h-16 w-16 rounded-full bg-secondary border border-border flex items-center justify-center mx-auto mb-4">
+                    <Zap className="h-8 w-8 text-foreground" />
                   </div>
                   <h3 className="text-lg font-semibold mb-2">Solicitud recibida</h3>
                   <p className="text-sm text-muted-foreground">
