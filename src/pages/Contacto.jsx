@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { api } from "@/api/maudev";
 import { getLeadAttribution } from "@/lib/lead-tracking";
+import { trackEvent } from "@/lib/MetaPixelTracker";
 import { toast } from "sonner";
 import { t } from "@/lib/i18n";
 
@@ -90,6 +91,7 @@ export default function Contacto() {
         consent: true,
         ...getLeadAttribution(),
       });
+      trackEvent("Lead", { content_name: "Formulario contacto", content_category: form.interest });
       setSent(true);
       toast.success(t("Mensaje recibido. Te respondemos pronto.", "Message received. We'll reply soon."));
     } catch {

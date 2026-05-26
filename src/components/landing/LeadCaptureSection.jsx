@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { api } from "@/api/maudev";
 import { getLeadAttribution } from "@/lib/lead-tracking";
+import { trackEvent } from "@/lib/MetaPixelTracker";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -75,6 +76,7 @@ export default function LeadCaptureSection() {
         consent: true,
         ...getLeadAttribution(),
       });
+      trackEvent("Lead", { content_name: "Landing lead form", content_category: form.interest });
       setSent(true);
       toast.success(t("Mensaje enviado. Te contactaremos pronto.", "Message sent. We'll get back to you soon."));
     } catch {

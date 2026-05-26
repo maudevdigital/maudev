@@ -4,6 +4,7 @@ import { queryClientInstance } from '@/lib/query-client'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import ScrollToTop from './lib/ScrollToTop';
+import MetaPixelTracker from './lib/MetaPixelTracker';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import AdminGuard from './components/admin/AdminGuard';
@@ -70,6 +71,7 @@ function App() {
       <QueryClientProvider client={queryClientInstance}>
         <Router>
           <ScrollToTop />
+          <MetaPixelTracker />
           <AuthenticatedApp />
         </Router>
         <Toaster richColors position="top-right" />
