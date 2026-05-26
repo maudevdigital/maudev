@@ -1,11 +1,12 @@
 import { useRef, useEffect } from "react";
 import { motion, useInView, useMotionValue, animate } from "framer-motion";
+import { t } from "@/lib/i18n";
 
 const stats = [
-  { to: 25, prefix: "+", suffix: "", label: "Proyectos entregados", sub: "webs, apps y automatizaciones" },
-  { to: 3, prefix: "", suffix: "+", label: "Países con clientes", sub: "Chile, Argentina, Colombia" },
-  { static: "24h", label: "Primera respuesta", sub: "diagnóstico gratuito incluido" },
-  { to: 100, prefix: "", suffix: "%", label: "Código del cliente", sub: "sin licencias ni ataduras" },
+  { to: 25, prefix: "+", suffix: "", label: t("Proyectos entregados", "Projects delivered"), sub: t("webs, apps y automatizaciones", "websites, apps and automations") },
+  { to: 3, prefix: "", suffix: "+", label: t("Países con clientes", "Countries with clients"), sub: t("Chile, Argentina, Colombia", "Chile, Argentina, Colombia") },
+  { static: "24h", label: t("Primera respuesta", "First reply"), sub: t("diagnóstico gratuito incluido", "free consult included") },
+  { to: 100, prefix: "", suffix: "%", label: t("Código del cliente", "Client owns the code"), sub: t("sin licencias ni ataduras", "no licenses, no lock-in") },
 ];
 
 function AnimatedNumber({ to, prefix = "", suffix = "" }) {
@@ -51,13 +52,4 @@ export default function StatsSection() {
                 ) : (
                   <AnimatedNumber to={s.to} prefix={s.prefix} suffix={s.suffix} />
                 )}
-              </p>
-              <p className="text-sm font-semibold text-foreground">{s.label}</p>
-              <p className="text-xs text-muted-foreground mt-1">{s.sub}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
+              

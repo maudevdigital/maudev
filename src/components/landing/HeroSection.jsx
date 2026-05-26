@@ -6,11 +6,12 @@ import { api } from "@/api/maudev";
 import { getLeadAttribution } from "@/lib/lead-tracking";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
+import { t } from "@/lib/i18n";
 
 const interests = [
-  { id: "web_dev", label: "Sitio o landing web", icon: Globe, desc: "Diseño + SEO + captación de leads" },
-  { id: "web_app", label: "Software a medida", icon: Zap, desc: "Apps, dashboards e integraciones" },
-  { id: "automation", label: "Automatización", icon: Bot, desc: "Procesos, bots y workflows" },
+  { id: "web_dev", label: t("Sitio o landing web", "Website or landing page"), icon: Globe, desc: t("Diseño + SEO + captación de leads", "Design + SEO + lead capture") },
+  { id: "web_app", label: t("Software a medida", "Custom software"), icon: Zap, desc: t("Apps, dashboards e integraciones", "Apps, dashboards and integrations") },
+  { id: "automation", label: t("Automatización", "Automation"), icon: Bot, desc: t("Procesos, bots y workflows", "Processes, bots and workflows") },
 ];
 
 const fadeUp = {
@@ -51,9 +52,9 @@ export default function HeroSection({ heroImage }) {
         ...getLeadAttribution(),
       });
       setStep(2);
-      toast.success("Solicitud recibida. Te enviaremos el roadmap inicial.");
+      toast.success(t("Solicitud recibida. Te enviaremos el roadmap inicial.", "Request received. We'll send your initial roadmap."));
     } catch {
-      toast.error("No pudimos enviar la solicitud. Intenta nuevamente.");
+      toast.error(t("No pudimos enviar la solicitud. Intenta nuevamente.", "We couldn't send your request. Please try again."));
     } finally {
       setLoading(false);
     }
@@ -88,7 +89,7 @@ export default function HeroSection({ heroImage }) {
             >
               <div className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
               <span className="text-xs font-mono text-primary tracking-wider uppercase">
-                Disponible · Chile · Remoto global
+                {t("Disponible · Chile · Remoto global", "Available · Chile · Global remote")}
               </span>
             </motion.div>
 
@@ -99,9 +100,9 @@ export default function HeroSection({ heroImage }) {
               animate="show"
               className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] mb-6"
             >
-              Tu próximo proyecto,
+              {t("Tu próximo proyecto,", "Your next project,")}
               <br />
-              <span className="text-primary glow-text">construido para escalar.</span>
+              <span className="text-primary glow-text">{t("construido para escalar.", "built to scale.")}</span>
             </motion.h1>
 
             <motion.p
@@ -111,8 +112,10 @@ export default function HeroSection({ heroImage }) {
               animate="show"
               className="text-lg text-muted-foreground leading-relaxed max-w-lg mb-8"
             >
-              Desarrollamos webs, software a medida y automatizaciones que generan clientes reales.
-              Diseño, código y soporte en un solo equipo.
+              {t(
+                "Desarrollamos webs, software a medida y automatizaciones que generan clientes reales. Diseño, código y soporte en un solo equipo.",
+                "We build websites, custom software and automations that generate real customers. Design, code and support in a single team."
+              )}
             </motion.p>
 
             <motion.div
@@ -124,15 +127,15 @@ export default function HeroSection({ heroImage }) {
             >
               <span className="flex items-center gap-2">
                 <div className="h-2 w-2 rounded-full bg-foreground" />
-                +25 proyectos entregados
+                {t("+25 proyectos entregados", "+25 projects delivered")}
               </span>
               <span className="flex items-center gap-2">
                 <div className="h-2 w-2 rounded-full bg-primary" />
-                SEO técnico incluido
+                {t("SEO técnico incluido", "Technical SEO included")}
               </span>
               <span className="flex items-center gap-2">
                 <div className="h-2 w-2 rounded-full bg-muted-foreground" />
-                Respuesta en 24h
+                {t("Respuesta en 24h", "Reply within 24h")}
               </span>
             </motion.div>
 
@@ -162,8 +165,8 @@ export default function HeroSection({ heroImage }) {
                   <CheckCircle className="h-4 w-4 text-foreground" />
                 </div>
                 <div>
-                  <p className="text-xs font-semibold leading-none mb-0.5">Lead calificado</p>
-                  <p className="text-[10px] text-muted-foreground font-mono">hace 2 minutos</p>
+                  <p className="text-xs font-semibold leading-none mb-0.5">{t("Lead calificado", "Qualified lead")}</p>
+                  <p className="text-[10px] text-muted-foreground font-mono">{t("hace 2 minutos", "2 minutes ago")}</p>
                 </div>
               </motion.div>
             </motion.div>
@@ -185,8 +188,8 @@ export default function HeroSection({ heroImage }) {
                   <TrendingUp className="h-4 w-4 text-foreground" />
                 </div>
                 <div>
-                  <p className="text-xs font-semibold leading-none mb-0.5">+40% conversión</p>
-                  <p className="text-[10px] text-muted-foreground font-mono">landing optimizada</p>
+                  <p className="text-xs font-semibold leading-none mb-0.5">{t("+40% conversión", "+40% conversion")}</p>
+                  <p className="text-[10px] text-muted-foreground font-mono">{t("landing optimizada", "optimized landing")}</p>
                 </div>
               </motion.div>
             </motion.div>
@@ -209,7 +212,7 @@ export default function HeroSection({ heroImage }) {
                   <p className="text-sm font-mono text-muted-foreground mb-4">
                     <span className="text-primary">$</span> select --growth-system
                   </p>
-                  <h3 className="text-lg font-semibold mb-4">¿Qué quieres vender o automatizar?</h3>
+                  <h3 className="text-lg font-semibold mb-4">{t("¿Qué quieres vender o automatizar?", "What do you want to sell or automate?")}</h3>
                   <div className="space-y-3">
                     {interests.map((item) => (
                       <button
@@ -236,10 +239,12 @@ export default function HeroSection({ heroImage }) {
                   <p className="text-sm font-mono text-muted-foreground mb-2">
                     <span className="text-primary">$</span> init --roadmap
                   </p>
-                  <h3 className="text-lg font-semibold mb-2">Recibe tu plan de captación</h3>
+                  <h3 className="text-lg font-semibold mb-2">{t("Recibe tu plan de captación", "Get your lead-gen plan")}</h3>
                   <p className="text-sm text-muted-foreground mb-6">
-                    Ingresa tu email y te enviaremos una propuesta inicial con embudo, SEO,
-                    automatizaciones y próximos pasos.
+                    {t(
+                      "Ingresa tu email y te enviaremos una propuesta inicial con embudo, SEO, automatizaciones y próximos pasos.",
+                      "Enter your email and we'll send an initial proposal with funnel, SEO, automations and next steps."
+                    )}
                   </p>
                   <Input
                     type="email"
@@ -254,34 +259,7 @@ export default function HeroSection({ heroImage }) {
                     disabled={loading || !email}
                     className="w-full h-12 bg-primary text-primary-foreground hover:bg-primary/90 font-semibold"
                   >
-                    {loading ? "Enviando..." : "Solicitar diagnóstico gratis"}
+                    {loading ? t("Enviando...", "Sending...") : t("Solicitar diagnóstico gratis", "Get a free consult")}
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
-                  <button
-                    onClick={() => setStep(0)}
-                    className="text-xs text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    ← Volver
-                  </button>
-                </div>
-              )}
-
-              {step === 2 && (
-                <div className="text-center py-8">
-                  <div className="h-16 w-16 rounded-full bg-secondary border border-border flex items-center justify-center mx-auto mb-4">
-                    <Zap className="h-8 w-8 text-foreground" />
-                  </div>
-                  <h3 className="text-lg font-semibold mb-2">Solicitud recibida</h3>
-                  <p className="text-sm text-muted-foreground">
-                    El sistema notificó al equipo y preparó la respuesta automática.
-                    Te contactaremos con el roadmap.
-                  </p>
-                </div>
-              )}
-            </motion.div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
+      
