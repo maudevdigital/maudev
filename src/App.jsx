@@ -73,4 +73,9 @@ function App() {
           <AuthenticatedApp />
         </Router>
         <Toaster richColors position="top-right" />
-    
+      </QueryClientProvider>
+    </AuthProvider>
+  )
+}
+
+export default App

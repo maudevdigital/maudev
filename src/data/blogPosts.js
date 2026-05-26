@@ -586,4 +586,169 @@ Of every 100 who arrive, how many leave their data.
 How much each real sale costs.
 
 ## ROAS
-How much you sell per do
+How much you sell per dollar invested.
+
+## The foundation
+Nothing gets measured without proper tracking installed.${ctaEN}`,
+  },
+  {
+    id: "integrar-pagos-en-tu-web",
+    title: "Integrar pagos en tu web sin morir en el intento",
+    title_en: "Adding payments to your site without losing your mind",
+    excerpt: "Cobrar online suena complejo, pero con la arquitectura correcta es seguro y simple. Te explicamos las claves.",
+    excerpt_en: "Charging online sounds complex, but with the right architecture it's safe and simple. Here are the keys.",
+    category: "fintech",
+    read_time: 5,
+    author: AUTHOR,
+    tags: ["pagos", "ecommerce", "integracion"],
+    created_date: "2026-05-24T16:00:00-04:00",
+    content: `Cobrar en tu propia web abre ventas 24/7, suscripciones y menos fricción.
+
+## Elige la pasarela según tu cliente
+Webpay para Chile, MercadoPago para Latam, Stripe para internacional.
+
+## Seguridad primero
+Nunca guardes datos de tarjetas en tu servidor: eso lo maneja la pasarela.
+
+## Automatiza lo que sigue
+Cuando entra un pago: emite comprobante, notifica y registra la venta.${cta}`,
+    content_en: `Charging on your own site unlocks 24/7 sales, subscriptions and less friction.
+
+## Choose the gateway by client
+Webpay for Chile, MercadoPago for Latam, Stripe for international.
+
+## Security first
+Never store card data on your server: the gateway handles that.
+
+## Automate what follows
+When a payment arrives: issue the receipt, notify and log the sale.${ctaEN}`,
+  },
+
+  // ===== 25 de mayo =====
+  {
+    id: "checklist-seo-tecnico",
+    title: "Checklist SEO técnico para tu nueva página web",
+    title_en: "Technical SEO checklist for your new website",
+    excerpt: "Antes de lanzar, revisa estos puntos para que Google entienda y posicione tu sitio desde el día uno.",
+    excerpt_en: "Before launching, check these points so Google understands and ranks your site from day one.",
+    category: "tutoriales",
+    read_time: 6,
+    author: AUTHOR,
+    tags: ["seo", "checklist", "web"],
+    created_date: "2026-05-25T09:00:00-04:00",
+    content: `El SEO técnico es la base sobre la que se construye todo lo demás.
+
+## Velocidad y mobile
+- Carga en menos de 3 segundos.
+- Se ve perfecto en el celular.
+
+## Etiquetas y estructura
+- Cada página con su título y meta description únicos.
+- Un solo H1 por página.
+- Datos estructurados (schema.org).
+
+## Indexación
+- Sitemap.xml en Search Console.
+- URLs limpias.
+- Imágenes con texto alternativo.${cta}`,
+    content_en: `Technical SEO is the foundation everything else is built on.
+
+## Speed and mobile
+- Loads in under 3 seconds.
+- Looks perfect on mobile.
+
+## Tags and structure
+- Each page with a unique title and meta description.
+- A single H1 per page.
+- Structured data (schema.org).
+
+## Indexing
+- Sitemap.xml in Search Console.
+- Clean URLs.
+- Images with alt text.${ctaEN}`,
+  },
+  {
+    id: "automatiza-seguimiento-de-leads-n8n-supabase",
+    title: "Automatiza tu seguimiento de leads con n8n y Supabase",
+    title_en: "Automate your lead follow-up with n8n and Supabase",
+    excerpt: "Cada lead que no respondes a tiempo es una venta que se enfría. Así se automatiza el seguimiento de punta a punta.",
+    excerpt_en: "Every lead you don't answer in time is a sale going cold. Here's how to automate follow-up end to end.",
+    category: "automatizacion",
+    read_time: 7,
+    author: AUTHOR,
+    tags: ["n8n", "supabase", "leads"],
+    created_date: "2026-05-25T12:00:00-04:00",
+    content: `Responder rápido a un lead multiplica tus probabilidades de cerrar.
+
+## La arquitectura
+1. El formulario guarda el lead en **Supabase**.
+2. **n8n** detecta el nuevo registro y dispara el flujo.
+3. Se envía un correo o WhatsApp de bienvenida.
+4. Tú recibes una notificación.
+
+## Por qué Supabase
+Base de datos moderna y segura; tus datos quedan tuyos.
+
+## Por qué n8n
+Conecta todo sin código complejo.${cta}`,
+    content_en: `Answering a lead fast multiplies your chances of closing.
+
+## The architecture
+1. The form saves the lead in **Supabase**.
+2. **n8n** detects the new record and triggers the flow.
+3. A welcome email or WhatsApp is sent.
+4. You get a notification.
+
+## Why Supabase
+A modern, secure database; your data stays yours.
+
+## Why n8n
+It connects everything without complex code.${ctaEN}`,
+  },
+  {
+    id: "cuanto-cuesta-una-pagina-web-en-chile-2026",
+    title: "Cuánto cuesta una página web en Chile en 2026",
+    title_en: "How much a website costs in Chile in 2026",
+    excerpt: "Rangos de precios reales según el tipo de proyecto, y por qué lo barato muchas veces sale caro.",
+    excerpt_en: "Real price ranges by project type, and why cheap often ends up expensive.",
+    category: "desarrollo",
+    read_time: 6,
+    author: AUTHOR,
+    tags: ["precios", "web", "chile"],
+    created_date: "2026-05-25T16:00:00-04:00",
+    content: `"¿Cuánto cuesta una página web?" es como preguntar cuánto cuesta un auto: depende.
+
+## Landing page
+Desde aproximadamente **$390.000 CLP**.
+
+## Sitio web corporativo
+Varias páginas y blog; el precio sube según secciones y funciones.
+
+## Software a medida
+Se cotiza por proyecto según el roadmap.
+
+## Por qué lo barato sale caro
+Una web de $50.000 suele venir sin SEO, lenta y sin que el código sea tuyo.
+
+## Cómo cotizar bien
+Pide siempre alcance, plazos y **precio fijo** por escrito.${cta}`,
+    content_en: `"How much does a website cost?" is like asking how much a car costs: it depends.
+
+## Landing page
+From roughly **CLP $390,000**.
+
+## Corporate website
+Several pages and a blog; price rises with sections and features.
+
+## Custom software
+Quoted per project based on the roadmap.
+
+## Why cheap ends up expensive
+A CLP $50,000 site usually comes without SEO, slow, and the code isn't yours.
+
+## How to quote well
+Always ask for scope, timelines and a **fixed price** in writing.${ctaEN}`,
+  },
+];
+
+export const getBlogPostById = (id) => blogPosts.find((p) => p.id === id);

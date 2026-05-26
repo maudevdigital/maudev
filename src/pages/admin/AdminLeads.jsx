@@ -135,3 +135,6 @@ export default function AdminLeads() {
           </table>
         </div>
       </div>
+    </div>
+  );
+}

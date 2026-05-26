@@ -40,4 +40,15 @@ export default function Landing() {
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
       <HeroSection heroImage={HERO_IMAGE} />
-      <StatsS
+      <StatsSection />
+      <ServicesSection servicesImage={SERVICES_IMAGE} />
+      <ProcessSection />
+      <PortafolioPreview />
+      <TestimonialsSection />
+      <BlogPreview blogImage={BLOG_IMAGE} />
+      <FaqSection />
+      <LeadCaptureSection />
+      <Footer />
+    </div>
+  );
+}

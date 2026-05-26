@@ -395,3 +395,6 @@ export default function AdminPortfolio() {
           </div>
         </DialogContent>
       </Dialog>
+    </div>
+  );
+}

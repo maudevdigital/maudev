@@ -3,15 +3,15 @@ import { Link, NavLink } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Logo from "@/components/landing/Logo";
+import { t } from "@/lib/i18n";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   const links = [
-    { label: "Servicios", to: "/servicios" },
-    { label: "Portafolio", to: "/portafolio" },
-    { label: "Blog", to: "/blog" },
-    { label: "Contacto", to: "/contacto" },
+    { label: t("Servicios", "Services"), to: "/servicios" },
+    { label: t("Portafolio", "Portfolio"), to: "/portafolio" },
+    { label: t("Contacto", "Contact"), to: "/contacto" },
   ];
 
   return (
@@ -45,7 +45,7 @@ export default function Navbar() {
             ))}
             <Link to="/contacto">
               <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold">
-                Agendar diagnóstico
+                {t("Agendar diagnóstico", "Book a free consult")}
               </Button>
             </Link>
           </div>
@@ -71,7 +71,12 @@ export default function Navbar() {
             ))}
             <Link to="/contacto" onClick={() => setOpen(false)}>
               <Button size="sm" className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-semibold">
-                Agendar diagnóstico
+                {t("Agendar diagnóstico", "Book a free consult")}
               </Button>
             </Link>
-    
+          </div>
+        </div>
+      )}
+    </nav>
+  );
+}

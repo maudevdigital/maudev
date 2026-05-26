@@ -148,4 +148,4 @@ create policy "projects admin write"
 
 drop trigger if exists trg_projects_updated on public.projects;
 create trigger trg_projects_updated before update on public.projects
-  for each row execute procedure
+  for each row execute procedure public.set_updated_date();

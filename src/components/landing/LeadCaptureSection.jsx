@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Send, CheckCircle, Video, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
+import { t } from "@/lib/i18n";
 
 // ⚙️ Reemplaza por tu enlace de agenda (Google Calendar Appointment Schedule
 //    o Google Meet). Mientras esté vacío, el botón muestra un aviso.
@@ -23,11 +24,11 @@ const COUNTRIES = [
 ];
 
 const INTERESTS = [
-  { value: "web_dev", label: "Sitio o landing web" },
-  { value: "web_app", label: "Software a medida" },
-  { value: "automation", label: "Automatización" },
-  { value: "payments", label: "Integración de pagos / APIs" },
-  { value: "general", label: "Consulta general" },
+  { value: "web_dev", label: t("Sitio o landing web", "Website or landing page") },
+  { value: "web_app", label: t("Software a medida", "Custom software") },
+  { value: "automation", label: t("Automatización", "Automation") },
+  { value: "payments", label: t("Integración de pagos / APIs", "Payments / APIs integration") },
+  { value: "general", label: t("Consulta general", "General inquiry") },
 ];
 
 const inputClass =
@@ -52,12 +53,12 @@ export default function LeadCaptureSection() {
     e.preventDefault();
     // Todos los campos son obligatorios.
     if (!form.name.trim() || !form.email.trim() || !form.phone.trim() || !form.interest || !form.message.trim()) {
-      toast.error("Completa todos los campos para enviar tu solicitud.");
+      toast.error(t("Completa todos los campos para enviar tu solicitud.", "Please fill in all fields to send your request."));
       return;
     }
     const digits = form.phone.replace(/\D/g, "");
     if (digits.length < country.min || digits.length > country.max) {
-      toast.error(`El teléfono de ${country.label} no parece válido. Revisa el número.`);
+      toast.error(t(`El teléfono de ${country.label} no parece válido. Revisa el número.`, `The phone number for ${country.label} doesn't look valid. Please check it.`));
       return;
     }
 
@@ -75,9 +76,9 @@ export default function LeadCaptureSection() {
         ...getLeadAttribution(),
       });
       setSent(true);
-      toast.success("Mensaje enviado. Te contactaremos pronto.");
+      toast.success(t("Mensaje enviado. Te contactaremos pronto.", "Message sent. We'll get back to you soon."));
     } catch {
-      toast.error("No pudimos enviar el mensaje. Intenta nuevamente.");
+      toast.error(t("No pudimos enviar el mensaje. Intenta nuevamente.", "We couldn't send your message. Please try again."));
     } finally {
       setLoading(false);
     }
@@ -85,8 +86,8 @@ export default function LeadCaptureSection() {
 
   const handleMeet = () => {
     if (!MEET_URL) {
-      toast.message("Agenda en configuración", {
-        description: "Define tu enlace de Google Meet/Calendar en MEET_URL para activar el botón.",
+      toast.message(t("Agenda en configuración", "Scheduling not set up yet"), {
+        description: t("Define tu enlace de Google Meet/Calendar en MEET_URL para activar el botón.", "Set your Google Meet/Calendar link in MEET_URL to activate the button."),
       });
       return;
     }
@@ -100,19 +101,22 @@ export default function LeadCaptureSection() {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
           {/* Columna izquierda */}
           <div>
-            <span className="text-xs font-mono text-primary tracking-wider uppercase">// diagnóstico gratuito</span>
+            <span className="text-xs font-mono text-primary tracking-wider uppercase">// {t("diagnóstico gratuito", "free consult")}</span>
             <h2 className="text-3xl sm:text-4xl font-black tracking-tight mt-3 mb-4">
-              Cuéntanos tu proyecto, <span className="text-primary">te respondemos en 24h</span>
+              {t("Cuéntanos tu proyecto,", "Tell us about your project,")} <span className="text-primary">{t("te respondemos en 24h", "we reply within 24h")}</span>
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-8 max-w-lg">
-              Sin formularios complicados ni esperas. Describe lo que necesitas construir y te enviamos una propuesta con alcance, tiempos y precio fijo.
+              {t(
+                "Sin formularios complicados ni esperas. Describe lo que necesitas construir y te enviamos una propuesta con alcance, tiempos y precio fijo.",
+                "No complicated forms or waiting. Describe what you need to build and we'll send a proposal with scope, timelines and a fixed price."
+              )}
             </p>
 
             <div className="space-y-4 mb-8">
               {[
-                { step: "01", text: "Nos describes el proyecto por este formulario" },
-                { step: "02", text: "Analizamos tu caso y armamos el roadmap inicial" },
-                { step: "03", text: "Recibes propuesta técnica y precio fijo en menos de 24h" },
+                { step: "01", text: t("Nos describes el proyecto por este formulario", "You describe the project through this form") },
+                { step: "02", text: t("Analizamos tu caso y armamos el roadmap inicial", "We analyze your case and build the initial roadmap") },
+                { step: "03", text: t("Recibes propuesta técnica y precio fijo en menos de 24h", "You get a technical proposal and fixed price within 24h") },
               ].map((s) => (
                 <div key={s.step} className="flex items-center gap-4">
                   <span className="text-xs font-mono text-primary bg-primary/10 px-3 py-1.5 rounded-md border border-primary/20">
@@ -130,8 +134,8 @@ export default function LeadCaptureSection() {
                   <Video className="h-4 w-4 text-foreground" />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold leading-tight">¿Prefieres hablarlo en vivo?</p>
-                  <p className="text-xs text-muted-foreground">Agenda una videollamada por Google Meet.</p>
+                  <p className="text-sm font-semibold leading-tight">{t("¿Prefieres hablarlo en vivo?", "Prefer to talk live?")}</p>
+                  <p className="text-xs text-muted-foreground">{t("Agenda una videollamada por Google Meet.", "Book a video call on Google Meet.")}</p>
                 </div>
               </div>
               <Button
@@ -140,7 +144,7 @@ export default function LeadCaptureSection() {
                 variant="outline"
                 className="w-full h-11 mt-2 border-border hover:bg-secondary/60"
               >
-                Agendar videollamada
+                {t("Agendar videollamada", "Book a video call")}
                 <Video className="ml-2 h-4 w-4" />
               </Button>
             </div>
@@ -149,12 +153,100 @@ export default function LeadCaptureSection() {
             <div className="flex items-center gap-3 text-sm text-muted-foreground">
               <ShieldCheck className="h-4 w-4 shrink-0" />
               <span>
-                Aceptamos pagos en <strong className="text-foreground font-semibold">CLP</strong>,{" "}
-                <strong className="text-foreground font-semibold">USD</strong> y{" "}
-                <strong className="text-foreground font-semibold">USDT</strong> según tu país.
+                {t("Aceptamos pagos en", "We accept payments in")}{" "}
+                <strong className="text-foreground font-semibold">CLP</strong>,{" "}
+                <strong className="text-foreground font-semibold">USD</strong> {t("y", "and")}{" "}
+                <strong className="text-foreground font-semibold">USDT</strong> {t("según tu país.", "depending on your country.")}
               </span>
             </div>
           </div>
 
           {/* Formulario */}
-          <div
+          <div className="bg-card border border-border rounded-2xl p-6 sm:p-8">
+            {sent ? (
+              <div className="flex flex-col items-center justify-center py-12 text-center">
+                <div className="h-16 w-16 rounded-full bg-secondary border border-border flex items-center justify-center mb-4">
+                  <CheckCircle className="h-8 w-8 text-foreground" />
+                </div>
+                <h3 className="text-lg font-semibold mb-2">{t("Mensaje enviado", "Message sent")}</h3>
+                <p className="text-sm text-muted-foreground">{t("Registramos tu solicitud y te contactaremos dentro de las próximas 24 horas.", "We've logged your request and will contact you within the next 24 hours.")}</p>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+                <div>
+                  <label className="text-xs font-mono text-muted-foreground mb-1.5 block">{t("nombre", "name")} *</label>
+                  <Input value={form.name} onChange={set("name")} placeholder={t("Tu nombre", "Your name")} className="bg-background border-border h-11" required />
+                </div>
+
+                <div>
+                  <label className="text-xs font-mono text-muted-foreground mb-1.5 block">email *</label>
+                  <Input type="email" value={form.email} onChange={set("email")} placeholder="tu@email.com" className="bg-background border-border h-11" required />
+                </div>
+
+                <div>
+                  <label className="text-xs font-mono text-muted-foreground mb-1.5 block">{t("teléfono / whatsapp", "phone / whatsapp")} *</label>
+                  <div className="flex gap-2">
+                    <select
+                      value={form.country}
+                      onChange={set("country")}
+                      className="h-11 rounded-md border border-input bg-background px-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring shrink-0"
+                      aria-label="País"
+                    >
+                      {COUNTRIES.map((c) => (
+                        <option key={c.code} value={c.code}>
+                          {c.flag} {c.dial}
+                        </option>
+                      ))}
+                    </select>
+                    <Input
+                      type="tel"
+                      value={form.phone}
+                      onChange={set("phone")}
+                      placeholder={country.placeholder}
+                      className="bg-background border-border h-11 flex-1"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-xs font-mono text-muted-foreground mb-1.5 block">{t("objetivo", "goal")} *</label>
+                  <select value={form.interest} onChange={set("interest")} className={inputClass} required>
+                    <option value="" disabled>
+                      {t("Selecciona un objetivo", "Select a goal")}
+                    </option>
+                    {INTERESTS.map((o) => (
+                      <option key={o.value} value={o.value}>
+                        {o.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="text-xs font-mono text-muted-foreground mb-1.5 block">{t("mensaje", "message")} *</label>
+                  <Textarea
+                    value={form.message}
+                    onChange={set("message")}
+                    placeholder={t("Qué vendes, a quién vendes y qué quieres mejorar...", "What you sell, who you sell to and what you want to improve...")}
+                    className="bg-background border-border min-h-[100px]"
+                    required
+                  />
+                </div>
+
+                <Button type="submit" disabled={loading} className="w-full h-12 bg-primary text-primary-foreground hover:bg-primary/90 font-semibold">
+                  {loading ? t("Enviando...", "Sending...") : t("Solicitar diagnóstico", "Request a consult")}
+                  <Send className="ml-2 h-4 w-4" />
+                </Button>
+
+                <p className="text-[11px] text-muted-foreground text-center">
+                  {t("Todos los campos son obligatorios. No compartimos tus datos con terceros.", "All fields are required. We don't share your data with third parties.")}
+                </p>
+              </form>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

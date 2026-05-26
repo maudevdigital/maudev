@@ -52,4 +52,13 @@ export default function StatsSection() {
                 ) : (
                   <AnimatedNumber to={s.to} prefix={s.prefix} suffix={s.suffix} />
                 )}
-              
+              </p>
+              <p className="text-sm font-semibold text-foreground">{s.label}</p>
+              <p className="text-xs text-muted-foreground mt-1">{s.sub}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}

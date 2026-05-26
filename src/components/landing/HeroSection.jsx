@@ -262,4 +262,33 @@ export default function HeroSection({ heroImage }) {
                     {loading ? t("Enviando...", "Sending...") : t("Solicitar diagnóstico gratis", "Get a free consult")}
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
-      
+                  <button
+                    onClick={() => setStep(0)}
+                    className="text-xs text-muted-foreground hover:text-primary transition-colors"
+                  >
+                    ← {t("Volver", "Back")}
+                  </button>
+                </div>
+              )}
+
+              {step === 2 && (
+                <div className="text-center py-8">
+                  <div className="h-16 w-16 rounded-full bg-secondary border border-border flex items-center justify-center mx-auto mb-4">
+                    <Zap className="h-8 w-8 text-foreground" />
+                  </div>
+                  <h3 className="text-lg font-semibold mb-2">{t("Solicitud recibida", "Request received")}</h3>
+                  <p className="text-sm text-muted-foreground">
+                    {t(
+                      "El sistema notificó al equipo y preparó la respuesta automática. Te contactaremos con el roadmap.",
+                      "The system notified the team and prepared the automatic reply. We'll get back to you with the roadmap."
+                    )}
+                  </p>
+                </div>
+              )}
+            </motion.div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { api } from "@/api/maudev";
 import { getLeadAttribution } from "@/lib/lead-tracking";
 import { toast } from "sonner";
+import { t } from "@/lib/i18n";
 
 // ⚙️ Reemplaza con tu link real de Google Calendar appointment scheduling.
 // Ej: https://calendar.google.com/calendar/appointments/schedules/AcZssZ.....
@@ -17,20 +18,20 @@ const CONTACT_EMAIL = "contacto@maudev.cl";
 
 const COUNTRIES = [
   { code: "CL", flag: "🇨🇱", label: "Chile", dial: "+56", placeholder: "9 1234 5678", min: 8, max: 9 },
-  { code: "US", flag: "🇺🇸", label: "Estados Unidos", dial: "+1", placeholder: "(555) 123-4567", min: 10, max: 10 },
-  { code: "MX", flag: "🇲🇽", label: "México", dial: "+52", placeholder: "55 1234 5678", min: 10, max: 10 },
+  { code: "US", flag: "🇺🇸", label: t("Estados Unidos", "United States"), dial: "+1", placeholder: "(555) 123-4567", min: 10, max: 10 },
+  { code: "MX", flag: "🇲🇽", label: t("México", "Mexico"), dial: "+52", placeholder: "55 1234 5678", min: 10, max: 10 },
   { code: "CO", flag: "🇨🇴", label: "Colombia", dial: "+57", placeholder: "300 123 4567", min: 10, max: 10 },
-  { code: "PE", flag: "🇵🇪", label: "Perú", dial: "+51", placeholder: "987 654 321", min: 9, max: 9 },
+  { code: "PE", flag: "🇵🇪", label: t("Perú", "Peru"), dial: "+51", placeholder: "987 654 321", min: 9, max: 9 },
   { code: "AR", flag: "🇦🇷", label: "Argentina", dial: "+54", placeholder: "11 1234 5678", min: 10, max: 11 },
 ];
 
 const INTERESTS = [
-  { value: "web_dev", label: "Sitio o landing web" },
-  { value: "web_app", label: "Software a medida" },
-  { value: "automation", label: "Automatización" },
-  { value: "payments", label: "Integración de pagos / APIs" },
-  { value: "support", label: "Mantención y soporte" },
-  { value: "general", label: "Consulta general" },
+  { value: "web_dev", label: t("Sitio o landing web", "Website or landing page") },
+  { value: "web_app", label: t("Software a medida", "Custom software") },
+  { value: "automation", label: t("Automatización", "Automation") },
+  { value: "payments", label: t("Integración de pagos / APIs", "Payments / APIs integration") },
+  { value: "support", label: t("Mantención y soporte", "Maintenance & support") },
+  { value: "general", label: t("Consulta general", "General inquiry") },
 ];
 const VALID_INTERESTS = INTERESTS.map((i) => i.value);
 
@@ -52,7 +53,7 @@ export default function Contacto() {
   const [sent, setSent] = useState(false);
 
   useEffect(() => {
-    document.title = "Contacto · Maudev";
+    document.title = t("Contacto · Maudev", "Contact · Maudev");
   }, []);
 
   // Si el usuario llega con ?servicio=... preselecciona el objetivo.
@@ -68,12 +69,12 @@ export default function Contacto() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.name.trim() || !form.email.trim() || !form.phone.trim() || !form.interest || !form.message.trim()) {
-      toast.error("Completa todos los campos para enviar tu mensaje.");
+      toast.error(t("Completa todos los campos para enviar tu mensaje.", "Please fill in all fields to send your message."));
       return;
     }
     const digits = form.phone.replace(/\D/g, "");
     if (digits.length < country.min || digits.length > country.max) {
-      toast.error(`El teléfono de ${country.label} no parece válido. Revisa el número.`);
+      toast.error(t(`El teléfono de ${country.label} no parece válido. Revisa el número.`, `The phone number for ${country.label} doesn't look valid. Please check it.`));
       return;
     }
     setLoading(true);
@@ -90,9 +91,9 @@ export default function Contacto() {
         ...getLeadAttribution(),
       });
       setSent(true);
-      toast.success("Mensaje recibido. Te respondemos pronto.");
+      toast.success(t("Mensaje recibido. Te respondemos pronto.", "Message received. We'll reply soon."));
     } catch {
-      toast.error("No pudimos enviar el mensaje. Intenta nuevamente.");
+      toast.error(t("No pudimos enviar el mensaje. Intenta nuevamente.", "We couldn't send your message. Please try again."));
     } finally {
       setLoading(false);
     }
@@ -104,13 +105,15 @@ export default function Contacto() {
 
       <section className="pt-32 pb-16 lg:pt-40 lg:pb-12">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <span className="text-xs font-mono text-primary tracking-wider uppercase">// contacto</span>
+          <span className="text-xs font-mono text-primary tracking-wider uppercase">// {t("contacto", "contact")}</span>
           <h1 className="text-4xl sm:text-5xl font-black tracking-tight mt-3 mb-6">
-            Hablemos de tu <span className="text-primary">proyecto</span>
+            {t("Hablemos de tu", "Let's talk about your")} <span className="text-primary">{t("proyecto", "project")}</span>
           </h1>
           <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-            Cuéntanos qué necesitas y te respondemos en menos de 24h. Si prefieres, agenda directo
-            en nuestro calendario o escríbenos por correo.
+            {t(
+              "Cuéntanos qué necesitas y te respondemos en menos de 24h. Si prefieres, agenda directo en nuestro calendario o escríbenos por correo.",
+              "Tell us what you need and we'll reply within 24h. If you prefer, book directly on our calendar or email us."
+            )}
           </p>
         </div>
       </section>
@@ -127,8 +130,8 @@ export default function Contacto() {
               <div className="h-10 w-10 rounded-lg bg-secondary border border-border flex items-center justify-center mb-4">
                 <Calendar className="h-5 w-5 text-foreground" />
               </div>
-              <h3 className="font-bold mb-1">Agendar videollamada</h3>
-              <p className="text-sm text-muted-foreground">Bloque de 20 min por Google Meet.</p>
+              <h3 className="font-bold mb-1">{t("Agendar videollamada", "Book a video call")}</h3>
+              <p className="text-sm text-muted-foreground">{t("Bloque de 20 min por Google Meet.", "20-min slot on Google Meet.")}</p>
             </a>
 
             <a
@@ -138,7 +141,7 @@ export default function Contacto() {
               <div className="h-10 w-10 rounded-lg bg-secondary border border-border flex items-center justify-center mb-4">
                 <Mail className="h-5 w-5 text-foreground" />
               </div>
-              <h3 className="font-bold mb-1">Correo</h3>
+              <h3 className="font-bold mb-1">{t("Correo", "Email")}</h3>
               <p className="text-sm text-muted-foreground break-all">{CONTACT_EMAIL}</p>
             </a>
 
@@ -147,7 +150,7 @@ export default function Contacto() {
                 <MessageCircle className="h-5 w-5 text-foreground" />
               </div>
               <h3 className="font-bold mb-1">WhatsApp</h3>
-              <p className="text-sm text-muted-foreground">Déjanos tu número en el formulario y te escribimos.</p>
+              <p className="text-sm text-muted-foreground">{t("Déjanos tu número en el formulario y te escribimos.", "Leave your number in the form and we'll message you.")}</p>
             </div>
           </div>
         </div>
@@ -157,9 +160,9 @@ export default function Contacto() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
             <div className="bg-card border border-border rounded-2xl p-6 sm:p-8">
-              <h2 className="text-2xl font-bold mb-2">Envíanos un mensaje</h2>
+              <h2 className="text-2xl font-bold mb-2">{t("Envíanos un mensaje", "Send us a message")}</h2>
               <p className="text-sm text-muted-foreground mb-6">
-                Te respondemos por correo y, con tu número, también por WhatsApp.
+                {t("Te respondemos por correo y, con tu número, también por WhatsApp.", "We reply by email and, with your number, also via WhatsApp.")}
               </p>
 
               {sent ? (
@@ -167,33 +170,33 @@ export default function Contacto() {
                   <div className="h-16 w-16 rounded-full bg-secondary border border-border flex items-center justify-center mb-4">
                     <CheckCircle className="h-8 w-8 text-foreground" />
                   </div>
-                  <h3 className="text-lg font-semibold mb-2">Mensaje recibido</h3>
-                  <p className="text-sm text-muted-foreground mb-6">Te respondemos en menos de 24h hábiles.</p>
+                  <h3 className="text-lg font-semibold mb-2">{t("Mensaje recibido", "Message received")}</h3>
+                  <p className="text-sm text-muted-foreground mb-6">{t("Te respondemos en menos de 24h hábiles.", "We'll reply within 24 business hours.")}</p>
                   <a href={GOOGLE_CALENDAR_URL} target="_blank" rel="noopener noreferrer">
                     <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
                       <Calendar className="mr-2 h-4 w-4" />
-                      Mientras tanto, agenda una videollamada
+                      {t("Mientras tanto, agenda una videollamada", "Meanwhile, book a video call")}
                     </Button>
                   </a>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-5" noValidate>
                   <div>
-                    <label className="text-xs font-mono text-muted-foreground mb-1.5 block">nombre *</label>
-                    <Input value={form.name} onChange={set("name")} placeholder="Tu nombre" className="bg-background border-border h-11" required />
+                    <label className="text-xs font-mono text-muted-foreground mb-1.5 block">{t("nombre", "name")} *</label>
+                    <Input value={form.name} onChange={set("name")} placeholder={t("Tu nombre", "Your name")} className="bg-background border-border h-11" required />
                   </div>
                   <div>
                     <label className="text-xs font-mono text-muted-foreground mb-1.5 block">email *</label>
                     <Input type="email" value={form.email} onChange={set("email")} placeholder="tu@email.com" className="bg-background border-border h-11" required />
                   </div>
                   <div>
-                    <label className="text-xs font-mono text-muted-foreground mb-1.5 block">teléfono / whatsapp *</label>
+                    <label className="text-xs font-mono text-muted-foreground mb-1.5 block">{t("teléfono / whatsapp", "phone / whatsapp")} *</label>
                     <div className="flex gap-2">
                       <select
                         value={form.country}
                         onChange={set("country")}
                         className="h-11 rounded-md border border-input bg-background px-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring shrink-0"
-                        aria-label="País"
+                        aria-label={t("País", "Country")}
                       >
                         {COUNTRIES.map((c) => (
                           <option key={c.code} value={c.code}>
@@ -212,10 +215,10 @@ export default function Contacto() {
                     </div>
                   </div>
                   <div>
-                    <label className="text-xs font-mono text-muted-foreground mb-1.5 block">qué necesitas *</label>
+                    <label className="text-xs font-mono text-muted-foreground mb-1.5 block">{t("qué necesitas", "what you need")} *</label>
                     <select value={form.interest} onChange={set("interest")} className={inputClass} required>
                       <option value="" disabled>
-                        Selecciona una opción
+                        {t("Selecciona una opción", "Select an option")}
                       </option>
                       {INTERESTS.map((o) => (
                         <option key={o.value} value={o.value}>
@@ -225,4 +228,69 @@ export default function Contacto() {
                     </select>
                   </div>
                   <div>
-                    <label className="text-xs font-mono text-mute
+                    <label className="text-xs font-mono text-muted-foreground mb-1.5 block">{t("mensaje", "message")} *</label>
+                    <Textarea
+                      value={form.message}
+                      onChange={set("message")}
+                      placeholder={t("Cuéntanos brevemente sobre tu proyecto...", "Tell us briefly about your project...")}
+                      className="bg-background border-border min-h-[120px]"
+                      required
+                    />
+                  </div>
+
+                  <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                    <ShieldCheck className="h-4 w-4 shrink-0" />
+                    <span>
+                      {t("Aceptamos pagos en", "We accept payments in")}{" "}
+                      <strong className="text-foreground font-semibold">CLP</strong>,{" "}
+                      <strong className="text-foreground font-semibold">USD</strong> {t("y", "and")}{" "}
+                      <strong className="text-foreground font-semibold">USDT</strong> {t("según tu país.", "depending on your country.")}
+                    </span>
+                  </div>
+
+                  <p className="text-[11px] text-muted-foreground">
+                    {t("Todos los campos son obligatorios. Al enviar aceptas nuestra", "All fields are required. By submitting you accept our")}{" "}
+                    <a href="/privacidad" className="text-primary hover:underline">{t("política de privacidad", "privacy policy")}</a>.
+                  </p>
+                  <Button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full h-12 bg-primary text-primary-foreground hover:bg-primary/90 font-semibold"
+                  >
+                    {loading ? t("Enviando...", "Sending...") : t("Enviar mensaje", "Send message")}
+                    <Send className="ml-2 h-4 w-4" />
+                  </Button>
+                </form>
+              )}
+            </div>
+
+            <div className="bg-card border border-border rounded-2xl p-6 sm:p-8 flex flex-col">
+              <h2 className="text-2xl font-bold mb-2">{t("Agenda directo", "Book directly")}</h2>
+              <p className="text-sm text-muted-foreground mb-6">
+                {t("Reserva un bloque de 20 minutos en nuestro Google Calendar. Sin compromiso.", "Reserve a 20-minute slot on our Google Calendar. No commitment.")}
+              </p>
+              <div className="flex-1 rounded-xl border border-border overflow-hidden bg-background min-h-[500px]">
+                <iframe
+                  src={GOOGLE_CALENDAR_URL}
+                  title={t("Agendar reunión con Maudev", "Book a meeting with Maudev")}
+                  className="w-full h-full min-h-[500px]"
+                  frameBorder="0"
+                />
+              </div>
+              <a
+                href={GOOGLE_CALENDAR_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 inline-flex items-center justify-center gap-2 text-sm text-primary font-medium hover:underline"
+              >
+                {t("Abrir calendario en pestaña nueva", "Open calendar in a new tab")} →
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+    </div>
+  );
+}

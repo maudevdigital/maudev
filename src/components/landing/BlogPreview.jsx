@@ -3,6 +3,7 @@ import { api } from "@/api/maudev";
 import { ArrowRight, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
 import { blogPosts as staticPosts, blogCategories as categoryLabels } from "@/data/blogPosts";
+import { t, pick } from "@/lib/i18n";
 import moment from "moment";
 
 const latestStatic = [...staticPosts]
@@ -27,11 +28,11 @@ export default function BlogPreview({ blogImage }) {
           <div>
             <span className="text-xs font-mono text-primary tracking-wider uppercase">// blog</span>
             <h2 className="text-3xl sm:text-4xl font-black tracking-tight mt-3">
-              {"Insights & Recursos"}
+              {t("Insights & Recursos", "Insights & Resources")}
             </h2>
           </div>
           <Link to="/blog" className="hidden sm:flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors font-medium">
-            Ver blog <ArrowRight className="h-4 w-4" />
+            {t("Ver blog", "View blog")} <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
 
@@ -60,8 +61,8 @@ export default function BlogPreview({ blogImage }) {
                     <Clock className="h-3 w-3" /> {post.read_time || 5} min
                   </span>
                 </div>
-                <h3 className="font-semibold text-sm mb-2 group-hover:text-primary transition-colors line-clamp-2">{post.title}</h3>
-                <p className="text-xs text-muted-foreground line-clamp-2">{post.excerpt}</p>
+                <h3 className="font-semibold text-sm mb-2 group-hover:text-primary transition-colors line-clamp-2">{pick(post, "title")}</h3>
+                <p className="text-xs text-muted-foreground line-clamp-2">{pick(post, "excerpt")}</p>
                 <p className="text-[10px] text-muted-foreground mt-3 font-mono">
                   {moment(post.created_date).format("DD MMM YYYY")}
                 </p>
@@ -71,4 +72,11 @@ export default function BlogPreview({ blogImage }) {
         </div>
 
         <div className="sm:hidden mt-6 text-center">
-          <Link to="/blog" className="text-sm text-primary font-medium inline-flex items-c
+          <Link to="/blog" className="text-sm text-primary font-medium inline-flex items-center gap-2">
+            {t("Ver blog completo", "View full blog")} <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}

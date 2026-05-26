@@ -70,4 +70,36 @@ export default function SobreNosotros() {
       <section className="pb-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid sm:grid-cols-2 gap-4 lg:gap-6">
-            {values.map((
+            {values.map((v) => (
+              <div key={v.title} className="bg-card border border-border rounded-2xl p-6">
+                <div className="h-10 w-10 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center mb-4">
+                  <v.icon className="h-5 w-5 text-primary" />
+                </div>
+                <h3 className="font-bold mb-2">{v.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{v.text}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-16 bg-card border border-border rounded-2xl p-8 lg:p-12 text-center">
+            <h3 className="text-2xl font-bold mb-3">{t("¿Hablemos?", "Shall we talk?")}</h3>
+            <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+              {t(
+                "Cuéntanos qué necesitas. Si podemos ayudar, te lo decimos. Si no, te recomendamos quién sí.",
+                "Tell us what you need. If we can help, we'll say so. If not, we'll point you to someone who can."
+              )}
+            </p>
+            <Link to="/contacto">
+              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">
+                {t("Agendar diagnóstico", "Book a consult")}
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+    </div>
+  );
+}

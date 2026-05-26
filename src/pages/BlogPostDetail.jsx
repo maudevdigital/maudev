@@ -6,6 +6,7 @@ import ReactMarkdown from "react-markdown";
 import Navbar from "../components/landing/Navbar";
 import Footer from "../components/landing/Footer";
 import { getBlogPostById, blogCategories as categoryLabels } from "@/data/blogPosts";
+import { t, pick } from "@/lib/i18n";
 import moment from "moment";
 
 export default function BlogPostDetail() {
@@ -33,7 +34,7 @@ export default function BlogPostDetail() {
   if (!post) {
     return (
       <div className="min-h-screen bg-background text-foreground flex items-center justify-center">
-        <p className="text-muted-foreground">Artículo no encontrado.</p>
+        <p className="text-muted-foreground">{t("Artículo no encontrado.", "Article not found.")}</p>
       </div>
     );
   }
@@ -44,7 +45,7 @@ export default function BlogPostDetail() {
       <article className="pt-24 pb-16">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
           <Link to="/blog" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors mb-8">
-            <ArrowLeft className="h-4 w-4" /> Volver al blog
+            <ArrowLeft className="h-4 w-4" /> {t("Volver al blog", "Back to blog")}
           </Link>
 
           <header className="mb-10">
@@ -53,16 +54,16 @@ export default function BlogPostDetail() {
                 {categoryLabels[post.category] || post.category}
               </span>
               <span className="text-xs text-muted-foreground flex items-center gap-1">
-                <Clock className="h-3 w-3" /> {post.read_time || 5} min de lectura
+                <Clock className="h-3 w-3" /> {post.read_time || 5} {t("min de lectura", "min read")}
               </span>
             </div>
 
             <h1 className="text-3xl sm:text-4xl font-black tracking-tight leading-tight mb-4">
-              {post.title}
+              {pick(post, "title")}
             </h1>
 
-            {post.excerpt && (
-              <p className="text-lg text-muted-foreground leading-relaxed">{post.excerpt}</p>
+            {pick(post, "excerpt") && (
+              <p className="text-lg text-muted-foreground leading-relaxed">{pick(post, "excerpt")}</p>
             )}
 
             <div className="flex items-center gap-4 mt-6 text-sm text-muted-foreground">
@@ -75,9 +76,9 @@ export default function BlogPostDetail() {
 
             {post.tags?.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-4">
-                {post.tags.map((t) => (
-                  <span key={t} className="text-[10px] font-mono px-2 py-1 rounded bg-secondary text-muted-foreground flex items-center gap-1">
-                    <Tag className="h-2.5 w-2.5" /> {t}
+                {post.tags.map((tag) => (
+                  <span key={tag} className="text-[10px] font-mono px-2 py-1 rounded bg-secondary text-muted-foreground flex items-center gap-1">
+                    <Tag className="h-2.5 w-2.5" /> {tag}
                   </span>
                 ))}
               </div>
@@ -91,4 +92,11 @@ export default function BlogPostDetail() {
           )}
 
           <div className="prose dark:prose-invert prose-sm sm:prose-base max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-a:text-primary prose-code:text-primary prose-code:bg-secondary prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-card prose-pre:border prose-pre:border-border">
-            <ReactMarkdown>{post.content
+            <ReactMarkdown>{pick(post, "content")}</ReactMarkdown>
+          </div>
+        </div>
+      </article>
+      <Footer />
+    </div>
+  );
+}

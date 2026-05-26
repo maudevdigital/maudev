@@ -4,69 +4,82 @@ import { Globe, Zap, BarChart3, Wrench, ArrowRight, Check } from "lucide-react";
 import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
 import { Button } from "@/components/ui/button";
+import { t } from "@/lib/i18n";
 
 const services = [
   {
     icon: Globe,
     slug: "web_dev",
-    title: "Sitios y landings web",
-    price: "Desde $390.000 CLP",
-    description: "Sitios corporativos, landings de conversión, blogs y portfolios. Diseño responsive, SEO técnico básico y formulario de captura.",
+    title: t("Sitios y landings web", "Websites & landing pages"),
+    price: t("Desde $390.000 CLP", "From CLP $390,000"),
+    description: t(
+      "Sitios corporativos, landings de conversión, blogs y portfolios. Diseño responsive, SEO técnico básico y formulario de captura.",
+      "Corporate sites, conversion landings, blogs and portfolios. Responsive design, basic technical SEO and a capture form."
+    ),
     features: [
-      "Diseño responsive y rápido",
-      "SEO técnico básico (meta, sitemap, schema)",
-      "Formulario conectado a tu correo o CRM",
-      "Dominio + hosting Cloudflare incluido el primer año",
-      "Capacitación para administrar contenido",
+      t("Diseño responsive y rápido", "Fast, responsive design"),
+      t("SEO técnico básico (meta, sitemap, schema)", "Basic technical SEO (meta, sitemap, schema)"),
+      t("Formulario conectado a tu correo o CRM", "Form connected to your email or CRM"),
+      t("Dominio + hosting Cloudflare incluido el primer año", "Domain + Cloudflare hosting included the first year"),
+      t("Capacitación para administrar contenido", "Training to manage your content"),
     ],
   },
   {
     icon: Zap,
     slug: "web_app",
-    title: "Software a medida",
-    price: "Cotización por proyecto",
-    description: "Sistemas internos, portales de clientes, plataformas SaaS, integraciones con APIs y dashboards de gestión.",
+    title: t("Software a medida", "Custom software"),
+    price: t("Cotización por proyecto", "Quoted per project"),
+    description: t(
+      "Sistemas internos, portales de clientes, plataformas SaaS, integraciones con APIs y dashboards de gestión.",
+      "Internal systems, client portals, SaaS platforms, API integrations and management dashboards."
+    ),
     features: [
-      "Levantamiento de requerimientos",
-      "Diseño técnico + maquetas",
-      "Desarrollo full stack (React + Node/Supabase)",
-      "Despliegue en Cloudflare/Vercel",
-      "Soporte post-entrega",
+      t("Levantamiento de requerimientos", "Requirements gathering"),
+      t("Diseño técnico + maquetas", "Technical design + mockups"),
+      t("Desarrollo full stack (React + Node/Supabase)", "Full-stack development (React + Node/Supabase)"),
+      t("Despliegue en Cloudflare/Vercel", "Deployment on Cloudflare/Vercel"),
+      t("Soporte post-entrega", "Post-delivery support"),
     ],
   },
   {
     icon: Wrench,
     slug: "automation",
-    title: "Automatización de procesos",
-    price: "Desde $290.000 CLP",
-    description: "Conectamos tus herramientas (correo, planillas, CRM, WhatsApp) y eliminamos trabajo manual repetitivo.",
+    title: t("Automatización de procesos", "Process automation"),
+    price: t("Desde $290.000 CLP", "From CLP $290,000"),
+    description: t(
+      "Conectamos tus herramientas (correo, planillas, CRM, WhatsApp) y eliminamos trabajo manual repetitivo.",
+      "We connect your tools (email, spreadsheets, CRM, WhatsApp) and remove repetitive manual work."
+    ),
     features: [
-      "Diagnóstico de procesos automatizables",
-      "Integración con n8n / Zapier / Make",
-      "Chatbots y respuestas automáticas",
-      "Notificaciones internas y a clientes",
-      "Documentación de cada flujo",
+      t("Diagnóstico de procesos automatizables", "Assessment of automatable processes"),
+      t("Integración con n8n / Zapier / Make", "Integration with n8n / Zapier / Make"),
+      t("Chatbots y respuestas automáticas", "Chatbots and automatic replies"),
+      t("Notificaciones internas y a clientes", "Internal and customer notifications"),
+      t("Documentación de cada flujo", "Documentation of every workflow"),
     ],
   },
   {
     icon: BarChart3,
     slug: "support",
-    title: "Mantención y soporte",
-    price: "Desde $49.000 CLP / mes",
-    description: "Plan mensual para mantener tu sitio o sistema actualizado, seguro y con mejoras continuas.",
+    title: t("Mantención y soporte", "Maintenance & support"),
+    price: t("Desde $49.000 CLP / mes", "From CLP $49,000 / mo"),
+    description: t(
+      "Plan mensual para mantener tu sitio o sistema actualizado, seguro y con mejoras continuas.",
+      "Monthly plan to keep your site or system updated, secure and continuously improving."
+    ),
     features: [
-      "Actualizaciones de seguridad",
-      "Backups y monitoreo",
-      "Hasta 2 horas de cambios al mes",
-      "Reporte mensual",
-      "Tiempo de respuesta < 24h hábiles",
+      t("Actualizaciones de seguridad", "Security updates"),
+      t("Backups y monitoreo", "Backups and monitoring"),
+      t("Hasta 2 horas de cambios al mes", "Up to 2 hours of changes per month"),
+      t("Reporte mensual", "Monthly report"),
+      t("Tiempo de respuesta < 24h hábiles", "Response time < 24 business hours"),
     ],
   },
 ];
 
 export default function Servicios() {
   useEffect(() => {
-    document.title = "Servicios · Maudev";
+    document.title = t("Servicios · Maudev", "Services · Maudev");
   }, []);
 
   return (
@@ -76,12 +89,15 @@ export default function Servicios() {
       <section className="pt-32 pb-16 lg:pt-40 lg:pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <span className="text-xs font-mono text-primary tracking-wider uppercase">// servicios</span>
+            <span className="text-xs font-mono text-primary tracking-wider uppercase">// {t("servicios", "services")}</span>
             <h1 className="text-4xl sm:text-5xl font-black tracking-tight mt-3 mb-6">
-              Lo que <span className="text-primary">construimos</span> para ti
+              {t("Lo que", "What we")} <span className="text-primary">{t("construimos", "build")}</span> {t("para ti", "for you")}
             </h1>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              Trabajamos con emprendedores y PYMEs que necesitan presencia digital sólida, sistemas a medida o automatizar procesos que hoy hacen a mano.
+              {t(
+                "Trabajamos con emprendedores y PYMEs que necesitan presencia digital sólida, sistemas a medida o automatizar procesos que hoy hacen a mano.",
+                "We work with founders and SMBs that need a solid digital presence, custom systems or to automate processes they do by hand today."
+              )}
             </p>
           </div>
         </div>
@@ -112,7 +128,7 @@ export default function Servicios() {
                 </ul>
                 <Link to={`/contacto?servicio=${s.slug}`}>
                   <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
-                    Solicitar cotización
+                    {t("Solicitar cotización", "Request a quote")}
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </Link>
@@ -121,12 +137,24 @@ export default function Servicios() {
           </div>
 
           <div className="mt-16 bg-card border border-border rounded-2xl p-8 lg:p-12 text-center">
-            <h3 className="text-2xl font-bold mb-3">¿No estás seguro de qué necesitas?</h3>
+            <h3 className="text-2xl font-bold mb-3">{t("¿No estás seguro de qué necesitas?", "Not sure what you need?")}</h3>
             <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-              Agenda un diagnóstico gratuito de 20 minutos. Te ayudamos a definir el alcance y darte una estimación realista.
+              {t(
+                "Agenda un diagnóstico gratuito de 20 minutos. Te ayudamos a definir el alcance y darte una estimación realista.",
+                "Book a free 20-minute consult. We'll help you define the scope and give you a realistic estimate."
+              )}
             </p>
             <Link to="/contacto">
               <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">
-                Agendar diagnóstico gratis
+                {t("Agendar diagnóstico gratis", "Book a free consult")}
                 <ArrowRight className="ml-2 h-4 w-4" />
-              </Butto
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+    </div>
+  );
+}
