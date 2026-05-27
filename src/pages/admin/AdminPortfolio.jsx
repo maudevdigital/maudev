@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { api } from "@/api/maudev";
+import { projects as staticProjects } from "@/data/projects";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -42,8 +43,21 @@ export default function AdminPortfolio() {
   const [uploading, setUploading] = useState(false);
   const fileRef = useRef(null);
 
-  const load = () =>
-    api.entities.Project.list("sort_order", 100).then(setProjects);
+  const load = async () => {
+    const data = await api.entities.Project.list("sort_order", 100).catch(() => []);
+    if (data && data.length > 0) {
+      setProjects(data);
+    } else {
+      setProjects(
+        staticProjects.map((p) => ({
+          ...p,
+          image_url: p.image_url || p.image,
+          project_url: p.project_url || p.url,
+          _isStatic: true,
+        }))
+      );
+    }
+  };
 
   useEffect(() => { load(); }, []);
 
@@ -55,6 +69,10 @@ export default function AdminPortfolio() {
   };
 
   const openEdit = (p) => {
+    if (p._isStatic) {
+      toast.info("Este proyecto es estático (del archivo local). Crea uno nuevo para editarlo desde el panel.");
+      return;
+    }
     setEditing(p);
     setForm({
       title: p.title || "",
@@ -98,6 +116,11 @@ export default function AdminPortfolio() {
   };
 
   const handleDelete = async (id) => {
+    const project = projects.find((p) => p.id === id);
+    if (project?._isStatic) {
+      toast.info("Los proyectos estáticos no se pueden eliminar desde el panel. Edita el archivo projects.js.");
+      return;
+    }
     if (!window.confirm("¿Eliminar este proyecto?")) return;
     await api.entities.Project.delete(id);
     toast.success("Proyecto eliminado.");
@@ -159,6 +182,11 @@ export default function AdminPortfolio() {
                   </span>
                 )}
                 <div className="absolute top-2 right-2 flex gap-1">
+                  {p._isStatic && (
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-secondary text-muted-foreground border border-border">
+                      Local
+                    </span>
+                  )}
                   {p.featured && (
                     <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-primary text-primary-foreground">
                       Destacado

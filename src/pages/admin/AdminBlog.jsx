@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { api } from "@/api/maudev";
+import { blogPosts as staticPosts } from "@/data/blogPosts";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -32,7 +33,14 @@ export default function AdminBlog() {
   const [tagsText, setTagsText] = useState("");
   const [saving, setSaving] = useState(false);
 
-  const load = () => api.entities.BlogPost.list("-created_date", 100).then(setPosts);
+  const load = async () => {
+    const data = await api.entities.BlogPost.list("-created_date", 100).catch(() => []);
+    if (data && data.length > 0) {
+      setPosts(data);
+    } else {
+      setPosts(staticPosts.map((p) => ({ ...p, _isStatic: true })));
+    }
+  };
 
   useEffect(() => { load(); }, []);
 
@@ -44,6 +52,10 @@ export default function AdminBlog() {
   };
 
   const openEdit = (p) => {
+    if (p._isStatic) {
+      toast.info("Este artículo es estático (del archivo local). Crea uno nuevo para editarlo desde el panel.");
+      return;
+    }
     setEditing(p);
     setForm({
       title: p.title || "", slug: p.slug || "", excerpt: p.excerpt || "",
@@ -77,6 +89,11 @@ export default function AdminBlog() {
   };
 
   const handleDelete = async (id) => {
+    const post = posts.find((p) => p.id === id);
+    if (post?._isStatic) {
+      toast.info("Los artículos estáticos no se pueden eliminar desde el panel. Edita el archivo blogPosts.js.");
+      return;
+    }
     if (!window.confirm("¿Eliminar este artículo?")) return;
     await api.entities.BlogPost.delete(id);
     toast.success("Artículo eliminado.");
@@ -118,7 +135,14 @@ export default function AdminBlog() {
               {posts.map((p) => (
                 <tr key={p.id} className="border-b border-border/50 hover:bg-secondary/30 transition-colors">
                   <td className="p-4">
-                    <p className="text-sm font-medium">{p.title}</p>
+                    <div className="flex items-center gap-2">
+                      <p className="text-sm font-medium">{p.title}</p>
+                      {p._isStatic && (
+                        <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-secondary text-muted-foreground border border-border shrink-0">
+                          Local
+                        </span>
+                      )}
+                    </div>
                     <p className="text-xs text-muted-foreground line-clamp-1">{p.excerpt}</p>
                   </td>
                   <td className="p-4">

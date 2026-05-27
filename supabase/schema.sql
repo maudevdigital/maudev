@@ -68,17 +68,22 @@ create policy "leads admin delete"
 -- BLOG POSTS
 -- ============================================================
 create table if not exists public.blog_posts (
-  id            uuid primary key default gen_random_uuid(),
-  slug          text unique not null,
-  title         text not null,
-  excerpt       text,
-  content       text,
-  cover_url     text,
-  tags          text[] default '{}',
-  status        text default 'draft',  -- draft | published
-  published_at  timestamptz,
-  created_date  timestamptz default now(),
-  updated_date  timestamptz default now()
+  id               uuid primary key default gen_random_uuid(),
+  slug             text unique not null,
+  title            text not null,
+  excerpt          text,
+  content          text,
+  cover_image      text,
+  category         text,
+  author           text,
+  tags             text[] default '{}',
+  status           text default 'draft',  -- draft | published
+  read_time        int default 5,
+  meta_title       text,
+  meta_description text,
+  published_at     timestamptz,
+  created_date     timestamptz default now(),
+  updated_date     timestamptz default now()
 );
 
 alter table public.blog_posts enable row level security;
