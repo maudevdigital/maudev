@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Mail, MessageCircle, Calendar, CheckCircle, Send, ShieldCheck } from "lucide-react";
+import { Mail, MessageCircle, CheckCircle, Send, ShieldCheck } from "lucide-react";
 import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
 import { Button } from "@/components/ui/button";
@@ -12,9 +12,6 @@ import { trackEvent } from "@/lib/MetaPixelTracker";
 import { toast } from "sonner";
 import { t } from "@/lib/i18n";
 
-// ⚙️ Reemplaza con tu link real de Google Calendar appointment scheduling.
-// Ej: https://calendar.google.com/calendar/appointments/schedules/AcZssZ.....
-const GOOGLE_CALENDAR_URL = "https://calendar.google.com/calendar/u/0/appointments/schedules/maudev";
 const CONTACT_EMAIL = "contacto@maudev.cl";
 
 const COUNTRIES = [
@@ -113,8 +110,8 @@ export default function Contacto() {
           </h1>
           <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
             {t(
-              "Cuéntanos qué necesitas y te respondemos en menos de 24h. Si prefieres, agenda directo en nuestro calendario o escríbenos por correo.",
-              "Tell us what you need and we'll reply within 24h. If you prefer, book directly on our calendar or email us."
+              "Cuéntanos qué necesitas y te respondemos en menos de 24h con una propuesta concreta.",
+              "Tell us what you need and we'll reply within 24h with a concrete proposal."
             )}
           </p>
         </div>
@@ -122,20 +119,7 @@ export default function Contacto() {
 
       <section className="pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-3 gap-4 lg:gap-6 mb-12">
-            <a
-              href={GOOGLE_CALENDAR_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-card border border-border rounded-2xl p-6 hover:border-foreground/30 transition-colors group"
-            >
-              <div className="h-10 w-10 rounded-lg bg-secondary border border-border flex items-center justify-center mb-4">
-                <Calendar className="h-5 w-5 text-foreground" />
-              </div>
-              <h3 className="font-bold mb-1">{t("Agendar videollamada", "Book a video call")}</h3>
-              <p className="text-sm text-muted-foreground">{t("Bloque de 20 min por Google Meet.", "20-min slot on Google Meet.")}</p>
-            </a>
-
+          <div className="grid sm:grid-cols-2 gap-4 lg:gap-6 mb-12">
             <a
               href={`mailto:${CONTACT_EMAIL}`}
               className="bg-card border border-border rounded-2xl p-6 hover:border-foreground/30 transition-colors group"
@@ -159,9 +143,8 @@ export default function Contacto() {
       </section>
 
       <section className="pb-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
-            <div className="bg-card border border-border rounded-2xl p-6 sm:p-8">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-card border border-border rounded-2xl p-6 sm:p-8">
               <h2 className="text-2xl font-bold mb-2">{t("Envíanos un mensaje", "Send us a message")}</h2>
               <p className="text-sm text-muted-foreground mb-6">
                 {t("Te respondemos por correo y, con tu número, también por WhatsApp.", "We reply by email and, with your number, also via WhatsApp.")}
@@ -173,13 +156,7 @@ export default function Contacto() {
                     <CheckCircle className="h-8 w-8 text-foreground" />
                   </div>
                   <h3 className="text-lg font-semibold mb-2">{t("Mensaje recibido", "Message received")}</h3>
-                  <p className="text-sm text-muted-foreground mb-6">{t("Te respondemos en menos de 24h hábiles.", "We'll reply within 24 business hours.")}</p>
-                  <a href={GOOGLE_CALENDAR_URL} target="_blank" rel="noopener noreferrer">
-                    <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
-                      <Calendar className="mr-2 h-4 w-4" />
-                      {t("Mientras tanto, agenda una videollamada", "Meanwhile, book a video call")}
-                    </Button>
-                  </a>
+                  <p className="text-sm text-muted-foreground">{t("Te respondemos en menos de 24h hábiles.", "We'll reply within 24 business hours.")}</p>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-5" noValidate>
@@ -264,30 +241,6 @@ export default function Contacto() {
                   </Button>
                 </form>
               )}
-            </div>
-
-            <div className="bg-card border border-border rounded-2xl p-6 sm:p-8 flex flex-col">
-              <h2 className="text-2xl font-bold mb-2">{t("Agenda directo", "Book directly")}</h2>
-              <p className="text-sm text-muted-foreground mb-6">
-                {t("Reserva un bloque de 20 minutos en nuestro Google Calendar. Sin compromiso.", "Reserve a 20-minute slot on our Google Calendar. No commitment.")}
-              </p>
-              <div className="flex-1 rounded-xl border border-border overflow-hidden bg-background min-h-[500px]">
-                <iframe
-                  src={GOOGLE_CALENDAR_URL}
-                  title={t("Agendar reunión con Maudev", "Book a meeting with Maudev")}
-                  className="w-full h-full min-h-[500px]"
-                  frameBorder="0"
-                />
-              </div>
-              <a
-                href={GOOGLE_CALENDAR_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-4 inline-flex items-center justify-center gap-2 text-sm text-primary font-medium hover:underline"
-              >
-                {t("Abrir calendario en pestaña nueva", "Open calendar in a new tab")} →
-              </a>
-            </div>
           </div>
         </div>
       </section>
