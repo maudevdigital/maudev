@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { api } from "@/api/maudev";
 import { getLeadAttribution } from "@/lib/lead-tracking";
-import { trackEvent } from "@/lib/MetaPixelTracker";
+import { trackLeadEvent } from "@/lib/MetaPixelTracker";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { t } from "@/lib/i18n";
@@ -52,7 +52,10 @@ export default function HeroSection({ heroImage }) {
         consent: true,
         ...getLeadAttribution(),
       });
-      trackEvent("Lead", { content_name: "Hero funnel", content_category: selected || "general" });
+      await trackLeadEvent({
+        email,
+        params: { content_name: "Hero funnel", content_category: selected || "general" },
+      });
       setStep(2);
       toast.success(t("Solicitud recibida. Te enviaremos el roadmap inicial.", "Request received. We'll send your initial roadmap."));
     } catch {

@@ -1,0 +1,10 @@
+name = "maudev-meta-capi"
+main = "worker.js"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+PIXEL_ID = "3002561230082800"
+
+# Secret (no va aquí):
+# META_ACCESS_TOKEN → se guarda con: wrangler secret put META_ACCESS_TOKEN
