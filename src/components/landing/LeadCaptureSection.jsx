@@ -5,13 +5,9 @@ import { trackEvent } from "@/lib/MetaPixelTracker";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Send, CheckCircle, Video, ShieldCheck } from "lucide-react";
+import { Send, CheckCircle, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 import { t } from "@/lib/i18n";
-
-// ⚙️ Reemplaza por tu enlace de agenda (Google Calendar Appointment Schedule
-//    o Google Meet). Mientras esté vacío, el botón muestra un aviso.
-const MEET_URL = "";
 
 // Países habilitados. Cada uno define su prefijo, placeholder y rango de dígitos
 // para validar el número (sin contar el prefijo).
@@ -86,16 +82,6 @@ export default function LeadCaptureSection() {
     }
   };
 
-  const handleMeet = () => {
-    if (!MEET_URL) {
-      toast.message(t("Agenda en configuración", "Scheduling not set up yet"), {
-        description: t("Define tu enlace de Google Meet/Calendar en MEET_URL para activar el botón.", "Set your Google Meet/Calendar link in MEET_URL to activate the button."),
-      });
-      return;
-    }
-    window.open(MEET_URL, "_blank", "noopener,noreferrer");
-  };
-
   return (
     <section id="contacto" className="relative py-24 lg:py-32 border-t border-border/30">
       <div className="absolute inset-0 grid-pattern opacity-20" />
@@ -127,28 +113,6 @@ export default function LeadCaptureSection() {
                   <span className="text-sm text-muted-foreground">{s.text}</span>
                 </div>
               ))}
-            </div>
-
-            {/* Agendar videollamada */}
-            <div className="rounded-xl border border-border bg-card p-5 mb-5">
-              <div className="flex items-center gap-3 mb-2">
-                <div className="h-9 w-9 rounded-lg bg-secondary border border-border flex items-center justify-center shrink-0">
-                  <Video className="h-4 w-4 text-foreground" />
-                </div>
-                <div>
-                  <p className="text-sm font-semibold leading-tight">{t("¿Prefieres hablarlo en vivo?", "Prefer to talk live?")}</p>
-                  <p className="text-xs text-muted-foreground">{t("Agenda una videollamada por Google Meet.", "Book a video call on Google Meet.")}</p>
-                </div>
-              </div>
-              <Button
-                type="button"
-                onClick={handleMeet}
-                variant="outline"
-                className="w-full h-11 mt-2 border-border hover:bg-secondary/60"
-              >
-                {t("Agendar videollamada", "Book a video call")}
-                <Video className="ml-2 h-4 w-4" />
-              </Button>
             </div>
 
             {/* Medios de pago */}
