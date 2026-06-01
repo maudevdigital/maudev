@@ -5,7 +5,6 @@ import StatsSection from "../components/landing/StatsSection";
 import ServicesSection from "../components/landing/ServicesSection";
 import ProcessSection from "../components/landing/ProcessSection";
 import PortafolioPreview from "../components/landing/PortafolioPreview";
-import TestimonialsSection from "../components/landing/TestimonialsSection";
 import BlogPreview from "../components/landing/BlogPreview";
 import FaqSection from "../components/landing/FaqSection";
 import LeadCaptureSection from "../components/landing/LeadCaptureSection";
@@ -44,7 +43,6 @@ export default function Landing() {
       <ServicesSection servicesImage={SERVICES_IMAGE} />
       <ProcessSection />
       <PortafolioPreview />
-      <TestimonialsSection />
       <BlogPreview blogImage={BLOG_IMAGE} />
       <FaqSection />
       <LeadCaptureSection />
