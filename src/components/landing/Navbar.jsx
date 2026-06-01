@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Logo from "@/components/landing/Logo";
@@ -7,6 +7,18 @@ import { t } from "@/lib/i18n";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const { pathname } = useLocation();
+
+  // En la landing page (/) el CTA hace scroll al formulario de contacto.
+  // En el resto de páginas navega a /contacto.
+  const ctaHref = pathname === "/" ? "/#contacto" : "/contacto";
+  const handleCtaClick = (e) => {
+    setOpen(false);
+    if (pathname === "/") {
+      e.preventDefault();
+      document.getElementById("contacto")?.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   const links = [
     { label: t("Servicios", "Services"), to: "/servicios" },
@@ -43,11 +55,11 @@ export default function Navbar() {
                 {l.label}
               </NavLink>
             ))}
-            <Link to="/contacto">
+            <a href={ctaHref} onClick={handleCtaClick}>
               <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold">
                 {t("Agendar diagnóstico", "Book a free consult")}
               </Button>
-            </Link>
+            </a>
           </div>
 
           <button onClick={() => setOpen(!open)} className="md:hidden text-foreground">
@@ -69,11 +81,11 @@ export default function Navbar() {
                 {l.label}
               </NavLink>
             ))}
-            <Link to="/contacto" onClick={() => setOpen(false)}>
+            <a href={ctaHref} onClick={handleCtaClick}>
               <Button size="sm" className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-semibold">
                 {t("Agendar diagnóstico", "Book a free consult")}
               </Button>
-            </Link>
+            </a>
           </div>
         </div>
       )}

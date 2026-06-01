@@ -8,6 +8,7 @@ import MetaPixelTracker from './lib/MetaPixelTracker';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import AdminGuard from './components/admin/AdminGuard';
+import WhatsAppFloat from '@/components/landing/WhatsAppFloat';
 import AdminLayout from './components/admin/AdminLayout';
 import Landing from './pages/Landing';
 import Blog from './pages/Blog';
@@ -74,6 +75,7 @@ function App() {
           <MetaPixelTracker />
           <AuthenticatedApp />
         </Router>
+        <WhatsAppFloat />
         <Toaster richColors position="top-right" />
       </QueryClientProvider>
     </AuthProvider>

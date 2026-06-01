@@ -1,7 +1,8 @@
-import { Mail } from "lucide-react";
+import { Mail, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import Logo from "@/components/landing/Logo";
 import { t } from "@/lib/i18n";
+import { getWhatsAppUrl, whatsappEnabled } from "@/components/landing/WhatsAppFloat";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -52,6 +53,17 @@ export default function Footer() {
               <Mail className="h-3.5 w-3.5" />
               contacto@maudev.cl
             </a>
+            {whatsappEnabled && (
+              <a
+                href={getWhatsAppUrl()}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-sm text-[#25D366] hover:underline mb-2"
+              >
+                <MessageCircle className="h-3.5 w-3.5" />
+                WhatsApp
+              </a>
+            )}
             <Link to="/contacto" className="block text-sm text-primary font-medium hover:underline">
               {t("Agendar diagnóstico", "Book a consult")} →
             </Link>

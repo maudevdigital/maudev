@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Mail, MessageCircle, CheckCircle, Send, ShieldCheck } from "lucide-react";
+import { Mail, MessageCircle, CheckCircle, Send, ShieldCheck, ExternalLink } from "lucide-react";
+import { getWhatsAppUrl, whatsappEnabled } from "@/components/landing/WhatsAppFloat";
 import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
 import { Button } from "@/components/ui/button";
@@ -135,13 +136,34 @@ export default function Contacto() {
               <p className="text-sm text-muted-foreground break-all">{CONTACT_EMAIL}</p>
             </a>
 
-            <div className="bg-card border border-border rounded-2xl p-6">
-              <div className="h-10 w-10 rounded-lg bg-secondary border border-border flex items-center justify-center mb-4">
-                <MessageCircle className="h-5 w-5 text-foreground" />
+            {whatsappEnabled ? (
+              <a
+                href={getWhatsAppUrl(t(
+                  "Hola, me gustaría saber más sobre tus servicios de desarrollo web.",
+                  "Hi, I'd like to know more about your web development services."
+                ))}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-card border border-border rounded-2xl p-6 hover:border-[#25D366]/60 transition-colors group"
+              >
+                <div className="h-10 w-10 rounded-lg bg-[#25D366]/10 border border-[#25D366]/20 flex items-center justify-center mb-4">
+                  <MessageCircle className="h-5 w-5 text-[#25D366]" />
+                </div>
+                <h3 className="font-bold mb-1 flex items-center gap-2">
+                  WhatsApp
+                  <ExternalLink className="h-3.5 w-3.5 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                </h3>
+                <p className="text-sm text-[#25D366] font-medium">{t("Escribir ahora →", "Message now →")}</p>
+              </a>
+            ) : (
+              <div className="bg-card border border-border rounded-2xl p-6">
+                <div className="h-10 w-10 rounded-lg bg-secondary border border-border flex items-center justify-center mb-4">
+                  <MessageCircle className="h-5 w-5 text-foreground" />
+                </div>
+                <h3 className="font-bold mb-1">WhatsApp</h3>
+                <p className="text-sm text-muted-foreground">{t("Déjanos tu número en el formulario y te escribimos.", "Leave your number in the form and we'll message you.")}</p>
               </div>
-              <h3 className="font-bold mb-1">WhatsApp</h3>
-              <p className="text-sm text-muted-foreground">{t("Déjanos tu número en el formulario y te escribimos.", "Leave your number in the form and we'll message you.")}</p>
-            </div>
+            )}
           </div>
         </div>
       </section>

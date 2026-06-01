@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { ArrowRight, Zap, Globe, Bot, CheckCircle, TrendingUp } from "lucide-react";
+import { ArrowRight, Zap, Globe, Bot, CheckCircle, TrendingUp, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { api } from "@/api/maudev";
 import { getLeadAttribution } from "@/lib/lead-tracking";
 import { trackLeadEvent } from "@/lib/MetaPixelTracker";
+import { getWhatsAppUrl, whatsappEnabled } from "@/components/landing/WhatsAppFloat";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { t } from "@/lib/i18n";
@@ -72,7 +73,7 @@ export default function HeroSection({ heroImage }) {
         muted
         loop
         playsInline
-        className="absolute inset-0 w-full h-full object-cover opacity-15 mix-blend-luminosity pointer-events-none"
+        className="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-luminosity pointer-events-none"
       >
         <source src="https://d8j0ntlcm91z4.cloudfront.net/user_3EBs78pPEwjVNce6L8iQL3AZlSz/hf_20260524_230658_9d03efa8-5c5b-4f99-aae7-4b1af7342a86.mp4" type="video/mp4" />
       </video>
@@ -94,7 +95,7 @@ export default function HeroSection({ heroImage }) {
             >
               <div className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
               <span className="text-xs font-mono text-primary tracking-wider uppercase">
-                {t("Disponible · Chile · Remoto global", "Available · Chile · Global remote")}
+                {t("Disponible · Cupos limitados este mes", "Available · Limited spots this month")}
               </span>
             </motion.div>
 
@@ -277,16 +278,33 @@ export default function HeroSection({ heroImage }) {
               )}
 
               {step === 2 && (
-                <div className="text-center py-8">
+                <div className="text-center py-6">
                   <div className="h-16 w-16 rounded-full bg-secondary border border-border flex items-center justify-center mx-auto mb-4">
-                    <Zap className="h-8 w-8 text-foreground" />
+                    <CheckCircle className="h-8 w-8 text-foreground" />
                   </div>
-                  <h3 className="text-lg font-semibold mb-2">{t("Solicitud recibida", "Request received")}</h3>
-                  <p className="text-sm text-muted-foreground">
+                  <h3 className="text-lg font-semibold mb-2">{t("¡Solicitud recibida!", "Request received!")}</h3>
+                  <p className="text-sm text-muted-foreground mb-6">
                     {t(
-                      "El sistema notificó al equipo y preparó la respuesta automática. Te contactaremos con el roadmap.",
-                      "The system notified the team and prepared the automatic reply. We'll get back to you with the roadmap."
+                      "Te enviamos el roadmap inicial en menos de 24h. ¿Quieres respuesta inmediata?",
+                      "We'll send your initial roadmap within 24h. Want an immediate reply?"
                     )}
+                  </p>
+                  {whatsappEnabled && (
+                    <a
+                      href={getWhatsAppUrl(t(
+                        "Hola, acabo de solicitar un diagnóstico en maudev.cl y me gustaría hablar sobre mi proyecto.",
+                        "Hi, I just requested a free consult on maudev.cl and would like to discuss my project."
+                      ))}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#20b858] text-white font-semibold text-sm px-5 py-2.5 rounded-xl transition-colors duration-200 mb-3"
+                    >
+                      <MessageCircle className="h-4 w-4" />
+                      {t("Escribir por WhatsApp ahora", "Message on WhatsApp now")}
+                    </a>
+                  )}
+                  <p className="text-xs text-muted-foreground font-mono">
+                    {t("También te llegará la propuesta por email.", "You'll also receive the proposal by email.")}
                   </p>
                 </div>
               )}
