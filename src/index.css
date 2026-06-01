@@ -175,3 +175,171 @@
 html {
   scroll-behavior: smooth;
 }
+
+/* ================================================================
+   Blog prose — estilos para el contenido Markdown renderizado
+   via ReactMarkdown dentro de .blog-prose
+   ================================================================ */
+.blog-prose {
+  color: hsl(var(--foreground));
+  line-height: 1.8;
+  font-size: 1.0625rem;
+}
+
+.blog-prose > * + * { margin-top: 1.5em; }
+
+.blog-prose h1,
+.blog-prose h2,
+.blog-prose h3,
+.blog-prose h4 {
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.25;
+  color: hsl(var(--foreground));
+  margin-top: 2.5em;
+  margin-bottom: 0.75em;
+}
+
+.blog-prose h1 { font-size: 2rem; }
+.blog-prose h2 {
+  font-size: 1.5rem;
+  padding-bottom: 0.5em;
+  border-bottom: 1px solid hsl(var(--border));
+}
+.blog-prose h3 { font-size: 1.2rem; color: hsl(var(--primary)); }
+.blog-prose h4 { font-size: 1rem; text-transform: uppercase; letter-spacing: 0.08em; font-family: var(--font-mono); color: hsl(var(--muted-foreground)); }
+
+.blog-prose p { color: hsl(var(--muted-foreground)); }
+
+.blog-prose a {
+  color: hsl(var(--primary));
+  text-decoration: underline;
+  text-decoration-color: hsl(var(--primary) / 0.35);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.15s;
+}
+.blog-prose a:hover { text-decoration-color: hsl(var(--primary)); }
+
+.blog-prose strong { color: hsl(var(--foreground)); font-weight: 700; }
+.blog-prose em { color: hsl(var(--muted-foreground)); font-style: italic; }
+
+.blog-prose ul,
+.blog-prose ol {
+  padding-left: 1.5em;
+  color: hsl(var(--muted-foreground));
+}
+.blog-prose ul { list-style-type: none; }
+.blog-prose ul li { position: relative; padding-left: 0.5em; }
+.blog-prose ul li::before {
+  content: "▸";
+  position: absolute;
+  left: -1em;
+  color: hsl(var(--primary));
+  font-size: 0.75em;
+  top: 0.2em;
+}
+.blog-prose ol { list-style-type: decimal; }
+.blog-prose li { margin-bottom: 0.4em; }
+.blog-prose li > ul, .blog-prose li > ol { margin-top: 0.5em; }
+
+.blog-prose blockquote {
+  border-left: 3px solid hsl(var(--primary));
+  padding: 1em 1.5em;
+  margin: 2em 0;
+  background: hsl(var(--primary) / 0.04);
+  border-radius: 0 0.5rem 0.5rem 0;
+  color: hsl(var(--foreground));
+  font-size: 1.05rem;
+  font-style: italic;
+}
+.blog-prose blockquote p { color: hsl(var(--foreground)); margin: 0; }
+
+.blog-prose code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background: hsl(var(--secondary));
+  color: hsl(var(--primary));
+  padding: 0.2em 0.45em;
+  border-radius: 0.3em;
+  border: 1px solid hsl(var(--border));
+}
+
+.blog-prose pre {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.75rem;
+  padding: 1.25em 1.5em;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  margin: 2em 0;
+}
+.blog-prose pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: hsl(var(--foreground));
+  font-size: 1em;
+}
+
+.blog-prose hr {
+  border: none;
+  border-top: 1px solid hsl(var(--border));
+  margin: 3em 0;
+}
+
+.blog-prose img {
+  border-radius: 0.75rem;
+  border: 1px solid hsl(var(--border));
+  max-width: 100%;
+  height: auto;
+}
+
+.blog-prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+.blog-prose th {
+  background: hsl(var(--secondary));
+  font-weight: 700;
+  text-align: left;
+  padding: 0.6em 1em;
+  border-bottom: 2px solid hsl(var(--border));
+  color: hsl(var(--foreground));
+}
+.blog-prose td {
+  padding: 0.6em 1em;
+  border-bottom: 1px solid hsl(var(--border));
+  color: hsl(var(--muted-foreground));
+}
+.blog-prose tr:last-child td { border-bottom: none; }
+
+/* Legal prose (similar pero con menos ornamentación) */
+.legal-prose > section { padding-bottom: 2rem; border-bottom: 1px solid hsl(var(--border) / 0.5); }
+.legal-prose > section:last-child { border-bottom: none; padding-bottom: 0; }
+.legal-prose h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: hsl(var(--foreground));
+  margin-bottom: 0.75rem;
+}
+.legal-prose h2::before {
+  content: attr(data-num);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 0.4rem;
+  background: hsl(var(--primary) / 0.1);
+  border: 1px solid hsl(var(--primary) / 0.2);
+  color: hsl(var(--primary));
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}

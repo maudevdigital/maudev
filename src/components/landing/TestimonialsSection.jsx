@@ -1,43 +1,38 @@
-import { Star, Quote } from "lucide-react";
+import { Star, MessageSquarePlus, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { t } from "@/lib/i18n";
 
-const testimonials = [
+const placeholders = [
   {
-    name: "Carlos R.",
-    role: t("Gerente de operaciones", "Operations manager"),
-    location: "Santiago, Chile",
+    initials: "?",
+    name: t("Tu nombre aquí", "Your name here"),
+    role: t("Primer cliente en opinar", "First client to review"),
+    location: "Chile",
     text: t(
-      "Automatizaron el flujo de cotizaciones que antes hacíamos a mano en planillas. Hoy los pedidos entran al sistema solos y respondemos en minutos. El soporte post-entrega fue excelente.",
-      "They automated the quoting flow we used to do by hand in spreadsheets. Now orders enter the system on their own and we reply in minutes. The after-sales support was excellent."
+      "¿Trabajamos juntos? Me encantaría escuchar tu experiencia y publicar tu reseña aquí.",
+      "Did we work together? I'd love to hear your experience and publish your review here."
     ),
-    rating: 5,
-    tag: t("Automatización", "Automation"),
-    initials: "CR",
   },
   {
-    name: "Valentina M.",
-    role: t("Fundadora de curso", "Course founder"),
-    location: "Colombia",
+    initials: "?",
+    name: t("Tu nombre aquí", "Your name here"),
+    role: t("Primer cliente en opinar", "First client to review"),
+    location: "LatAm",
     text: t(
-      "Necesitaba una landing page de alta conversión para mi curso. El resultado superó mis expectativas: diseño profesional, carga rápida y los leads aumentaron un 40% desde el primer mes.",
-      "I needed a high-converting landing page for my course. The result exceeded my expectations: professional design, fast load and leads grew 40% from the first month."
+      "Los primeros proyectos ya están en marcha. Pronto este espacio tendrá reseñas reales de clientes reales.",
+      "The first projects are already underway. This space will soon have real reviews from real clients."
     ),
-    rating: 5,
-    tag: "Landing Page",
-    initials: "VM",
   },
   {
-    name: "Diego F.",
-    role: t("E-commerce de repuestos", "Auto-parts e-commerce"),
-    location: "México",
+    initials: "?",
+    name: t("Tu nombre aquí", "Your name here"),
+    role: t("Primer cliente en opinar", "First client to review"),
+    location: "EEUU / México",
     text: t(
-      "Desarrollaron nuestra tienda con búsqueda por modelo de vehículo y pagos integrados. Vendemos sin fricción y el panel de administración nos ahorra horas cada semana. Muy buena comunicación.",
-      "They built our store with search by vehicle model and integrated payments. We sell without friction and the admin panel saves us hours every week. Great communication."
+      "Si tienes un proyecto en mente, podemos construirlo juntos — y tu experiencia podría ser la primera historia de éxito aquí.",
+      "If you have a project in mind, we can build it together — and your experience could be the first success story here."
     ),
-    rating: 5,
-    tag: "E-commerce",
-    initials: "DF",
   },
 ];
 
@@ -49,59 +44,73 @@ export default function TestimonialsSection() {
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <span className="text-xs font-mono text-primary tracking-wider uppercase">// {t("resultados", "results")}</span>
+          <span className="text-xs font-mono text-primary tracking-wider uppercase">// {t("próximamente", "coming soon")}</span>
           <h2 className="text-3xl sm:text-4xl font-black tracking-tight mt-3 mb-4">
-            {t("Lo que dicen los clientes", "What clients say")}
+            {t("Primeras reseñas", "First reviews")}{" "}
+            <span className="text-primary">{t("en camino", "on the way")}</span>
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             {t(
-              "Proyectos reales, resultados concretos. Cada testimonio refleja un proyecto entregado con compromiso y calidad.",
-              "Real projects, concrete results. Each testimonial reflects a project delivered with commitment and quality."
+              "Somos un equipo joven con proyectos reales en producción. Nuestros primeros clientes están trabajando con nosotros ahora — sus reseñas estarán aquí pronto.",
+              "We're a young team with real projects in production. Our first clients are working with us now — their reviews will be here soon."
             )}
           </p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
-          {testimonials.map((t, i) => (
+          {placeholders.map((item, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 28 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ delay: i * 0.12, duration: 0.55, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="relative bg-card border border-border rounded-2xl p-6 flex flex-col hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300"
+              className="relative bg-card border border-dashed border-border rounded-2xl p-6 flex flex-col opacity-50"
             >
-              {/* Quote icon */}
-              <Quote className="h-6 w-6 text-primary/20 mb-4 shrink-0" />
-
               <div className="flex items-center gap-1 mb-4">
-                {[...Array(t.rating)].map((_, j) => (
-                  <Star key={j} className="h-3.5 w-3.5 fill-primary text-primary" />
+                {[...Array(5)].map((_, j) => (
+                  <Star key={j} className="h-3.5 w-3.5 text-border fill-border" />
                 ))}
               </div>
-
-              <p className="text-sm text-muted-foreground leading-relaxed flex-1 mb-6">
-                "{t.text}"
+              <p className="text-sm text-muted-foreground/60 leading-relaxed flex-1 mb-6 italic">
+                "{item.text}"
               </p>
-
               <div className="flex items-center justify-between pt-4 border-t border-border/40">
                 <div className="flex items-center gap-3">
-                  {/* Avatar con iniciales */}
-                  <div className="h-9 w-9 rounded-xl bg-secondary border border-border flex items-center justify-center shrink-0">
-                    <span className="text-xs font-bold text-foreground">{t.initials}</span>
+                  <div className="h-9 w-9 rounded-xl bg-secondary border border-dashed border-border/60 flex items-center justify-center shrink-0">
+                    <span className="text-xs font-bold text-muted-foreground/40">{item.initials}</span>
                   </div>
                   <div>
-                    <p className="text-sm font-semibold leading-tight">{t.name}</p>
-                    <p className="text-xs text-muted-foreground">{t.role} · {t.location}</p>
+                    <p className="text-sm font-semibold text-muted-foreground/60 leading-tight">{item.name}</p>
+                    <p className="text-xs text-muted-foreground/40">{item.role} · {item.location}</p>
                   </div>
                 </div>
-                <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-primary/10 text-primary border border-primary/20 whitespace-nowrap">
-                  {t.tag}
-                </span>
               </div>
             </motion.div>
           ))}
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.4, duration: 0.55 }}
+          className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4 text-center"
+        >
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/5 border border-primary/15">
+            <MessageSquarePlus className="h-4 w-4 text-primary" />
+            <span className="text-sm text-muted-foreground">
+              {t("¿Ya trabajaste con nosotros?", "Did you work with us?")}
+            </span>
+          </div>
+          <Link
+            to="/contacto"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
+          >
+            {t("Déjanos tu reseña", "Leave us your review")}
+            <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
+        </motion.div>
       </div>
     </section>
   );
