@@ -42,8 +42,6 @@
       fbq('init', '3002561230082800');
       fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none"
-      src="https://www.facebook.com/tr?id=3002561230082800&ev=PageView&noscript=1"/></noscript>
     <!-- End Meta Pixel Code -->
     <script type="application/ld+json">
       {
@@ -59,6 +57,9 @@
     </script>
   </head>
   <body>
+    <!-- Meta Pixel noscript fallback (debe ir en body, no en head) -->
+    <noscript><img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=3002561230082800&ev=PageView&noscript=1"/></noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

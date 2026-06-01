@@ -41,7 +41,7 @@
 }
 
 @layer base {
-  /* ===== Tema CLARO (blanco y negro) — por defecto / sistema en modo claro ===== */
+  /* ===== Tema CLARO — fondo blanco, acento cyan oscuro ===== */
   :root {
     --font-sans: 'Inter', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
@@ -52,37 +52,37 @@
     --card-foreground: 0 0% 7%;
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 7%;
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
+    --primary: 185 90% 28%;          /* teal oscuro — legible sobre blanco */
+    --primary-foreground: 0 0% 100%; /* texto blanco sobre botón teal */
     --secondary: 0 0% 96%;
     --secondary-foreground: 0 0% 9%;
     --muted: 0 0% 96%;
     --muted-foreground: 0 0% 40%;
-    --accent: 0 0% 9%;
-    --accent-foreground: 0 0% 98%;
+    --accent: 185 90% 28%;
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 72% 45%;
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 90%;
     --input: 0 0% 90%;
-    --ring: 0 0% 9%;
-    --chart-1: 0 0% 9%;
-    --chart-2: 0 0% 30%;
-    --chart-3: 0 0% 50%;
+    --ring: 185 90% 28%;
+    --chart-1: 185 90% 28%;
+    --chart-2: 185 70% 45%;
+    --chart-3: 185 50% 58%;
     --chart-4: 0 0% 68%;
     --chart-5: 0 0% 82%;
     --radius: 0.5rem;
-    --success: 0 0% 9%;
+    --success: 185 90% 28%;
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 0 0% 7%;
-    --sidebar-primary: 0 0% 9%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 0 0% 94%;
-    --sidebar-accent-foreground: 0 0% 9%;
+    --sidebar-primary: 185 90% 28%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 185 90% 95%;
+    --sidebar-accent-foreground: 185 90% 28%;
     --sidebar-border: 0 0% 90%;
-    --sidebar-ring: 0 0% 9%;
+    --sidebar-ring: 185 90% 28%;
   }
 
-  /* ===== Tema OSCURO (negro y blanco) — sistema en modo oscuro ===== */
+  /* ===== Tema OSCURO — fondo negro, acento cyan brillante ===== */
   .dark {
     --background: 0 0% 4%;
     --foreground: 0 0% 98%;
@@ -90,33 +90,33 @@
     --card-foreground: 0 0% 98%;
     --popover: 0 0% 7%;
     --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
+    --primary: 185 85% 52%;          /* cyan brillante sobre fondo oscuro */
+    --primary-foreground: 0 0% 7%;   /* texto casi negro sobre botón cyan */
     --secondary: 0 0% 15%;
     --secondary-foreground: 0 0% 98%;
     --muted: 0 0% 15%;
     --muted-foreground: 0 0% 64%;
-    --accent: 0 0% 98%;
-    --accent-foreground: 0 0% 9%;
+    --accent: 185 85% 52%;
+    --accent-foreground: 0 0% 7%;
     --destructive: 0 62% 45%;
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 16%;
     --input: 0 0% 16%;
-    --ring: 0 0% 83%;
-    --chart-1: 0 0% 98%;
-    --chart-2: 0 0% 75%;
-    --chart-3: 0 0% 58%;
+    --ring: 185 85% 52%;
+    --chart-1: 185 85% 52%;
+    --chart-2: 185 65% 65%;
+    --chart-3: 185 45% 58%;
     --chart-4: 0 0% 42%;
     --chart-5: 0 0% 28%;
-    --success: 0 0% 98%;
+    --success: 185 85% 52%;
     --sidebar-background: 0 0% 6%;
     --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 0 0% 98%;
-    --sidebar-primary-foreground: 0 0% 9%;
-    --sidebar-accent: 0 0% 12%;
-    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-primary: 185 85% 52%;
+    --sidebar-primary-foreground: 0 0% 7%;
+    --sidebar-accent: 185 85% 10%;
+    --sidebar-accent-foreground: 185 85% 52%;
     --sidebar-border: 0 0% 16%;
-    --sidebar-ring: 0 0% 83%;
+    --sidebar-ring: 185 85% 52%;
   }
 }
 
@@ -155,11 +155,11 @@
 
 /* Glow effects (monocromo) */
 .glow-cyan {
-  box-shadow: 0 0 20px hsl(var(--foreground) / 0.08), 0 0 40px hsl(var(--foreground) / 0.04);
+  box-shadow: 0 0 20px hsl(var(--primary) / 0.25), 0 0 40px hsl(var(--primary) / 0.12);
 }
 
 .glow-text {
-  text-shadow: 0 0 30px hsl(var(--foreground) / 0.15);
+  text-shadow: 0 0 30px hsl(var(--primary) / 0.4);
 }
 
 .pulse-border {
@@ -167,8 +167,8 @@
 }
 
 @keyframes pulseBorder {
-  0%, 100% { border-color: hsl(var(--foreground) / 0.15); }
-  50% { border-color: hsl(var(--foreground) / 0.45); }
+  0%, 100% { border-color: hsl(var(--primary) / 0.25); }
+  50% { border-color: hsl(var(--primary) / 0.65); }
 }
 
 /* Smooth scroll */
