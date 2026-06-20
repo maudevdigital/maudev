@@ -129,10 +129,10 @@ export default function ProcessSection() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, margin: "-60px" }}
                   transition={{ delay: i * 0.1, duration: 0.55, ease: [0.25, 0.46, 0.45, 0.94] }}
-                  className="relative flex gap-8 pb-10 last:pb-0 group"
+                  className="relative flex gap-4 sm:gap-8 pb-9 sm:pb-10 last:pb-0 group"
                 >
                   <div className="relative shrink-0 w-12 flex justify-center">
-                    <div className="relative z-10 h-12 w-12 rounded-xl bg-card border border-border group-hover:border-foreground/40 flex items-center justify-center transition-colors duration-300">
+                    <div className="relative z-10 h-11 w-11 sm:h-12 sm:w-12 rounded-xl bg-card border border-border group-hover:border-foreground/40 flex items-center justify-center transition-colors duration-300">
                       <s.icon className="h-5 w-5 text-muted-foreground group-hover:text-foreground transition-colors duration-300" />
                     </div>
                   </div>

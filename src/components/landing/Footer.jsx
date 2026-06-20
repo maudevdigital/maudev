@@ -106,10 +106,10 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 pt-6 border-t border-border/30 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <p className="text-xs text-muted-foreground font-mono">
-            © {year} maudev · Chile.
+          <p className="text-xs text-muted-foreground">
+            © {year} <span className="font-semibold text-foreground">mau<span className="text-primary">dev</span></span> · Chile.
           </p>
-          <p className="text-xs text-muted-foreground font-mono">
+          <p className="text-xs text-muted-foreground">
             {t("Desarrollo · Automatización · Consultoría TI", "Development · Automation · IT Consulting")}
           </p>
         </div>

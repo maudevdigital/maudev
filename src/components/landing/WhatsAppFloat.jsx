@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useLocation } from "react-router-dom";
 import { t } from "@/lib/i18n";
 
 // ─── CONFIGURACIÓN ──────────────────────────────────────────────────────────
@@ -16,7 +17,9 @@ const WA_MESSAGE = encodeURIComponent(
 const ENABLED = true; // Botón activo. El número solo se usa en el link, no se muestra en texto.
 
 export default function WhatsAppFloat() {
-  if (!ENABLED) return null;
+  const { pathname } = useLocation();
+  // Oculto si está desactivado o en el panel de administración.
+  if (!ENABLED || pathname.startsWith("/admin")) return null;
 
   const href = `https://wa.me/${WA_NUMBER}?text=${WA_MESSAGE}`;
 

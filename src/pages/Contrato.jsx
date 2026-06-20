@@ -143,6 +143,13 @@ export default function Contrato() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
+
+      {/* Marca de agua — solo al imprimir/guardar PDF. Deja claro que es un
+          modelo de referencia y no un contrato vigente (confidencialidad). */}
+      <div className="print-watermark" aria-hidden="true">
+        <span>{t("MODELO REFERENCIAL", "REFERENCE TEMPLATE")}</span>
+      </div>
+
       <section className="pt-32 pb-24 print-doc">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
 
