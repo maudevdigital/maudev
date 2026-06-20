@@ -1,13 +1,28 @@
 import { useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Logo from "@/components/landing/Logo";
 import { t } from "@/lib/i18n";
+import { CTA_LABEL } from "@/data/site";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [dark, setDark] = useState(() =>
+    typeof document !== "undefined" && document.documentElement.classList.contains("dark")
+  );
   const { pathname } = useLocation();
+
+  // Toggle manual de tema: persiste en localStorage y pisa la preferencia del
+  // sistema (ver script en index.html, que lee "theme" al cargar).
+  const toggleTheme = () => {
+    const next = !dark;
+    setDark(next);
+    document.documentElement.classList.toggle("dark", next);
+    try {
+      localStorage.setItem("theme", next ? "dark" : "light");
+    } catch { /* almacenamiento bloqueado: el toggle igual funciona en la sesión */ }
+  };
 
   // En la landing page (/) el CTA hace scroll al formulario de contacto.
   // En el resto de páginas navega a /contacto.
@@ -22,6 +37,7 @@ export default function Navbar() {
 
   const links = [
     { label: t("Servicios", "Services"), to: "/servicios" },
+    { label: t("Precios", "Pricing"), to: "/precios" },
     { label: t("Portafolio", "Portfolio"), to: "/portafolio" },
     { label: t("Contacto", "Contact"), to: "/contacto" },
   ];
@@ -41,7 +57,7 @@ export default function Navbar() {
             </span>
           </Link>
 
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-7">
             {links.map((l) => (
               <NavLink
                 key={l.label}
@@ -55,16 +71,32 @@ export default function Navbar() {
                 {l.label}
               </NavLink>
             ))}
+            <button
+              onClick={toggleTheme}
+              aria-label={t("Cambiar tema", "Toggle theme")}
+              className="h-8 w-8 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/40 transition-colors"
+            >
+              {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </button>
             <a href={ctaHref} onClick={handleCtaClick}>
               <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold">
-                {t("Agendar diagnóstico", "Book a free consult")}
+                {CTA_LABEL}
               </Button>
             </a>
           </div>
 
-          <button onClick={() => setOpen(!open)} className="md:hidden text-foreground">
-            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
+          <div className="md:hidden flex items-center gap-3">
+            <button
+              onClick={toggleTheme}
+              aria-label={t("Cambiar tema", "Toggle theme")}
+              className="h-8 w-8 rounded-lg border border-border flex items-center justify-center text-muted-foreground"
+            >
+              {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </button>
+            <button onClick={() => setOpen(!open)} className="text-foreground">
+              {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -83,7 +115,7 @@ export default function Navbar() {
             ))}
             <a href={ctaHref} onClick={handleCtaClick}>
               <Button size="sm" className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-semibold">
-                {t("Agendar diagnóstico", "Book a free consult")}
+                {CTA_LABEL}
               </Button>
             </a>
           </div>

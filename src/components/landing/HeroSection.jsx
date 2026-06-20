@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowRight, Zap, Globe, Bot, CheckCircle, TrendingUp, MessageCircle } from "lucide-react";
+import { ArrowRight, CheckCircle, MessageCircle, FileSignature, Code2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { api } from "@/api/maudev";
@@ -9,12 +9,10 @@ import { getWhatsAppUrl, whatsappEnabled } from "@/components/landing/WhatsAppFl
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { t } from "@/lib/i18n";
+import { availability, proofPoints, CTA_LABEL } from "@/data/site";
+import { INTERESTS } from "@/data/leadOptions";
 
-const interests = [
-  { id: "web_dev", label: t("Sitio o landing web", "Website or landing page"), icon: Globe, desc: t("Diseño + SEO + captación de leads", "Design + SEO + lead capture") },
-  { id: "web_app", label: t("Software a medida", "Custom software"), icon: Zap, desc: t("Apps, dashboards e integraciones", "Apps, dashboards and integrations") },
-  { id: "automation", label: t("Automatización", "Automation"), icon: Bot, desc: t("Procesos, bots y workflows", "Processes, bots and workflows") },
-];
+const interests = INTERESTS.filter((i) => ["web_dev", "web_app", "automation"].includes(i.value));
 
 const fadeUp = {
   hidden: { opacity: 0, y: 28 },
@@ -58,7 +56,7 @@ export default function HeroSection({ heroImage }) {
         params: { content_name: "Hero funnel", content_category: selected || "general" },
       });
       setStep(2);
-      toast.success(t("Solicitud recibida. Te enviaremos el roadmap inicial.", "Request received. We'll send your initial roadmap."));
+      toast.success(t("Solicitud recibida. Te contactamos en menos de 24h.", "Request received. We'll get back to you within 24h."));
     } catch {
       toast.error(t("No pudimos enviar la solicitud. Intenta nuevamente.", "We couldn't send your request. Please try again."));
     } finally {
@@ -68,17 +66,8 @@ export default function HeroSection({ heroImage }) {
 
   return (
     <section className="relative min-h-screen flex items-center pt-16 overflow-hidden">
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-luminosity pointer-events-none"
-      >
-        <source src="https://d8j0ntlcm91z4.cloudfront.net/user_3EBs78pPEwjVNce6L8iQL3AZlSz/hf_20260524_230658_9d03efa8-5c5b-4f99-aae7-4b1af7342a86.mp4" type="video/mp4" />
-      </video>
       <div className="absolute inset-0 grid-pattern opacity-50" />
-      <div className="absolute top-1/3 left-1/4 w-125 h-125 bg-foreground/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/3 left-1/4 w-125 h-125 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 w-100 h-100 bg-foreground/5 rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-20 lg:py-0">
@@ -95,7 +84,7 @@ export default function HeroSection({ heroImage }) {
             >
               <div className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
               <span className="text-xs font-mono text-primary tracking-wider uppercase">
-                {t("Disponible · Cupos limitados este mes", "Available · Limited spots this month")}
+                {availability.label} · {availability.period}
               </span>
             </motion.div>
 
@@ -106,9 +95,9 @@ export default function HeroSection({ heroImage }) {
               animate="show"
               className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] mb-6"
             >
-              {t("Tu próximo proyecto,", "Your next project,")}
+              {t("Deja de perder clientes", "Stop losing customers")}
               <br />
-              <span className="text-primary glow-text">{t("construido para escalar.", "built to scale.")}</span>
+              <span className="text-primary glow-text">{t("por una web que no vende.", "to a website that doesn't sell.")}</span>
             </motion.h1>
 
             <motion.p
@@ -119,8 +108,8 @@ export default function HeroSection({ heroImage }) {
               className="text-lg text-muted-foreground leading-relaxed max-w-lg mb-8"
             >
               {t(
-                "Desarrollamos webs, software a medida y automatizaciones que generan clientes reales. Diseño, código y soporte en un solo equipo.",
-                "We build websites, custom software and automations that generate real customers. Design, code and support in a single team."
+                "Construimos la web, el software y las automatizaciones que convierten visitas en clientes y te devuelven horas cada semana. Hablas directo con quien escribe el código.",
+                "We build the website, software and automations that turn visits into customers and give you hours back every week. You talk directly with whoever writes the code."
               )}
             </motion.p>
 
@@ -131,18 +120,12 @@ export default function HeroSection({ heroImage }) {
               animate="show"
               className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground font-mono mb-8"
             >
-              <span className="flex items-center gap-2">
-                <div className="h-2 w-2 rounded-full bg-foreground" />
-                {t("+25 proyectos entregados", "+25 projects delivered")}
-              </span>
-              <span className="flex items-center gap-2">
-                <div className="h-2 w-2 rounded-full bg-primary" />
-                {t("SEO técnico incluido", "Technical SEO included")}
-              </span>
-              <span className="flex items-center gap-2">
-                <div className="h-2 w-2 rounded-full bg-muted-foreground" />
-                {t("Respuesta en 24h", "Reply within 24h")}
-              </span>
+              {proofPoints.map((p, i) => (
+                <span key={p} className="flex items-center gap-2">
+                  <div className={`h-2 w-2 rounded-full ${i === 1 ? "bg-primary" : "bg-foreground"}`} />
+                  {p}
+                </span>
+              ))}
             </motion.div>
 
             {heroImage && (
@@ -154,7 +137,7 @@ export default function HeroSection({ heroImage }) {
 
           {/* Right column */}
           <div className="relative">
-            {/* Floating proof card — top */}
+            {/* Floating card — compromiso verificable (contrato) */}
             <motion.div
               variants={floatY}
               initial="initial"
@@ -168,16 +151,16 @@ export default function HeroSection({ heroImage }) {
                 className="flex items-center gap-3"
               >
                 <div className="h-8 w-8 rounded-lg bg-secondary border border-border flex items-center justify-center shrink-0">
-                  <CheckCircle className="h-4 w-4 text-foreground" />
+                  <FileSignature className="h-4 w-4 text-foreground" />
                 </div>
                 <div>
-                  <p className="text-xs font-semibold leading-none mb-0.5">{t("Lead calificado", "Qualified lead")}</p>
-                  <p className="text-[10px] text-muted-foreground font-mono">{t("hace 2 minutos", "2 minutes ago")}</p>
+                  <p className="text-xs font-semibold leading-none mb-0.5">{t("Contrato y precio fijo", "Contract & fixed price")}</p>
+                  <p className="text-[10px] text-muted-foreground font-mono">{t("por escrito, antes de empezar", "in writing, before we start")}</p>
                 </div>
               </motion.div>
             </motion.div>
 
-            {/* Floating proof card — bottom */}
+            {/* Floating card — compromiso verificable (código propio) */}
             <motion.div
               variants={floatY}
               initial="initial"
@@ -191,11 +174,11 @@ export default function HeroSection({ heroImage }) {
                 className="flex items-center gap-3"
               >
                 <div className="h-8 w-8 rounded-lg bg-secondary border border-border flex items-center justify-center shrink-0">
-                  <TrendingUp className="h-4 w-4 text-foreground" />
+                  <Code2 className="h-4 w-4 text-foreground" />
                 </div>
                 <div>
-                  <p className="text-xs font-semibold leading-none mb-0.5">{t("+40% conversión", "+40% conversion")}</p>
-                  <p className="text-[10px] text-muted-foreground font-mono">{t("landing optimizada", "optimized landing")}</p>
+                  <p className="text-xs font-semibold leading-none mb-0.5">{t("Código 100% tuyo", "Code 100% yours")}</p>
+                  <p className="text-[10px] text-muted-foreground font-mono">{t("repositorio a tu nombre", "repository in your name")}</p>
                 </div>
               </motion.div>
             </motion.div>
@@ -222,8 +205,8 @@ export default function HeroSection({ heroImage }) {
                   <div className="space-y-3">
                     {interests.map((item) => (
                       <button
-                        key={item.id}
-                        onClick={() => { setSelected(item.id); setStep(1); }}
+                        key={item.value}
+                        onClick={() => { setSelected(item.value); setStep(1); }}
                         className="w-full flex items-center gap-4 p-4 rounded-xl border border-border hover:border-primary/50 hover:bg-primary/5 transition-all group text-left"
                       >
                         <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
@@ -248,8 +231,8 @@ export default function HeroSection({ heroImage }) {
                   <h3 className="text-lg font-semibold mb-2">{t("Recibe tu plan de captación", "Get your lead-gen plan")}</h3>
                   <p className="text-sm text-muted-foreground mb-6">
                     {t(
-                      "Ingresa tu email y te enviaremos una propuesta inicial con embudo, SEO, automatizaciones y próximos pasos.",
-                      "Enter your email and we'll send an initial proposal with funnel, SEO, automations and next steps."
+                      "Ingresa tu email y en menos de 24h te contactamos con una propuesta inicial: embudo, SEO, automatizaciones y próximos pasos.",
+                      "Enter your email and within 24h we'll contact you with an initial proposal: funnel, SEO, automations and next steps."
                     )}
                   </p>
                   <Input
@@ -265,7 +248,7 @@ export default function HeroSection({ heroImage }) {
                     disabled={loading || !email}
                     className="w-full h-12 bg-primary text-primary-foreground hover:bg-primary/90 font-semibold"
                   >
-                    {loading ? t("Enviando...", "Sending...") : t("Solicitar diagnóstico gratis", "Get a free consult")}
+                    {loading ? t("Enviando...", "Sending...") : CTA_LABEL}
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                   <button
@@ -285,8 +268,8 @@ export default function HeroSection({ heroImage }) {
                   <h3 className="text-lg font-semibold mb-2">{t("¡Solicitud recibida!", "Request received!")}</h3>
                   <p className="text-sm text-muted-foreground mb-6">
                     {t(
-                      "Te enviamos el roadmap inicial en menos de 24h. ¿Quieres respuesta inmediata?",
-                      "We'll send your initial roadmap within 24h. Want an immediate reply?"
+                      "Te contactamos con el roadmap inicial en menos de 24h. ¿Quieres respuesta inmediata?",
+                      "We'll contact you with the initial roadmap within 24h. Want an immediate reply?"
                     )}
                   </p>
                   {whatsappEnabled && (

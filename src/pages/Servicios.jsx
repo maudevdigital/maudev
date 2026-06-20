@@ -5,6 +5,7 @@ import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
 import { Button } from "@/components/ui/button";
 import { t } from "@/lib/i18n";
+import { CTA_LABEL } from "@/data/site";
 
 const services = [
   {
@@ -146,7 +147,7 @@ export default function Servicios() {
             </p>
             <Link to="/contacto">
               <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">
-                {t("Agendar diagnóstico gratis", "Book a free consult")}
+                {CTA_LABEL}
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>

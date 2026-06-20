@@ -4,7 +4,9 @@ import HeroSection from "../components/landing/HeroSection";
 import StatsSection from "../components/landing/StatsSection";
 import ServicesSection from "../components/landing/ServicesSection";
 import ProcessSection from "../components/landing/ProcessSection";
+import GuaranteeSection from "../components/landing/GuaranteeSection";
 import PortafolioPreview from "../components/landing/PortafolioPreview";
+import ComparisonSection from "../components/landing/ComparisonSection";
 import BlogPreview from "../components/landing/BlogPreview";
 import FaqSection from "../components/landing/FaqSection";
 import LeadCaptureSection from "../components/landing/LeadCaptureSection";
@@ -42,7 +44,9 @@ export default function Landing() {
       <StatsSection />
       <ServicesSection servicesImage={SERVICES_IMAGE} />
       <ProcessSection />
+      <GuaranteeSection />
       <PortafolioPreview />
+      <ComparisonSection />
       <BlogPreview blogImage={BLOG_IMAGE} />
       <FaqSection />
       <LeadCaptureSection />

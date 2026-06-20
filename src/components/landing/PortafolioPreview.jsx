@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
 import { api } from "@/api/maudev";
-import { projects as staticProjects } from "@/data/projects";
+import { projects as staticProjects, getProjectById } from "@/data/projects";
 import { motion } from "framer-motion";
 import { t, pick } from "@/lib/i18n";
 
@@ -138,7 +138,7 @@ export default function PortafolioPreview() {
                 </div>
                 <div className="mt-auto pt-3 border-t border-border/40">
                   <Link
-                    to="/portafolio"
+                    to={getProjectById(p.id) ? `/portafolio/${p.id}` : "/portafolio"}
                     className="text-xs text-primary font-semibold inline-flex items-center gap-1.5 hover:gap-2.5 transition-all"
                   >
                     {t("Ver caso completo", "View full case")} <ArrowRight className="h-3 w-3" />

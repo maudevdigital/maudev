@@ -9,11 +9,11 @@ import { t } from "@/lib/i18n";
 //   3. Cambia ENABLED a true
 //
 // Mientras ENABLED sea false, el botón no se muestra.
-const WA_NUMBER = "56912345678"; // ← reemplaza con tu número real
+const WA_NUMBER = "56984848226"; // Número de contacto maudev (+56 9 8484 8226)
 const WA_MESSAGE = encodeURIComponent(
   "Hola, vi tu sitio web y me gustaría saber más sobre tus servicios."
 );
-const ENABLED = false; // ← cambia a true cuando tengas el número
+const ENABLED = true; // Botón activo. El número solo se usa en el link, no se muestra en texto.
 
 export default function WhatsAppFloat() {
   if (!ENABLED) return null;
@@ -29,7 +29,7 @@ export default function WhatsAppFloat() {
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ delay: 2, duration: 0.4, ease: "easeOut" }}
-      className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-[#25D366] hover:bg-[#20b858] text-white font-semibold text-sm px-4 py-3 rounded-full shadow-lg shadow-black/20 transition-colors duration-200 group"
+      className="print-hidden fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-[#25D366] hover:bg-[#20b858] text-white font-semibold text-sm px-4 py-3 rounded-full shadow-lg shadow-black/20 transition-colors duration-200 group"
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
     >

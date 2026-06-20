@@ -5,7 +5,7 @@
  */
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, CheckCircle, Shield, Clock, Code2, Send, Globe, Bot, Zap } from "lucide-react";
+import { ArrowRight, CheckCircle, Shield, Clock, Code2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { api } from "@/api/maudev";
@@ -14,20 +14,11 @@ import { trackLeadEvent } from "@/lib/MetaPixelTracker";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { t } from "@/lib/i18n";
+import Logo from "@/components/landing/Logo";
+import { COUNTRIES, INTERESTS as ALL_INTERESTS } from "@/data/leadOptions";
+import { availability, CTA_LABEL } from "@/data/site";
 
-const COUNTRIES = [
-  { code: "CL", flag: "🇨🇱", dial: "+56", placeholder: "9 1234 5678", min: 8, max: 9 },
-  { code: "US", flag: "🇺🇸", dial: "+1", placeholder: "(555) 123-4567", min: 10, max: 10 },
-  { code: "MX", flag: "🇲🇽", dial: "+52", placeholder: "55 1234 5678", min: 10, max: 10 },
-  { code: "CO", flag: "🇨🇴", dial: "+57", placeholder: "300 123 4567", min: 10, max: 10 },
-  { code: "AR", flag: "🇦🇷", dial: "+54", placeholder: "11 1234 5678", min: 10, max: 11 },
-];
-
-const INTERESTS = [
-  { value: "web_dev", label: t("Sitio / landing web", "Website / landing page"), icon: Globe },
-  { value: "web_app", label: t("Software a medida", "Custom software"), icon: Zap },
-  { value: "automation", label: t("Automatización", "Automation"), icon: Bot },
-];
+const INTERESTS = ALL_INTERESTS.filter((i) => ["web_dev", "web_app", "automation"].includes(i.value));
 
 const benefits = [
   { icon: CheckCircle, text: t("Propuesta técnica y precio fijo en menos de 24h", "Technical proposal and fixed price in under 24h") },
@@ -85,8 +76,11 @@ export default function LpDiagnostico() {
       {/* Brand mark mínimo */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/40">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
-          <Link to="/" className="text-lg font-black tracking-tight">
-            maudev<span className="text-primary">.</span>
+          <Link to="/" className="flex items-center gap-2.5 text-primary">
+            <Logo size={28} />
+            <span className="text-lg font-bold tracking-tight text-foreground">
+              mau<span className="text-primary">dev</span>
+            </span>
           </Link>
           <span className="text-xs font-mono text-muted-foreground hidden sm:block">
             {t("Diagnóstico gratuito · Sin compromiso", "Free consult · No commitment")}
@@ -107,7 +101,7 @@ export default function LpDiagnostico() {
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/20 bg-primary/5 mb-6">
                 <div className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
                 <span className="text-xs font-mono text-primary tracking-wider uppercase">
-                  {t("Disponible ahora · Cupos limitados", "Available now · Limited spots")}
+                  {availability.label} · {availability.period}
                 </span>
               </div>
 
@@ -268,9 +262,7 @@ export default function LpDiagnostico() {
                       disabled={loading}
                       className="w-full h-12 bg-primary text-primary-foreground hover:bg-primary/90 font-semibold text-base"
                     >
-                      {loading
-                        ? t("Enviando...", "Sending...")
-                        : t("Solicitar diagnóstico gratis", "Get my free consult")}
+                      {loading ? t("Enviando...", "Sending...") : CTA_LABEL}
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
 

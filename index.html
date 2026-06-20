@@ -7,16 +7,25 @@
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
     <script>
-      // Adapta el tema (blanco/negro) al sistema del usuario y reacciona en vivo a los cambios.
+      // Tema claro/oscuro: respeta la elección manual del usuario (localStorage
+      // "theme", seteado por el toggle del navbar). Si no hay elección guardada,
+      // sigue al sistema y reacciona en vivo a sus cambios.
       (function () {
         var mq = window.matchMedia('(prefers-color-scheme: dark)');
+        var stored = null;
+        try { stored = localStorage.getItem('theme'); } catch (e) {}
         var apply = function (isDark) {
           document.documentElement.classList.toggle('dark', isDark);
         };
-        apply(mq.matches);
+        apply(stored ? stored === 'dark' : mq.matches);
+        var onSystemChange = function (e) {
+          var saved = null;
+          try { saved = localStorage.getItem('theme'); } catch (err) {}
+          if (!saved) apply(e.matches);
+        };
         mq.addEventListener
-          ? mq.addEventListener('change', function (e) { apply(e.matches); })
-          : mq.addListener(function (e) { apply(e.matches); });
+          ? mq.addEventListener('change', onSystemChange)
+          : mq.addListener(onSystemChange);
       })();
     </script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -66,6 +75,8 @@
         "areaServed": "CL",
         "email": "contacto@maudev.cl",
         "url": "https://maudev.cl",
+        "priceRange": "Desde $290.000 CLP",
+        "founder": { "@type": "Person", "name": "Lucas Maulén" },
         "serviceType": ["Desarrollo Web", "Software a Medida", "Automatización de Procesos", "Consultoría TI"]
       }
     </script>

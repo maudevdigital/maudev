@@ -1,6 +1,8 @@
 import { MessageSquare, FileSearch, ShieldCheck, Code2, Rocket, Check } from "lucide-react";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { t } from "@/lib/i18n";
+import { CTA_LABEL } from "@/data/site";
 
 const steps = [
   {
@@ -52,6 +54,7 @@ const steps = [
       t("El código queda 100% a tu nombre al pagar el saldo", "The code is 100% yours once the balance is paid"),
     ],
     detail: t("Contrato notarial opcional para mayor confianza", "Optional notarized contract for added trust"),
+    link: { to: "/contrato", label: t("Leer el modelo de contrato →", "Read the contract template →") },
   },
   {
     icon: Code2,
@@ -110,7 +113,7 @@ export default function ProcessSection() {
               )}
             </p>
             <a href="#contacto" className="inline-flex items-center gap-2 text-sm font-semibold text-primary border border-primary/30 px-4 py-2.5 rounded-lg hover:bg-primary/5 transition-colors">
-              {t("Iniciar proyecto ahora", "Start a project now")}
+              {CTA_LABEL}
             </a>
           </div>
 
@@ -151,25 +154,37 @@ export default function ProcessSection() {
                         </li>
                       ))}
                     </ul>
-                    <span className="inline-flex items-center text-[11px] font-mono text-muted-foreground/60 border border-border/50 px-2.5 py-1 rounded-md bg-secondary/30">
-                      {s.detail}
-                    </span>
+                    <div className="flex flex-wrap items-center gap-3">
+                      <span className="inline-flex items-center text-[11px] font-mono text-muted-foreground/60 border border-border/50 px-2.5 py-1 rounded-md bg-secondary/30">
+                        {s.detail}
+                      </span>
+                      {s.link && (
+                        <Link
+                          to={s.link.to}
+                          className="text-[11px] font-mono text-primary hover:underline"
+                        >
+                          {s.link.label}
+                        </Link>
+                      )}
+                    </div>
                   </div>
                 </motion.div>
               ))}
             </div>
 
-            {/* Tech stack */}
+            {/* Tech stack — marquee infinito (lista duplicada para el loop) */}
             <div className="mt-10 pt-8 border-t border-border/40">
               <p className="text-xs font-mono text-muted-foreground uppercase tracking-wider mb-4">
                 {t("Tecnologías que usamos", "Technologies we use")}
               </p>
-              <div className="flex flex-wrap gap-2">
-                {stack.map((t) => (
-                  <span key={t} className="text-xs font-mono px-3 py-1.5 rounded-md bg-secondary border border-border/60 text-muted-foreground">
-                    {t}
-                  </span>
-                ))}
+              <div className="relative overflow-hidden marquee-mask">
+                <div className="marquee-track flex w-max">
+                  {[...stack, ...stack].map((tech, i) => (
+                    <span key={`${tech}-${i}`} className="mr-2 text-xs font-mono px-3 py-1.5 rounded-md bg-secondary border border-border/60 text-muted-foreground whitespace-nowrap">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
