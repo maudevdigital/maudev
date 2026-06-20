@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { api } from "@/api/maudev";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Clock, Search } from "lucide-react";
+import { ArrowLeft, Clock, Search, ChevronLeft, ChevronRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import Navbar from "../components/landing/Navbar";
 import Footer from "../components/landing/Footer";
@@ -13,6 +13,9 @@ export default function Blog() {
   const [posts, setPosts] = useState(staticPosts);
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+
+  const PAGE_SIZE = 9;
 
   useEffect(() => {
     document.title = "Blog · Maudev";
@@ -32,6 +35,24 @@ export default function Blog() {
     const matchSearch = !search || title.includes(search.toLowerCase()) || excerpt.includes(search.toLowerCase());
     return matchCat && matchSearch;
   });
+
+  // Más recientes primero (orden descendente por fecha).
+  const sorted = useMemo(
+    () => [...filtered].sort((a, b) => new Date(b.created_date) - new Date(a.created_date)),
+    [filtered]
+  );
+
+  const totalPages = Math.max(1, Math.ceil(sorted.length / PAGE_SIZE));
+  const currentPage = Math.min(page, totalPages);
+  const pagePosts = sorted.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
+  // Al cambiar de filtro o búsqueda, volvemos a la página 1.
+  useEffect(() => { setPage(1); }, [filter, search]);
+
+  const goToPage = (n) => {
+    setPage(n);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -80,13 +101,14 @@ export default function Blog() {
             </div>
           </div>
 
-          {filtered.length === 0 ? (
+          {sorted.length === 0 ? (
             <div className="text-center py-20">
               <p className="text-muted-foreground">{t("No se encontraron artículos.", "No articles found.")}</p>
             </div>
           ) : (
+            <>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filtered.map((post) => (
+              {pagePosts.map((post) => (
                 <Link
                   key={post.id}
                   to={`/blog/${post.id}`}
@@ -115,6 +137,42 @@ export default function Blog() {
                 </Link>
               ))}
             </div>
+
+            {totalPages > 1 && (
+              <nav className="flex items-center justify-center gap-1.5 mt-12" aria-label={t("Paginación", "Pagination")}>
+                <button
+                  onClick={() => goToPage(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  aria-label={t("Anterior", "Previous")}
+                  className="h-9 w-9 flex items-center justify-center rounded-lg border border-border text-muted-foreground hover:text-primary hover:border-primary/40 transition-colors disabled:opacity-40 disabled:pointer-events-none"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </button>
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (
+                  <button
+                    key={n}
+                    onClick={() => goToPage(n)}
+                    aria-current={n === currentPage ? "page" : undefined}
+                    className={`h-9 min-w-9 px-3 rounded-lg text-sm font-medium transition-colors ${
+                      n === currentPage
+                        ? "bg-primary text-primary-foreground"
+                        : "border border-border text-muted-foreground hover:text-primary hover:border-primary/40"
+                    }`}
+                  >
+                    {n}
+                  </button>
+                ))}
+                <button
+                  onClick={() => goToPage(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  aria-label={t("Siguiente", "Next")}
+                  className="h-9 w-9 flex items-center justify-center rounded-lg border border-border text-muted-foreground hover:text-primary hover:border-primary/40 transition-colors disabled:opacity-40 disabled:pointer-events-none"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </button>
+              </nav>
+            )}
+            </>
           )}
         </div>
       </div>
