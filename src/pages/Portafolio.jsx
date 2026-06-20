@@ -5,8 +5,9 @@ import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
 import { Button } from "@/components/ui/button";
 import { api } from "@/api/maudev";
-import { projects as staticProjects } from "@/data/projects";
+import { projects as staticProjects, getProjectById } from "@/data/projects";
 import { t, pick } from "@/lib/i18n";
+import { CTA_LABEL } from "@/data/site";
 
 const PLACEHOLDER_GRADIENT = "from-foreground/10 to-foreground/5";
 
@@ -107,16 +108,26 @@ export default function Portafolio() {
                   </div>
                 )}
 
-                {(p.project_url || p.url) && (
-                  <a
-                    href={p.project_url || p.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-sm text-primary font-semibold border border-primary/30 px-4 py-2 rounded-lg hover:bg-primary/5 transition-colors"
-                  >
-                    {t("Visitar sitio", "Visit site")} <ExternalLink className="h-4 w-4" />
-                  </a>
-                )}
+                <div className="flex flex-wrap gap-3">
+                  {getProjectById(p.id) && (
+                    <Link
+                      to={`/portafolio/${p.id}`}
+                      className="inline-flex items-center gap-2 text-sm text-primary-foreground bg-primary font-semibold px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors"
+                    >
+                      {t("Ver caso completo", "View full case")} <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  )}
+                  {(p.project_url || p.url) && (
+                    <a
+                      href={p.project_url || p.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-sm text-primary font-semibold border border-primary/30 px-4 py-2 rounded-lg hover:bg-primary/5 transition-colors"
+                    >
+                      {t("Visitar sitio", "Visit site")} <ExternalLink className="h-4 w-4" />
+                    </a>
+                  )}
+                </div>
               </div>
             </div>
           ))}
@@ -125,13 +136,13 @@ export default function Portafolio() {
             <h3 className="text-2xl font-bold mb-3">{t("¿Tienes un proyecto en mente?", "Have a project in mind?")}</h3>
             <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
               {t(
-                "Conversemos. Te entregamos una propuesta concreta con alcance, plazos y presupuesto en menos de 48h.",
-                "Let's talk. We'll deliver a concrete proposal with scope, timelines and budget within 48h."
+                "Conversemos. Te entregamos una propuesta concreta con alcance, plazos y precio fijo en menos de 24h.",
+                "Let's talk. We'll deliver a concrete proposal with scope, timelines and a fixed price within 24h."
               )}
             </p>
             <Link to="/contacto">
               <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">
-                {t("Conversar sobre tu proyecto", "Talk about your project")}
+                {CTA_LABEL}
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>

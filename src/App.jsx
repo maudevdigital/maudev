@@ -15,8 +15,14 @@ import Blog from './pages/Blog';
 import BlogPostDetail from './pages/BlogPostDetail';
 import Servicios from './pages/Servicios';
 import Portafolio from './pages/Portafolio';
+import CasoEstudio from './pages/CasoEstudio';
 import SobreNosotros from './pages/SobreNosotros';
 import Contacto from './pages/Contacto';
+import Precios from './pages/Precios';
+import Cotizador from './pages/Cotizador';
+import DiagnosticoWeb from './pages/DiagnosticoWeb';
+import Ahora from './pages/Ahora';
+import Contrato from './pages/Contrato';
 import Terminos from './pages/Terminos';
 import Privacidad from './pages/Privacidad';
 import Dashboard from './pages/admin/Dashboard';
@@ -46,7 +52,13 @@ const AuthenticatedApp = () => {
     <Routes>
       <Route path="/" element={<Landing />} />
       <Route path="/servicios" element={<Servicios />} />
+      <Route path="/precios" element={<Precios />} />
+      <Route path="/cotizador" element={<Cotizador />} />
+      <Route path="/diagnostico-web" element={<DiagnosticoWeb />} />
+      <Route path="/ahora" element={<Ahora />} />
+      <Route path="/contrato" element={<Contrato />} />
       <Route path="/portafolio" element={<Portafolio />} />
+      <Route path="/portafolio/:projectId" element={<CasoEstudio />} />
       <Route path="/sobre-nosotros" element={<SobreNosotros />} />
       <Route path="/contacto" element={<Contacto />} />
       <Route path="/blog" element={<Blog />} />

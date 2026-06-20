@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChevronDown, HelpCircle, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -18,8 +18,8 @@ const faqs = [
     num: "02",
     q: t("¿Cuánto cuesta un proyecto?", "How much does a project cost?"),
     a: t(
-      "Depende del alcance. Una landing de conversión parte desde $390.000 CLP y un proyecto de automatización desde $290.000 CLP; el software a medida se cotiza por proyecto. En el diagnóstico inicial defines el alcance y recibes un precio fijo por escrito antes de empezar, sin costos ocultos.",
-      "It depends on the scope. A conversion landing starts from CLP $390,000 and an automation project from CLP $290,000; custom software is quoted per project. In the initial assessment you define the scope and get a fixed price in writing before starting, with no hidden costs."
+      "Depende del alcance. Una landing de conversión parte desde $390.000 CLP y un proyecto de automatización desde $290.000 CLP; el software a medida se cotiza por proyecto. Publicamos los valores y lo que incluye cada uno en la página de precios, y en el diagnóstico inicial recibes un precio fijo por escrito antes de empezar, sin costos ocultos.",
+      "It depends on the scope. A conversion landing starts from CLP $390,000 and an automation project from CLP $290,000; custom software is quoted per project. We publish prices and what each one includes on the pricing page, and in the initial assessment you get a fixed price in writing before starting, with no hidden costs."
     ),
     tag: t("Precios", "Pricing"),
   },
@@ -59,10 +59,54 @@ const faqs = [
     ),
     tag: t("Pagos", "Payments"),
   },
+  {
+    num: "07",
+    q: t("¿Qué pasa si no me gusta el resultado?", "What if I don't like the result?"),
+    a: t(
+      "Es muy difícil llegar a ese punto, porque no trabajamos a ciegas: ves versiones funcionales en cada hito y ajustamos contigo antes de avanzar. Si aun así algo no te convence, las observaciones dentro del alcance se corrigen sin costo, y el saldo final solo se paga cuando apruebas la entrega. El riesgo está repartido a tu favor.",
+      "It's very hard to get to that point, because we don't work blind: you see working versions at every milestone and adjust with us before moving on. If something still doesn't convince you, observations within scope are fixed at no cost, and the final balance is only paid when you approve the delivery. The risk is stacked in your favor."
+    ),
+    tag: t("Garantía", "Guarantee"),
+  },
+  {
+    num: "08",
+    q: t("¿Y si necesito cambios después de la entrega?", "What if I need changes after delivery?"),
+    a: t(
+      "Los errores de funcionamiento (bugs) reportados dentro de los 30 días posteriores a la entrega se corrigen gratis. Para cambios nuevos o funcionalidades adicionales, cotizamos aparte o acordamos un plan de mantención. Y como el código es tuyo, también puedes hacerlos con cualquier otro equipo: no quedas amarrado.",
+      "Functional errors (bugs) reported within 30 days of delivery are fixed for free. For new changes or additional features, we quote separately or agree on a maintenance plan. And since the code is yours, you can also make them with any other team: you're not locked in."
+    ),
+    tag: t("Post-venta", "After-sales"),
+  },
+  {
+    num: "09",
+    q: t("¿Por qué cuestan menos que una agencia?", "Why do you cost less than an agency?"),
+    a: t(
+      "Porque no pagas el overhead de una agencia: ejecutivos de cuenta, oficinas ni capas de intermediarios. Hablas directo con quien diseña y escribe el código, usando el mismo stack moderno que usan las agencias grandes. Menos estructura no significa menos calidad: significa que tu presupuesto se va al producto, no a la administración.",
+      "Because you don't pay agency overhead: account executives, offices or layers of middlemen. You talk directly with whoever designs and writes the code, using the same modern stack big agencies use. Less structure doesn't mean less quality: it means your budget goes into the product, not the administration."
+    ),
+    tag: t("Precios", "Pricing"),
+  },
 ];
 
 export default function FaqSection() {
   const [open, setOpen] = useState(null);
+
+  // Schema FAQPage para rich results en Google (preguntas desplegables en la SERP).
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.text = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faqs.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+      })),
+    });
+    document.head.appendChild(script);
+    return () => script.remove();
+  }, []);
 
   return (
     <section className="relative py-24 lg:py-32 border-t border-border/30 overflow-hidden">

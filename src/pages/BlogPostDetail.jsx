@@ -3,11 +3,74 @@ import { useParams, Link } from "react-router-dom";
 import { api } from "@/api/maudev";
 import { ArrowLeft, Clock, Tag, Calendar, User, ArrowRight } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import Navbar from "../components/landing/Navbar";
 import Footer from "../components/landing/Footer";
 import { getBlogPostById, blogCategories as categoryLabels } from "@/data/blogPosts";
 import { t, pick } from "@/lib/i18n";
+import { CTA_LABEL } from "@/data/site";
 import moment from "moment";
+
+// CTA contextual según la categoría del post: cada lector llega con una
+// intención distinta, así que el cierre del artículo apunta a la herramienta
+// más relevante en vez de un CTA genérico.
+const ctaByCategory = {
+  marketing: {
+    to: "/diagnostico-web",
+    title: t("Mide tu web gratis, ahora mismo", "Measure your website for free, right now"),
+    desc: t(
+      "Ingresa tu URL y en un minuto sabes la nota real de tu sitio: velocidad, SEO y buenas prácticas.",
+      "Enter your URL and in one minute you'll know your site's real score: speed, SEO and best practices."
+    ),
+    label: t("Analizar mi web gratis", "Analyze my site for free"),
+  },
+  automatizacion: {
+    to: "/cotizador",
+    title: t("¿Cuánto costaría automatizar esto en tu negocio?", "What would automating this cost your business?"),
+    desc: t(
+      "Responde tres preguntas y te mostramos un rango de inversión al instante, sin dejar tu email.",
+      "Answer three questions and we'll show you an investment range instantly, no email required."
+    ),
+    label: t("Estimar en 1 minuto", "Estimate in 1 minute"),
+  },
+  desarrollo: {
+    to: "/precios",
+    title: t("¿Quieres saber cuánto cuesta de verdad?", "Want to know what it really costs?"),
+    desc: t(
+      "Publicamos nuestros precios, lo que incluyen y lo que no. Sin cotizaciones misteriosas.",
+      "We publish our prices, what they include and what they don't. No mystery quotes."
+    ),
+    label: t("Ver precios publicados", "See published pricing"),
+  },
+  fintech: {
+    to: "/contacto",
+    title: t("¿Quieres cobrar online sin enredos?", "Want to charge online without the mess?"),
+    desc: t(
+      "Cuéntanos tu caso y te proponemos la integración de pagos que corresponde, con precio fijo.",
+      "Tell us your case and we'll propose the right payment integration, at a fixed price."
+    ),
+    label: CTA_LABEL,
+  },
+  tutoriales: {
+    to: "/contacto",
+    title: t("¿Prefieres que lo hagamos por ti?", "Prefer we do it for you?"),
+    desc: t(
+      "Si no tienes tiempo de implementarlo, lo construimos nosotros: propuesta y precio fijo en 24h.",
+      "If you don't have time to implement it, we'll build it: proposal and fixed price within 24h."
+    ),
+    label: CTA_LABEL,
+  },
+};
+
+const defaultCta = {
+  to: "/contacto",
+  title: t("¿Quieres aplicarlo en tu negocio?", "Want to apply this to your business?"),
+  desc: t(
+    "En Maudev construimos webs, software y automatizaciones para emprendedores y PYMEs. Diagnóstico gratuito en menos de 24h.",
+    "At Maudev we build websites, software and automations for founders and SMBs. Free assessment within 24h."
+  ),
+  label: CTA_LABEL,
+};
 
 export default function BlogPostDetail() {
   const { postId } = useParams();
@@ -23,11 +86,81 @@ export default function BlogPostDetail() {
     return () => { active = false; };
   }, [postId]);
 
+  // SEO completo por artículo: title, description, canonical, Open Graph y
+  // Twitter card. Crea las etiquetas si no existen y las limpia al desmontar,
+  // para que cada post tenga su propio snippet en Google y al compartir.
   useEffect(() => {
-    if (post) {
-      document.title = `${pick(post, "title")} · Maudev`;
-    }
-  }, [post]);
+    if (!post) return;
+    const ORIGIN = "https://maudev.cl";
+    const url = `${ORIGIN}/blog/${post.id || postId}`;
+    const title = `${pick(post, "title")} · Maudev`;
+    const description = (pick(post, "excerpt") || "").slice(0, 160);
+    const image = post.cover_image ? `${ORIGIN}${post.cover_image}` : `${ORIGIN}/og-image.png`;
+
+    document.title = title;
+
+    // Helpers que crean/actualizan etiquetas y recuerdan cuáles agregamos.
+    const created = [];
+    const setMeta = (attr, key, content) => {
+      if (!content) return;
+      let el = document.head.querySelector(`meta[${attr}="${key}"]`);
+      if (!el) {
+        el = document.createElement("meta");
+        el.setAttribute(attr, key);
+        document.head.appendChild(el);
+        created.push(el);
+      }
+      el.setAttribute("content", content);
+    };
+    const setLink = (rel, href) => {
+      let el = document.head.querySelector(`link[rel="${rel}"]`);
+      if (!el) {
+        el = document.createElement("link");
+        el.setAttribute("rel", rel);
+        document.head.appendChild(el);
+        created.push(el);
+      }
+      el.setAttribute("href", href);
+    };
+
+    setMeta("name", "description", description);
+    setLink("canonical", url);
+    setMeta("property", "og:type", "article");
+    setMeta("property", "og:title", pick(post, "title"));
+    setMeta("property", "og:description", description);
+    setMeta("property", "og:url", url);
+    setMeta("property", "og:image", image);
+    setMeta("property", "article:published_time", post.created_date || "");
+    setMeta("name", "twitter:card", "summary_large_image");
+    setMeta("name", "twitter:title", pick(post, "title"));
+    setMeta("name", "twitter:description", description);
+    setMeta("name", "twitter:image", image);
+
+    // Schema BlogPosting para rich results (fecha, autor, imagen y titular).
+    const ld = document.createElement("script");
+    ld.type = "application/ld+json";
+    ld.text = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      headline: pick(post, "title"),
+      description,
+      image: image ? [image] : undefined,
+      datePublished: post.created_date,
+      dateModified: post.updated_date || post.created_date,
+      author: { "@type": "Organization", name: post.author || "Maudev" },
+      publisher: {
+        "@type": "Organization",
+        name: "Maudev",
+        url: ORIGIN,
+        logo: { "@type": "ImageObject", url: `${ORIGIN}/og-image.png` },
+      },
+      mainEntityOfPage: url,
+    });
+    document.head.appendChild(ld);
+    created.push(ld);
+
+    return () => created.forEach((el) => el.remove());
+  }, [post, postId]);
 
   if (loading) {
     return (
@@ -122,11 +255,16 @@ export default function BlogPostDetail() {
         </div>
       </div>
 
-      {/* Imagen de portada */}
+      {/* Imagen de portada (se oculta sola si el archivo aún no existe) */}
       {post.cover_image && (
         <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
           <div className="rounded-2xl overflow-hidden border border-border">
-            <img src={post.cover_image} alt={pick(post, "title")} className="w-full h-auto" />
+            <img
+              src={post.cover_image}
+              alt={pick(post, "title")}
+              className="w-full h-auto"
+              onError={(e) => { e.currentTarget.parentElement.parentElement.style.display = "none"; }}
+            />
           </div>
         </div>
       )}
@@ -134,29 +272,48 @@ export default function BlogPostDetail() {
       {/* Contenido del artículo */}
       <article className="max-w-3xl mx-auto px-4 sm:px-6 py-10">
         <div className="blog-prose">
-          <ReactMarkdown>{pick(post, "content")}</ReactMarkdown>
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            components={{
+              // Las imágenes inline se ocultan solas si el archivo aún no existe,
+              // así el artículo nunca muestra un ícono roto.
+              img: ({ node: _node, ...props }) => (
+                <img
+                  {...props}
+                  loading="lazy"
+                  onError={(e) => { e.currentTarget.style.display = "none"; }}
+                />
+              ),
+              // Tabla con scroll horizontal en móvil para que no rompa el layout.
+              table: ({ node: _node, ...props }) => (
+                <div className="blog-table-wrap">
+                  <table {...props} />
+                </div>
+              ),
+            }}
+          >
+            {pick(post, "content")}
+          </ReactMarkdown>
         </div>
 
-        {/* CTA al final del artículo */}
-        <div className="mt-16 p-8 bg-card border border-border rounded-2xl text-center">
-          <span className="text-xs font-mono text-primary tracking-wider uppercase">// {t("¿te resultó útil?", "was this helpful?")}</span>
-          <h3 className="text-xl font-bold mt-3 mb-2">
-            {t("¿Quieres aplicarlo en tu negocio?", "Want to apply this to your business?")}
-          </h3>
-          <p className="text-sm text-muted-foreground mb-5 max-w-lg mx-auto">
-            {t(
-              "En Maudev construimos webs, software y automatizaciones para emprendedores y PYMEs. Diagnóstico gratuito en menos de 24h.",
-              "At Maudev we build websites, software and automations for founders and SMBs. Free consult within 24h."
-            )}
-          </p>
-          <Link
-            to="/contacto"
-            className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-primary/90 transition-colors"
-          >
-            {t("Solicitar diagnóstico gratis", "Get a free consult")}
-            <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
+        {/* CTA al final del artículo — contextual según la categoría */}
+        {(() => {
+          const cta = ctaByCategory[post.category] || defaultCta;
+          return (
+            <div className="mt-16 p-8 bg-card border border-border rounded-2xl text-center">
+              <span className="text-xs font-mono text-primary tracking-wider uppercase">// {t("¿te resultó útil?", "was this helpful?")}</span>
+              <h3 className="text-xl font-bold mt-3 mb-2">{cta.title}</h3>
+              <p className="text-sm text-muted-foreground mb-5 max-w-lg mx-auto">{cta.desc}</p>
+              <Link
+                to={cta.to}
+                className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-primary/90 transition-colors"
+              >
+                {cta.label}
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+          );
+        })()}
       </article>
 
       <Footer />

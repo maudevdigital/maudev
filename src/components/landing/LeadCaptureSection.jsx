@@ -5,28 +5,11 @@ import { trackLeadEvent } from "@/lib/MetaPixelTracker";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Send, CheckCircle, ShieldCheck } from "lucide-react";
+import { Send, CheckCircle, ShieldCheck, Video } from "lucide-react";
 import { toast } from "sonner";
 import { t } from "@/lib/i18n";
-
-// Países habilitados. Cada uno define su prefijo, placeholder y rango de dígitos
-// para validar el número (sin contar el prefijo).
-const COUNTRIES = [
-  { code: "CL", flag: "🇨🇱", label: "Chile", dial: "+56", placeholder: "9 1234 5678", min: 8, max: 9 },
-  { code: "US", flag: "🇺🇸", label: "Estados Unidos", dial: "+1", placeholder: "(555) 123-4567", min: 10, max: 10 },
-  { code: "MX", flag: "🇲🇽", label: "México", dial: "+52", placeholder: "55 1234 5678", min: 10, max: 10 },
-  { code: "CO", flag: "🇨🇴", label: "Colombia", dial: "+57", placeholder: "300 123 4567", min: 10, max: 10 },
-  { code: "PE", flag: "🇵🇪", label: "Perú", dial: "+51", placeholder: "987 654 321", min: 9, max: 9 },
-  { code: "AR", flag: "🇦🇷", label: "Argentina", dial: "+54", placeholder: "11 1234 5678", min: 10, max: 11 },
-];
-
-const INTERESTS = [
-  { value: "web_dev", label: t("Sitio o landing web", "Website or landing page") },
-  { value: "web_app", label: t("Software a medida", "Custom software") },
-  { value: "automation", label: t("Automatización", "Automation") },
-  { value: "payments", label: t("Integración de pagos / APIs", "Payments / APIs integration") },
-  { value: "general", label: t("Consulta general", "General inquiry") },
-];
+import { COUNTRIES, INTERESTS } from "@/data/leadOptions";
+import { founder, CTA_LABEL } from "@/data/site";
 
 const inputClass =
   "w-full h-11 rounded-md border border-input bg-background px-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors";
@@ -120,13 +103,24 @@ export default function LeadCaptureSection() {
             </div>
 
             {/* Medios de pago */}
-            <div className="flex items-center gap-3 text-sm text-muted-foreground">
+            <div className="flex items-center gap-3 text-sm text-muted-foreground mb-4">
               <ShieldCheck className="h-4 w-4 shrink-0" />
               <span>
                 {t("Aceptamos pagos en", "We accept payments in")}{" "}
                 <strong className="text-foreground font-semibold">CLP</strong>,{" "}
                 <strong className="text-foreground font-semibold">USD</strong> {t("y", "and")}{" "}
                 <strong className="text-foreground font-semibold">USDT</strong> {t("según tu país.", "depending on your country.")}
+              </span>
+            </div>
+
+            {/* Propuesta con video */}
+            <div className="flex items-center gap-3 text-sm text-muted-foreground">
+              <Video className="h-4 w-4 shrink-0" />
+              <span>
+                {t(
+                  "Si tu caso lo amerita, la propuesta llega con un video corto analizando tu proyecto.",
+                  "If your case calls for it, the proposal arrives with a short video analyzing your project."
+                )}
               </span>
             </div>
           </div>
@@ -185,9 +179,9 @@ export default function LeadCaptureSection() {
                     <option value="" disabled>
                       {t("Selecciona un objetivo", "Select a goal")}
                     </option>
-                    {INTERESTS.map((o) => (
-                      <option key={o.value} value={o.value}>
-                        {o.label}
+                    {INTERESTS.map(({ value, label }) => (
+                      <option key={value} value={value}>
+                        {label}
                       </option>
                     ))}
                   </select>
@@ -205,12 +199,13 @@ export default function LeadCaptureSection() {
                 </div>
 
                 <Button type="submit" disabled={loading} className="w-full h-12 bg-primary text-primary-foreground hover:bg-primary/90 font-semibold">
-                  {loading ? t("Enviando...", "Sending...") : t("Solicitar diagnóstico", "Request a consult")}
+                  {loading ? t("Enviando...", "Sending...") : CTA_LABEL}
                   <Send className="ml-2 h-4 w-4" />
                 </Button>
 
                 <p className="text-[11px] text-muted-foreground text-center">
-                  {t("Todos los campos son obligatorios. No compartimos tus datos con terceros.", "All fields are required. We don't share your data with third parties.")}
+                  {t(`Te responde ${founder.firstName}, no un bot.`, `${founder.firstName} replies — not a bot.`)}{" "}
+                  {t("No compartimos tus datos con terceros.", "We don't share your data with third parties.")}
                 </p>
               </form>
             )}
