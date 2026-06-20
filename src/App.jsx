@@ -88,8 +88,8 @@ function App() {
           <ScrollToTop />
           <MetaPixelTracker />
           <AuthenticatedApp />
+          <WhatsAppFloat />
         </Router>
-        <WhatsAppFloat />
         <Toaster richColors position="top-right" />
       </QueryClientProvider>
     </AuthProvider>

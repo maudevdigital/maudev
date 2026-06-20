@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowRight, CheckCircle, MessageCircle, FileSignature, Code2 } from "lucide-react";
+import { ArrowRight, CheckCircle, MessageCircle, FileSignature, Code2, Globe, Bot, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { api } from "@/api/maudev";
@@ -33,7 +33,32 @@ const floatY = {
   animate: { opacity: 1, scale: 1, y: 0 },
 };
 
-export default function HeroSection({ heroImage }) {
+// Mini-pipeline animado del hero: cuenta visualmente la propuesta de valor
+// (tu web → automatización → clientes) con un dato que "viaja" por la línea.
+function FlowNode({ icon: Icon, label, accent }) {
+  return (
+    <div className="flex flex-col items-center gap-2 shrink-0">
+      <div
+        className={`h-11 w-11 rounded-xl border flex items-center justify-center ${
+          accent ? "border-primary/40 bg-primary/10" : "border-border bg-card"
+        }`}
+      >
+        <Icon className={`h-5 w-5 ${accent ? "text-primary" : "text-foreground/70"}`} />
+      </div>
+      <span className="text-[10px] font-mono text-muted-foreground whitespace-nowrap">{label}</span>
+    </div>
+  );
+}
+
+function FlowLink() {
+  return (
+    <div className="relative flex-1 min-w-4.5 h-px bg-border mt-5.5">
+      <span className="flow-dot absolute top-1/2 -translate-y-1/2 h-1.5 w-1.5 rounded-full bg-primary" />
+    </div>
+  );
+}
+
+export default function HeroSection() {
   const [step, setStep] = useState(0);
   const [selected, setSelected] = useState(null);
   const [email, setEmail] = useState("");
@@ -93,11 +118,10 @@ export default function HeroSection({ heroImage }) {
               variants={fadeUp}
               initial="hidden"
               animate="show"
-              className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] mb-6"
+              className="text-[2rem] leading-[1.12] sm:text-5xl lg:text-6xl font-black tracking-tight mb-5"
             >
-              {t("Deja de perder clientes", "Stop losing customers")}
-              <br />
-              <span className="text-primary glow-text">{t("por una web que no vende.", "to a website that doesn't sell.")}</span>
+              {t("Deja de perder clientes por una web que ", "Stop losing customers to a website that ")}
+              <span className="text-primary glow-text">{t("no vende.", "doesn't sell.")}</span>
             </motion.h1>
 
             <motion.p
@@ -105,11 +129,11 @@ export default function HeroSection({ heroImage }) {
               variants={fadeUp}
               initial="hidden"
               animate="show"
-              className="text-lg text-muted-foreground leading-relaxed max-w-lg mb-8"
+              className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-md mb-6"
             >
               {t(
-                "Construimos la web, el software y las automatizaciones que convierten visitas en clientes y te devuelven horas cada semana. Hablas directo con quien escribe el código.",
-                "We build the website, software and automations that turn visits into customers and give you hours back every week. You talk directly with whoever writes the code."
+                "Web, software y automatización a medida. Hablas directo con quien escribe el código.",
+                "Custom web, software and automation. You talk directly with whoever writes the code."
               )}
             </motion.p>
 
@@ -118,21 +142,40 @@ export default function HeroSection({ heroImage }) {
               variants={fadeUp}
               initial="hidden"
               animate="show"
-              className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground font-mono mb-8"
+              className="flex flex-wrap items-center gap-2 mb-8"
             >
               {proofPoints.map((p, i) => (
-                <span key={p} className="flex items-center gap-2">
-                  <div className={`h-2 w-2 rounded-full ${i === 1 ? "bg-primary" : "bg-foreground"}`} />
+                <span
+                  key={p}
+                  className={`inline-flex items-center gap-1.5 text-xs font-mono px-2.5 py-1 rounded-md border ${
+                    i === 1
+                      ? "border-primary/30 bg-primary/5 text-primary"
+                      : "border-border bg-secondary/40 text-muted-foreground"
+                  }`}
+                >
+                  <span className={`h-1.5 w-1.5 rounded-full ${i === 1 ? "bg-primary" : "bg-foreground/60"}`} />
                   {p}
                 </span>
               ))}
             </motion.div>
 
-            {heroImage && (
-              <div className="lg:hidden mb-8 rounded-xl overflow-hidden border border-border/50">
-                <img src={heroImage} alt="Maudev - desarrollo web y software" className="w-full h-auto" />
+            {/* Mini-pipeline animado — visual de la propuesta de valor */}
+            <motion.div
+              custom={4}
+              variants={fadeUp}
+              initial="hidden"
+              animate="show"
+              className="max-w-xs"
+            >
+              <div className="flex items-start justify-between">
+                <FlowNode icon={Globe} label={t("Tu web", "Your site")} />
+                <FlowLink />
+                <FlowNode icon={Bot} label={t("Automatización", "Automation")} accent />
+                <FlowLink />
+                <FlowNode icon={Users} label={t("Clientes", "Customers")} />
               </div>
-            )}
+            </motion.div>
+
           </div>
 
           {/* Right column */}
@@ -187,20 +230,26 @@ export default function HeroSection({ heroImage }) {
               variants={slideRight}
               initial="hidden"
               animate="show"
-              className="relative bg-card border border-border rounded-2xl p-6 sm:p-8 glow-cyan"
+              className="relative bg-card border border-border rounded-2xl p-6 sm:p-8 glow-cyan overflow-hidden"
             >
-              <div className="flex items-center gap-2 mb-6">
-                <div className="h-3 w-3 rounded-full bg-foreground/20" />
-                <div className="h-3 w-3 rounded-full bg-foreground/30" />
-                <div className="h-3 w-3 rounded-full bg-foreground/40" />
-                <span className="ml-2 text-xs font-mono text-muted-foreground">maudev_funnel</span>
+              {/* Acento superior de gradiente (detalle tech) */}
+              <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary/70 to-transparent" />
+
+              <div className="flex items-center justify-between mb-6">
+                <span className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
+                  {t("Diagnóstico gratis", "Free assessment")}
+                </span>
+                <span className="inline-flex items-center gap-1.5 text-[11px] font-mono text-primary">
+                  <span className="relative flex h-2 w-2">
+                    <span className="absolute inline-flex h-full w-full rounded-full bg-primary/60 animate-ping" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+                  </span>
+                  {t("en línea", "online")}
+                </span>
               </div>
 
               {step === 0 && (
                 <div className="space-y-4">
-                  <p className="text-sm font-mono text-muted-foreground mb-4">
-                    <span className="text-primary">$</span> select --growth-system
-                  </p>
                   <h3 className="text-lg font-semibold mb-4">{t("¿Qué quieres vender o automatizar?", "What do you want to sell or automate?")}</h3>
                   <div className="space-y-3">
                     {interests.map((item) => (
@@ -225,9 +274,6 @@ export default function HeroSection({ heroImage }) {
 
               {step === 1 && (
                 <div className="space-y-4">
-                  <p className="text-sm font-mono text-muted-foreground mb-2">
-                    <span className="text-primary">$</span> init --roadmap
-                  </p>
                   <h3 className="text-lg font-semibold mb-2">{t("Recibe tu plan de captación", "Get your lead-gen plan")}</h3>
                   <p className="text-sm text-muted-foreground mb-6">
                     {t(
