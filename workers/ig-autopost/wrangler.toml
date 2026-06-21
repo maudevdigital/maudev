@@ -1,0 +1,8 @@
+name = "ig-autopost"
+main = "worker.js"
+compatibility_date = "2026-06-01"
+
+# Cron: una publicación por día a las 13:00 UTC (~09:00 Chile).
+# Sintaxis cron estándar: "min hora día-mes mes día-semana".
+[triggers]
+crons = ["0 13 * * *"]
