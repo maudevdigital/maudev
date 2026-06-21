@@ -48,6 +48,14 @@ async function publishImage(env, imageUrl, caption) {
   const created = await createRes.json();
   if (!createRes.ok || !created.id) throw new Error(`IG create: ${JSON.stringify(created)}`);
 
+  // Esperar a que IG termine de procesar la imagen (si no, "Media ID is not available").
+  for (let i = 0; i < 20; i++) {
+    const st = await (await fetch(`${GRAPH}/${created.id}?fields=status_code&access_token=${env.IG_ACCESS_TOKEN}`)).json();
+    if (st.status_code === "FINISHED") break;
+    if (st.status_code === "ERROR") throw new Error(`IG container ERROR: ${JSON.stringify(st)}`);
+    await new Promise((r) => setTimeout(r, 2500));
+  }
+
   const pubRes = await fetch(`${GRAPH}/${env.IG_USER_ID}/media_publish`, {
     method: "POST",
     headers: { "content-type": "application/json" },
