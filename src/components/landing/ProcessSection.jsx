@@ -137,7 +137,7 @@ export default function ProcessSection() {
                     </div>
                   </div>
 
-                  <div className="flex-1 pt-1.5 pb-2">
+                  <div className="flex-1 min-w-0 pt-1.5 pb-2">
                     <div className="flex flex-wrap items-center gap-3 mb-2">
                       <span className="text-[10px] font-mono text-primary font-bold tracking-widest">{s.step}</span>
                       <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground/70 border border-border/60 rounded px-2 py-0.5">
