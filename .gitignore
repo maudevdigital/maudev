@@ -34,3 +34,6 @@ dist-ssr
 supabase/.temp
 .branches
 .temp
+
+# Remotion render outputs
+remotion/out
