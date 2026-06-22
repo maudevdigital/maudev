@@ -30,6 +30,7 @@ import AdminBlog from './pages/admin/AdminBlog';
 import AdminLeads from './pages/admin/AdminLeads';
 import AdminPortfolio from './pages/admin/AdminPortfolio';
 import LpDiagnostico from './pages/lp/Diagnostico';
+import LinkInBio from './pages/LinkInBio';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError } = useAuth();
@@ -66,6 +67,8 @@ const AuthenticatedApp = () => {
       <Route path="/terminos" element={<Terminos />} />
       <Route path="/privacidad" element={<Privacidad />} />
       <Route path="/lp/diagnostico" element={<LpDiagnostico />} />
+      <Route path="/ig" element={<LinkInBio />} />
+      <Route path="/links" element={<LinkInBio />} />
       <Route element={<AdminGuard />}>
         <Route element={<AdminLayout />}>
           <Route path="/admin" element={<Dashboard />} />
