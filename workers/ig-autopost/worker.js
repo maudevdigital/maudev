@@ -71,6 +71,19 @@ async function publishImage(env, imageUrl, caption) {
   return published.id;
 }
 
+// ─── Facebook Page: publicar foto (requiere permiso pages_manage_posts) ───────
+async function publishFacebook(env, imageUrl, caption) {
+  if (!env.FB_PAGE_ID) return null;
+  const res = await fetch(`${GRAPH}/${env.FB_PAGE_ID}/photos`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ url: imageUrl, caption, access_token: env.IG_ACCESS_TOKEN }),
+  });
+  const j = await res.json();
+  if (!res.ok || !(j.post_id || j.id)) throw new Error(`FB publish: ${JSON.stringify(j)}`);
+  return j.post_id || j.id;
+}
+
 async function logPost(env, row) {
   if (!env.SUPABASE_URL || !env.SUPABASE_SERVICE_KEY) return;
   await fetch(`${env.SUPABASE_URL}/rest/v1/ig_posts`, {
@@ -89,9 +102,15 @@ async function runOnce(env) {
   if (!IMAGE_POOL.length) throw new Error("IMAGE_POOL vacío: agrega URLs de imágenes.");
   const imageUrl = pick(IMAGE_POOL);
   const { caption, preview } = buildCaption();
-  const postId = await publishImage(env, imageUrl, caption);
-  await logPost(env, { ig_post_id: postId, hook: preview, image_url: imageUrl, caption, created_at: new Date().toISOString() });
-  return { postId, preview };
+  const postId = await publishImage(env, imageUrl, caption); // Instagram (requerido)
+  let fbId = null, fbError = null;
+  try {
+    fbId = await publishFacebook(env, imageUrl, caption); // Facebook (best-effort)
+  } catch (e) {
+    fbError = e.message;
+  }
+  await logPost(env, { ig_post_id: postId, fb_post_id: fbId, hook: preview, image_url: imageUrl, caption, created_at: new Date().toISOString() });
+  return { postId, fbId, fbError, preview };
 }
 
 export default {
