@@ -111,6 +111,61 @@ async function publishFacebook(env, imageUrl, caption) {
   return j.post_id || j.id;
 }
 
+// ─── LinkedIn (perfil personal): subir imagen + publicar post ────────────────
+// Requiere secrets:
+//   LINKEDIN_ACCESS_TOKEN   token OAuth con scope w_member_social (60 días)
+//   LINKEDIN_PERSON_URN     "urn:li:person:{id}"  (el {id} = "sub" de /v2/userinfo)
+// Doc: Posts API + Images API (versionada). Flujo: initializeUpload → PUT bytes → POST /rest/posts.
+const LI_API = "https://api.linkedin.com";
+const LI_VERSION = "202405";
+async function publishLinkedIn(env, imageUrl, caption) {
+  if (!env.LINKEDIN_ACCESS_TOKEN || !env.LINKEDIN_PERSON_URN) return null;
+  const author = env.LINKEDIN_PERSON_URN;
+  const h = {
+    Authorization: `Bearer ${env.LINKEDIN_ACCESS_TOKEN}`,
+    "LinkedIn-Version": LI_VERSION,
+    "X-Restli-Protocol-Version": "2.0.0",
+  };
+
+  // 1) Inicializar la subida de imagen → obtener uploadUrl + urn de imagen.
+  const initRes = await fetch(`${LI_API}/rest/images?action=initializeUpload`, {
+    method: "POST",
+    headers: { ...h, "content-type": "application/json" },
+    body: JSON.stringify({ initializeUploadRequest: { owner: author } }),
+  });
+  const init = await initRes.json();
+  const uploadUrl = init?.value?.uploadUrl;
+  const imageUrn = init?.value?.image;
+  if (!initRes.ok || !uploadUrl || !imageUrn) throw new Error(`LI init: ${JSON.stringify(init)}`);
+
+  // 2) Descargar la imagen y subir los bytes a uploadUrl.
+  const imgBytes = await (await fetch(imageUrl)).arrayBuffer();
+  const upRes = await fetch(uploadUrl, {
+    method: "PUT",
+    headers: { Authorization: `Bearer ${env.LINKEDIN_ACCESS_TOKEN}` },
+    body: imgBytes,
+  });
+  if (!upRes.ok) throw new Error(`LI upload: ${upRes.status} ${await upRes.text()}`);
+
+  // 3) Crear el post referenciando la imagen.
+  const postRes = await fetch(`${LI_API}/rest/posts`, {
+    method: "POST",
+    headers: { ...h, "content-type": "application/json" },
+    body: JSON.stringify({
+      author,
+      commentary: caption,
+      visibility: "PUBLIC",
+      distribution: { feedDistribution: "MAIN_FEED", targetEntities: [], thirdPartyDistributionChannels: [] },
+      content: { media: { altText: "maudev", id: imageUrn } },
+      lifecycleState: "PUBLISHED",
+      isReshareDisabledByAuthor: false,
+    }),
+  });
+  const postId = postRes.headers.get("x-restli-id");
+  if (!postRes.ok || !postId) throw new Error(`LI post: ${postRes.status} ${await postRes.text()}`);
+  return postId;
+}
+
 async function logPost(env, row) {
   if (!env.SUPABASE_URL || !env.SUPABASE_SERVICE_KEY) return;
   await fetch(`${env.SUPABASE_URL}/rest/v1/ig_posts`, {
@@ -136,8 +191,14 @@ async function runOnce(env) {
   } catch (e) {
     fbError = e.message;
   }
-  await logPost(env, { ig_post_id: postId, fb_post_id: fbId, hook: preview, image_url: imageUrl, caption, created_at: new Date().toISOString() });
-  return { slot, postId, fbId, fbError, preview };
+  let liId = null, liError = null;
+  try {
+    liId = await publishLinkedIn(env, imageUrl, caption); // LinkedIn (best-effort)
+  } catch (e) {
+    liError = e.message;
+  }
+  await logPost(env, { ig_post_id: postId, fb_post_id: fbId, li_post_id: liId, hook: preview, image_url: imageUrl, caption, created_at: new Date().toISOString() });
+  return { slot, postId, fbId, fbError, liId, liError, preview };
 }
 
 export default {
