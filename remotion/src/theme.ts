@@ -1,4 +1,10 @@
-// Colores de marca maudev (modo oscuro). Mantener en sintonía con src/index.css del sitio.
+// Tema de marca maudev (modo oscuro). Fuentes reales de marca vía Google Fonts.
+import { loadFont as loadInter } from "@remotion/google-fonts/Inter";
+import { loadFont as loadMono } from "@remotion/google-fonts/JetBrainsMono";
+
+const inter = loadInter("normal", { weights: ["400", "600", "800", "900"] });
+const mono = loadMono("normal", { weights: ["400", "600", "700"] });
+
 export const COLORS = {
   bg: "#0a0a0a",
   card: "#0f0f0f",
@@ -9,8 +15,6 @@ export const COLORS = {
 };
 
 export const FONTS = {
-  // Fuentes del sistema para evitar dependencias; cámbialas a Inter/JetBrains
-  // Mono con @remotion/google-fonts si quieres calzar 1:1 con el sitio.
-  sans: "Arial, Helvetica, sans-serif",
-  mono: "Consolas, 'Courier New', monospace",
+  sans: inter.fontFamily,
+  mono: mono.fontFamily,
 };
