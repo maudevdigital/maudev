@@ -35,6 +35,24 @@ npx remotion still ValueCard out/card-2.png --props='{...}'
 > `@remotion/google-fonts` y cárgalas en `theme.ts`. Por defecto usa fuentes del
 > sistema para no depender de nada.
 
+## Sonido en los reels 🎵
+
+El `TipReel` soporta **música de fondo** (con fade) y **voz en off** opcionales.
+Pon los archivos en `remotion/public/` y actívalos:
+
+```bash
+npm run studio   # luego en el panel de props del TipReel pon music: "music.mp3"
+# o al renderizar:
+npx remotion render TipReel out/reel.mp4 --props='{"music":"music.mp3"}'
+```
+
+- **Música**: usa pistas **libres de derechos** (Pixabay Music, Mixkit, Uppbeat,
+  YouTube Audio Library). La música con copyright se silencia en IG/FB.
+- **Voz en off**: genera la narración con **ElevenLabs** (TTS) → `voice.mp3`.
+  Narración + música suave = mayor retención.
+
+Ver `remotion/public/README.md` para el paso a paso.
+
 ## Automatización (siguiente paso)
 
 Remotion **no corre dentro del Cloudflare Worker** (necesita Node + Chromium).

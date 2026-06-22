@@ -35,12 +35,28 @@ const IMAGE_POOL = [
   "https://maudev.cl/social/pagos.png",
 ];
 
-const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+// Plan semanal DETERMINÍSTICO: 21 slots (7 días × 3 franjas). Cada caption se usa
+// una vez por semana → contenido variado y planificado (no aleatorio). El orden
+// mezcla temas para que cada día tenga ángulos distintos.
+// slot = díaSemana(0=Dom..6=Sáb) * 3 + franja(0=mañana,1=mediodía,2=tarde).
+const PLAN_ORDER = [0, 14, 9, 1, 6, 16, 12, 4, 19, 2, 8, 5, 15, 3, 17, 7, 10, 20, 13, 11, 18];
 
-function buildCaption() {
-  const item = pick(CAPTIONS);
+function currentSlot() {
+  const now = new Date();
+  const dow = now.getUTCDay();
+  const h = now.getUTCHours();
+  const franja = h < 15 ? 0 : h < 19 ? 1 : 2; // crons 13/17/21 UTC ≈ 09/13/17 Chile
+  return (dow * 3 + franja) % PLAN_ORDER.length;
+}
+
+function buildContent(slot) {
+  const item = CAPTIONS[PLAN_ORDER[slot % PLAN_ORDER.length]] || CAPTIONS[0];
   const tags = (item.tags || []).map((t) => (t.startsWith("#") ? t : "#" + t)).join(" ");
-  return { caption: `${item.caption}\n\n${tags}`, preview: item.caption.split("\n")[0] };
+  return {
+    caption: `${item.caption}\n\n${tags}`,
+    preview: item.caption.split("\n")[0],
+    imageUrl: IMAGE_POOL[slot % IMAGE_POOL.length],
+  };
 }
 
 // ─── Instagram Graph API: crear y publicar ──────────────────────────────────
@@ -100,8 +116,8 @@ async function logPost(env, row) {
 
 async function runOnce(env) {
   if (!IMAGE_POOL.length) throw new Error("IMAGE_POOL vacío: agrega URLs de imágenes.");
-  const imageUrl = pick(IMAGE_POOL);
-  const { caption, preview } = buildCaption();
+  const slot = currentSlot();
+  const { caption, preview, imageUrl } = buildContent(slot);
   const postId = await publishImage(env, imageUrl, caption); // Instagram (requerido)
   let fbId = null, fbError = null;
   try {
@@ -110,7 +126,7 @@ async function runOnce(env) {
     fbError = e.message;
   }
   await logPost(env, { ig_post_id: postId, fb_post_id: fbId, hook: preview, image_url: imageUrl, caption, created_at: new Date().toISOString() });
-  return { postId, fbId, fbError, preview };
+  return { slot, postId, fbId, fbError, preview };
 }
 
 export default {

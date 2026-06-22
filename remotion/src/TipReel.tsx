@@ -1,10 +1,14 @@
-import { AbsoluteFill, useCurrentFrame, useVideoConfig, interpolate, spring } from "remotion";
+import { AbsoluteFill, useCurrentFrame, useVideoConfig, interpolate, spring, Audio, staticFile } from "remotion";
 import { COLORS, FONTS } from "./theme";
 import { gridBg, Glow, Wordmark, CategoryChip, NumBadge } from "./Brand";
 import type { Tip } from "./tips";
 
+// Props del reel: el tip + audio opcional (música de fondo y/o voz en off).
+// Pon los archivos en remotion/public/ y pasa el nombre (ej. music="music.mp3").
+type ReelProps = Tip & { music?: string; voice?: string };
+
 // Reel vertical 1080x1920 (~12s) — tip animado con valor + outro al "link en bio".
-export const TipReel: React.FC<Tip> = ({ category, title, bullets, outro }) => {
+export const TipReel: React.FC<ReelProps> = ({ category, title, bullets, outro, music, voice }) => {
   const frame = useCurrentFrame();
   const { fps, durationInFrames } = useVideoConfig();
   const enter = (delay: number) => spring({ frame: frame - delay, fps, config: { damping: 200 } });
@@ -16,6 +20,21 @@ export const TipReel: React.FC<Tip> = ({ category, title, bullets, outro }) => {
 
   return (
     <AbsoluteFill style={{ ...gridBg, fontFamily: FONTS.sans, padding: 90 }}>
+      {/* Música de fondo con fade in/out (archivo en remotion/public/). */}
+      {music ? (
+        <Audio
+          src={staticFile(music)}
+          volume={(f) =>
+            interpolate(f, [0, 20, durationInFrames - 30, durationInFrames], [0, 0.45, 0.45, 0], {
+              extrapolateLeft: "clamp",
+              extrapolateRight: "clamp",
+            })
+          }
+        />
+      ) : null}
+      {/* Voz en off opcional (ej. generada con ElevenLabs). */}
+      {voice ? <Audio src={staticFile(voice)} /> : null}
+
       <Glow />
 
       {/* Header */}
