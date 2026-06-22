@@ -9,51 +9,51 @@ export const gridBg: React.CSSProperties = {
   backgroundSize: "64px 64px",
 };
 
-export const Glow: React.FC<{ y?: string }> = ({ y = "26%" }) => (
+export const Glow: React.FC<{ y?: string; accent?: string }> = ({ y = "26%", accent = COLORS.primary }) => (
   <AbsoluteFill
-    style={{ background: `radial-gradient(circle at 50% ${y}, ${COLORS.primary}26, transparent 60%)` }}
+    style={{ background: `radial-gradient(circle at 50% ${y}, ${accent}26, transparent 60%)` }}
   />
 );
 
-export const Wordmark: React.FC<{ size?: number }> = ({ size = 46 }) => (
+export const Wordmark: React.FC<{ size?: number; accent?: string }> = ({ size = 46, accent = COLORS.primary }) => (
   <span style={{ color: COLORS.text, fontFamily: FONTS.sans, fontWeight: 800, fontSize: size }}>
-    mau<span style={{ color: COLORS.primary }}>dev</span>
+    mau<span style={{ color: accent }}>dev</span>
   </span>
 );
 
-export const CategoryChip: React.FC<{ category: string }> = ({ category }) => (
+export const CategoryChip: React.FC<{ category: string; accent?: string }> = ({ category, accent = COLORS.primary }) => (
   <span
     style={{
       display: "inline-flex",
       alignItems: "center",
       gap: 12,
-      color: COLORS.primary,
+      color: accent,
       fontFamily: FONTS.mono,
       fontSize: 26,
       fontWeight: 600,
       textTransform: "uppercase",
       letterSpacing: 2,
-      border: `1px solid ${COLORS.primary}55`,
+      border: `1px solid ${accent}55`,
       borderRadius: 14,
       padding: "10px 18px",
-      background: `${COLORS.primary}10`,
+      background: `${accent}10`,
     }}
   >
-    <Icon name={iconFor(category)} size={26} />
+    <Icon name={iconFor(category)} size={26} accent={accent} />
     {category}
   </span>
 );
 
 // Badge numerado para bullets (estilo checklist/paso a paso).
-export const NumBadge: React.FC<{ n: number; size?: number }> = ({ n, size = 56 }) => (
+export const NumBadge: React.FC<{ n: number; size?: number; accent?: string }> = ({ n, size = 56, accent = COLORS.primary }) => (
   <div
     style={{
       width: size,
       height: size,
       borderRadius: 16,
-      background: `${COLORS.primary}1a`,
-      border: `1px solid ${COLORS.primary}55`,
-      color: COLORS.primary,
+      background: `${accent}1a`,
+      border: `1px solid ${accent}55`,
+      color: accent,
       fontFamily: FONTS.mono,
       fontWeight: 700,
       fontSize: size * 0.5,

@@ -11,17 +11,20 @@ export const iconFor = (category: string): string => {
   return "bolt";
 };
 
-export const Icon: React.FC<{ name: string; size?: number; color?: string }> = ({
+export const Icon: React.FC<{ name: string; size?: number; color?: string; accent?: string }> = ({
   name,
   size = 28,
-  color = COLORS.primary,
-}) => (
+  color,
+  accent = COLORS.primary,
+}) => {
+  const stroke = color ?? accent;
+  return (
   <svg
     width={size}
     height={size}
     viewBox="0 0 24 24"
     fill="none"
-    stroke={color}
+    stroke={stroke}
     strokeWidth={2}
     strokeLinecap="round"
     strokeLinejoin="round"
@@ -49,5 +52,6 @@ export const Icon: React.FC<{ name: string; size?: number; color?: string }> = (
     ) : (
       <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z" />
     )}
-  </svg>
-);
+    </svg>
+  );
+};

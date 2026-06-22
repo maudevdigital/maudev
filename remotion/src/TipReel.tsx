@@ -1,16 +1,18 @@
 import { AbsoluteFill, useCurrentFrame, useVideoConfig, interpolate, spring, Audio, staticFile } from "remotion";
 import { COLORS, FONTS } from "./theme";
-import { gridBg, Glow, Wordmark, CategoryChip, NumBadge } from "./Brand";
+import { Glow, Wordmark, CategoryChip, NumBadge } from "./Brand";
+import { skinFor } from "./skins";
 import type { Tip } from "./tips";
 
-// Props del reel: el tip + audio opcional (música de fondo y/o voz en off).
-// Pon los archivos en remotion/public/ y pasa el nombre (ej. music="music.mp3").
-type ReelProps = Tip & { music?: string; voice?: string };
+// Props del reel: el tip + audio opcional + `skin` (0..3) para variar el estilo
+// manteniendo la marca. Pon los archivos de audio en remotion/public/.
+type ReelProps = Tip & { music?: string; voice?: string; skin?: number };
 
 // Reel vertical 1080x1920 (~12s) — tip animado con valor + outro al "link en bio".
-export const TipReel: React.FC<ReelProps> = ({ category, title, bullets, outro, music, voice }) => {
+export const TipReel: React.FC<ReelProps> = ({ category, title, bullets, outro, music, voice, skin = 0 }) => {
   const frame = useCurrentFrame();
   const { fps, durationInFrames } = useVideoConfig();
+  const sk = skinFor(skin);
   const enter = (delay: number) => spring({ frame: frame - delay, fps, config: { damping: 200 } });
   const progress = interpolate(frame, [0, durationInFrames], [0, 1], { extrapolateRight: "clamp" });
   const outroOp = interpolate(frame, [durationInFrames - 90, durationInFrames - 60], [0, 1], {
@@ -19,7 +21,7 @@ export const TipReel: React.FC<ReelProps> = ({ category, title, bullets, outro, 
   });
 
   return (
-    <AbsoluteFill style={{ ...gridBg, fontFamily: FONTS.sans, padding: 90 }}>
+    <AbsoluteFill style={{ ...sk.bg, fontFamily: FONTS.sans, padding: 90 }}>
       {/* Música de fondo con fade in/out (archivo en remotion/public/). */}
       {music ? (
         <Audio
@@ -35,12 +37,12 @@ export const TipReel: React.FC<ReelProps> = ({ category, title, bullets, outro, 
       {/* Voz en off opcional (ej. generada con ElevenLabs). */}
       {voice ? <Audio src={staticFile(voice)} /> : null}
 
-      <Glow />
+      <Glow y={sk.glowY} accent={sk.accent} />
 
       {/* Header */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", opacity: enter(0) }}>
-        <Wordmark size={48} />
-        <CategoryChip category={category} />
+        <Wordmark size={48} accent={sk.accent} />
+        <CategoryChip category={category} accent={sk.accent} />
       </div>
 
       {/* Título */}
@@ -75,7 +77,7 @@ export const TipReel: React.FC<ReelProps> = ({ category, title, bullets, outro, 
                 transform: `translateX(${interpolate(enter(d), [0, 1], [-30, 0])}px)`,
               }}
             >
-              <NumBadge n={i + 1} size={62} />
+              <NumBadge n={i + 1} size={62} accent={sk.accent} />
               <div style={{ color: COLORS.text, fontSize: 48, lineHeight: 1.22 }}>{b}</div>
             </div>
           );
@@ -84,14 +86,14 @@ export const TipReel: React.FC<ReelProps> = ({ category, title, bullets, outro, 
 
       {/* Outro */}
       <div style={{ position: "absolute", bottom: 150, left: 90, right: 90, opacity: outroOp }}>
-        <div style={{ color: COLORS.primary, fontSize: 46, fontWeight: 800 }}>{outro}</div>
+        <div style={{ color: sk.accent, fontSize: 46, fontWeight: 800 }}>{outro}</div>
         <div style={{ color: COLORS.muted, fontFamily: FONTS.mono, fontSize: 32, marginTop: 12 }}>
           Guía completa en el link de la bio · maudev.cl
         </div>
       </div>
 
       {/* Barra de progreso (retención) */}
-      <div style={{ position: "absolute", bottom: 0, left: 0, height: 14, width: `${progress * 100}%`, background: COLORS.primary }} />
+      <div style={{ position: "absolute", bottom: 0, left: 0, height: 14, width: `${progress * 100}%`, background: sk.accent }} />
     </AbsoluteFill>
   );
 };
