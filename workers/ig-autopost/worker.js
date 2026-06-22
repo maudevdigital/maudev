@@ -39,23 +39,34 @@ const IMAGE_POOL = [
 // una vez por semana → contenido variado y planificado (no aleatorio). El orden
 // mezcla temas para que cada día tenga ángulos distintos.
 // slot = díaSemana(0=Dom..6=Sáb) * 3 + franja(0=mañana,1=mediodía,2=tarde).
-const PLAN_ORDER = [0, 14, 9, 1, 6, 16, 12, 4, 19, 2, 8, 5, 15, 3, 17, 7, 10, 20, 13, 11, 18];
+// Cada slot → { c: índice de caption (captions.js), img: índice de imagen (IMAGE_POOL) }.
+// La imagen está elegida para que CALCE con el tema del caption.
+const PLAN = [
+  { c: 0, img: 8 }, { c: 14, img: 6 }, { c: 9, img: 9 },   // Dom: web/conversión, automatización, pagos
+  { c: 1, img: 6 }, { c: 6, img: 8 }, { c: 16, img: 1 },   // Lun: leads/auto, SEO, software IA
+  { c: 12, img: 7 }, { c: 4, img: 3 }, { c: 19, img: 8 },  // Mar: a medida, antes de pagar, SEO
+  { c: 2, img: 7 }, { c: 8, img: 8 }, { c: 5, img: 4 },    // Mié: IA/app, IG→landing, precios
+  { c: 15, img: 0 }, { c: 3, img: 8 }, { c: 17, img: 2 },  // Jue: agentes IA, dashboard, pagos
+  { c: 7, img: 7 }, { c: 10, img: 7 }, { c: 20, img: 6 },  // Vie: código tuyo, MVP, leads n8n
+  { c: 13, img: 7 }, { c: 11, img: 5 }, { c: 18, img: 4 }, // Sáb: hablas con dev, contrato, precios
+];
 
 function currentSlot() {
   const now = new Date();
   const dow = now.getUTCDay();
   const h = now.getUTCHours();
   const franja = h < 15 ? 0 : h < 19 ? 1 : 2; // crons 13/17/21 UTC ≈ 09/13/17 Chile
-  return (dow * 3 + franja) % PLAN_ORDER.length;
+  return (dow * 3 + franja) % PLAN.length;
 }
 
 function buildContent(slot) {
-  const item = CAPTIONS[PLAN_ORDER[slot % PLAN_ORDER.length]] || CAPTIONS[0];
+  const e = PLAN[slot % PLAN.length];
+  const item = CAPTIONS[e.c] || CAPTIONS[0];
   const tags = (item.tags || []).map((t) => (t.startsWith("#") ? t : "#" + t)).join(" ");
   return {
     caption: `${item.caption}\n\n${tags}`,
     preview: item.caption.split("\n")[0],
-    imageUrl: IMAGE_POOL[slot % IMAGE_POOL.length],
+    imageUrl: IMAGE_POOL[e.img % IMAGE_POOL.length],
   };
 }
 
