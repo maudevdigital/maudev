@@ -3,6 +3,7 @@ import { getAudioDurationInSeconds } from "@remotion/media-utils";
 import { TipReel } from "./TipReel";
 import { ValueCard } from "./ValueCard";
 import { ScriptedVideo } from "./ScriptedVideo";
+import { CinematicReel } from "./CinematicReel";
 import { AvatarReel } from "./AvatarReel";
 import { tips } from "./tips";
 import { scripts } from "./scripts";
@@ -69,6 +70,24 @@ export const RemotionRoot: React.FC = () => {
             0,
           ),
         })}
+      />
+
+      {/* Reel CINEMATOGRÁFICO (letterbox, grano, glow) con voz en off ElevenLabs. */}
+      <Composition
+        id="CinematicReel"
+        component={CinematicReel}
+        durationInFrames={670}
+        fps={FPS}
+        width={1080}
+        height={1920}
+        defaultProps={{ music: "music-energetico.wav", voice: "cinematic-voice.mp3" }}
+        calculateMetadata={async ({ props }) => {
+          if (props.voice) {
+            const dur = await getAudioDurationInSeconds(staticFile(props.voice as string));
+            return { durationInFrames: Math.max(670, Math.ceil(dur * FPS) + FPS) };
+          }
+          return { durationInFrames: 670 };
+        }}
       />
 
       {/* Mascota que "habla" la voz (ElevenLabs). Duración = largo del audio. */}
