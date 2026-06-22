@@ -18,7 +18,7 @@ export const RemotionRoot: React.FC = () => {
         fps={FPS}
         width={1080}
         height={1920}
-        defaultProps={sample}
+        defaultProps={{ ...sample, music: "music.wav" }}
       />
       {/* Tarjeta estática 4:5 — post unitario o página de carrusel */}
       <Still id="ValueCard" component={ValueCard} width={1080} height={1350} defaultProps={sample} />

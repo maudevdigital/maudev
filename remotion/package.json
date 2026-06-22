@@ -5,6 +5,7 @@
   "description": "Reels y tarjetas de valor (carruseles) on-brand para Instagram/Facebook de maudev.",
   "scripts": {
     "studio": "remotion studio",
+    "music": "node gen-music.mjs",
     "render:reel": "remotion render TipReel out/reel.mp4",
     "still:card": "remotion still ValueCard out/card.png"
   },
