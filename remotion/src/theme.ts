@@ -1,10 +1,7 @@
-// Tema de marca maudev (modo oscuro). Fuentes reales de marca vía Google Fonts.
-import { loadFont as loadInter } from "@remotion/google-fonts/Inter";
-import { loadFont as loadMono } from "@remotion/google-fonts/JetBrainsMono";
-
-const inter = loadInter("normal", { weights: ["400", "600", "800", "900"] });
-const mono = loadMono("normal", { weights: ["400", "600", "700"] });
-
+// Tema de marca maudev (modo oscuro).
+// Fuentes: usa Inter / JetBrains Mono si están instaladas en el sistema; si no,
+// cae en fuentes limpias. (Para embeber las fuentes exactas 1:1 con el sitio,
+// se pueden cargar como woff2 con @remotion/fonts — lo vemos si lo quieres.)
 export const COLORS = {
   bg: "#0a0a0a",
   card: "#0f0f0f",
@@ -15,6 +12,6 @@ export const COLORS = {
 };
 
 export const FONTS = {
-  sans: inter.fontFamily,
-  mono: mono.fontFamily,
+  sans: "Inter, 'Segoe UI', Roboto, Arial, sans-serif",
+  mono: "'JetBrains Mono', 'Cascadia Code', Consolas, monospace",
 };
