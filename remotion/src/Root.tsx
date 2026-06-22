@@ -1,7 +1,9 @@
-import { Composition, Still } from "remotion";
+import { Composition, Still, staticFile } from "remotion";
+import { getAudioDurationInSeconds } from "@remotion/media-utils";
 import { TipReel } from "./TipReel";
 import { ValueCard } from "./ValueCard";
 import { ScriptedVideo } from "./ScriptedVideo";
+import { AvatarReel } from "./AvatarReel";
 import { tips } from "./tips";
 import { scripts } from "./scripts";
 
@@ -39,6 +41,23 @@ export const RemotionRoot: React.FC = () => {
             0,
           ),
         })}
+      />
+
+      {/* Mascota que "habla" la voz (ElevenLabs). Duración = largo del audio. */}
+      <Composition
+        id="AvatarReel"
+        component={AvatarReel}
+        fps={FPS}
+        width={1080}
+        height={1920}
+        defaultProps={{ ...sample, music: "music.wav" }}
+        calculateMetadata={async ({ props }) => {
+          if (props.voice) {
+            const dur = await getAudioDurationInSeconds(staticFile(props.voice));
+            return { durationInFrames: Math.ceil(dur * FPS) + FPS }; // +1s de cola
+          }
+          return { durationInFrames: 14 * FPS };
+        }}
       />
     </>
   );

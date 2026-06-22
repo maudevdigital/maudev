@@ -6,11 +6,13 @@
   "scripts": {
     "studio": "remotion studio",
     "music": "node gen-music.mjs",
+    "voice": "node gen-voice.mjs",
     "render:reel": "remotion render TipReel out/reel.mp4",
     "still:card": "remotion still ValueCard out/card.png"
   },
   "dependencies": {
     "@remotion/cli": "4.0.0",
+    "@remotion/media-utils": "4.0.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "remotion": "4.0.0"
