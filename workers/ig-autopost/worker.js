@@ -28,6 +28,11 @@ const IMAGE_POOL = [
   "https://maudev.cl/portfolio/systempro.png",
   "https://maudev.cl/portfolio/partsmr.png",
   "https://maudev.cl/portfolio/paraguayaccess.png",
+  // Imágenes cuadradas (1:1) hechas para feed de Instagram:
+  "https://maudev.cl/social/automatizacion.png",
+  "https://maudev.cl/social/software.png",
+  "https://maudev.cl/social/crecimiento.png",
+  "https://maudev.cl/social/pagos.png",
 ];
 
 const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
