@@ -55,4 +55,58 @@ export const tips: Tip[] = [
     ],
     outro: "Elige según a quién le vendes",
   },
+  {
+    category: "Conversión",
+    title: "Por qué tu landing no convierte",
+    bullets: [
+      "Tarda demasiado en cargar",
+      "El mensaje no se entiende en 5 segundos",
+      "Tiene 5 botones en vez de 1 claro",
+      "El formulario no llega a ningún lado",
+    ],
+    outro: "Un mensaje, un botón, una acción",
+  },
+  {
+    category: "WhatsApp",
+    title: "Tu WhatsApp puede vender mientras duermes",
+    bullets: [
+      "Responde horarios, precios y stock al instante",
+      "Califica al cliente con 2-3 preguntas",
+      "Te avisa solo cuando el lead vale la pena",
+      "Deriva a un humano cuando hace falta",
+    ],
+    outro: "Atención 24/7 sin contratar a nadie",
+  },
+  {
+    category: "Software a medida",
+    title: "3 señales de que ya necesitas software propio",
+    bullets: [
+      "Pagas 5 apps que no se hablan entre sí",
+      "Tu operación vive en planillas que se rompen",
+      "Haces a mano lo mismo cada semana",
+    ],
+    outro: "Cuando el proceso es tu ventaja",
+  },
+  {
+    category: "Velocidad",
+    title: "Cada segundo de carga te cuesta clientes",
+    bullets: [
+      "53% se va si tarda más de 3 segundos",
+      "Google posiciona mejor lo rápido",
+      "Plantillas pesadas = más plugins, más lento",
+      "Stack moderno + código limpio = veloz",
+    ],
+    outro: "Rápido también es más barato de mantener",
+  },
+  {
+    category: "Confianza",
+    title: "Qué debe decir tu contrato de desarrollo",
+    bullets: [
+      "Precio fijo por escrito",
+      "Hitos con entregas que ves funcionando",
+      "El código y el dominio quedan a tu nombre",
+      "Soporte después de entregar",
+    ],
+    outro: "Sin esto, no firmes",
+  },
 ];
