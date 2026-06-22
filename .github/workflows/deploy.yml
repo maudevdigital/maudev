@@ -3,8 +3,8 @@ name: Deploy to Cloudflare Pages
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
+  # Nota: el deploy de preview en pull_request se quitó porque fallaba con
+  # "No ref found" al borrar la rama en el merge. Producción se publica en push a main.
 
 jobs:
   deploy:
