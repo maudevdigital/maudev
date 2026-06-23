@@ -35,19 +35,28 @@ const IMAGE_POOL = [
   "https://maudev.cl/social/pagos.png",
 ];
 
+// Reels (video vertical 9:16) hechos con Remotion. Sube el .mp4 a public/social
+// del sitio y agrega su URL aquí. Render: `npm run render:reel` en /remotion.
+const VIDEO_POOL = [
+  "https://maudev.cl/social/cinematic.mp4",
+];
+
 // Plan semanal DETERMINÍSTICO: 21 slots (7 días × 3 franjas). Cada caption se usa
 // una vez por semana → contenido variado y planificado (no aleatorio). El orden
 // mezcla temas para que cada día tenga ángulos distintos.
 // slot = díaSemana(0=Dom..6=Sáb) * 3 + franja(0=mañana,1=mediodía,2=tarde).
-// Cada slot → { c: índice de caption (captions.js), img: índice de imagen (IMAGE_POOL) }.
-// La imagen está elegida para que CALCE con el tema del caption.
+// Cada slot → imagen { c, img }  o  reel { c, vid }  (kind se infiere por 'vid').
+//   c   = índice de caption (captions.js)
+//   img = índice de imagen (IMAGE_POOL)   ·   vid = índice de video (VIDEO_POOL)
+// La imagen/video está elegida para que CALCE con el tema del caption. Hay 2
+// slots de REEL por semana (mediodía Mar y Vie) para no repetir el mismo video.
 const PLAN = [
   { c: 0, img: 8 }, { c: 14, img: 6 }, { c: 9, img: 9 },   // Dom: web/conversión, automatización, pagos
   { c: 1, img: 6 }, { c: 6, img: 8 }, { c: 16, img: 1 },   // Lun: leads/auto, SEO, software IA
-  { c: 12, img: 7 }, { c: 4, img: 3 }, { c: 19, img: 8 },  // Mar: a medida, antes de pagar, SEO
+  { c: 12, img: 7 }, { c: 4, vid: 0 }, { c: 19, img: 8 },  // Mar: a medida, [REEL], SEO
   { c: 2, img: 7 }, { c: 8, img: 8 }, { c: 5, img: 4 },    // Mié: IA/app, IG→landing, precios
   { c: 15, img: 0 }, { c: 3, img: 8 }, { c: 17, img: 2 },  // Jue: agentes IA, dashboard, pagos
-  { c: 7, img: 7 }, { c: 10, img: 7 }, { c: 20, img: 6 },  // Vie: código tuyo, MVP, leads n8n
+  { c: 7, img: 7 }, { c: 10, vid: 0 }, { c: 20, img: 6 },  // Vie: código tuyo, [REEL], leads n8n
   { c: 13, img: 7 }, { c: 11, img: 5 }, { c: 18, img: 4 }, // Sáb: hablas con dev, contrato, precios
 ];
 
@@ -63,10 +72,13 @@ function buildContent(slot) {
   const e = PLAN[slot % PLAN.length];
   const item = CAPTIONS[e.c] || CAPTIONS[0];
   const tags = (item.tags || []).map((t) => (t.startsWith("#") ? t : "#" + t)).join(" ");
+  const isReel = e.vid !== undefined;
   return {
+    kind: isReel ? "reel" : "image",
     caption: `${item.caption}\n\n${tags}`,
     preview: item.caption.split("\n")[0],
-    imageUrl: IMAGE_POOL[e.img % IMAGE_POOL.length],
+    imageUrl: isReel ? null : IMAGE_POOL[e.img % IMAGE_POOL.length],
+    videoUrl: isReel ? VIDEO_POOL[e.vid % VIDEO_POOL.length] : null,
   };
 }
 
@@ -96,6 +108,47 @@ async function publishImage(env, imageUrl, caption) {
   const published = await pubRes.json();
   if (!pubRes.ok || !published.id) throw new Error(`IG publish: ${JSON.stringify(published)}`);
   return published.id;
+}
+
+// ─── Instagram Reels: crear contenedor de video y publicar ────────────────────
+async function publishReel(env, videoUrl, caption) {
+  const createRes = await fetch(`${GRAPH}/${env.IG_USER_ID}/media`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ media_type: "REELS", video_url: videoUrl, caption, share_to_feed: true, access_token: env.IG_ACCESS_TOKEN }),
+  });
+  const created = await createRes.json();
+  if (!createRes.ok || !created.id) throw new Error(`IG reel create: ${JSON.stringify(created)}`);
+
+  // El video tarda más en procesarse: esperar hasta ~2.5 min.
+  for (let i = 0; i < 60; i++) {
+    const st = await (await fetch(`${GRAPH}/${created.id}?fields=status_code&access_token=${env.IG_ACCESS_TOKEN}`)).json();
+    if (st.status_code === "FINISHED") break;
+    if (st.status_code === "ERROR") throw new Error(`IG reel container ERROR: ${JSON.stringify(st)}`);
+    await new Promise((r) => setTimeout(r, 2500));
+  }
+
+  const pubRes = await fetch(`${GRAPH}/${env.IG_USER_ID}/media_publish`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ creation_id: created.id, access_token: env.IG_ACCESS_TOKEN }),
+  });
+  const published = await pubRes.json();
+  if (!pubRes.ok || !published.id) throw new Error(`IG reel publish: ${JSON.stringify(published)}`);
+  return published.id;
+}
+
+// ─── Facebook Page: publicar video (feed). best-effort, como las fotos. ────────
+async function publishFacebookVideo(env, videoUrl, caption) {
+  if (!env.FB_PAGE_ID) return null;
+  const res = await fetch(`${GRAPH}/${env.FB_PAGE_ID}/videos`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ file_url: videoUrl, description: caption, access_token: env.IG_ACCESS_TOKEN }),
+  });
+  const j = await res.json();
+  if (!res.ok || !j.id) throw new Error(`FB video: ${JSON.stringify(j)}`);
+  return j.id;
 }
 
 // ─── Facebook Page: publicar foto (requiere permiso pages_manage_posts) ───────
@@ -183,22 +236,36 @@ async function logPost(env, row) {
 async function runOnce(env) {
   if (!IMAGE_POOL.length) throw new Error("IMAGE_POOL vacío: agrega URLs de imágenes.");
   const slot = currentSlot();
-  const { caption, preview, imageUrl } = buildContent(slot);
-  const postId = await publishImage(env, imageUrl, caption); // Instagram (requerido)
+  const { kind, caption, preview, imageUrl, videoUrl } = buildContent(slot);
+  const mediaUrl = kind === "reel" ? videoUrl : imageUrl;
+
+  // Instagram (requerido): reel o imagen según el slot.
+  const postId = kind === "reel"
+    ? await publishReel(env, videoUrl, caption)
+    : await publishImage(env, imageUrl, caption);
+
+  // Facebook (best-effort): video o foto.
   let fbId = null, fbError = null;
   try {
-    fbId = await publishFacebook(env, imageUrl, caption); // Facebook (best-effort)
+    fbId = kind === "reel"
+      ? await publishFacebookVideo(env, videoUrl, caption)
+      : await publishFacebook(env, imageUrl, caption);
   } catch (e) {
     fbError = e.message;
   }
+
+  // LinkedIn (best-effort): solo imágenes por ahora (el video usa otra API).
   let liId = null, liError = null;
-  try {
-    liId = await publishLinkedIn(env, imageUrl, caption); // LinkedIn (best-effort)
-  } catch (e) {
-    liError = e.message;
+  if (kind !== "reel") {
+    try {
+      liId = await publishLinkedIn(env, imageUrl, caption);
+    } catch (e) {
+      liError = e.message;
+    }
   }
-  await logPost(env, { ig_post_id: postId, fb_post_id: fbId, li_post_id: liId, hook: preview, image_url: imageUrl, caption, created_at: new Date().toISOString() });
-  return { slot, postId, fbId, fbError, liId, liError, preview };
+
+  await logPost(env, { ig_post_id: postId, fb_post_id: fbId, li_post_id: liId, hook: preview, media_kind: kind, image_url: mediaUrl, caption, created_at: new Date().toISOString() });
+  return { slot, kind, postId, fbId, fbError, liId, liError, preview };
 }
 
 export default {
