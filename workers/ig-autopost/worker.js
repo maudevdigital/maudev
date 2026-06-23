@@ -36,20 +36,29 @@ const IMAGE_POOL = [
 ];
 
 // Reels (video vertical 9:16) hechos con Remotion. Sube el .mp4 a public/social
-// del sitio y agrega su URL aquí. Render: `npm run render:reel` en /remotion.
+// del sitio y agrega su URL aquí. Render del lote: `Reel-tip-0..8` en /remotion.
+// 9 reels temáticos (tip+skin+música variados) + 1 cinematográfico = 10.
 const VIDEO_POOL = [
-  "https://maudev.cl/social/cinematic.mp4",
+  "https://maudev.cl/social/reel-0.mp4", // Automatización
+  "https://maudev.cl/social/reel-1.mp4", // Antes de pagar
+  "https://maudev.cl/social/reel-2.mp4", // SEO
+  "https://maudev.cl/social/reel-3.mp4", // Pagos online
+  "https://maudev.cl/social/reel-4.mp4", // Conversión
+  "https://maudev.cl/social/reel-5.mp4", // WhatsApp
+  "https://maudev.cl/social/reel-6.mp4", // Software a medida
+  "https://maudev.cl/social/reel-7.mp4", // Velocidad
+  "https://maudev.cl/social/reel-8.mp4", // Confianza/contrato
+  "https://maudev.cl/social/cinematic.mp4", // Cinematográfico (voz en off)
 ];
 
 // Plan semanal DETERMINÍSTICO: 21 slots (7 días × 3 franjas). Cada caption se usa
 // una vez por semana → contenido variado y planificado (no aleatorio). El orden
 // mezcla temas para que cada día tenga ángulos distintos.
 // slot = díaSemana(0=Dom..6=Sáb) * 3 + franja(0=mañana,1=mediodía,2=tarde).
-// Cada slot → imagen { c, img }  o  reel { c, vid }  (kind se infiere por 'vid').
-//   c   = índice de caption (captions.js)
-//   img = índice de imagen (IMAGE_POOL)   ·   vid = índice de video (VIDEO_POOL)
-// La imagen/video está elegida para que CALCE con el tema del caption. Hay 2
-// slots de REEL por semana (mediodía Mar y Vie) para no repetir el mismo video.
+// MODO SOLO-REELS: cada slot publica un REEL (los reels disparan mucho más
+// alcance). El video rota por slot (slot % VIDEO_POOL.length) para no repetir el
+// mismo el mismo día. El `c` de cada slot define el CAPTION (texto de apoyo),
+// manteniendo variedad temática semanal. El `img` quedó como respaldo histórico.
 const PLAN = [
   { c: 0, img: 8 }, { c: 14, img: 6 }, { c: 9, img: 9 },   // Dom: web/conversión, automatización, pagos
   { c: 1, img: 6 }, { c: 6, img: 8 }, { c: 16, img: 1 },   // Lun: leads/auto, SEO, software IA
@@ -72,13 +81,14 @@ function buildContent(slot) {
   const e = PLAN[slot % PLAN.length];
   const item = CAPTIONS[e.c] || CAPTIONS[0];
   const tags = (item.tags || []).map((t) => (t.startsWith("#") ? t : "#" + t)).join(" ");
-  const isReel = e.vid !== undefined;
+  // Solo-reels: el video rota por slot; el caption viene del plan (variedad).
+  const videoUrl = VIDEO_POOL[slot % VIDEO_POOL.length];
   return {
-    kind: isReel ? "reel" : "image",
+    kind: "reel",
     caption: `${item.caption}\n\n${tags}`,
     preview: item.caption.split("\n")[0],
-    imageUrl: isReel ? null : IMAGE_POOL[e.img % IMAGE_POOL.length],
-    videoUrl: isReel ? VIDEO_POOL[e.vid % VIDEO_POOL.length] : null,
+    imageUrl: null,
+    videoUrl,
   };
 }
 

@@ -27,19 +27,23 @@ export const RemotionRoot: React.FC = () => {
         defaultProps={{ ...sample, skin: 0, music: "music.wav" }}
       />
 
-      {/* Una variante de reel por skin (distinto acento/fondo + su música). */}
-      {SKINS.map((sk, i) => (
-        <Composition
-          key={sk.name}
-          id={`Reel-${sk.name}`}
-          component={TipReel}
-          durationInFrames={REEL_SECONDS * FPS}
-          fps={FPS}
-          width={1080}
-          height={1920}
-          defaultProps={{ ...tips[i % tips.length], skin: i, music: MUSIC_BY_SKIN[sk.name] }}
-        />
-      ))}
+      {/* Un reel por TEMA (9): skin + música rotan para máxima variedad armónica.
+          Render del lote:  for i in 0..8 → remotion render Reel-tip-$i */}
+      {tips.map((tip, i) => {
+        const sk = SKINS[i % SKINS.length];
+        return (
+          <Composition
+            key={`tip-${i}`}
+            id={`Reel-tip-${i}`}
+            component={TipReel}
+            durationInFrames={REEL_SECONDS * FPS}
+            fps={FPS}
+            width={1080}
+            height={1920}
+            defaultProps={{ ...tip, skin: i % SKINS.length, music: MUSIC_BY_SKIN[sk.name] }}
+          />
+        );
+      })}
 
       {/* Tarjeta estática 4:5 — post unitario o página de carrusel */}
       <Still id="ValueCard" component={ValueCard} width={1080} height={1350} defaultProps={{ ...sample, skin: 0 }} />
