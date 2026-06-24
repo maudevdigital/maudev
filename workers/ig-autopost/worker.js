@@ -15,84 +15,33 @@
 //
 // Cron: se define en wrangler.toml.
 
-import { CAPTIONS } from "./captions.js";
+import { CONTENT } from "./content.js";
 
 const GRAPH = "https://graph.facebook.com/v21.0";
 
-// Imágenes on-brand públicas para rotar (sube las tuyas y pega las URLs aquí).
-// Pueden ser las que ya generamos y están en producción:
-const IMAGE_POOL = [
-  "https://maudev.cl/blog/ia-automatizacion-pymes-2026.png",
-  "https://maudev.cl/blog/software-medida-ia-2026.png",
-  "https://maudev.cl/blog/pagos-stablecoins-chile-2026.png",
-  "https://maudev.cl/portfolio/systempro.png",
-  "https://maudev.cl/portfolio/partsmr.png",
-  "https://maudev.cl/portfolio/paraguayaccess.png",
-  // Imágenes cuadradas (1:1) hechas para feed de Instagram:
-  "https://maudev.cl/social/automatizacion.png",
-  "https://maudev.cl/social/software.png",
-  "https://maudev.cl/social/crecimiento.png",
-  "https://maudev.cl/social/pagos.png",
-];
+// El contenido (videos/carruseles + captions coherentes) vive en content.js.
 
-// Reels (video vertical 9:16) hechos con Remotion. Sube el .mp4 a public/social
-// del sitio y agrega su URL aquí. Render del lote: `Reel-tip-0..8` en /remotion.
-// 9 reels temáticos (tip+skin+música variados) + 1 cinematográfico = 10.
-const VIDEO_POOL = [
-  "https://maudev.cl/social/reel-0.mp4", // Automatización
-  "https://maudev.cl/social/reel-1.mp4", // Antes de pagar
-  "https://maudev.cl/social/reel-2.mp4", // SEO
-  "https://maudev.cl/social/reel-3.mp4", // Pagos online
-  "https://maudev.cl/social/reel-4.mp4", // Conversión
-  "https://maudev.cl/social/reel-5.mp4", // WhatsApp
-  "https://maudev.cl/social/reel-6.mp4", // Software a medida
-  "https://maudev.cl/social/reel-7.mp4", // Velocidad
-  "https://maudev.cl/social/reel-8.mp4", // Confianza/contrato
-  "https://maudev.cl/social/cinematic.mp4", // Cinematográfico (voz en off)
-  // Reels NARRADOS estratégicos (voz + música + diseño propios):
-  "https://maudev.cl/social/voice-perdida.mp4", // aversión a la pérdida
-  "https://maudev.cl/social/voice-web.mp4",     // autoridad / primera impresión
-  "https://maudev.cl/social/voice-primero.mp4", // urgencia / ventaja del primero
-];
-
-// Plan semanal DETERMINÍSTICO: 21 slots (7 días × 3 franjas). Cada caption se usa
-// una vez por semana → contenido variado y planificado (no aleatorio). El orden
-// mezcla temas para que cada día tenga ángulos distintos.
-// slot = díaSemana(0=Dom..6=Sáb) * 3 + franja(0=mañana,1=mediodía,2=tarde).
-// MODO SOLO-REELS: cada slot publica un REEL (los reels disparan mucho más
-// alcance). El video rota por slot (slot % VIDEO_POOL.length) para no repetir el
-// mismo el mismo día. El `c` de cada slot define el CAPTION (texto de apoyo),
-// manteniendo variedad temática semanal. El `img` quedó como respaldo histórico.
-const PLAN = [
-  { c: 0, img: 8 }, { c: 14, img: 6 }, { c: 9, img: 9 },   // Dom: web/conversión, automatización, pagos
-  { c: 1, img: 6 }, { c: 6, img: 8 }, { c: 16, img: 1 },   // Lun: leads/auto, SEO, software IA
-  { c: 12, img: 7 }, { c: 4, vid: 0 }, { c: 19, img: 8 },  // Mar: a medida, [REEL], SEO
-  { c: 2, img: 7 }, { c: 8, img: 8 }, { c: 5, img: 4 },    // Mié: IA/app, IG→landing, precios
-  { c: 15, img: 0 }, { c: 3, img: 8 }, { c: 17, img: 2 },  // Jue: agentes IA, dashboard, pagos
-  { c: 7, img: 7 }, { c: 10, vid: 0 }, { c: 20, img: 6 },  // Vie: código tuyo, [REEL], leads n8n
-  { c: 13, img: 7 }, { c: 11, img: 5 }, { c: 18, img: 4 }, // Sáb: hablas con dev, contrato, precios
-];
-
-function currentSlot() {
+// Índice DETERMINÍSTICO: 3 publicaciones/día, recorriendo CONTENT en orden
+// (cada pieza con su caption coherente). Anclado al 24-jun-2026: ese día en la
+// franja 0 = item 0. Recorre los 15 ítems en 5 días y luego cicla.
+const BASE_DAY = Math.floor(Date.UTC(2026, 5, 24) / 86400000);
+function currentIndex() {
   const now = new Date();
-  const dow = now.getUTCDay();
+  const dayNum = Math.floor(now.getTime() / 86400000); // día UTC
   const h = now.getUTCHours();
   const franja = h < 15 ? 0 : h < 19 ? 1 : 2; // crons 13/17/21 UTC ≈ 09/13/17 Chile
-  return (dow * 3 + franja) % PLAN.length;
+  const seq = (dayNum - BASE_DAY) * 3 + franja;
+  return ((seq % CONTENT.length) + CONTENT.length) % CONTENT.length;
 }
 
-function buildContent(slot) {
-  const e = PLAN[slot % PLAN.length];
-  const item = CAPTIONS[e.c] || CAPTIONS[0];
-  const tags = (item.tags || []).map((t) => (t.startsWith("#") ? t : "#" + t)).join(" ");
-  // Solo-reels: el video rota por slot; el caption viene del plan (variedad).
-  const videoUrl = VIDEO_POOL[slot % VIDEO_POOL.length];
+function buildContent(index) {
+  const item = CONTENT[index % CONTENT.length];
   return {
-    kind: "reel",
-    caption: `${item.caption}\n\n${tags}`,
-    preview: item.caption.split("\n")[0],
-    imageUrl: null,
-    videoUrl,
+    id: item.id,
+    kind: item.kind, // "reel" | "carousel"
+    media: item.media, // string (reel) | array de strings (carrusel)
+    caption: item.caption,
+    preview: (item.caption || "").split("\n")[0],
   };
 }
 
@@ -338,6 +287,66 @@ async function publishTikTok(env, videoUrl) {
   return pid;
 }
 
+// ─── Instagram Carrusel: imágenes hijas → contenedor CAROUSEL → publicar ──────
+async function publishCarousel(env, imageUrls, caption) {
+  const childIds = [];
+  for (const url of imageUrls) {
+    const r = await fetch(`${GRAPH}/${env.IG_USER_ID}/media`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ image_url: url, is_carousel_item: true, access_token: env.IG_ACCESS_TOKEN }),
+    });
+    const j = await r.json();
+    if (!r.ok || !j.id) throw new Error(`IG carousel child: ${JSON.stringify(j)}`);
+    childIds.push(j.id);
+  }
+  const cr = await fetch(`${GRAPH}/${env.IG_USER_ID}/media`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ media_type: "CAROUSEL", children: childIds.join(","), caption, access_token: env.IG_ACCESS_TOKEN }),
+  });
+  const cj = await cr.json();
+  if (!cr.ok || !cj.id) throw new Error(`IG carousel container: ${JSON.stringify(cj)}`);
+  for (let i = 0; i < 20; i++) {
+    const st = await (await fetch(`${GRAPH}/${cj.id}?fields=status_code&access_token=${env.IG_ACCESS_TOKEN}`)).json();
+    if (st.status_code === "FINISHED") break;
+    if (st.status_code === "ERROR") throw new Error(`IG carousel ERROR: ${JSON.stringify(st)}`);
+    await new Promise((r) => setTimeout(r, 2500));
+  }
+  const pub = await fetch(`${GRAPH}/${env.IG_USER_ID}/media_publish`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ creation_id: cj.id, access_token: env.IG_ACCESS_TOKEN }),
+  });
+  const pj = await pub.json();
+  if (!pub.ok || !pj.id) throw new Error(`IG carousel publish: ${JSON.stringify(pj)}`);
+  return pj.id;
+}
+
+// ─── Facebook: álbum (subir fotos sin publicar → post con attached_media) ──────
+async function publishFacebookCarousel(env, imageUrls, caption) {
+  if (!env.FB_PAGE_ID) return null;
+  const attached = [];
+  for (const url of imageUrls) {
+    const r = await fetch(`${GRAPH}/${env.FB_PAGE_ID}/photos`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ url, published: false, access_token: env.IG_ACCESS_TOKEN }),
+    });
+    const j = await r.json();
+    if (!r.ok || !j.id) throw new Error(`FB carousel photo: ${JSON.stringify(j)}`);
+    attached.push({ media_fbid: j.id });
+  }
+  const res = await fetch(`${GRAPH}/${env.FB_PAGE_ID}/feed`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ message: caption, attached_media: attached, access_token: env.IG_ACCESS_TOKEN }),
+  });
+  const j = await res.json();
+  if (!res.ok || !j.id) throw new Error(`FB carousel post: ${JSON.stringify(j)}`);
+  return j.id;
+}
+
 async function logPost(env, row) {
   if (!env.SUPABASE_URL || !env.SUPABASE_SERVICE_KEY) return;
   await fetch(`${env.SUPABASE_URL}/rest/v1/ig_posts`, {
@@ -353,39 +362,41 @@ async function logPost(env, row) {
 }
 
 async function runOnce(env) {
-  if (!IMAGE_POOL.length) throw new Error("IMAGE_POOL vacío: agrega URLs de imágenes.");
-  const slot = currentSlot();
-  const { kind, caption, preview, imageUrl, videoUrl } = buildContent(slot);
-  const mediaUrl = kind === "reel" ? videoUrl : imageUrl;
+  if (!CONTENT.length) throw new Error("CONTENT vacío.");
+  const index = currentIndex();
+  const { id, kind, media, caption, preview } = buildContent(index);
+  const isReel = kind === "reel";
+  const videoUrl = isReel ? media : null;
+  const images = isReel ? null : media; // array de URLs
 
-  // Instagram (requerido): reel o imagen según el slot.
-  const postId = kind === "reel"
+  // Instagram (requerido): reel o carrusel.
+  const postId = isReel
     ? await publishReel(env, videoUrl, caption)
-    : await publishImage(env, imageUrl, caption);
+    : await publishCarousel(env, images, caption);
 
-  // Facebook (best-effort): video o foto.
+  // Facebook (best-effort): video o álbum.
   let fbId = null, fbError = null;
   try {
-    fbId = kind === "reel"
+    fbId = isReel
       ? await publishFacebookVideo(env, videoUrl, caption)
-      : await publishFacebook(env, imageUrl, caption);
+      : await publishFacebookCarousel(env, images, caption);
   } catch (e) {
     fbError = e.message;
   }
 
-  // LinkedIn (best-effort): video si es reel, imagen si no.
+  // LinkedIn (best-effort): video si reel; imagen de portada si carrusel.
   let liId = null, liError = null;
   try {
-    liId = kind === "reel"
+    liId = isReel
       ? await publishLinkedInVideo(env, videoUrl, caption)
-      : await publishLinkedIn(env, imageUrl, caption);
+      : await publishLinkedIn(env, images[0], caption);
   } catch (e) {
     liError = e.message;
   }
 
-  // TikTok (best-effort): solo video (reel). Llega como borrador al inbox.
+  // TikTok (best-effort): solo reels. Llega como borrador al inbox.
   let ttId = null, ttError = null;
-  if (kind === "reel") {
+  if (isReel) {
     try {
       ttId = await publishTikTok(env, videoUrl);
     } catch (e) {
@@ -393,8 +404,8 @@ async function runOnce(env) {
     }
   }
 
-  await logPost(env, { ig_post_id: postId, fb_post_id: fbId, li_post_id: liId, tt_publish_id: ttId, hook: preview, media_kind: kind, image_url: mediaUrl, caption, created_at: new Date().toISOString() });
-  return { slot, kind, postId, fbId, fbError, liId, liError, ttId, ttError, preview };
+  await logPost(env, { ig_post_id: postId, fb_post_id: fbId, li_post_id: liId, tt_publish_id: ttId, hook: preview, media_kind: kind, content_id: id, image_url: isReel ? videoUrl : images[0], caption, created_at: new Date().toISOString() });
+  return { index, id, kind, postId, fbId, fbError, liId, liError, ttId, ttError, preview };
 }
 
 export default {

@@ -9,6 +9,7 @@ import { AvatarReel } from "./AvatarReel";
 import { tips } from "./tips";
 import { scripts } from "./scripts";
 import { voiceScripts } from "./voiceScripts";
+import { carousels } from "./carousels";
 import { SKINS, MUSIC_BY_SKIN } from "./skins";
 
 const FPS = 30;
@@ -61,6 +62,20 @@ export const RemotionRoot: React.FC = () => {
           defaultProps={{ ...tips[i % tips.length], skin: i }}
         />
       ))}
+
+      {/* Carruseles (20%): una tarjeta-still por slide. Se publican en orden. */}
+      {carousels.map((c) =>
+        c.slides.map((slide, i) => (
+          <Still
+            key={`${c.id}-${i}`}
+            id={`Carousel-${c.id}-${i + 1}`}
+            component={ValueCard}
+            width={1080}
+            height={1350}
+            defaultProps={{ ...slide, skin: i % 4 }}
+          />
+        )),
+      )}
 
       {/* Video multi-escena desde guion (scripts.ts). Duración = suma de escenas. */}
       <Composition

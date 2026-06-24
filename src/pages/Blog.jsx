@@ -28,12 +28,15 @@ export default function Blog() {
       .catch(() => setPosts(staticPosts));
   }, []);
 
+  const now = Date.now();
   const filtered = posts.filter((p) => {
+    // Publicación PROGRAMADA: un post con fecha futura no aparece hasta su día.
+    const scheduled = !p.created_date || new Date(p.created_date).getTime() <= now;
     const matchCat = filter === "all" || p.category === filter;
     const title = (pick(p, "title") || "").toLowerCase();
     const excerpt = (pick(p, "excerpt") || "").toLowerCase();
     const matchSearch = !search || title.includes(search.toLowerCase()) || excerpt.includes(search.toLowerCase());
-    return matchCat && matchSearch;
+    return scheduled && matchCat && matchSearch;
   });
 
   // Más recientes primero (orden descendente por fecha).

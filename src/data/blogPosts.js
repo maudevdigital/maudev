@@ -28,6 +28,759 @@ const ctaEN = `
 Want to apply this to your business? At **Maudev** we build websites, custom software and automations for SMBs and founders in Chile and Latin America. [Book a free consult](/contacto).`;
 
 export const blogPosts = [
+  // ===== Semana 24–28 de junio · serie high-ticket / desarrollo de software =====
+  {
+    id: "cuanto-cuesta-software-a-medida-2026",
+    title: "Cuánto cuesta de verdad desarrollar software a medida en 2026",
+    title_en: "What custom software really costs to build in 2026",
+    excerpt:
+      "Rangos reales en pesos chilenos, qué factores mueven el precio, los modelos de cobro y por qué lo barato termina saliendo caro. Una guía honesta para decidir con cabeza fría.",
+    excerpt_en:
+      "Real price ranges, what drives the cost, pricing models and why cheap ends up expensive. An honest guide to deciding with a clear head.",
+    category: "desarrollo",
+    read_time: 20,
+    author: AUTHOR,
+    tags: ["software a medida", "precios", "desarrollo de software", "ROI", "chile"],
+    cover_image: "/blog/cuanto-cuesta-software-a-medida-2026.png",
+    created_date: "2026-06-24T09:00:00-04:00",
+    content: `"¿Cuánto cuesta desarrollar un software a medida?" es, de lejos, la pregunta que más nos llega. Y la respuesta honesta —"depende"— suena a evasiva. No lo es: es que un software a medida se parece más a construir una casa que a comprar un electrodoméstico. Nadie pregunta "¿cuánto cuesta una casa?" esperando una sola cifra, porque todos intuimos que no es lo mismo una cabaña de 40 m² que una vivienda de 300 m² con dos pisos y piscina.
+
+En esta guía vamos a quitarle el misterio al tema. Vas a entender qué mueve el precio, qué rangos son realistas en Chile en 2026, cómo funcionan los modelos de cobro, y —lo más importante— cómo distinguir una inversión que se paga sola de un gasto que se transforma en dolor de cabeza. Si estás evaluando construir software para tu empresa, esto te va a ahorrar reuniones, sustos y plata.
+
+## Por qué nadie te da un precio al tiro (y por qué eso es buena señal)
+
+Cuando pides una cotización y te tiran una cifra cerrada en cinco minutos, sin preguntarte casi nada, deberías preocuparte. Significa una de dos cosas: o te van a entregar una plantilla genérica disfrazada de "a medida", o están adivinando y ese número va a cambiar (siempre hacia arriba) apenas empiece el proyecto.
+
+Un equipo serio primero quiere entender **qué problema estás resolviendo**. Porque el costo no lo define "una app" o "un sistema": lo definen las decisiones que hay detrás. Dos proyectos que se describen igual en una frase ("un sistema para gestionar mis pedidos") pueden costar diez veces distinto según los detalles.
+
+Esa conversación inicial —que en la industria se llama **descubrimiento** o discovery— no es relleno: es donde se evita gastar millones en construir lo equivocado.
+
+## Los 7 factores que de verdad mueven el precio
+
+### 1. El alcance (qué hace y qué no hace)
+
+Es el factor número uno. No es lo mismo un sistema que solo registra información que uno que además calcula, valida reglas de negocio, genera documentos, notifica, cobra y se conecta con otros sistemas. Cada "y además…" tiene un costo. La buena noticia: casi siempre se puede priorizar y dejar lo secundario para una segunda etapa.
+
+### 2. La complejidad de la lógica
+
+Un formulario que guarda datos es barato. Un motor que calcula comisiones con 14 reglas distintas según el tipo de cliente, la región y la fecha, no. La complejidad invisible —esa que vive en la cabeza de tu equipo y nadie documentó— es la que más sorprende en costo.
+
+### 3. Las integraciones
+
+Conectarse con tu sistema de facturación, con el SII, con una pasarela de pago, con WhatsApp, con tu ERP o con la API de un proveedor: cada integración suma. Algunas son simples y están bien documentadas; otras son un campo minado de casos borde. Las integraciones son, junto con la lógica de negocio, donde más se subestima el esfuerzo.
+
+### 4. Usuarios, roles y permisos
+
+Un sistema para que lo use una persona es una cosa. Uno con administradores, supervisores, vendedores y clientes —cada uno viendo cosas distintas y con permisos distintos— es otra. Los roles multiplican las pantallas y, sobre todo, las pruebas.
+
+### 5. El diseño y la experiencia de usuario
+
+Un sistema interno que usa tu equipo puede ser funcional y sobrio. Un producto de cara al cliente —donde la primera impresión vende— necesita diseño cuidado, animaciones, responsividad impecable. Más pulido, más horas.
+
+### 6. La escala y el rendimiento
+
+¿Lo van a usar 5 personas o 50.000? ¿Maneja 100 registros o 10 millones? Construir para que algo aguante volumen, picos de tráfico y crezca sin caerse requiere decisiones de arquitectura que cuestan más al inicio pero te salvan después.
+
+### 7. Quién lo construye
+
+El mismo proyecto cuesta distinto según quién lo haga: un freelance junior, una agencia, un equipo senior o una consultora grande. Y "más caro" no siempre es "mejor", ni "más barato" es "mejor negocio". Más adelante vemos por qué.
+
+## Rangos reales en Chile (2026)
+
+Con todas las advertencias del mundo —cada proyecto es un mundo— estos son rangos realistas que vemos en el mercado chileno. Tómalos como orden de magnitud, no como presupuesto.
+
+### Landing page o sitio profesional a medida
+
+Desde **$600.000 hasta $2.500.000 CLP**. Una página bien construida, rápida, optimizada para Google y para convertir, con su panel para editar contenidos. No es "software" en el sentido estricto, pero es la puerta de entrada de muchos clientes high-ticket.
+
+### MVP (producto mínimo viable)
+
+Entre **$3.000.000 y $12.000.000 CLP**. La primera versión funcional de tu idea: lo justo para salir al mercado, validar con usuarios reales y empezar a vender o levantar inversión. La gracia del MVP es construir poco y aprender rápido, no construir todo.
+
+### Sistema interno / plataforma de gestión
+
+Entre **$8.000.000 y $40.000.000 CLP**. Un sistema a medida para operar tu negocio: gestión de pedidos, inventario, clientes, reportería, roles, integraciones con tu facturación. Es donde más empresas medianas invierten, porque reemplaza el caos de diez planillas de Excel que no se hablan entre sí.
+
+### Plataforma / producto digital completo
+
+Desde **$40.000.000 CLP hacia arriba**. Productos con muchos usuarios, alta disponibilidad, apps móviles, pagos, paneles complejos, escalabilidad. Aquí el precio depende tanto del alcance que el rango pierde sentido sin un descubrimiento serio.
+
+Una nota importante: estos números son de **construcción inicial**. El software, como un auto, también tiene costo de mantención (más sobre esto abajo). Presupuestar solo la compra y olvidar la bencina es el error clásico.
+
+## Los modelos de cobro (y cuándo conviene cada uno)
+
+### Precio fijo por proyecto
+
+Acuerdas un alcance cerrado y un precio. Ideal cuando el proyecto está bien definido y no esperas grandes cambios. Te da certeza de costo. El riesgo: si el alcance no estaba claro, terminas en interminables discusiones de "esto estaba incluido o no". Por eso un buen precio fijo siempre va precedido de un buen descubrimiento.
+
+### Por tiempo y materiales (por hora o por sprint)
+
+Pagas por el trabajo realizado, normalmente en ciclos de dos semanas. Ideal cuando el proyecto es exploratorio o va a evolucionar. Te da flexibilidad total para cambiar prioridades. El riesgo: requiere confianza y seguimiento, porque el costo final es más abierto.
+
+### Retainer (bolsa de horas mensual)
+
+Contratas una capacidad mensual de desarrollo continuo. Ideal cuando el software ya existe y quieres mejorarlo, mantenerlo y crecerlo mes a mes. Es la modalidad de quienes entienden que el software es un ser vivo, no una entrega única.
+
+En la práctica, muchos proyectos sanos combinan modelos: precio fijo (o por etapas) para construir la primera versión, y luego un retainer para evolucionarlo.
+
+## Por qué lo barato sale caro (de verdad)
+
+Esta es la parte que más plata te puede ahorrar, así que léela con calma.
+
+Cuando recibes una cotización que es la mitad que las demás, la pregunta correcta no es "qué bueno, ¿dónde firmo?", sino **"¿qué están dejando fuera?"**. Porque el software barato casi nunca es barato: es **incompleto**. Y lo que falta lo pagas después, con intereses.
+
+Lo que suele faltar en una cotización sospechosamente baja:
+
+- **Pruebas (testing).** Software sin pruebas funciona el día de la demo y falla el día que tienes 50 clientes adentro.
+- **Manejo de errores y casos borde.** El "camino feliz" es el 20% del trabajo. El 80% es qué pasa cuando algo sale mal.
+- **Seguridad.** Validaciones, control de acceso, protección de datos. Invisible hasta que te hackean o filtras información de clientes.
+- **Documentación y código mantenible.** Sin esto, quedas secuestrado: solo quien lo hizo puede tocarlo, y te cobra lo que quiera.
+- **El código a tu nombre.** Si no queda claro por contrato, puede que el software ni siquiera sea tuyo.
+
+A esto se le llama **deuda técnica**: atajos que se ven como ahorro hoy y se cobran como reconstrucción mañana. Hemos rescatado muchos proyectos donde el cliente terminó pagando dos o tres veces: una por el software barato que no servía, y otra (más cara) por rehacerlo bien. El desarrollo es uno de esos rubros donde **pagar bien una vez es más barato que pagar poco dos veces.**
+
+## Lo que pagas y no ves (pero te está salvando)
+
+Cuando un equipo serio cotiza, en el precio hay cosas que no aparecen como pantallas pero son las que hacen que el software funcione en el tiempo:
+
+- **Descubrimiento y definición:** entender tu negocio antes de programar.
+- **Arquitectura:** decidir cómo se construye para que escale y no se caiga.
+- **Diseño de la experiencia:** que sea usable, no solo funcional.
+- **Pruebas y control de calidad:** que funcione de verdad, no solo en la demo.
+- **Infraestructura y despliegue (DevOps):** que esté en línea, seguro y con respaldos.
+- **Soporte post-entrega:** que cuando algo pase, haya quién responda.
+
+Pagar por estas cosas no es "que te estén cobrando de más". Es exactamente la diferencia entre un software que te sostiene la operación y uno que se transforma en tu peor pesadilla a los tres meses.
+
+## Cuándo el software a medida se paga solo (la mirada high-ticket)
+
+Software a medida no es para todos, y un buen proveedor te lo va a decir de frente. Si una herramienta estándar resuelve tu problema, úsala. El software a medida se justifica —y se paga solo— cuando:
+
+- **El proceso ES tu ventaja competitiva.** Si haces algo mejor que la competencia, una herramienta genérica te obliga a hacerlo como todos. El software a medida protege eso que te hace distinto.
+- **Estás pagando el caos.** Cuando tu equipo pierde horas en tareas manuales, en planillas que se rompen, en errores que cuestan plata, el software no es un gasto: es recuperar margen.
+- **No existe una herramienta que calce.** Cuando lo que necesitas es tan específico que ninguna app del mercado lo cubre sin amarres.
+- **Quieres escalar sin contratar proporcionalmente.** El software te deja crecer en ventas sin crecer en planilla a la misma velocidad.
+
+La pregunta correcta nunca es "¿cuánto cuesta?" en el vacío. Es **"¿cuánto me cuesta NO tenerlo?"**. Si un sistema de $15 millones te ahorra dos sueldos al año y elimina errores que te cuestan otros tantos, se pagó en su primer año y a partir de ahí es pura ganancia. Eso es pensar como cliente high-ticket: no en el precio, sino en el retorno.
+
+## Señales de alerta al contratar
+
+Cuídate cuando veas esto:
+
+- Te dan un precio sin entender tu negocio.
+- No te muestran avances funcionando hasta el final.
+- No queda por escrito de quién es el código y el dominio.
+- No incluyen soporte después de la entrega.
+- El precio es sospechosamente bajo (ya sabes por qué).
+- No te pueden mostrar trabajos anteriores ni referencias.
+- Hablas siempre con un vendedor y nunca con quien va a programar.
+
+## Las preguntas que deberías hacer antes de firmar
+
+- ¿De quién queda el código y el dominio? (Respuesta correcta: tuyo.)
+- ¿Hay un precio y un alcance por escrito?
+- ¿Voy a ver avances funcionando durante el proyecto?
+- ¿Qué incluye exactamente el soporte y por cuánto tiempo?
+- ¿Qué pasa si necesito cambios a mitad de camino?
+- ¿Cómo manejan las pruebas y la seguridad?
+- ¿Quién va a programar esto y puedo hablar con esa persona?
+
+Si las respuestas son claras y por escrito, vas bien. Si son vagas, corre.
+
+## Cómo lo hacemos en Maudev
+
+Nosotros partimos siempre por entender tu negocio antes de cotizar nada. Trabajamos con **precio y alcance por escrito**, te mostramos **avances funcionando** por etapas, el **código y el dominio quedan a tu nombre**, e incluimos **soporte** después de entregar. Hablas directo con quien programa, no con un intermediario. Y si creemos que una herramienta estándar te conviene más que algo a medida, te lo decimos: preferimos un cliente bien aconsejado que una venta forzada.
+
+## Preguntas frecuentes
+
+**¿Puedo empezar con poco presupuesto?** Sí. Para eso existe el MVP: construir lo mínimo que aporta valor, salir al mercado y crecer con lo que aprendes (y, idealmente, con lo que ya estás facturando).
+
+**¿Cuánto demora?** Un MVP simple, semanas. Un sistema mediano, algunos meses. Un producto grande, más. Desconfía de quien te promete "para la próxima semana" algo serio.
+
+**¿La IA no hace esto gratis ahora?** La IA acelera partes del desarrollo, y la usamos. Pero no reemplaza entender tu negocio, diseñar la arquitectura correcta ni hacerse responsable de que funcione. La IA es una herramienta del equipo, no el equipo.
+
+**¿Y la mantención?** Presupuesta un porcentaje anual del valor del proyecto para mantención y mejoras. El software que no se mantiene envejece y se vuelve un riesgo.
+
+## En resumen
+
+El software a medida no tiene un precio único porque no es un producto único: es una inversión que se ajusta a lo que necesitas. Los rangos que viste te dan un orden de magnitud, pero el número real sale de una conversación seria sobre tu negocio. Lo importante no es encontrar lo más barato, sino encontrar lo que se paga solo. Y eso empieza por elegir bien con quién construyes.${cta}`,
+    content_en: `"How much does it cost to build custom software?" is, by far, the question we get the most. And the honest answer —"it depends"— sounds like a dodge. It isn't: custom software is closer to building a house than to buying an appliance. Nobody asks "how much does a house cost?" expecting a single figure, because we all sense that a 40 m² cabin is not the same as a 300 m² two-story home with a pool.
+
+In this guide we take the mystery out of it. You'll understand what drives the price, what ranges are realistic in Chile in 2026, how pricing models work, and —most importantly— how to tell an investment that pays for itself from an expense that turns into a headache.
+
+## Why nobody quotes you instantly (and why that's a good sign)
+
+When someone throws a closed number at you in five minutes without asking much, you should worry. It means one of two things: either they'll hand you a generic template disguised as "custom", or they're guessing and that number will change (always upward) the moment the project starts. A serious team first wants to understand **what problem you're solving**, because cost is defined by the decisions behind the work, not by the words "an app". That initial conversation —called **discovery**— is where you avoid spending a fortune building the wrong thing.
+
+## The 7 factors that really move the price
+
+**1. Scope** — what it does and doesn't do. A system that just records data isn't the same as one that calculates, validates rules, generates documents, notifies, charges and integrates. **2. Logic complexity** — a form is cheap; a commission engine with 14 rules is not. **3. Integrations** — billing, payment gateways, WhatsApp, your ERP: each one adds up. **4. Users, roles and permissions** — roles multiply screens and testing. **5. Design and UX** — customer-facing products need more polish, more hours. **6. Scale and performance** — building for volume and growth costs more upfront. **7. Who builds it** — junior freelancer, agency, senior team or large consultancy: same project, different cost.
+
+## Real ranges in Chile (2026)
+
+Take these as orders of magnitude, not a budget. **Custom landing/site:** CLP 600,000–2,500,000. **MVP:** CLP 3,000,000–12,000,000. **Internal system / management platform:** CLP 8,000,000–40,000,000. **Full platform / digital product:** CLP 40,000,000+. These are **initial build** numbers; software also has a maintenance cost. Budgeting only the purchase and forgetting the fuel is the classic mistake.
+
+## Pricing models
+
+**Fixed project price** — closed scope and price; cost certainty, but needs good discovery first. **Time and materials** — pay for work done in two-week cycles; flexible, but the final cost is more open. **Retainer** — monthly capacity to maintain and grow existing software. Many healthy projects combine: fixed/phased to build v1, then a retainer to evolve it.
+
+## Why cheap ends up expensive
+
+When a quote is half the others, the right question is **"what are they leaving out?"**. Cheap software is rarely cheap: it's **incomplete**, and what's missing you pay for later, with interest. What's usually missing: testing, error handling and edge cases, security, documentation and maintainable code, and the code being in your name. This is **technical debt**: shortcuts that look like savings today and get billed as a rebuild tomorrow. Paying well once is cheaper than paying little twice.
+
+## What you pay for and don't see
+
+Discovery, architecture, UX design, testing/QA, infrastructure and deployment (DevOps), and post-launch support. Paying for these isn't being overcharged — it's the difference between software that holds up your operation and one that becomes a nightmare in three months.
+
+## When custom software pays for itself (the high-ticket view)
+
+If an off-the-shelf tool solves your problem, use it. Custom software pays for itself when the process IS your competitive advantage, when you're paying for chaos (manual hours, broken spreadsheets, costly errors), when no tool fits, or when you want to scale sales without scaling headcount at the same rate. The right question is never "how much does it cost?" but **"how much does it cost me NOT to have it?"**. A CLP 15M system that saves two salaries a year paid for itself in year one.
+
+## Red flags and questions
+
+Red flags: quoting without understanding your business; no working progress until the end; no written ownership of code and domain; no post-launch support; suspiciously low price; no references; never talking to who builds it. Before signing, ask: who owns the code and domain? Is price and scope in writing? Will I see working progress? What does support include? What about mid-way changes, testing and security?
+
+## How we do it at Maudev
+
+We start by understanding your business before quoting. Written price and scope, working progress in phases, code and domain in your name, support after delivery, and you talk directly to who builds it. If an off-the-shelf tool suits you better, we'll say so.
+
+## In short
+
+Custom software has no single price because it's not a single product: it's an investment that adjusts to what you need. What matters isn't the cheapest option, but the one that pays for itself — and that starts with choosing who you build with.${ctaEN}`,
+  },
+  {
+    id: "software-a-medida-vs-saas-2026",
+    title: "Software a medida vs SaaS: cuándo a tu empresa le conviene construir lo suyo",
+    title_en: "Custom software vs SaaS: when it pays to build your own",
+    excerpt:
+      "Las suscripciones se sienten baratas hasta que sumas todas las que pagas. Cuándo gana una herramienta de mercado, cuándo gana lo a medida, y cómo no quedar amarrado.",
+    excerpt_en:
+      "Subscriptions feel cheap until you add them all up. When an off-the-shelf tool wins, when custom wins, and how not to get locked in.",
+    category: "desarrollo",
+    read_time: 20,
+    author: AUTHOR,
+    tags: ["software a medida", "saas", "decisiones", "costos", "chile"],
+    cover_image: "/blog/software-a-medida-vs-saas-2026.png",
+    created_date: "2026-06-25T09:00:00-04:00",
+    content: `Hay una decisión que toda empresa que crece enfrenta tarde o temprano: ¿sigo pagando suscripciones de herramientas que casi calzan con lo que necesito, o construyo algo propio que calce perfecto? La respuesta equivocada cuesta plata para los dos lados: construir lo que ya existe barato es botar recursos, y arrendar para siempre algo que te quedó chico es pagar una multa mensual eterna.
+
+En esta guía te damos un marco honesto para decidir. Sin fanatismos: a veces gana el SaaS, a veces gana lo a medida, y muchas veces gana una mezcla inteligente de los dos.
+
+## Primero, hablemos claro de qué es cada cosa
+
+**SaaS (Software as a Service)** es software que arriendas por suscripción: tú no eres dueño, pagas por usarlo. Piensa en tu CRM, tu facturador, tu herramienta de email, tu sistema de agendamiento. Lo prendes en minutos, lo mantiene otro, y pagas mes a mes.
+
+**Software a medida** es software que se construye específicamente para tu operación. Es tuyo, calza exacto, y lo evolucionas a tu ritmo. Cuesta más al inicio y requiere mantención, pero no te amarra a las reglas de nadie.
+
+No es "uno bueno y otro malo". Son herramientas distintas para momentos distintos.
+
+## La trampa de "es más barato": el costo total real
+
+El SaaS gana casi siempre la comparación de precio inicial, porque pagas poco al mes. El problema es que ese "poco" se multiplica de tres formas que casi nadie suma:
+
+**Por la cantidad de herramientas.** Hoy una PYME promedio paga cinco, ocho, diez suscripciones. Cada una "barata". Juntas, una mochila mensual considerable que crece cada año.
+
+**Por usuario.** Muchos SaaS cobran por persona. Creces de 3 a 15 personas y tu cuenta se multiplica por cinco, aunque uses lo mismo.
+
+**Por el tiempo.** Una suscripción de $80.000 al mes son casi un millón al año. En cinco años, cinco millones, para siempre, sin que nada quede tuyo. Un software a medida que cuesta ocho millones y reemplaza tres de esas suscripciones puede pagarse solo en dos o tres años, y de ahí en adelante es ahorro puro.
+
+La pregunta correcta no es "¿cuánto cuesta al mes?", sino **"¿cuánto voy a haber pagado en cinco años, y qué me va a quedar?"**.
+
+## Cuándo gana el SaaS (y deberías quedarte ahí)
+
+Sé honesto contigo: el SaaS es la decisión correcta más veces de las que crees. Quédate con la herramienta de mercado cuando:
+
+- **El proceso es estándar.** Facturar, enviar correos, agendar reuniones, cobrar con tarjeta: miles de empresas lo hacen igual. No reinventes la rueda.
+- **Recién estás validando.** Si todavía no sabes si tu negocio o tu proceso van a funcionar, no construyas: arrienda, prueba, aprende barato.
+- **El volumen es bajo.** Si pagas poco porque eres chico, el a medida no se justifica todavía.
+- **Necesitas algo funcionando hoy.** El SaaS se prende ya; el a medida se construye.
+
+Un buen proveedor de software te va a decir esto de frente. Si alguien te quiere vender un desarrollo a medida para algo que un SaaS de $30.000 al mes resuelve perfecto, desconfía.
+
+## Cuándo gana el software a medida
+
+El a medida se justifica —y se paga solo— cuando aparecen estas señales:
+
+**El proceso es tu ventaja.** Si haces algo distinto y mejor que la competencia, un SaaS te obliga a hacerlo como todos. Lo a medida protege y potencia eso que te hace único.
+
+**Ya pagas el SaaS más caro… y aún así peleas con él.** Cuando estás en el plan enterprise, llenándolo de "parches", exportando a Excel para hacer lo que la herramienta no hace: te quedó chico.
+
+**Tienes varias herramientas que no se hablan.** Cuando tu equipo copia y pega datos entre cinco sistemas, el a medida que los unifica no es lujo: es recuperar horas y eliminar errores.
+
+**El costo de las suscripciones ya supera lo que costaría construir.** Hay un punto de cruce. Cuando lo pasas, seguir arrendando es tirar plata.
+
+**Necesitas datos y reglas que son tuyas.** Cuando tu inteligencia de negocio vive secuestrada en la base de datos de un tercero.
+
+## El lock-in: la letra chica que más duele
+
+Hay un costo del SaaS que no aparece en el precio: el **amarre** (lock-in). Mientras más te apoyas en una herramienta de terceros, más caro y difícil es salirte. Suben el precio y pagas, porque mover todo a otro lado es un proyecto. Cierran una función que usabas y te aguantas. Tus datos viven en su servidor con sus reglas.
+
+El software a medida no te amarra: el código y los datos son tuyos. Esa libertad tiene valor, sobre todo cuando creces y tu negocio depende de verdad de esas herramientas.
+
+## El modelo híbrido: lo mejor de los dos mundos
+
+Aquí está el secreto que pocos te dicen: **no tienes que elegir uno solo**. Las empresas más inteligentes hacen una mezcla:
+
+- **SaaS para lo estándar** (correo, facturación electrónica, pagos, contabilidad). No tiene sentido construir eso.
+- **A medida para lo que es tu ventaja** (tu operación específica, tu forma única de trabajar, lo que te diferencia).
+- **Integraciones que los conectan**, para que todo converse y los datos fluyan sin copiar y pegar.
+
+Así no reinventas la rueda donde no hace falta, y construyes solo donde te da retorno.
+
+## Cómo decidir, en concreto
+
+Hazte estas preguntas, en orden:
+
+1. **¿Existe un SaaS que haga esto bien?** Si sí y el proceso es estándar, úsalo.
+2. **¿Este proceso es parte de lo que me hace distinto?** Si sí, evalúa lo a medida.
+3. **¿Cuánto voy a pagar en SaaS en 3-5 años?** Compáralo con el costo de construir + mantener.
+4. **¿Me está frenando la herramienta actual?** Si exportas a Excel para hacer lo que necesitas, ya tienes la respuesta.
+5. **¿Qué tan dependiente quiero ser de un tercero?** Mientras más crítico, más vale tener lo tuyo.
+
+## Un caso típico
+
+Una empresa de servicios paga: CRM ($120.000/mes), agendador ($40.000), herramienta de cotizaciones ($60.000), y un sistema de tickets ($50.000). Total: $270.000 al mes, más de tres millones al año, y ninguno se habla con el otro. El equipo pierde horas moviendo datos entre ellos.
+
+Un sistema a medida que unifica todo eso podría costar, digamos, doce millones. ¿Caro? En cuatro años de suscripciones habrían pagado más de doce millones igual, sin que les quedara nada, y perdiendo horas todo el tiempo. El a medida se paga solo, elimina el copiar y pegar, y queda como activo de la empresa. Ese es el cálculo que importa.
+
+## Preguntas frecuentes
+
+**¿Puedo empezar con SaaS y migrar a medida después?** Sí, y suele ser lo más sano: validas con SaaS, y cuando el volumen y la necesidad lo justifican, construyes lo tuyo.
+
+**¿El a medida no se queda obsoleto?** Solo si no lo mantienes. A diferencia del SaaS, tú decides cuándo y cómo evoluciona, sin esperar que un tercero priorice tu necesidad.
+
+**¿Y si soy chico todavía?** Probablemente el SaaS sea tu mejor amigo hoy. Guarda este artículo para cuando empieces a pelear con tus herramientas: ahí hablamos.
+
+## En resumen
+
+SaaS y software a medida no son rivales: son herramientas para momentos distintos. El SaaS gana en lo estándar, lo rápido y lo barato de partida. El a medida gana cuando el proceso es tu ventaja, cuando ya te quedó chico, y cuando el costo de arrendar para siempre supera al de construir lo tuyo. La jugada maestra casi nunca es elegir uno: es combinarlos con cabeza.${cta}`,
+    content_en: `Every growing company faces this decision sooner or later: do I keep paying for tools that almost fit, or build something that fits perfectly? The wrong answer costs money both ways: building what already exists cheaply wastes resources, and renting forever something you've outgrown is an eternal monthly penalty.
+
+## What each one actually is
+
+**SaaS** is software you rent by subscription: you don't own it, you pay to use it (your CRM, billing, email tool, scheduler). **Custom software** is built specifically for your operation. It's yours, it fits exactly, you evolve it at your pace. Not "good vs bad" — different tools for different moments.
+
+## The "it's cheaper" trap: real total cost
+
+SaaS almost always wins the upfront price comparison, but that "little" multiplies three ways nobody adds up: **by number of tools** (an average SMB pays 5–10 subscriptions), **per user** (grow from 3 to 15 people and the bill multiplies), and **over time** (a CLP 80,000/month tool is almost a million a year, five million in five years, forever, with nothing left yours). The right question isn't "how much per month?" but **"how much will I have paid in five years, and what will I own?"**
+
+## When SaaS wins
+
+Stay with the off-the-shelf tool when the process is standard (billing, email, scheduling, card payments), when you're still validating, when volume is low, or when you need something working today. A good provider will tell you this honestly — if someone sells you custom for something a CLP 30,000/month SaaS solves perfectly, be wary.
+
+## When custom wins
+
+Custom pays for itself when the process IS your advantage; when you're on the most expensive SaaS plan and still fighting it (exporting to Excel to do what it can't); when you have several tools that don't talk to each other; when subscription costs already exceed the build cost; or when your data and business rules need to be yours.
+
+## Lock-in: the fine print that hurts most
+
+There's a SaaS cost that's not in the price: **lock-in**. The more you lean on a third-party tool, the harder and pricier it is to leave. They raise prices and you pay; they kill a feature and you cope; your data lives on their servers under their rules. Custom doesn't lock you in: the code and data are yours.
+
+## The hybrid model: best of both
+
+You don't have to pick one. Smart companies mix: **SaaS for the standard** (email, e-invoicing, payments, accounting), **custom for what is their advantage**, and **integrations** connecting them so data flows without copy-paste.
+
+## How to decide
+
+Ask, in order: Does a SaaS do this well? Is this process part of what makes me different? How much will I pay in SaaS over 3–5 years vs build + maintain? Is the current tool slowing me down? How dependent on a third party do I want to be?
+
+## A typical case
+
+A services company pays for a CRM, scheduler, quoting tool and ticketing system: CLP 270,000/month, over three million a year, none talking to each other. A custom system unifying it might cost twelve million — but in four years of subscriptions they'd pay that anyway with nothing to show, losing hours to copy-paste. Custom pays for itself and becomes a company asset.
+
+## In short
+
+SaaS and custom aren't rivals: they're tools for different moments. SaaS wins on standard, fast and cheap-to-start. Custom wins when the process is your advantage, when you've outgrown the tool, and when renting forever beats building your own. The master move is rarely picking one — it's combining them wisely.${ctaEN}`,
+  },
+  {
+    id: "como-elegir-empresa-desarrollo-software",
+    title: "Cómo elegir una empresa de desarrollo de software (guía para no equivocarte)",
+    title_en: "How to choose a software development company (a guide to not getting it wrong)",
+    excerpt:
+      "Elegir mal cuesta más que cualquier presupuesto. Los tipos de proveedor, qué mirar de verdad, las preguntas que filtran a los buenos y las señales de alerta.",
+    excerpt_en:
+      "Choosing wrong costs more than any budget. Provider types, what to really look at, the questions that filter the good ones, and the red flags.",
+    category: "desarrollo",
+    read_time: 20,
+    author: AUTHOR,
+    tags: ["desarrollo de software", "como contratar", "proveedores", "decisiones", "chile"],
+    cover_image: "/blog/como-elegir-empresa-desarrollo-software.png",
+    created_date: "2026-06-26T09:00:00-04:00",
+    content: `Contratar a quien va a construir tu software es una de las decisiones más caras que vas a tomar, y casi nadie te enseña a hacerla bien. La mayoría elige por precio, se lleva una sorpresa, y termina pagando dos veces. Esta guía es para que no te pase.
+
+Lo primero que tienes que entender: **el precio es lo que menos importa de la decisión**. Un proyecto bien hecho que cuesta un poco más es infinitamente más barato que uno barato que hay que rehacer. Lo que importa es elegir a alguien capaz, honesto y con quien puedas trabajar.
+
+## Los tipos de proveedor (y para qué sirve cada uno)
+
+**Freelance.** Una persona. Puede ser excelente y económico para proyectos chicos y acotados. El riesgo: si se enferma, desaparece o se aburre, tu proyecto queda en pausa. Y rara vez cubre todo (diseño, desarrollo, pruebas, infraestructura) con la misma calidad.
+
+**Agencia digital.** Suelen ser fuertes en marketing y diseño, y ofrecen desarrollo como complemento. Buenas para sitios y landing pages; para software complejo, depende mucho de su equipo técnico real.
+
+**Software factory / fábrica de software.** Empresas que venden horas de desarrollo en volumen. Pueden escalar, pero a veces te toca un equipo rotativo que no se involucra con tu negocio. Funciona si tú tienes quién dirija técnicamente; si no, te puede faltar criterio.
+
+**Equipo o estudio senior pequeño.** Pocas personas con experiencia, involucradas de verdad en tu proyecto. Más cercanía, más criterio, mejor comunicación. Suele ser el punto dulce para PYMEs y empresas que quieren algo bien hecho sin perder el trato directo.
+
+No hay uno "mejor" en abstracto: hay uno mejor **para tu caso**. Un proyecto chico no necesita una software factory; un producto grande no lo sostiene un solo freelance.
+
+## Lo que tienes que mirar de verdad
+
+### Portafolio y referencias
+
+Pide ver trabajos anteriores **funcionando**, no solo capturas bonitas. Y pide referencias: hablar con un cliente anterior te dice más que cualquier presentación. Pregunta a esa referencia: ¿cumplieron plazos? ¿aparecieron costos sorpresa? ¿siguen respondiendo después de entregar?
+
+### Cómo cobran y qué incluye
+
+Un buen proveedor te explica claro su modelo (precio fijo, por sprint, retainer) y qué incluye. Desconfía de quien no quiere poner el alcance por escrito o de quien te da un número sin entender tu negocio.
+
+### El contrato
+
+Tiene que decir, por escrito: el precio, el alcance, los plazos, **de quién queda el código y el dominio** (respuesta correcta: tuyo), y qué pasa con el soporte. Firmar un contrato claro no es desconfianza: es profesionalismo, y protege a las dos partes.
+
+### La comunicación
+
+Vas a trabajar con esta gente durante semanas o meses. ¿Responden claro? ¿Te explican sin tecnicismos? ¿Entienden tu negocio o solo hablan de tecnología? Un genio técnico con quien no te puedes comunicar es un mal proveedor.
+
+### Quién va a programar
+
+Esta es clave: **¿hablas con quien va a construir, o solo con un vendedor?** En muchos lugares el que te encanta en la reunión de venta no es el que después hace (o supervisa) el trabajo. Pide hablar con el equipo técnico real.
+
+### Cómo trabajan
+
+¿Te muestran avances funcionando durante el proyecto, o desaparecen y reaparecen al final con todo? Lo segundo es una bandera roja gigante. Un proceso sano entrega de a poco, en etapas que tú puedes ver y validar.
+
+## Las preguntas que filtran a los buenos
+
+Hazlas todas, y mira cómo responden (la actitud dice tanto como la respuesta):
+
+- ¿De quién queda el código y el dominio?
+- ¿Me pueden mostrar un proyecto parecido funcionando?
+- ¿Puedo hablar con un cliente anterior?
+- ¿Cómo manejan los cambios a mitad de camino?
+- ¿Qué pasa si el proyecto se complica o se atrasa?
+- ¿Quién específicamente va a trabajar en esto?
+- ¿Qué incluye el soporte y por cuánto tiempo?
+- ¿Cómo aseguran la calidad y la seguridad?
+
+Quien responde claro, sin ponerse a la defensiva y sin humo, está mostrando cómo va a ser trabajar con él.
+
+## Señales de alerta (corre si ves esto)
+
+- Te dan un precio sin preguntarte casi nada de tu negocio.
+- No quieren poner el alcance ni los plazos por escrito.
+- El precio es muchísimo más bajo que el resto (ya sabes por qué: están dejando algo fuera).
+- No te muestran trabajos anteriores ni referencias.
+- Prometen plazos irreales ("para la otra semana lo tienes").
+- Hablan solo de tecnología y nunca de tu negocio.
+- Evaden la pregunta de quién es el dueño del código.
+- Solo te atiende un vendedor y nunca conoces al equipo técnico.
+
+## El mito del más barato
+
+Lo repetimos porque es donde más gente se quema: **la cotización más barata casi nunca es la más conveniente**. El software barato suele venir sin pruebas, sin seguridad, sin documentación, sin soporte y, a veces, sin que el código quede a tu nombre. Todo eso lo pagas después, más caro. Compara propuestas por lo que incluyen, no por el número final. Una que cuesta 20% más pero incluye pruebas, soporte y el código tuyo es, de lejos, la barata.
+
+## Cómo se ve una buena relación de trabajo
+
+Cuando eliges bien, se nota: hay comunicación fluida, ves avances cada par de semanas, los problemas se hablan de frente, los plazos se respetan o se avisa a tiempo cuando algo cambia, y cuando entregan, siguen ahí para apoyarte. No es magia: es profesionalismo. Y vale cada peso.
+
+## Tu checklist para decidir
+
+Antes de firmar, confirma que tienes: portafolio visto funcionando, al menos una referencia hablada, contrato con precio/alcance/plazos por escrito, el código y dominio a tu nombre, claridad de quién programa, un proceso con avances visibles, y soporte post-entrega definido. Si tienes todo eso, vas a elegir bien.
+
+## Preguntas frecuentes
+
+**¿Conviene el más barato si recién parto?** Conviene el que te dé lo necesario bien hecho, aunque empieces con un alcance chico (un MVP). Barato y mal hecho es lo más caro que existe.
+
+**¿Y si no entiendo nada de tecnología?** Mejor aún elige a alguien que te explique sin tecnicismos y te involucre. Si no te entienden a ti, no van a entender tu negocio.
+
+**¿Local o puedo contratar afuera?** Ambos pueden funcionar. Lo local suma cercanía, idioma, huso horario y trato directo. Lo importante no es dónde están, sino cómo trabajan.
+
+## En resumen
+
+Elegir bien con quién construyes tu software importa más que cualquier presupuesto. Mira el portafolio funcionando, pide referencias, exige contrato claro con el código a tu nombre, asegúrate de hablar con quien programa, y huye del más barato sospechoso. La buena noticia: cuando aprendes a mirar lo correcto, distinguir a un buen proveedor de uno malo se vuelve fácil.${cta}`,
+    content_en: `Hiring whoever builds your software is one of the most expensive decisions you'll make, and almost nobody teaches you to do it well. Most people choose by price, get a nasty surprise, and end up paying twice. The first thing to understand: **price is the least important part of the decision.** A well-done project that costs a bit more is infinitely cheaper than a cheap one you have to rebuild.
+
+## Types of provider
+
+**Freelancer** — one person; can be great and cheap for small, well-defined projects, but if they vanish your project stalls, and they rarely cover everything well. **Digital agency** — strong in marketing and design, development as a complement; fine for sites, depends on their real tech team for complex software. **Software factory** — sells development hours at volume; can scale, but you may get a rotating team that doesn't engage with your business. **Small senior studio** — few experienced people truly involved; more closeness, criteria and communication — usually the sweet spot for SMBs.
+
+## What to really look at
+
+**Portfolio and references** — ask to see prior work *running*, and talk to a past client (did they hit deadlines? surprise costs? still responsive?). **How they charge** — a clear model and scope in writing. **The contract** — price, scope, deadlines, **who owns the code and domain** (right answer: you), and support. **Communication** — do they explain without jargon and understand your business? **Who will build it** — do you talk to the builder or just a salesperson? **How they work** — do they show working progress in phases, or vanish and reappear at the end (a huge red flag)?
+
+## Questions that filter the good ones
+
+Who owns the code and domain? Can you show a similar project running? Can I talk to a past client? How do you handle mid-way changes? What if the project gets complicated or delayed? Who specifically will work on this? What does support include? How do you ensure quality and security? Whoever answers clearly, without getting defensive, is showing you what working with them will be like.
+
+## Red flags
+
+They quote without asking about your business; they won't put scope or deadlines in writing; the price is far lower than the rest (they're leaving something out); no prior work or references; unrealistic deadlines; they only talk tech, never your business; they dodge the code-ownership question; you only ever meet a salesperson.
+
+## The cheapest myth
+
+The cheapest quote is almost never the most convenient. Cheap software usually comes without testing, security, documentation, support, and sometimes without the code in your name — all of which you pay for later, more expensively. Compare proposals by what they include, not the final number.
+
+## In short
+
+Choosing who builds your software matters more than any budget. See the portfolio running, ask for references, demand a clear contract with the code in your name, make sure you talk to who programs, and avoid the suspiciously cheap. Once you learn to look at the right things, telling a good provider from a bad one becomes easy.${ctaEN}`,
+  },
+  {
+    id: "roi-automatizacion-procesos-empresa",
+    title: "El ROI real de automatizar los procesos de tu empresa",
+    title_en: "The real ROI of automating your company's processes",
+    excerpt:
+      "Lo manual no es gratis: tiene un costo escondido en horas, errores y oportunidades perdidas. Cómo calcular el retorno real de automatizar y por dónde empezar.",
+    excerpt_en:
+      "Manual work isn't free: it has a hidden cost in hours, errors and missed opportunities. How to calculate the real return of automating and where to start.",
+    category: "automatizacion",
+    read_time: 20,
+    author: AUTHOR,
+    tags: ["automatización", "roi", "procesos", "productividad", "chile"],
+    cover_image: "/blog/roi-automatizacion-procesos-empresa.png",
+    created_date: "2026-06-27T09:00:00-04:00",
+    content: `"La automatización es cara" es una frase que escuchamos mucho. Y casi siempre la dice alguien que nunca calculó cuánto le cuesta NO automatizar. Porque lo manual se siente gratis —ya pagas los sueldos, total— pero tiene un costo escondido que, cuando lo sumas, suele ser mayor que el de automatizar.
+
+En esta guía te mostramos cómo calcular el retorno real (ROI) de automatizar, con números, sin humo. Para que dejes de decidir por intuición y empieces a decidir por cuentas.
+
+## Qué significa ROI acá (sin tecnicismos)
+
+ROI es retorno sobre la inversión: cuánto recuperas por cada peso que pones. En automatización, la cuenta es simple en concepto: **inviertes una vez (o pagas una mensualidad) y, a cambio, ahorras horas, eliminas errores y dejas de perder oportunidades, mes a mes, para siempre.** Si lo que ahorras supera lo que cuesta, la automatización se paga sola. Y casi siempre lo hace más rápido de lo que la gente cree.
+
+## El costo escondido de lo manual
+
+Antes de calcular el retorno, hay que ver el costo real de seguir haciendo las cosas a mano. Tiene tres partes que casi nadie suma:
+
+**1. Las horas.** Cada tarea repetitiva que tu equipo hace a mano —copiar datos entre sistemas, armar el mismo reporte cada semana, responder las mismas preguntas, generar cotizaciones una por una— son horas de un sueldo que podrían estar en algo que sí genera valor.
+
+**2. Los errores.** Lo manual se equivoca. Un dato mal copiado, una cotización con el precio viejo, un pedido que se traspapeló. Cada error cuesta: en plata, en tiempo de corregirlo, y a veces en un cliente perdido.
+
+**3. Las oportunidades perdidas.** El lead que escribió a las 11 de la noche y nadie respondió hasta el otro día. El seguimiento que no se hizo porque "no alcancé". Lo que no vendiste porque estabas ocupado haciendo tareas que una máquina podía hacer. Este es el costo más grande y el que nadie ve.
+
+## Cómo calcular el ROI (la fórmula simple)
+
+No necesitas un MBA. Hazlo así:
+
+**Paso 1 — Cuenta las horas.** Toma una tarea repetitiva. ¿Cuántas horas a la semana le dedica tu equipo? Multiplícalo por el valor de esa hora. Ejemplo: 10 horas semanales a $8.000 la hora son $80.000 a la semana, unos $320.000 al mes, casi cuatro millones al año. En una sola tarea.
+
+**Paso 2 — Suma los errores.** Estima cuánto te cuestan al mes los errores de ese proceso manual (correcciones, devoluciones, clientes molestos). Aunque sea conservador, ponle un número.
+
+**Paso 3 — Estima las oportunidades.** ¿Cuántas ventas se te escapan al mes por no responder a tiempo o no hacer seguimiento? Aunque recuperes solo una parte, suma.
+
+**Paso 4 — Compara.** Suma esos tres costos mensuales y compáralos con lo que cuesta automatizar (la inversión inicial dividida en los meses que esperas usarlo, más la mantención). Si el ahorro mensual supera el costo mensual, tienes ROI positivo. El tiempo que tarda en igualarse se llama **payback**: cuántos meses hasta que la automatización se pagó sola.
+
+## Qué procesos dan más ROI (empieza por acá)
+
+No todo se automatiza igual de bien. Estos suelen dar el mejor retorno:
+
+- **Responder y calificar leads.** Que un sistema conteste al instante, haga las preguntas de filtro y te avise solo cuando el lead vale la pena. Convierte más, porque la velocidad de respuesta es lo que más mueve la venta.
+- **Cotizaciones y documentos.** Generar cotizaciones, contratos y facturas automáticamente, sin armar cada uno a mano y sin errores de precio.
+- **Seguimientos.** Recordatorios y mensajes de seguimiento que se mandan solos. Es donde más ventas se recuperan.
+- **Reportes.** Informes que se arman solos en vez de que alguien los construya cada semana.
+- **Traspaso de datos entre sistemas.** Que tus herramientas se hablen y dejen de obligar a tu equipo a copiar y pegar.
+
+La regla de oro: **empieza por lo que más se repite y más errores genera.** Ahí está el ROI fácil.
+
+## El error fatal: automatizar el caos
+
+Una advertencia importante. Si automatizas un proceso malo, lo único que consigues es hacer el desastre más rápido. Antes de automatizar, vale la pena ordenar el proceso: entender bien cómo debería funcionar, eliminar pasos inútiles, y recién ahí automatizar la versión buena. Un buen proveedor te va a ayudar con esto, no solo a "programar lo que ya haces".
+
+## Cómo priorizar si no sabes por dónde partir
+
+Haz una lista de tus procesos y ponles dos notas del 1 al 5: **cuánto se repiten** y **cuánto duelen** (en horas, errores o ventas perdidas). Los que tengan nota alta en los dos son tu punto de partida. No intentes automatizar todo de una: parte por una o dos victorias claras, mide el resultado, y con eso financias y justificas las siguientes.
+
+## Un ejemplo con números
+
+Una empresa responde leads a mano. Tarda en promedio horas en contestar, y de cada 10 consultas pierde 3 por demora. Con un sistema que responde y califica al instante (inversión: digamos $3.000.000, más una mantención menor), recuperan parte de esas ventas perdidas y liberan 12 horas semanales de su equipo. Solo las horas liberadas valen más de cuatro millones al año. Las ventas recuperadas, varios millones más. Payback: pocos meses. De ahí en adelante, todo es ganancia. Ese es el ROI real de automatizar.
+
+## Preguntas frecuentes
+
+**¿Necesito automatizar todo?** No. Casi todo el retorno viene de unos pocos procesos clave. Parte por esos.
+
+**¿Esto reemplaza a mi equipo?** No, lo libera. Tu equipo deja de hacer tareas de robot y se dedica a lo que una máquina no puede: vender, atender bien, pensar.
+
+**¿Es muy caro empezar?** Muchas automatizaciones de alto impacto son acotadas y de inversión moderada. El punto no es el precio: es el retorno. Una automatización de tres millones que te ahorra cuatro al año es de las mejores inversiones que vas a hacer.
+
+**¿Cuánto demora verlo funcionando?** Las automatizaciones acotadas se implementan en semanas, no meses. El retorno empieza casi de inmediato.
+
+## En resumen
+
+Lo manual no es gratis: tiene un costo escondido en horas, errores y ventas perdidas que suele superar al de automatizar. Calcula el ROI con números simples (horas + errores + oportunidades vs costo), empieza por los procesos que más se repiten y más duelen, ordena antes de automatizar, y mide. La automatización bien hecha no es un gasto: es de las inversiones que más rápido se pagan solas.${cta}`,
+    content_en: `"Automation is expensive" is a phrase we hear a lot. And it's almost always said by someone who never calculated what it costs NOT to automate. Manual work feels free —you already pay the salaries— but it has a hidden cost that, once you add it up, usually beats the cost of automating.
+
+## What ROI means here
+
+ROI is return on investment: how much you get back per peso you put in. In automation the idea is simple: **you invest once (or pay a monthly fee) and in return you save hours, eliminate errors and stop missing opportunities, month after month, forever.** If what you save beats what it costs, automation pays for itself — usually faster than people think.
+
+## The hidden cost of manual
+
+**1. Hours** — every repetitive task done by hand (copying data, building the same report weekly, answering the same questions, making quotes one by one) is paid salary time that could be on something that creates value. **2. Errors** — manual work makes mistakes: wrong data, an old price on a quote, a lost order. Each error costs money and time. **3. Missed opportunities** — the lead who wrote at 11pm and got no reply until next day; the follow-up that never happened. This is the biggest cost and the one nobody sees.
+
+## How to calculate ROI
+
+**Step 1** — Count the hours: how many per week does a task take, times the hourly value (10 hours/week at CLP 8,000 is about CLP 320,000/month, nearly four million a year, on one task). **Step 2** — Add the errors (corrections, returns, upset clients). **Step 3** — Estimate missed sales from slow response or no follow-up. **Step 4** — Compare those monthly costs with the cost of automating (initial investment spread over the months, plus maintenance). If monthly savings beat monthly cost, ROI is positive. The months until it breaks even is the **payback**.
+
+## Which processes give the most ROI
+
+Start here: **responding and qualifying leads** (instant reply, filter questions, alert you only when worth it — speed wins sales); **quotes and documents** (auto-generated, no price errors); **follow-ups** (automatic reminders recover the most sales); **reports** (built automatically); **moving data between systems** (so your tools talk and stop forcing copy-paste). Golden rule: start with what repeats most and causes the most errors.
+
+## The fatal mistake: automating chaos
+
+If you automate a bad process, you just make the mess faster. Before automating, fix the process: understand how it should work, remove useless steps, then automate the good version. A good provider helps with this, not just "coding what you already do".
+
+## How to prioritize
+
+List your processes and rate each 1–5 on **how often they repeat** and **how much they hurt** (hours, errors, lost sales). The ones high on both are your starting point. Don't automate everything at once: start with one or two clear wins, measure, and let those fund the rest.
+
+## A numbers example
+
+A company answers leads by hand, takes hours to reply, and loses 3 of every 10 inquiries to delay. With a system that replies and qualifies instantly (say CLP 3,000,000 plus minor maintenance), they recover lost sales and free 12 hours a week. The freed hours alone are worth over four million a year; recovered sales, several million more. Payback: a few months. After that, pure gain.
+
+## In short
+
+Manual isn't free: its hidden cost in hours, errors and lost sales usually beats the cost of automating. Calculate ROI with simple math (hours + errors + opportunities vs cost), start with the processes that repeat most and hurt most, fix before automating, and measure. Done right, automation is one of the fastest-paying investments you'll make.${ctaEN}`,
+  },
+  {
+    id: "de-idea-a-sistema-proceso-desarrollo",
+    title: "De idea a sistema: el proceso, los plazos y el equipo detrás de un software a medida",
+    title_en: "From idea to system: the process, timelines and team behind custom software",
+    excerpt:
+      "Qué pasa realmente desde que dices 'quiero un sistema' hasta que lo usas. Las etapas, los plazos realistas, quién hace qué y qué se espera de ti como cliente.",
+    excerpt_en:
+      "What really happens from 'I want a system' to using it. The phases, realistic timelines, who does what, and what's expected of you as the client.",
+    category: "desarrollo",
+    read_time: 20,
+    author: AUTHOR,
+    tags: ["desarrollo de software", "proceso", "plazos", "equipo", "chile"],
+    cover_image: "/blog/de-idea-a-sistema-proceso-desarrollo.png",
+    created_date: "2026-06-28T09:00:00-04:00",
+    content: `Para mucha gente, encargar un software es una caja negra: pones plata por un lado, esperas, y ojalá salga algo bueno por el otro. Esa incertidumbre es justo lo que hace que la gente tenga miedo de invertir. Así que vamos a abrir la caja: en esta guía te mostramos exactamente qué pasa desde que dices "quiero un sistema" hasta que lo estás usando, cuánto demora cada parte, quién hace qué, y qué se espera de ti.
+
+Cuando entiendes el proceso, dejas de comprar a ciegas y empiezas a saber qué exigir.
+
+## Las etapas de un proyecto sano
+
+### 1. Descubrimiento (entender antes de construir)
+
+Antes de escribir una línea de código, hay que entender tu negocio: qué problema resuelves, cómo trabajas hoy, qué necesitas de verdad y qué es secundario. Esta etapa define el alcance y evita el error más caro de todos: construir lo equivocado. Acá se decide qué entra en la primera versión y qué se deja para después.
+
+**Qué se entrega:** un alcance claro, prioridades, y una propuesta con precio y plazo realistas.
+
+### 2. Diseño y arquitectura
+
+Con el qué claro, se define el cómo. El **diseño** define cómo se va a ver y usar (las pantallas, el flujo, la experiencia). La **arquitectura** define cómo se construye por dentro para que sea rápido, seguro y pueda crecer sin caerse. Estas decisiones, invisibles para el cliente, son las que determinan si tu software va a aguantar el tiempo o se va a desarmar en seis meses.
+
+**Qué se entrega:** los diseños de las pantallas (para que veas y apruebes antes de programar) y un plan técnico.
+
+### 3. Desarrollo por etapas (sprints)
+
+Acá se construye, pero no de una sola vez en una caja cerrada. Un proceso sano avanza en **sprints**: ciclos cortos (normalmente de dos semanas) al final de los cuales ves algo funcionando. Esto es clave: no esperas meses para recién ver el resultado; lo ves crecer de a poco y puedes corregir el rumbo a tiempo.
+
+**Qué se entrega:** cada par de semanas, una versión funcionando con más cosas que la anterior, para que la pruebes y opines.
+
+### 4. Pruebas y control de calidad (QA)
+
+A medida que se construye —y antes de entregar— se prueba. No solo el "camino feliz", sino qué pasa cuando algo sale mal: datos raros, errores del usuario, casos borde. Esta etapa es la que separa el software que funciona el día de la demo del que funciona el día que tienes 100 clientes adentro.
+
+**Qué se entrega:** un sistema probado, no solo "terminado".
+
+### 5. Despliegue (ponerlo en línea)
+
+Se sube el sistema a internet, de forma segura, con respaldos y monitoreo. Que esté disponible, protegido y que si algo falla, se sepa y se pueda recuperar. Esto es lo que en la industria se llama DevOps, y es lo que muchas cotizaciones baratas omiten.
+
+**Qué se entrega:** tu sistema en vivo, funcionando, seguro.
+
+### 6. Soporte y evolución
+
+El software no termina cuando se entrega: empieza a vivir. Vas a encontrar cosas que mejorar, vas a querer agregar funciones, y de vez en cuando algo va a fallar. Un buen proveedor sigue ahí después de entregar. El software es un ser vivo, no una estatua.
+
+**Qué se entrega:** alguien que responde cuando lo necesitas y un plan para hacer crecer el sistema.
+
+## Plazos realistas (para que nadie te mienta)
+
+Cada proyecto es distinto, pero como referencia honesta:
+
+- **Una landing o sitio a medida:** semanas.
+- **Un MVP (primera versión funcional):** entre uno y tres meses, según el alcance.
+- **Un sistema de gestión mediano:** entre dos y cinco meses.
+- **Un producto grande:** varios meses, y luego evolución continua.
+
+Desconfía profundamente de quien te promete algo serio "para la próxima semana". El software bien hecho toma tiempo, y los atajos se pagan caro. También desconfía de quien no te da ningún plazo: la incertidumbre total tampoco es buena señal.
+
+## Quién hace qué (el equipo detrás)
+
+No es una sola persona tecleando. Un proyecto sano involucra varios roles (a veces una misma persona cubre varios, sobre todo en equipos chicos):
+
+- **Quien dirige el proyecto:** mantiene el rumbo, los plazos y la comunicación contigo.
+- **Quien diseña:** define cómo se ve y se usa.
+- **Quien programa:** construye el sistema (a veces hay quien hace lo visible y quien hace la lógica por detrás).
+- **Quien prueba:** se asegura de que funcione de verdad.
+- **Quien despliega y mantiene:** se encarga de que esté en línea y seguro.
+
+Lo importante para ti: **poder hablar con quien realmente hace el trabajo**, no solo con un vendedor.
+
+## Qué se espera de ti (sí, tú también trabajas)
+
+Acá hay un secreto que pocos te dicen: **los mejores proyectos son los que el cliente acompaña.** No necesitas saber de tecnología, pero sí:
+
+- **Estar disponible al principio,** para la etapa de descubrimiento. Nadie conoce tu negocio mejor que tú.
+- **Dar feedback a tiempo** cuando te muestran avances. Tu opinión temprana evita rehacer después.
+- **Decidir con claridad** cuando hay que priorizar. Tú sabes qué es urgente para tu negocio.
+- **Confiar en el proceso** pero hacer preguntas. Un buen proveedor agradece un cliente involucrado.
+
+Los proyectos que fracasan casi nunca son por un problema técnico: son por falta de comunicación o por un cliente ausente que aparece al final a reclamar.
+
+## Cómo se ve un proyecto que va bien
+
+Reconoces un proyecto sano por estas señales: hay un alcance claro desde el principio, ves avances funcionando cada par de semanas, la comunicación es fluida, los problemas se hablan apenas aparecen (no se esconden), los plazos se respetan o se avisa a tiempo cuando algo cambia, y al entregar, el proveedor sigue ahí. Si tu proyecto se siente así, vas bien encaminado.
+
+## Preguntas frecuentes
+
+**¿Puedo ver el avance o tengo que esperar al final?** Tienes que poder verlo. Si un proveedor desaparece y reaparece al final con todo, es una mala señal. El proceso sano es por etapas visibles.
+
+**¿Qué pasa si a mitad de camino quiero cambiar algo?** En un proceso por sprints, los cambios se acomodan: se re-prioriza. Por eso es mejor que esperar meses con todo cerrado.
+
+**¿Y si me atraso yo en dar feedback?** El proyecto se atrasa también. Tu participación es parte del cronograma, no un extra.
+
+**¿Cuándo está "listo" de verdad?** Cuando está probado, en línea, seguro y tú lo sabes usar. "Terminado" sin pruebas ni soporte no está listo.
+
+## En resumen
+
+Encargar software no tiene por qué ser una caja negra. Un proceso sano tiene etapas claras —descubrimiento, diseño, desarrollo por sprints, pruebas, despliegue y soporte—, plazos realistas, un equipo con el que puedes hablar, y un cliente (tú) que acompaña. Cuando entiendes el proceso, eliges mejor, exiges lo correcto, y conviertes una inversión que da miedo en una decisión con cabeza fría.${cta}`,
+    content_en: `For many people, commissioning software is a black box: you put money in one end, wait, and hopefully something good comes out the other. That uncertainty is exactly what makes people afraid to invest. So let's open the box: here's exactly what happens from "I want a system" to using it — how long each part takes, who does what, and what's expected of you.
+
+## The phases of a healthy project
+
+**1. Discovery** — before writing a line of code, understand your business: the problem, how you work today, what you really need vs what's secondary. This defines scope and avoids the most expensive mistake: building the wrong thing. *Delivers:* a clear scope, priorities, and a realistic price and timeline.
+
+**2. Design and architecture** — design defines how it looks and is used; architecture defines how it's built inside so it's fast, secure and can grow. These invisible decisions determine whether your software lasts or falls apart in six months. *Delivers:* screen designs to approve before coding, and a technical plan.
+
+**3. Development in sprints** — built in short cycles (usually two weeks), at the end of which you see something working. You don't wait months to see the result; you watch it grow and can course-correct in time. *Delivers:* every couple of weeks, a working version with more than the last.
+
+**4. Testing / QA** — as it's built and before delivery, it's tested — not just the "happy path" but what happens when things go wrong. This separates software that works on demo day from software that works with 100 clients inside. *Delivers:* a tested system, not just a "finished" one.
+
+**5. Deployment** — the system goes online securely, with backups and monitoring. This is DevOps, and it's what cheap quotes omit. *Delivers:* your system live, working, secure.
+
+**6. Support and evolution** — software doesn't end at delivery; it starts living. You'll find things to improve and want new features. A good provider stays after delivery. *Delivers:* someone who responds and a plan to grow the system.
+
+## Realistic timelines
+
+A custom landing/site: weeks. An MVP: one to three months. A mid-sized management system: two to five months. A large product: several months, then continuous evolution. Deeply distrust anyone promising something serious "by next week" — and also anyone who gives no timeline at all.
+
+## Who does what
+
+It's not one person typing. A healthy project involves several roles (sometimes one person covers several in small teams): project lead, designer, developers (front and back), QA, and whoever deploys and maintains. What matters for you: being able to talk to whoever actually does the work, not just a salesperson.
+
+## What's expected of you
+
+The best projects are the ones the client accompanies. You don't need to know tech, but you should: be available early for discovery (nobody knows your business better), give feedback on time when shown progress, decide clearly when prioritizing, and trust the process while asking questions. Failed projects are almost never technical — they're about poor communication or an absent client who shows up at the end to complain.
+
+## What a good project looks like
+
+Clear scope from the start, working progress every couple of weeks, fluid communication, problems discussed as they appear (not hidden), deadlines respected or changes flagged in time, and a provider who stays after delivery.
+
+## In short
+
+Commissioning software doesn't have to be a black box. A healthy process has clear phases —discovery, design, sprint development, testing, deployment and support—, realistic timelines, a team you can talk to, and a client (you) who participates. Understand the process and you choose better, demand the right things, and turn a scary investment into a clear-headed decision.${ctaEN}`,
+  },
   // ===== 20 de mayo =====
   {
     id: "por-que-tu-pyme-necesita-una-landing-page",

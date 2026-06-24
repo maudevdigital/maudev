@@ -3,6 +3,5 @@ main = "worker.js"
 compatibility_date = "2026-06-01"
 
 # Cron: 3 publicaciones por día — 13:00, 17:00 y 21:00 UTC (≈ 09:00, 13:00, 17:00 Chile).
-# Sintaxis cron estándar: "min hora día-mes mes día-semana".
 [triggers]
 crons = ["0 13 * * *", "0 17 * * *", "0 21 * * *"]
