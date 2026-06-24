@@ -4,9 +4,11 @@ import { TipReel } from "./TipReel";
 import { ValueCard } from "./ValueCard";
 import { ScriptedVideo } from "./ScriptedVideo";
 import { CinematicReel } from "./CinematicReel";
+import { VoiceReel } from "./VoiceReel";
 import { AvatarReel } from "./AvatarReel";
 import { tips } from "./tips";
 import { scripts } from "./scripts";
+import { voiceScripts } from "./voiceScripts";
 import { SKINS, MUSIC_BY_SKIN } from "./skins";
 
 const FPS = 30;
@@ -93,6 +95,28 @@ export const RemotionRoot: React.FC = () => {
           return { durationInFrames: 670 };
         }}
       />
+
+      {/* Reels NARRADOS estratégicos (psicología): voz, música y acento propios. */}
+      {voiceScripts.map((vs) => (
+        <Composition
+          key={vs.id}
+          id={`VoiceReel-${vs.id}`}
+          component={VoiceReel}
+          durationInFrames={700}
+          fps={FPS}
+          width={1080}
+          height={1920}
+          defaultProps={vs}
+          calculateMetadata={async ({ props }) => {
+            const scenesFrames = props.scenes.reduce((a, s) => a + s.frames, 0) + 130;
+            if (props.voice) {
+              const dur = await getAudioDurationInSeconds(staticFile(props.voice));
+              return { durationInFrames: Math.max(scenesFrames, Math.ceil(dur * FPS) + FPS) };
+            }
+            return { durationInFrames: scenesFrames };
+          }}
+        />
+      ))}
 
       {/* Mascota que "habla" la voz (ElevenLabs). Duración = largo del audio. */}
       <Composition

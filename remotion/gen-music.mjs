@@ -1,23 +1,19 @@
 // Sintetiza VARIAS pistas de fondo ORIGINALES (libres de derechos) para los reels.
-// Mismo "ADN" sonoro (pad + arpegio + kick + hats) pero distinto tempo/tono/energía
-// → varían pero suenan armónicas entre sí. Ejecuta: `node gen-music.mjs`.
+// Cada una tiene un MOOD distinto (progresión, tonalidad, tempo y energía
+// diferentes) para que NO suene la misma música — pero todas comparten la misma
+// paleta sonora (pad + arpegio + kick + hats) para seguir siendo armónicas.
+// Ejecuta:  node gen-music.mjs
 import { writeFileSync } from "fs";
 
 const SR = 44100;
 const DUR = 12;
 
-function synth({ bpm, shift, kickGain, arpGain }) {
+function synth({ bpm, shift, kickGain, arpGain, chords, padGain = 0.05, swing = 0 }) {
   const beat = 60 / bpm;
   const N = Math.floor(SR * DUR);
   const L = new Float32Array(N);
   const R = new Float32Array(N);
   const midi = (n) => 440 * Math.pow(2, (n - 69 + shift) / 12);
-  const chords = [
-    [57, 60, 64], // Am
-    [53, 57, 60], // F
-    [48, 52, 55], // C
-    [55, 59, 62], // G
-  ];
   const chordDur = 2 * beat;
   const eighth = beat / 2;
 
@@ -29,11 +25,12 @@ function synth({ bpm, shift, kickGain, arpGain }) {
     const padEnv = Math.min(ct / 0.2, 1) * Math.min((chordDur - ct) / 0.3, 1);
     for (const m of chords[ci]) {
       const f = midi(m);
-      s += 0.05 * padEnv * (Math.sin(2 * Math.PI * f * t) + 0.25 * Math.sin(2 * Math.PI * f * 2 * t));
+      s += padGain * padEnv * (Math.sin(2 * Math.PI * f * t) + 0.25 * Math.sin(2 * Math.PI * f * 2 * t));
     }
     const ai = Math.floor(t / eighth);
     const arpNote = chords[Math.floor(t / chordDur) % chords.length][ai % 3] + 12;
-    s += arpGain * Math.exp(-(t - ai * eighth) * 11) * Math.sin(2 * Math.PI * midi(arpNote) * t);
+    const swingShift = ai % 2 === 1 ? swing * eighth : 0;
+    s += arpGain * Math.exp(-(t - ai * eighth - swingShift) * 11) * Math.sin(2 * Math.PI * midi(arpNote) * t);
     const bt = t - Math.floor(t / beat) * beat;
     const kf = 110 * Math.exp(-bt * 28) + 45;
     s += kickGain * Math.exp(-bt * 15) * Math.sin(2 * Math.PI * kf * bt);
@@ -62,11 +59,20 @@ function synth({ bpm, shift, kickGain, arpGain }) {
   return buf;
 }
 
-// 3 variantes armónicas (misma familia, distinta energía/tono).
+// Acordes (notas MIDI). Cada progresión = otro mood.
+const Am = [57, 60, 64], F = [53, 57, 60], C = [48, 52, 55], G = [55, 59, 62];
+const Dm = [50, 53, 57], Em = [52, 55, 59], Cmaj = [60, 64, 67], Gmaj = [55, 59, 62], Bb = [46, 50, 53];
+
 const variants = [
-  { file: "music.wav", bpm: 112, shift: 0, kickGain: 0.55, arpGain: 0.12 },   // base
-  { file: "music-chill.wav", bpm: 96, shift: -2, kickGain: 0.3, arpGain: 0.16 }, // suave
-  { file: "music-energetico.wav", bpm: 124, shift: 3, kickGain: 0.7, arpGain: 0.1 }, // potente
+  // base / chill / energético (lo ya existente)
+  { file: "music.wav", bpm: 112, shift: 0, kickGain: 0.55, arpGain: 0.12, chords: [Am, F, C, G] },
+  { file: "music-chill.wav", bpm: 96, shift: -2, kickGain: 0.3, arpGain: 0.16, chords: [Am, F, C, G], padGain: 0.06 },
+  { file: "music-energetico.wav", bpm: 124, shift: 3, kickGain: 0.7, arpGain: 0.1, chords: [Am, F, C, G] },
+  // moods NUEVOS (progresiones distintas → no suena igual)
+  { file: "music-uplift.wav", bpm: 120, shift: 0, kickGain: 0.5, arpGain: 0.14, chords: [Cmaj, Gmaj, Am, F], swing: 0.06 }, // luminoso I-V-vi-IV
+  { file: "music-tension.wav", bpm: 84, shift: -4, kickGain: 0.42, arpGain: 0.1, chords: [Dm, Dm, Bb, Am], padGain: 0.07 }, // dramático/lento
+  { file: "music-focus.wav", bpm: 108, shift: 1, kickGain: 0.6, arpGain: 0.13, chords: [Am, Em, Dm, Em], swing: 0.04 }, // hipnótico/groove
+  { file: "music-night.wav", bpm: 100, shift: -1, kickGain: 0.38, arpGain: 0.18, chords: [Am, C, G, Em], padGain: 0.065 }, // nocturno/suave
 ];
 
 for (const v of variants) {
