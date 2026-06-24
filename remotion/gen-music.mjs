@@ -62,6 +62,7 @@ function synth({ bpm, shift, kickGain, arpGain, chords, padGain = 0.05, swing = 
 // Acordes (notas MIDI). Cada progresión = otro mood.
 const Am = [57, 60, 64], F = [53, 57, 60], C = [48, 52, 55], G = [55, 59, 62];
 const Dm = [50, 53, 57], Em = [52, 55, 59], Cmaj = [60, 64, 67], Gmaj = [55, 59, 62], Bb = [46, 50, 53];
+const D = [50, 54, 57], Bm = [47, 50, 54];
 
 const variants = [
   // base / chill / energético (lo ya existente)
@@ -73,6 +74,12 @@ const variants = [
   { file: "music-tension.wav", bpm: 84, shift: -4, kickGain: 0.42, arpGain: 0.1, chords: [Dm, Dm, Bb, Am], padGain: 0.07 }, // dramático/lento
   { file: "music-focus.wav", bpm: 108, shift: 1, kickGain: 0.6, arpGain: 0.13, chords: [Am, Em, Dm, Em], swing: 0.04 }, // hipnótico/groove
   { file: "music-night.wav", bpm: 100, shift: -1, kickGain: 0.38, arpGain: 0.18, chords: [Am, C, G, Em], padGain: 0.065 }, // nocturno/suave
+  // VIRALES: progresiones pop pegajosas + energía alta + arp marcado (gancho).
+  { file: "music-viral1.wav", bpm: 130, shift: 2, kickGain: 0.72, arpGain: 0.2, chords: [Em, C, G, D], swing: 0.05 }, // vi-IV-I-V (himno pop)
+  { file: "music-viral2.wav", bpm: 128, shift: 0, kickGain: 0.7, arpGain: 0.19, chords: [Am, G, F, G] }, // tensión-resolución
+  { file: "music-viral3.wav", bpm: 126, shift: -2, kickGain: 0.68, arpGain: 0.17, chords: [Dm, Am, Bb, C], swing: 0.06 }, // épico/drop
+  { file: "music-viral4.wav", bpm: 132, shift: 3, kickGain: 0.74, arpGain: 0.2, chords: [Cmaj, Am, F, G] }, // doo-wop alegre
+  { file: "music-viral5.wav", bpm: 124, shift: 1, kickGain: 0.66, arpGain: 0.21, chords: [Em, Bm, C, G], swing: 0.05 }, // melancólico-pegajoso
 ];
 
 for (const v of variants) {

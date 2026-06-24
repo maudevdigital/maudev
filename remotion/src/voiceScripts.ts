@@ -53,4 +53,38 @@ export const voiceScripts: VoiceScriptDef[] = [
       { text: "Mañana, tu competencia\nya empezó.", frames: 85, accent: true },
     ],
   },
+
+  // ===== Serie semanal · social derivado del blog (voz "Brian", música viral) =====
+  // Día 1 — del post "Cuánto cuesta software a medida".
+  {
+    id: "d1-cotizan-rapido",
+    label: "D1 · Cotización al tiro = alerta",
+    voice: "social-d1r1.mp3",
+    music: "music-viral1.wav",
+    accent: "#19d4d4",
+    tagline: "Precios claros, sin sorpresas",
+    scenes: [
+      { text: "¿Te cotizaron un software\nen 5 minutos?", frames: 95 },
+      { text: "Cuidado.", frames: 50, accent: true, size: 92 },
+      { text: "O es una plantilla\ndisfrazada de “a medida”…", frames: 100 },
+      { text: "…o el precio va a subir\napenas empiece.", frames: 95, accent: true },
+      { text: "Lo serio: primero\nentender tu negocio.", frames: 105 },
+    ],
+  },
+  {
+    id: "d1-barato-caro",
+    label: "D1 · Lo barato sale caro",
+    voice: "social-d1r2.mp3",
+    music: "music-viral3.wav",
+    accent: "#38b6ff",
+    tagline: "Hecho bien a la primera",
+    scenes: [
+      { text: "¿La cotización\nmás barata?", frames: 80 },
+      { text: "Casi nunca conviene.", frames: 65, accent: true, size: 78 },
+      { text: "El software barato\nno es barato:", frames: 90 },
+      { text: "es incompleto.", frames: 60, accent: true, size: 88 },
+      { text: "Sin pruebas, sin seguridad,\nsin soporte.", frames: 95 },
+      { text: "Pagar bien una vez\nsale más barato\nque pagar dos.", frames: 110, accent: true },
+    ],
+  },
 ];
