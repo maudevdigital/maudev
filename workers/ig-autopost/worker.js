@@ -180,7 +180,7 @@ async function publishFacebook(env, imageUrl, caption) {
 //   LINKEDIN_PERSON_URN     "urn:li:person:{id}"  (el {id} = "sub" de /v2/userinfo)
 // Doc: Posts API + Images API (versionada). Flujo: initializeUpload → PUT bytes → POST /rest/posts.
 const LI_API = "https://api.linkedin.com";
-const LI_VERSION = "202405";
+const LI_VERSION = "202601"; // versión vigente de la LinkedIn API (formato YYYYMM)
 async function publishLinkedIn(env, imageUrl, caption) {
   if (!env.LINKEDIN_ACCESS_TOKEN || !env.LINKEDIN_PERSON_URN) return null;
   const author = env.LINKEDIN_PERSON_URN;
