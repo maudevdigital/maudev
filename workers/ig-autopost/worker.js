@@ -229,6 +229,45 @@ async function publishLinkedIn(env, imageUrl, caption) {
   return postId;
 }
 
+// ─── TikTok (Content Posting API): subir el reel ──────────────────────────────
+// Requiere secrets:
+//   TIKTOK_CLIENT_KEY, TIKTOK_CLIENT_SECRET, TIKTOK_REFRESH_TOKEN
+// El access_token dura 24h, así que lo renovamos con el refresh_token en cada run.
+// Con scope video.upload → el video llega como BORRADOR al inbox de TikTok (el
+// dueño lo publica con un toque). Con video.publish + auditoría aprobada se puede
+// cambiar a Direct Post (ver nota abajo). pull_by_url exige dominio verificado.
+async function refreshTikTokToken(env) {
+  const res = await fetch("https://open.tiktokapis.com/v2/oauth/token/", {
+    method: "POST",
+    headers: { "content-type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      client_key: env.TIKTOK_CLIENT_KEY,
+      client_secret: env.TIKTOK_CLIENT_SECRET,
+      grant_type: "refresh_token",
+      refresh_token: env.TIKTOK_REFRESH_TOKEN,
+    }),
+  });
+  const j = await res.json();
+  if (!res.ok || !j.access_token) throw new Error(`TikTok refresh: ${JSON.stringify(j)}`);
+  return j.access_token;
+}
+
+async function publishTikTok(env, videoUrl) {
+  if (!env.TIKTOK_CLIENT_KEY || !env.TIKTOK_CLIENT_SECRET || !env.TIKTOK_REFRESH_TOKEN) return null;
+  const accessToken = await refreshTikTokToken(env);
+  // Borrador (inbox). Para Direct Post (requiere video.publish + auditoría) usar
+  // /v2/post/publish/video/init/ con post_info{title,privacy_level,...}.
+  const res = await fetch("https://open.tiktokapis.com/v2/post/publish/inbox/video/init/", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${accessToken}`, "content-type": "application/json; charset=UTF-8" },
+    body: JSON.stringify({ source_info: { source: "PULL_FROM_URL", video_url: videoUrl } }),
+  });
+  const j = await res.json();
+  const pid = j?.data?.publish_id;
+  if (!res.ok || !pid) throw new Error(`TikTok init: ${JSON.stringify(j)}`);
+  return pid;
+}
+
 async function logPost(env, row) {
   if (!env.SUPABASE_URL || !env.SUPABASE_SERVICE_KEY) return;
   await fetch(`${env.SUPABASE_URL}/rest/v1/ig_posts`, {
@@ -274,8 +313,18 @@ async function runOnce(env) {
     }
   }
 
-  await logPost(env, { ig_post_id: postId, fb_post_id: fbId, li_post_id: liId, hook: preview, media_kind: kind, image_url: mediaUrl, caption, created_at: new Date().toISOString() });
-  return { slot, kind, postId, fbId, fbError, liId, liError, preview };
+  // TikTok (best-effort): solo video (reel). Llega como borrador al inbox.
+  let ttId = null, ttError = null;
+  if (kind === "reel") {
+    try {
+      ttId = await publishTikTok(env, videoUrl);
+    } catch (e) {
+      ttError = e.message;
+    }
+  }
+
+  await logPost(env, { ig_post_id: postId, fb_post_id: fbId, li_post_id: liId, tt_publish_id: ttId, hook: preview, media_kind: kind, image_url: mediaUrl, caption, created_at: new Date().toISOString() });
+  return { slot, kind, postId, fbId, fbError, liId, liError, ttId, ttError, preview };
 }
 
 export default {
