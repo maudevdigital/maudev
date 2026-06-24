@@ -28,6 +28,226 @@ const ctaEN = `
 Want to apply this to your business? At **Maudev** we build websites, custom software and automations for SMBs and founders in Chile and Latin America. [Book a free consult](/contacto).`;
 
 export const blogPosts = [
+  // ===== Semana 24–28 de junio · serie high-ticket / desarrollo de software =====
+  {
+    id: "cuanto-cuesta-software-a-medida-2026",
+    title: "Cuánto cuesta de verdad desarrollar software a medida en 2026",
+    title_en: "What custom software really costs to build in 2026",
+    excerpt:
+      "Rangos reales en pesos chilenos, qué factores mueven el precio, los modelos de cobro y por qué lo barato termina saliendo caro. Una guía honesta para decidir con cabeza fría.",
+    excerpt_en:
+      "Real price ranges, what drives the cost, pricing models and why cheap ends up expensive. An honest guide to deciding with a clear head.",
+    category: "desarrollo",
+    read_time: 20,
+    author: AUTHOR,
+    tags: ["software a medida", "precios", "desarrollo de software", "ROI", "chile"],
+    cover_image: "/blog/cuanto-cuesta-software-a-medida-2026.png",
+    created_date: "2026-06-24T09:00:00-04:00",
+    content: `"¿Cuánto cuesta desarrollar un software a medida?" es, de lejos, la pregunta que más nos llega. Y la respuesta honesta —"depende"— suena a evasiva. No lo es: es que un software a medida se parece más a construir una casa que a comprar un electrodoméstico. Nadie pregunta "¿cuánto cuesta una casa?" esperando una sola cifra, porque todos intuimos que no es lo mismo una cabaña de 40 m² que una vivienda de 300 m² con dos pisos y piscina.
+
+En esta guía vamos a quitarle el misterio al tema. Vas a entender qué mueve el precio, qué rangos son realistas en Chile en 2026, cómo funcionan los modelos de cobro, y —lo más importante— cómo distinguir una inversión que se paga sola de un gasto que se transforma en dolor de cabeza. Si estás evaluando construir software para tu empresa, esto te va a ahorrar reuniones, sustos y plata.
+
+## Por qué nadie te da un precio al tiro (y por qué eso es buena señal)
+
+Cuando pides una cotización y te tiran una cifra cerrada en cinco minutos, sin preguntarte casi nada, deberías preocuparte. Significa una de dos cosas: o te van a entregar una plantilla genérica disfrazada de "a medida", o están adivinando y ese número va a cambiar (siempre hacia arriba) apenas empiece el proyecto.
+
+Un equipo serio primero quiere entender **qué problema estás resolviendo**. Porque el costo no lo define "una app" o "un sistema": lo definen las decisiones que hay detrás. Dos proyectos que se describen igual en una frase ("un sistema para gestionar mis pedidos") pueden costar diez veces distinto según los detalles.
+
+Esa conversación inicial —que en la industria se llama **descubrimiento** o discovery— no es relleno: es donde se evita gastar millones en construir lo equivocado.
+
+## Los 7 factores que de verdad mueven el precio
+
+### 1. El alcance (qué hace y qué no hace)
+
+Es el factor número uno. No es lo mismo un sistema que solo registra información que uno que además calcula, valida reglas de negocio, genera documentos, notifica, cobra y se conecta con otros sistemas. Cada "y además…" tiene un costo. La buena noticia: casi siempre se puede priorizar y dejar lo secundario para una segunda etapa.
+
+### 2. La complejidad de la lógica
+
+Un formulario que guarda datos es barato. Un motor que calcula comisiones con 14 reglas distintas según el tipo de cliente, la región y la fecha, no. La complejidad invisible —esa que vive en la cabeza de tu equipo y nadie documentó— es la que más sorprende en costo.
+
+### 3. Las integraciones
+
+Conectarse con tu sistema de facturación, con el SII, con una pasarela de pago, con WhatsApp, con tu ERP o con la API de un proveedor: cada integración suma. Algunas son simples y están bien documentadas; otras son un campo minado de casos borde. Las integraciones son, junto con la lógica de negocio, donde más se subestima el esfuerzo.
+
+### 4. Usuarios, roles y permisos
+
+Un sistema para que lo use una persona es una cosa. Uno con administradores, supervisores, vendedores y clientes —cada uno viendo cosas distintas y con permisos distintos— es otra. Los roles multiplican las pantallas y, sobre todo, las pruebas.
+
+### 5. El diseño y la experiencia de usuario
+
+Un sistema interno que usa tu equipo puede ser funcional y sobrio. Un producto de cara al cliente —donde la primera impresión vende— necesita diseño cuidado, animaciones, responsividad impecable. Más pulido, más horas.
+
+### 6. La escala y el rendimiento
+
+¿Lo van a usar 5 personas o 50.000? ¿Maneja 100 registros o 10 millones? Construir para que algo aguante volumen, picos de tráfico y crezca sin caerse requiere decisiones de arquitectura que cuestan más al inicio pero te salvan después.
+
+### 7. Quién lo construye
+
+El mismo proyecto cuesta distinto según quién lo haga: un freelance junior, una agencia, un equipo senior o una consultora grande. Y "más caro" no siempre es "mejor", ni "más barato" es "mejor negocio". Más adelante vemos por qué.
+
+## Rangos reales en Chile (2026)
+
+Con todas las advertencias del mundo —cada proyecto es un mundo— estos son rangos realistas que vemos en el mercado chileno. Tómalos como orden de magnitud, no como presupuesto.
+
+### Landing page o sitio profesional a medida
+
+Desde **$600.000 hasta $2.500.000 CLP**. Una página bien construida, rápida, optimizada para Google y para convertir, con su panel para editar contenidos. No es "software" en el sentido estricto, pero es la puerta de entrada de muchos clientes high-ticket.
+
+### MVP (producto mínimo viable)
+
+Entre **$3.000.000 y $12.000.000 CLP**. La primera versión funcional de tu idea: lo justo para salir al mercado, validar con usuarios reales y empezar a vender o levantar inversión. La gracia del MVP es construir poco y aprender rápido, no construir todo.
+
+### Sistema interno / plataforma de gestión
+
+Entre **$8.000.000 y $40.000.000 CLP**. Un sistema a medida para operar tu negocio: gestión de pedidos, inventario, clientes, reportería, roles, integraciones con tu facturación. Es donde más empresas medianas invierten, porque reemplaza el caos de diez planillas de Excel que no se hablan entre sí.
+
+### Plataforma / producto digital completo
+
+Desde **$40.000.000 CLP hacia arriba**. Productos con muchos usuarios, alta disponibilidad, apps móviles, pagos, paneles complejos, escalabilidad. Aquí el precio depende tanto del alcance que el rango pierde sentido sin un descubrimiento serio.
+
+Una nota importante: estos números son de **construcción inicial**. El software, como un auto, también tiene costo de mantención (más sobre esto abajo). Presupuestar solo la compra y olvidar la bencina es el error clásico.
+
+## Los modelos de cobro (y cuándo conviene cada uno)
+
+### Precio fijo por proyecto
+
+Acuerdas un alcance cerrado y un precio. Ideal cuando el proyecto está bien definido y no esperas grandes cambios. Te da certeza de costo. El riesgo: si el alcance no estaba claro, terminas en interminables discusiones de "esto estaba incluido o no". Por eso un buen precio fijo siempre va precedido de un buen descubrimiento.
+
+### Por tiempo y materiales (por hora o por sprint)
+
+Pagas por el trabajo realizado, normalmente en ciclos de dos semanas. Ideal cuando el proyecto es exploratorio o va a evolucionar. Te da flexibilidad total para cambiar prioridades. El riesgo: requiere confianza y seguimiento, porque el costo final es más abierto.
+
+### Retainer (bolsa de horas mensual)
+
+Contratas una capacidad mensual de desarrollo continuo. Ideal cuando el software ya existe y quieres mejorarlo, mantenerlo y crecerlo mes a mes. Es la modalidad de quienes entienden que el software es un ser vivo, no una entrega única.
+
+En la práctica, muchos proyectos sanos combinan modelos: precio fijo (o por etapas) para construir la primera versión, y luego un retainer para evolucionarlo.
+
+## Por qué lo barato sale caro (de verdad)
+
+Esta es la parte que más plata te puede ahorrar, así que léela con calma.
+
+Cuando recibes una cotización que es la mitad que las demás, la pregunta correcta no es "qué bueno, ¿dónde firmo?", sino **"¿qué están dejando fuera?"**. Porque el software barato casi nunca es barato: es **incompleto**. Y lo que falta lo pagas después, con intereses.
+
+Lo que suele faltar en una cotización sospechosamente baja:
+
+- **Pruebas (testing).** Software sin pruebas funciona el día de la demo y falla el día que tienes 50 clientes adentro.
+- **Manejo de errores y casos borde.** El "camino feliz" es el 20% del trabajo. El 80% es qué pasa cuando algo sale mal.
+- **Seguridad.** Validaciones, control de acceso, protección de datos. Invisible hasta que te hackean o filtras información de clientes.
+- **Documentación y código mantenible.** Sin esto, quedas secuestrado: solo quien lo hizo puede tocarlo, y te cobra lo que quiera.
+- **El código a tu nombre.** Si no queda claro por contrato, puede que el software ni siquiera sea tuyo.
+
+A esto se le llama **deuda técnica**: atajos que se ven como ahorro hoy y se cobran como reconstrucción mañana. Hemos rescatado muchos proyectos donde el cliente terminó pagando dos o tres veces: una por el software barato que no servía, y otra (más cara) por rehacerlo bien. El desarrollo es uno de esos rubros donde **pagar bien una vez es más barato que pagar poco dos veces.**
+
+## Lo que pagas y no ves (pero te está salvando)
+
+Cuando un equipo serio cotiza, en el precio hay cosas que no aparecen como pantallas pero son las que hacen que el software funcione en el tiempo:
+
+- **Descubrimiento y definición:** entender tu negocio antes de programar.
+- **Arquitectura:** decidir cómo se construye para que escale y no se caiga.
+- **Diseño de la experiencia:** que sea usable, no solo funcional.
+- **Pruebas y control de calidad:** que funcione de verdad, no solo en la demo.
+- **Infraestructura y despliegue (DevOps):** que esté en línea, seguro y con respaldos.
+- **Soporte post-entrega:** que cuando algo pase, haya quién responda.
+
+Pagar por estas cosas no es "que te estén cobrando de más". Es exactamente la diferencia entre un software que te sostiene la operación y uno que se transforma en tu peor pesadilla a los tres meses.
+
+## Cuándo el software a medida se paga solo (la mirada high-ticket)
+
+Software a medida no es para todos, y un buen proveedor te lo va a decir de frente. Si una herramienta estándar resuelve tu problema, úsala. El software a medida se justifica —y se paga solo— cuando:
+
+- **El proceso ES tu ventaja competitiva.** Si haces algo mejor que la competencia, una herramienta genérica te obliga a hacerlo como todos. El software a medida protege eso que te hace distinto.
+- **Estás pagando el caos.** Cuando tu equipo pierde horas en tareas manuales, en planillas que se rompen, en errores que cuestan plata, el software no es un gasto: es recuperar margen.
+- **No existe una herramienta que calce.** Cuando lo que necesitas es tan específico que ninguna app del mercado lo cubre sin amarres.
+- **Quieres escalar sin contratar proporcionalmente.** El software te deja crecer en ventas sin crecer en planilla a la misma velocidad.
+
+La pregunta correcta nunca es "¿cuánto cuesta?" en el vacío. Es **"¿cuánto me cuesta NO tenerlo?"**. Si un sistema de $15 millones te ahorra dos sueldos al año y elimina errores que te cuestan otros tantos, se pagó en su primer año y a partir de ahí es pura ganancia. Eso es pensar como cliente high-ticket: no en el precio, sino en el retorno.
+
+## Señales de alerta al contratar
+
+Cuídate cuando veas esto:
+
+- Te dan un precio sin entender tu negocio.
+- No te muestran avances funcionando hasta el final.
+- No queda por escrito de quién es el código y el dominio.
+- No incluyen soporte después de la entrega.
+- El precio es sospechosamente bajo (ya sabes por qué).
+- No te pueden mostrar trabajos anteriores ni referencias.
+- Hablas siempre con un vendedor y nunca con quien va a programar.
+
+## Las preguntas que deberías hacer antes de firmar
+
+- ¿De quién queda el código y el dominio? (Respuesta correcta: tuyo.)
+- ¿Hay un precio y un alcance por escrito?
+- ¿Voy a ver avances funcionando durante el proyecto?
+- ¿Qué incluye exactamente el soporte y por cuánto tiempo?
+- ¿Qué pasa si necesito cambios a mitad de camino?
+- ¿Cómo manejan las pruebas y la seguridad?
+- ¿Quién va a programar esto y puedo hablar con esa persona?
+
+Si las respuestas son claras y por escrito, vas bien. Si son vagas, corre.
+
+## Cómo lo hacemos en Maudev
+
+Nosotros partimos siempre por entender tu negocio antes de cotizar nada. Trabajamos con **precio y alcance por escrito**, te mostramos **avances funcionando** por etapas, el **código y el dominio quedan a tu nombre**, e incluimos **soporte** después de entregar. Hablas directo con quien programa, no con un intermediario. Y si creemos que una herramienta estándar te conviene más que algo a medida, te lo decimos: preferimos un cliente bien aconsejado que una venta forzada.
+
+## Preguntas frecuentes
+
+**¿Puedo empezar con poco presupuesto?** Sí. Para eso existe el MVP: construir lo mínimo que aporta valor, salir al mercado y crecer con lo que aprendes (y, idealmente, con lo que ya estás facturando).
+
+**¿Cuánto demora?** Un MVP simple, semanas. Un sistema mediano, algunos meses. Un producto grande, más. Desconfía de quien te promete "para la próxima semana" algo serio.
+
+**¿La IA no hace esto gratis ahora?** La IA acelera partes del desarrollo, y la usamos. Pero no reemplaza entender tu negocio, diseñar la arquitectura correcta ni hacerse responsable de que funcione. La IA es una herramienta del equipo, no el equipo.
+
+**¿Y la mantención?** Presupuesta un porcentaje anual del valor del proyecto para mantención y mejoras. El software que no se mantiene envejece y se vuelve un riesgo.
+
+## En resumen
+
+El software a medida no tiene un precio único porque no es un producto único: es una inversión que se ajusta a lo que necesitas. Los rangos que viste te dan un orden de magnitud, pero el número real sale de una conversación seria sobre tu negocio. Lo importante no es encontrar lo más barato, sino encontrar lo que se paga solo. Y eso empieza por elegir bien con quién construyes.${cta}`,
+    content_en: `"How much does it cost to build custom software?" is, by far, the question we get the most. And the honest answer —"it depends"— sounds like a dodge. It isn't: custom software is closer to building a house than to buying an appliance. Nobody asks "how much does a house cost?" expecting a single figure, because we all sense that a 40 m² cabin is not the same as a 300 m² two-story home with a pool.
+
+In this guide we take the mystery out of it. You'll understand what drives the price, what ranges are realistic in Chile in 2026, how pricing models work, and —most importantly— how to tell an investment that pays for itself from an expense that turns into a headache.
+
+## Why nobody quotes you instantly (and why that's a good sign)
+
+When someone throws a closed number at you in five minutes without asking much, you should worry. It means one of two things: either they'll hand you a generic template disguised as "custom", or they're guessing and that number will change (always upward) the moment the project starts. A serious team first wants to understand **what problem you're solving**, because cost is defined by the decisions behind the work, not by the words "an app". That initial conversation —called **discovery**— is where you avoid spending a fortune building the wrong thing.
+
+## The 7 factors that really move the price
+
+**1. Scope** — what it does and doesn't do. A system that just records data isn't the same as one that calculates, validates rules, generates documents, notifies, charges and integrates. **2. Logic complexity** — a form is cheap; a commission engine with 14 rules is not. **3. Integrations** — billing, payment gateways, WhatsApp, your ERP: each one adds up. **4. Users, roles and permissions** — roles multiply screens and testing. **5. Design and UX** — customer-facing products need more polish, more hours. **6. Scale and performance** — building for volume and growth costs more upfront. **7. Who builds it** — junior freelancer, agency, senior team or large consultancy: same project, different cost.
+
+## Real ranges in Chile (2026)
+
+Take these as orders of magnitude, not a budget. **Custom landing/site:** CLP 600,000–2,500,000. **MVP:** CLP 3,000,000–12,000,000. **Internal system / management platform:** CLP 8,000,000–40,000,000. **Full platform / digital product:** CLP 40,000,000+. These are **initial build** numbers; software also has a maintenance cost. Budgeting only the purchase and forgetting the fuel is the classic mistake.
+
+## Pricing models
+
+**Fixed project price** — closed scope and price; cost certainty, but needs good discovery first. **Time and materials** — pay for work done in two-week cycles; flexible, but the final cost is more open. **Retainer** — monthly capacity to maintain and grow existing software. Many healthy projects combine: fixed/phased to build v1, then a retainer to evolve it.
+
+## Why cheap ends up expensive
+
+When a quote is half the others, the right question is **"what are they leaving out?"**. Cheap software is rarely cheap: it's **incomplete**, and what's missing you pay for later, with interest. What's usually missing: testing, error handling and edge cases, security, documentation and maintainable code, and the code being in your name. This is **technical debt**: shortcuts that look like savings today and get billed as a rebuild tomorrow. Paying well once is cheaper than paying little twice.
+
+## What you pay for and don't see
+
+Discovery, architecture, UX design, testing/QA, infrastructure and deployment (DevOps), and post-launch support. Paying for these isn't being overcharged — it's the difference between software that holds up your operation and one that becomes a nightmare in three months.
+
+## When custom software pays for itself (the high-ticket view)
+
+If an off-the-shelf tool solves your problem, use it. Custom software pays for itself when the process IS your competitive advantage, when you're paying for chaos (manual hours, broken spreadsheets, costly errors), when no tool fits, or when you want to scale sales without scaling headcount at the same rate. The right question is never "how much does it cost?" but **"how much does it cost me NOT to have it?"**. A CLP 15M system that saves two salaries a year paid for itself in year one.
+
+## Red flags and questions
+
+Red flags: quoting without understanding your business; no working progress until the end; no written ownership of code and domain; no post-launch support; suspiciously low price; no references; never talking to who builds it. Before signing, ask: who owns the code and domain? Is price and scope in writing? Will I see working progress? What does support include? What about mid-way changes, testing and security?
+
+## How we do it at Maudev
+
+We start by understanding your business before quoting. Written price and scope, working progress in phases, code and domain in your name, support after delivery, and you talk directly to who builds it. If an off-the-shelf tool suits you better, we'll say so.
+
+## In short
+
+Custom software has no single price because it's not a single product: it's an investment that adjusts to what you need. What matters isn't the cheapest option, but the one that pays for itself — and that starts with choosing who you build with.${ctaEN}`,
+  },
   // ===== 20 de mayo =====
   {
     id: "por-que-tu-pyme-necesita-una-landing-page",
