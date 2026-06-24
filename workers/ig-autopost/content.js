@@ -135,6 +135,23 @@ Si responden claro y por escrito, vas bien. Si lo evaden, corre.
 ${TAGS_BASE} #comocontratar #desarrolloweb #freelance #pymeschile #emprendedores #tecnologia`,
   },
 
+  {
+    id: "d3-senales-alerta", kind: "carousel",
+    media: [
+      "https://maudev.cl/social/carousel-d3-1.png",
+      "https://maudev.cl/social/carousel-d3-2.png",
+      "https://maudev.cl/social/carousel-d3-3.png",
+    ],
+    blog: "como-elegir-empresa-desarrollo-software",
+    caption: `🚩 7 señales de alerta al contratar a quien va a desarrollar tu software.
+
+Te cotizan sin entender tu negocio, no muestran avances hasta el final, no ponen el alcance por escrito, precio sospechosamente bajo, sin referencias, evaden de quién es el código y solo te atiende un vendedor.
+
+Desliza para verlas todas 👉 y guárdalo para tu próxima contratación.
+
+${TAGS_BASE} #comocontratar #desarrolloweb #agenciadesoftware #pymeschile #consejos #empresaschile`,
+  },
+
   // ===================== DÍA 4 · "El ROI real de automatizar" =====================
   {
     id: "d4-manual-no-gratis", kind: "reel",
@@ -207,23 +224,7 @@ Mejor bien hecho que rápido y mal.
 ${TAGS_BASE} #plazos #procesodedesarrollo #pymeschile #softwareempresarial #emprendedores #tecnologia`,
   },
 
-  // ===================== CARRUSELES días 3 y 5 =====================
-  {
-    id: "d3-senales-alerta", kind: "carousel",
-    media: [
-      "https://maudev.cl/social/carousel-d3-1.png",
-      "https://maudev.cl/social/carousel-d3-2.png",
-      "https://maudev.cl/social/carousel-d3-3.png",
-    ],
-    blog: "como-elegir-empresa-desarrollo-software",
-    caption: `🚩 7 señales de alerta al contratar a quien va a desarrollar tu software.
-
-Te cotizan sin entender tu negocio, no muestran avances hasta el final, no ponen el alcance por escrito, precio sospechosamente bajo, sin referencias, evaden de quién es el código y solo te atiende un vendedor.
-
-Desliza para verlas todas 👉 y guárdalo para tu próxima contratación.
-
-${TAGS_BASE} #comocontratar #desarrolloweb #agenciadesoftware #pymeschile #consejos #empresaschile`,
-  },
+  // ===================== CARRUSEL día 5 =====================
   {
     id: "d5-etapas-proyecto", kind: "carousel",
     media: [
