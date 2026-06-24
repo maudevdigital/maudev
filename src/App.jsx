@@ -29,6 +29,7 @@ import Dashboard from './pages/admin/Dashboard';
 import AdminBlog from './pages/admin/AdminBlog';
 import AdminLeads from './pages/admin/AdminLeads';
 import AdminPortfolio from './pages/admin/AdminPortfolio';
+import AdminTikTok from './pages/admin/AdminTikTok';
 import LpDiagnostico from './pages/lp/Diagnostico';
 import LinkInBio from './pages/LinkInBio';
 
@@ -75,6 +76,7 @@ const AuthenticatedApp = () => {
           <Route path="/admin/blog" element={<AdminBlog />} />
           <Route path="/admin/leads" element={<AdminLeads />} />
           <Route path="/admin/portafolio" element={<AdminPortfolio />} />
+          <Route path="/admin/tiktok" element={<AdminTikTok />} />
         </Route>
       </Route>
       <Route path="*" element={<PageNotFound />} />

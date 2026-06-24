@@ -408,6 +408,41 @@ async function runOnce(env) {
   return { index, id, kind, postId, fbId, fbError, liId, liError, ttId, ttError, preview };
 }
 
+// ─── Flujo TikTok para /admin (Login Kit + Content Posting API, demo de review) ─
+const ADMIN_ORIGIN = "https://maudev.cl";
+const TIKTOK_REDIRECT = "https://maudev.cl/admin/tiktok";
+const CORS = {
+  "Access-Control-Allow-Origin": ADMIN_ORIGIN,
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  "Access-Control-Allow-Headers": "content-type",
+};
+const jsonCors = (data, status = 200) =>
+  new Response(JSON.stringify(data), { status, headers: { "content-type": "application/json", ...CORS } });
+
+function tiktokAuthUrl(env) {
+  const u = new URL("https://www.tiktok.com/v2/auth/authorize/");
+  u.searchParams.set("client_key", env.TIKTOK_CLIENT_KEY);
+  u.searchParams.set("scope", "user.info.basic,video.upload");
+  u.searchParams.set("response_type", "code");
+  u.searchParams.set("redirect_uri", TIKTOK_REDIRECT);
+  u.searchParams.set("state", "maudev" + Math.random().toString(36).slice(2, 8));
+  return u.toString();
+}
+async function tiktokExchange(env, code) {
+  const r = await fetch("https://open.tiktokapis.com/v2/oauth/token/", {
+    method: "POST",
+    headers: { "content-type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      client_key: env.TIKTOK_CLIENT_KEY,
+      client_secret: env.TIKTOK_CLIENT_SECRET,
+      code: code.replace(/\*$/, ""),
+      grant_type: "authorization_code",
+      redirect_uri: TIKTOK_REDIRECT,
+    }),
+  });
+  return r.json();
+}
+
 export default {
   async scheduled(_event, env, ctx) {
     ctx.waitUntil(
@@ -416,14 +451,60 @@ export default {
         .catch((err) => console.error("Error ig-autopost:", err.message)),
     );
   },
-  // Prueba manual:  curl -H "x-trigger: <TRIGGER_SECRET>" https://ig-autopost.<sub>.workers.dev
   async fetch(req, env) {
-    if (req.headers.get("x-trigger") !== env.TRIGGER_SECRET) return new Response("forbidden", { status: 403 });
-    try {
-      const r = await runOnce(env);
-      return Response.json({ ok: true, ...r });
-    } catch (err) {
-      return Response.json({ ok: false, error: err.message }, { status: 500 });
+    const url = new URL(req.url);
+    const path = url.pathname;
+    if (req.method === "OPTIONS") return new Response(null, { headers: CORS });
+
+    // 1) Iniciar login de TikTok (Login Kit) → redirige a la pantalla de TikTok.
+    if (path === "/tiktok/auth") {
+      if (!env.TIKTOK_CLIENT_KEY) return new Response("TikTok no configurado", { status: 400 });
+      return Response.redirect(tiktokAuthUrl(env), 302);
     }
+    // 2) Estado de conexión (si hay refresh token guardado para publicar).
+    if (path === "/tiktok/status") return jsonCors({ connected: !!env.TIKTOK_REFRESH_TOKEN });
+    // 3) Canjear el code del login y leer el perfil (demuestra user.info.basic).
+    if (path === "/tiktok/exchange") {
+      const code = url.searchParams.get("code");
+      if (!code) return jsonCors({ ok: false, error: "falta code" }, 400);
+      try {
+        const tok = await tiktokExchange(env, code);
+        if (!tok.access_token) return jsonCors({ ok: false, error: JSON.stringify(tok) }, 400);
+        const me = await (await fetch("https://open.tiktokapis.com/v2/user/info/?fields=open_id,display_name", {
+          headers: { Authorization: `Bearer ${tok.access_token}` },
+        })).json();
+        return jsonCors({
+          ok: true,
+          openId: tok.open_id,
+          displayName: me?.data?.user?.display_name || "TikTok",
+          refreshToken: tok.refresh_token, // para configurar el secret la 1ª vez
+          canPublish: !!env.TIKTOK_REFRESH_TOKEN,
+        });
+      } catch (e) {
+        return jsonCors({ ok: false, error: e.message }, 500);
+      }
+    }
+    // 4) Publicar un reel en TikTok (demuestra Content Posting API).
+    if (path === "/tiktok/publish" && req.method === "POST") {
+      if (req.headers.get("origin") !== ADMIN_ORIGIN) return jsonCors({ ok: false, error: "origin" }, 403);
+      try {
+        const videoUrl = env.TIKTOK_DEMO_VIDEO || "https://maudev.cl/social/d1-cotizan-rapido.mp4";
+        const pid = await publishTikTok(env, videoUrl);
+        return jsonCors({ ok: !!pid, publishId: pid });
+      } catch (e) {
+        return jsonCors({ ok: false, error: e.message }, 500);
+      }
+    }
+
+    // 5) Disparo manual de la publicación a todos los canales (uso interno).
+    if (req.headers.get("x-trigger") === env.TRIGGER_SECRET) {
+      try {
+        const r = await runOnce(env);
+        return Response.json({ ok: true, ...r });
+      } catch (err) {
+        return Response.json({ ok: false, error: err.message }, { status: 500 });
+      }
+    }
+    return new Response("forbidden", { status: 403 });
   },
 };
