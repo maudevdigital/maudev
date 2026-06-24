@@ -415,6 +415,7 @@ const CORS = {
   "Access-Control-Allow-Origin": ADMIN_ORIGIN,
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
   "Access-Control-Allow-Headers": "content-type",
+  "Cache-Control": "no-store",
 };
 const jsonCors = (data, status = 200) =>
   new Response(JSON.stringify(data), { status, headers: { "content-type": "application/json", ...CORS } });
@@ -459,7 +460,7 @@ export default {
     // 1) Iniciar login de TikTok (Login Kit) → redirige a la pantalla de TikTok.
     if (path === "/tiktok/auth") {
       if (!env.TIKTOK_CLIENT_KEY) return new Response("TikTok no configurado", { status: 400 });
-      return Response.redirect(tiktokAuthUrl(env), 302);
+      return new Response(null, { status: 302, headers: { Location: tiktokAuthUrl(env), "Cache-Control": "no-store" } });
     }
     // 2) Estado de conexión (si hay refresh token guardado para publicar).
     if (path === "/tiktok/status") return jsonCors({ connected: !!env.TIKTOK_REFRESH_TOKEN });

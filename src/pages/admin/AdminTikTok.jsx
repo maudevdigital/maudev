@@ -46,7 +46,7 @@ export default function AdminTikTok() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const connect = () => { window.location.href = `${WORKER}/tiktok/auth`; };
+  const connect = () => { window.location.href = `${WORKER}/tiktok/auth?t=${Date.now()}`; };
 
   const publish = async () => {
     setPublishing(true); setResult(null);
