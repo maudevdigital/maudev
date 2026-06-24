@@ -229,6 +229,72 @@ async function publishLinkedIn(env, imageUrl, caption) {
   return postId;
 }
 
+// ─── LinkedIn: subir VIDEO (reel) y publicar ─────────────────────────────────
+// Flujo Videos API: initializeUpload → PUT de los bytes (1+ partes con ETag) →
+// finalizeUpload → POST /rest/posts con la URN del video.
+async function publishLinkedInVideo(env, videoUrl, caption) {
+  if (!env.LINKEDIN_ACCESS_TOKEN || !env.LINKEDIN_PERSON_URN) return null;
+  const author = env.LINKEDIN_PERSON_URN;
+  const h = {
+    Authorization: `Bearer ${env.LINKEDIN_ACCESS_TOKEN}`,
+    "LinkedIn-Version": LI_VERSION,
+    "X-Restli-Protocol-Version": "2.0.0",
+  };
+  const bytes = await (await fetch(videoUrl)).arrayBuffer();
+  const size = bytes.byteLength;
+
+  // 1) init
+  const initRes = await fetch(`${LI_API}/rest/videos?action=initializeUpload`, {
+    method: "POST",
+    headers: { ...h, "content-type": "application/json" },
+    body: JSON.stringify({ initializeUploadRequest: { owner: author, fileSizeBytes: size, uploadCaptions: false, uploadThumbnail: false } }),
+  });
+  const init = await initRes.json();
+  const video = init?.value?.video;
+  const instructions = init?.value?.uploadInstructions || [];
+  const uploadToken = init?.value?.uploadToken ?? "";
+  if (!initRes.ok || !video || !instructions.length) throw new Error(`LI video init: ${JSON.stringify(init)}`);
+
+  // 2) subir bytes (cada parte) y juntar ETags
+  const parts = [];
+  for (const ins of instructions) {
+    const chunk = bytes.slice(ins.firstByte, ins.lastByte + 1);
+    const up = await fetch(ins.uploadUrl, {
+      method: "PUT",
+      headers: { Authorization: `Bearer ${env.LINKEDIN_ACCESS_TOKEN}`, "content-type": "application/octet-stream" },
+      body: chunk,
+    });
+    if (!up.ok) throw new Error(`LI video upload: ${up.status} ${await up.text()}`);
+    parts.push(up.headers.get("etag") || up.headers.get("ETag") || "");
+  }
+
+  // 3) finalize
+  const fin = await fetch(`${LI_API}/rest/videos?action=finalizeUpload`, {
+    method: "POST",
+    headers: { ...h, "content-type": "application/json" },
+    body: JSON.stringify({ finalizeUploadRequest: { video, uploadToken, uploadedPartIds: parts } }),
+  });
+  if (!fin.ok) throw new Error(`LI video finalize: ${fin.status} ${await fin.text()}`);
+
+  // 4) publicar (el video puede tardar en procesar; LinkedIn lo muestra al terminar)
+  const postRes = await fetch(`${LI_API}/rest/posts`, {
+    method: "POST",
+    headers: { ...h, "content-type": "application/json" },
+    body: JSON.stringify({
+      author,
+      commentary: caption,
+      visibility: "PUBLIC",
+      distribution: { feedDistribution: "MAIN_FEED", targetEntities: [], thirdPartyDistributionChannels: [] },
+      content: { media: { title: "maudev", id: video } },
+      lifecycleState: "PUBLISHED",
+      isReshareDisabledByAuthor: false,
+    }),
+  });
+  const postId = postRes.headers.get("x-restli-id");
+  if (!postRes.ok || !postId) throw new Error(`LI video post: ${postRes.status} ${await postRes.text()}`);
+  return postId;
+}
+
 // ─── TikTok (Content Posting API): subir el reel ──────────────────────────────
 // Requiere secrets:
 //   TIKTOK_CLIENT_KEY, TIKTOK_CLIENT_SECRET, TIKTOK_REFRESH_TOKEN
@@ -303,14 +369,14 @@ async function runOnce(env) {
     fbError = e.message;
   }
 
-  // LinkedIn (best-effort): solo imágenes por ahora (el video usa otra API).
+  // LinkedIn (best-effort): video si es reel, imagen si no.
   let liId = null, liError = null;
-  if (kind !== "reel") {
-    try {
-      liId = await publishLinkedIn(env, imageUrl, caption);
-    } catch (e) {
-      liError = e.message;
-    }
+  try {
+    liId = kind === "reel"
+      ? await publishLinkedInVideo(env, videoUrl, caption)
+      : await publishLinkedIn(env, imageUrl, caption);
+  } catch (e) {
+    liError = e.message;
   }
 
   // TikTok (best-effort): solo video (reel). Llega como borrador al inbox.
