@@ -49,6 +49,10 @@ const VIDEO_POOL = [
   "https://maudev.cl/social/reel-7.mp4", // Velocidad
   "https://maudev.cl/social/reel-8.mp4", // Confianza/contrato
   "https://maudev.cl/social/cinematic.mp4", // Cinematográfico (voz en off)
+  // Reels NARRADOS estratégicos (voz + música + diseño propios):
+  "https://maudev.cl/social/voice-perdida.mp4", // aversión a la pérdida
+  "https://maudev.cl/social/voice-web.mp4",     // autoridad / primera impresión
+  "https://maudev.cl/social/voice-primero.mp4", // urgencia / ventaja del primero
 ];
 
 // Plan semanal DETERMINÍSTICO: 21 slots (7 días × 3 franjas). Cada caption se usa
