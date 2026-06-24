@@ -2,9 +2,6 @@ name = "ig-autopost"
 main = "worker.js"
 compatibility_date = "2026-06-01"
 
-# Cron PAUSADO mientras se rehace todo el contenido (blog + reels/carruseles
-# coherentes por tema). Reactivar poniendo de nuevo los 3 horarios cuando el
-# contenido nuevo esté validado en Remotion y desplegado.
-# crons = ["0 13 * * *", "0 17 * * *", "0 21 * * *"]
+# Cron: 3 publicaciones por día — 13:00, 17:00 y 21:00 UTC (≈ 09:00, 13:00, 17:00 Chile).
 [triggers]
-crons = []
+crons = ["0 13 * * *", "0 17 * * *", "0 21 * * *"]
