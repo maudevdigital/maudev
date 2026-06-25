@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react"
 import { Toaster } from "sonner"
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClientInstance } from '@/lib/query-client'
@@ -10,38 +11,44 @@ import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import AdminGuard from './components/admin/AdminGuard';
 import WhatsAppFloat from '@/components/landing/WhatsAppFloat';
 import AdminLayout from './components/admin/AdminLayout';
-import Landing from './pages/Landing';
-import Blog from './pages/Blog';
-import BlogPostDetail from './pages/BlogPostDetail';
-import Servicios from './pages/Servicios';
-import Portafolio from './pages/Portafolio';
-import CasoEstudio from './pages/CasoEstudio';
-import SobreNosotros from './pages/SobreNosotros';
-import Contacto from './pages/Contacto';
-import Precios from './pages/Precios';
-import Cotizador from './pages/Cotizador';
-import DiagnosticoWeb from './pages/DiagnosticoWeb';
-import Ahora from './pages/Ahora';
-import Contrato from './pages/Contrato';
-import Terminos from './pages/Terminos';
-import Privacidad from './pages/Privacidad';
-import Dashboard from './pages/admin/Dashboard';
-import AdminBlog from './pages/admin/AdminBlog';
-import AdminLeads from './pages/admin/AdminLeads';
-import AdminPortfolio from './pages/admin/AdminPortfolio';
-import AdminTikTok from './pages/admin/AdminTikTok';
-import LpDiagnostico from './pages/lp/Diagnostico';
-import LinkInBio from './pages/LinkInBio';
+import Landing from './pages/Landing'; // eager: es la home (LCP) y la entrada más común
+
+// El resto se carga BAJO DEMANDA (code-splitting) → bundle inicial mucho menor,
+// menos JS bloqueando el hilo principal (mejor TBT/rendimiento). Cada página y
+// el blog pesado (blogPosts.js) quedan en su propio chunk.
+const Blog = lazy(() => import('./pages/Blog'));
+const BlogPostDetail = lazy(() => import('./pages/BlogPostDetail'));
+const Servicios = lazy(() => import('./pages/Servicios'));
+const Portafolio = lazy(() => import('./pages/Portafolio'));
+const CasoEstudio = lazy(() => import('./pages/CasoEstudio'));
+const SobreNosotros = lazy(() => import('./pages/SobreNosotros'));
+const Contacto = lazy(() => import('./pages/Contacto'));
+const Precios = lazy(() => import('./pages/Precios'));
+const Cotizador = lazy(() => import('./pages/Cotizador'));
+const DiagnosticoWeb = lazy(() => import('./pages/DiagnosticoWeb'));
+const Ahora = lazy(() => import('./pages/Ahora'));
+const Contrato = lazy(() => import('./pages/Contrato'));
+const Terminos = lazy(() => import('./pages/Terminos'));
+const Privacidad = lazy(() => import('./pages/Privacidad'));
+const Dashboard = lazy(() => import('./pages/admin/Dashboard'));
+const AdminBlog = lazy(() => import('./pages/admin/AdminBlog'));
+const AdminLeads = lazy(() => import('./pages/admin/AdminLeads'));
+const AdminPortfolio = lazy(() => import('./pages/admin/AdminPortfolio'));
+const AdminTikTok = lazy(() => import('./pages/admin/AdminTikTok'));
+const LpDiagnostico = lazy(() => import('./pages/lp/Diagnostico'));
+const LinkInBio = lazy(() => import('./pages/LinkInBio'));
+
+const Spinner = () => (
+  <div className="fixed inset-0 flex items-center justify-center">
+    <div className="w-8 h-8 border-4 border-slate-200 border-t-slate-800 rounded-full animate-spin"></div>
+  </div>
+);
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError } = useAuth();
 
   if (isLoadingPublicSettings || isLoadingAuth) {
-    return (
-      <div className="fixed inset-0 flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-slate-200 border-t-slate-800 rounded-full animate-spin"></div>
-      </div>
-    );
+    return <Spinner />;
   }
 
   if (authError) {
@@ -51,36 +58,38 @@ const AuthenticatedApp = () => {
   }
 
   return (
-    <Routes>
-      <Route path="/" element={<Landing />} />
-      <Route path="/servicios" element={<Servicios />} />
-      <Route path="/precios" element={<Precios />} />
-      <Route path="/cotizador" element={<Cotizador />} />
-      <Route path="/diagnostico-web" element={<DiagnosticoWeb />} />
-      <Route path="/ahora" element={<Ahora />} />
-      <Route path="/contrato" element={<Contrato />} />
-      <Route path="/portafolio" element={<Portafolio />} />
-      <Route path="/portafolio/:projectId" element={<CasoEstudio />} />
-      <Route path="/sobre-nosotros" element={<SobreNosotros />} />
-      <Route path="/contacto" element={<Contacto />} />
-      <Route path="/blog" element={<Blog />} />
-      <Route path="/blog/:postId" element={<BlogPostDetail />} />
-      <Route path="/terminos" element={<Terminos />} />
-      <Route path="/privacidad" element={<Privacidad />} />
-      <Route path="/lp/diagnostico" element={<LpDiagnostico />} />
-      <Route path="/ig" element={<LinkInBio />} />
-      <Route path="/links" element={<LinkInBio />} />
-      <Route element={<AdminGuard />}>
-        <Route element={<AdminLayout />}>
-          <Route path="/admin" element={<Dashboard />} />
-          <Route path="/admin/blog" element={<AdminBlog />} />
-          <Route path="/admin/leads" element={<AdminLeads />} />
-          <Route path="/admin/portafolio" element={<AdminPortfolio />} />
-          <Route path="/admin/tiktok" element={<AdminTikTok />} />
+    <Suspense fallback={<Spinner />}>
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/servicios" element={<Servicios />} />
+        <Route path="/precios" element={<Precios />} />
+        <Route path="/cotizador" element={<Cotizador />} />
+        <Route path="/diagnostico-web" element={<DiagnosticoWeb />} />
+        <Route path="/ahora" element={<Ahora />} />
+        <Route path="/contrato" element={<Contrato />} />
+        <Route path="/portafolio" element={<Portafolio />} />
+        <Route path="/portafolio/:projectId" element={<CasoEstudio />} />
+        <Route path="/sobre-nosotros" element={<SobreNosotros />} />
+        <Route path="/contacto" element={<Contacto />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/:postId" element={<BlogPostDetail />} />
+        <Route path="/terminos" element={<Terminos />} />
+        <Route path="/privacidad" element={<Privacidad />} />
+        <Route path="/lp/diagnostico" element={<LpDiagnostico />} />
+        <Route path="/ig" element={<LinkInBio />} />
+        <Route path="/links" element={<LinkInBio />} />
+        <Route element={<AdminGuard />}>
+          <Route element={<AdminLayout />}>
+            <Route path="/admin" element={<Dashboard />} />
+            <Route path="/admin/blog" element={<AdminBlog />} />
+            <Route path="/admin/leads" element={<AdminLeads />} />
+            <Route path="/admin/portafolio" element={<AdminPortfolio />} />
+            <Route path="/admin/tiktok" element={<AdminTikTok />} />
+          </Route>
         </Route>
-      </Route>
-      <Route path="*" element={<PageNotFound />} />
-    </Routes>
+        <Route path="*" element={<PageNotFound />} />
+      </Routes>
+    </Suspense>
   );
 };
 
