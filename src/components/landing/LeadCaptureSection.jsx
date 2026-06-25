@@ -175,7 +175,7 @@ export default function LeadCaptureSection() {
 
                 <div>
                   <label className="text-xs font-mono text-muted-foreground mb-1.5 block">{t("objetivo", "goal")} *</label>
-                  <select value={form.interest} onChange={set("interest")} className={inputClass} required>
+                  <select value={form.interest} onChange={set("interest")} className={inputClass} aria-label={t("Objetivo", "Goal")} required>
                     <option value="" disabled>
                       {t("Selecciona un objetivo", "Select a goal")}
                     </option>

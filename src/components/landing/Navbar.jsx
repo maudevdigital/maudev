@@ -93,7 +93,7 @@ export default function Navbar() {
             >
               {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </button>
-            <button onClick={() => setOpen(!open)} className="text-foreground">
+            <button onClick={() => setOpen(!open)} aria-label={t("Abrir menú", "Open menu")} className="text-foreground">
               {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
           </div>

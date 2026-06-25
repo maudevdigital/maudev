@@ -113,16 +113,13 @@ export default function HeroSection() {
               </span>
             </motion.div>
 
-            <motion.h1
-              custom={1}
-              variants={fadeUp}
-              initial="hidden"
-              animate="show"
+            {/* H1 estático (es el LCP): se pinta de inmediato, sin esperar JS/animación. */}
+            <h1
               className="text-[2rem] leading-[1.12] sm:text-5xl lg:text-6xl font-black tracking-tight mb-5"
             >
               {t("Deja de perder clientes por una web que ", "Stop losing customers to a website that ")}
               <span className="text-primary glow-text">{t("no vende.", "doesn't sell.")}</span>
-            </motion.h1>
+            </h1>
 
             <motion.p
               custom={2}
