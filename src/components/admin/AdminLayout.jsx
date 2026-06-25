@@ -10,6 +10,15 @@ export default function AdminLayout() {
   // Cierra el sidebar móvil al navegar.
   useEffect(() => { setSidebarOpen(false); }, [location.pathname]);
 
+  // El admin no debe indexarse: fuerza noindex mientras se está en /admin.
+  useEffect(() => {
+    const prev = document.querySelector('meta[name="robots"]')?.getAttribute("content");
+    let m = document.querySelector('meta[name="robots"]');
+    if (!m) { m = document.createElement("meta"); m.name = "robots"; document.head.appendChild(m); }
+    m.setAttribute("content", "noindex,nofollow");
+    return () => { if (m && prev) m.setAttribute("content", prev); };
+  }, []);
+
   // Bloquea el scroll del body cuando el sidebar móvil está abierto.
   useEffect(() => {
     document.body.style.overflow = sidebarOpen ? "hidden" : "";

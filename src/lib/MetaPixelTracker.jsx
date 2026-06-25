@@ -3,17 +3,29 @@ import { useLocation } from "react-router-dom";
 
 const CAPI_WORKER = "https://maudev-meta-capi.maudevchile.workers.dev";
 
-// Dispara PageView de Meta Pixel en cada cambio de ruta (SPA).
+// El panel /admin NO debe aparecer en analítica (ni GA ni Pixel).
+const isPrivate = (path) => path.startsWith("/admin");
+
+// Dispara PageView de Google Analytics 4 + Meta Pixel en cada cambio de ruta
+// (SPA), incluida la carga inicial. Excluye /admin por completo.
 export default function MetaPixelTracker() {
   const { pathname, search } = useLocation();
 
   useEffect(() => {
-    if (typeof window === "undefined" || typeof window.fbq !== "function") return;
-    if (!window.__fbqInitialPageView) {
-      window.__fbqInitialPageView = true;
-      return;
+    if (typeof window === "undefined") return;
+    if (isPrivate(pathname)) return; // el admin no se trackea
+
+    const page_path = pathname + search;
+    if (typeof window.gtag === "function") {
+      window.gtag("event", "page_view", {
+        page_path,
+        page_location: window.location.href,
+        page_title: document.title,
+      });
     }
-    window.fbq("track", "PageView");
+    if (typeof window.fbq === "function") {
+      window.fbq("track", "PageView");
+    }
   }, [pathname, search]);
 
   return null;
