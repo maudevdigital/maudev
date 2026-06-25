@@ -271,19 +271,29 @@ async function refreshTikTokToken(env) {
   return j.access_token;
 }
 
-async function publishTikTok(env, videoUrl) {
+async function publishTikTok(env, videoUrl, caption) {
   if (!env.TIKTOK_CLIENT_KEY || !env.TIKTOK_CLIENT_SECRET || !env.TIKTOK_REFRESH_TOKEN) return null;
   const accessToken = await refreshTikTokToken(env);
-  // Borrador (inbox). Para Direct Post (requiere video.publish + auditoría) usar
-  // /v2/post/publish/video/init/ con post_info{title,privacy_level,...}.
-  const res = await fetch("https://open.tiktokapis.com/v2/post/publish/inbox/video/init/", {
+  // Direct Post: publica el video CON su descripción (title incluye caption + hashtags).
+  // En sandbox / app no auditada la privacidad debe ser SELF_ONLY; en producción
+  // aprobada se cambia a PUBLIC_TO_EVERYONE con el secret TIKTOK_PRIVACY.
+  const res = await fetch("https://open.tiktokapis.com/v2/post/publish/video/init/", {
     method: "POST",
     headers: { Authorization: `Bearer ${accessToken}`, "content-type": "application/json; charset=UTF-8" },
-    body: JSON.stringify({ source_info: { source: "PULL_FROM_URL", video_url: videoUrl } }),
+    body: JSON.stringify({
+      post_info: {
+        title: (caption || "").slice(0, 2150),
+        privacy_level: env.TIKTOK_PRIVACY || "SELF_ONLY",
+        disable_comment: false,
+        disable_duet: false,
+        disable_stitch: false,
+      },
+      source_info: { source: "PULL_FROM_URL", video_url: videoUrl },
+    }),
   });
   const j = await res.json();
   const pid = j?.data?.publish_id;
-  if (!res.ok || !pid) throw new Error(`TikTok init: ${JSON.stringify(j)}`);
+  if (!res.ok || !pid) throw new Error(`TikTok direct post: ${JSON.stringify(j)}`);
   return pid;
 }
 
@@ -398,7 +408,7 @@ async function runOnce(env) {
   let ttId = null, ttError = null;
   if (isReel) {
     try {
-      ttId = await publishTikTok(env, videoUrl);
+      ttId = await publishTikTok(env, videoUrl, caption);
     } catch (e) {
       ttError = e.message;
     }
@@ -423,7 +433,7 @@ const jsonCors = (data, status = 200) =>
 function tiktokAuthUrl(env) {
   const u = new URL("https://www.tiktok.com/v2/auth/authorize/");
   u.searchParams.set("client_key", env.TIKTOK_CLIENT_KEY);
-  u.searchParams.set("scope", "user.info.basic,video.upload");
+  u.searchParams.set("scope", "user.info.basic,video.publish");
   u.searchParams.set("response_type", "code");
   u.searchParams.set("redirect_uri", TIKTOK_REDIRECT);
   u.searchParams.set("state", "maudev" + Math.random().toString(36).slice(2, 8));
@@ -489,8 +499,9 @@ export default {
     if (path === "/tiktok/publish" && req.method === "POST") {
       if (req.headers.get("origin") !== ADMIN_ORIGIN) return jsonCors({ ok: false, error: "origin" }, 403);
       try {
-        const videoUrl = env.TIKTOK_DEMO_VIDEO || "https://maudev.cl/social/d1-cotizan-rapido.mp4";
-        const pid = await publishTikTok(env, videoUrl);
+        const demo = CONTENT.find((c) => c.kind === "reel") || {};
+        const videoUrl = env.TIKTOK_DEMO_VIDEO || demo.media || "https://maudev.cl/social/d1-cotizan-rapido.mp4";
+        const pid = await publishTikTok(env, videoUrl, demo.caption || "maudev · software a medida");
         return jsonCors({ ok: !!pid, publishId: pid });
       } catch (e) {
         return jsonCors({ ok: false, error: e.message }, 500);
