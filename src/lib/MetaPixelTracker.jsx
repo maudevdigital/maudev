@@ -49,6 +49,12 @@ export async function trackLeadEvent({ email, phone, params = {} } = {}) {
     window.fbq("track", "Lead", params, { eventID: eventId });
   }
 
+  // 1b. Google Analytics 4: evento de lead. Márcalo como "evento clave"
+  //     (conversión) en GA4 → Administrar → Eventos clave.
+  if (typeof window.gtag === "function") {
+    window.gtag("event", "generate_lead", { ...params, event_id: eventId });
+  }
+
   // 2. CAPI servidor
   try {
     await fetch(CAPI_WORKER, {
