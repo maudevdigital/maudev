@@ -41,6 +41,7 @@ function buildContent(index) {
     kind: item.kind, // "reel" | "carousel"
     media: item.media, // string (reel) | array de strings (carrusel)
     caption: item.caption,
+    liCaption: item.liCaption || item.caption, // LinkedIn: 1 imagen (sin "desliza")
     preview: (item.caption || "").split("\n")[0],
   };
 }
@@ -371,10 +372,12 @@ async function logPost(env, row) {
   }).catch(() => {});
 }
 
-async function runOnce(env) {
+async function runOnce(env, forcedIndex) {
   if (!CONTENT.length) throw new Error("CONTENT vacío.");
-  const index = currentIndex();
-  const { id, kind, media, caption, preview } = buildContent(index);
+  const index = Number.isInteger(forcedIndex)
+    ? ((forcedIndex % CONTENT.length) + CONTENT.length) % CONTENT.length
+    : currentIndex();
+  const { id, kind, media, caption, liCaption, preview } = buildContent(index);
   const isReel = kind === "reel";
   const videoUrl = isReel ? media : null;
   const images = isReel ? null : media; // array de URLs
@@ -399,7 +402,7 @@ async function runOnce(env) {
   try {
     liId = isReel
       ? await publishLinkedInVideo(env, videoUrl, caption)
-      : await publishLinkedIn(env, images[0], caption);
+      : await publishLinkedIn(env, images[0], liCaption);
   } catch (e) {
     liError = e.message;
   }
@@ -511,7 +514,8 @@ export default {
     // 5) Disparo manual de la publicación a todos los canales (uso interno).
     if (req.headers.get("x-trigger") === env.TRIGGER_SECRET) {
       try {
-        const r = await runOnce(env);
+        const forced = url.searchParams.get("index");
+        const r = await runOnce(env, forced != null ? parseInt(forced, 10) : undefined);
         return Response.json({ ok: true, ...r });
       } catch (err) {
         return Response.json({ ok: false, error: err.message }, { status: 500 });

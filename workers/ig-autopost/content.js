@@ -59,6 +59,13 @@ Lo que el desarrollo barato omite (y que después pagas caro): pruebas, segurida
 Desliza para ver la checklist 👉 y guárdalo para tu próxima cotización de software.
 
 ${TAGS_BASE} #cotizacionsoftware #desarrolloweb #consejospymes #transformaciondigital #empresaschile #checklist`,
+    liCaption: `📋 Antes de firmar por un software a medida, revisa que tu cotización incluya ESTO.
+
+Lo que el desarrollo barato omite (y que después pagas caro): pruebas, seguridad, documentación y soporte. Y lo más importante: que el código quede a TU nombre, con precio y alcance por escrito.
+
+Guárdalo para tu próxima cotización de software.
+
+${TAGS_BASE} #cotizacionsoftware #desarrolloweb #consejospymes #transformaciondigital #empresaschile #checklist`,
   },
 
   // ===================== DÍA 2 · "Software a medida vs SaaS" =====================
@@ -150,6 +157,13 @@ Te cotizan sin entender tu negocio, no muestran avances hasta el final, no ponen
 Desliza para verlas todas 👉 y guárdalo para tu próxima contratación.
 
 ${TAGS_BASE} #comocontratar #desarrolloweb #agenciadesoftware #pymeschile #consejos #empresaschile`,
+    liCaption: `🚩 7 señales de alerta al contratar a quien va a desarrollar tu software.
+
+Te cotizan sin entender tu negocio, no muestran avances hasta el final, no ponen el alcance por escrito, precio sospechosamente bajo, sin referencias, evaden de quién es el código y solo te atiende un vendedor.
+
+Guárdalo para tu próxima contratación.
+
+${TAGS_BASE} #comocontratar #desarrolloweb #agenciadesoftware #pymeschile #consejos #empresaschile`,
   },
 
   // ===================== DÍA 4 · "El ROI real de automatizar" =====================
@@ -238,6 +252,11 @@ ${TAGS_BASE} #plazos #procesodedesarrollo #pymeschile #softwareempresarial #empr
 Descubrimiento → diseño y arquitectura → desarrollo por sprints → pruebas (QA) → despliegue seguro → soporte y evolución. Si tu proveedor se salta etapas, mala señal.
 
 Desliza para ver el proceso completo 👉 y guárdalo.
+
+${TAGS_BASE} #procesodedesarrollo #softwareempresarial #pymeschile #transformaciondigital #consejos`,
+    liCaption: `🧭 Las 6 etapas de un proyecto de software a medida (para que sepas qué exigir).
+
+Descubrimiento → diseño y arquitectura → desarrollo por sprints → pruebas (QA) → despliegue seguro → soporte y evolución. Si tu proveedor se salta etapas, mala señal.
 
 ${TAGS_BASE} #procesodedesarrollo #softwareempresarial #pymeschile #transformaciondigital #consejos`,
   },
