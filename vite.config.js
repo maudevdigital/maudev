@@ -12,4 +12,19 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  build: {
+    // Target moderno → menos "JavaScript antiguo"/polyfills (mejor TBT).
+    target: 'es2020',
+    rollupOptions: {
+      output: {
+        // Vendors pesados en chunks cacheables aparte del código de la app.
+        manualChunks(id) {
+          if (!id.includes('node_modules')) return;
+          if (id.includes('framer-motion')) return 'motion';
+          if (id.includes('/react-router') || id.includes('/react-dom') || id.includes('/react/') || id.includes('/scheduler/')) return 'react-vendor';
+          if (id.includes('/moment')) return 'moment';
+        },
+      },
+    },
+  },
 })

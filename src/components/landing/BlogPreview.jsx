@@ -4,7 +4,12 @@ import { ArrowRight, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
 import { blogPosts as staticPosts, blogCategories as categoryLabels } from "@/data/blogPosts";
 import { t, pick } from "@/lib/i18n";
-import moment from "moment";
+
+// Fecha "25 jun 2026" sin moment (evita ~70 KB en el bundle inicial).
+const fmtDate = (d) =>
+  new Intl.DateTimeFormat("es-CL", { day: "2-digit", month: "short", year: "numeric" })
+    .format(new Date(d))
+    .replace(".", "");
 
 const latestStatic = [...staticPosts]
   .sort((a, b) => new Date(b.created_date) - new Date(a.created_date))
@@ -64,7 +69,7 @@ export default function BlogPreview({ blogImage }) {
                 <h3 className="font-semibold text-sm mb-2 group-hover:text-primary transition-colors line-clamp-2">{pick(post, "title")}</h3>
                 <p className="text-xs text-muted-foreground line-clamp-2">{pick(post, "excerpt")}</p>
                 <p className="text-[10px] text-muted-foreground mt-3 font-mono">
-                  {moment(post.created_date).format("DD MMM YYYY")}
+                  {fmtDate(post.created_date)}
                 </p>
               </div>
             </Link>
