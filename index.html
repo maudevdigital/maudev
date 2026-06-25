@@ -43,30 +43,39 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="https://maudev.cl/og-image.png" />
     <title>Maudev · Desarrollo web, software y automatización en Chile</title>
-    <!-- Google Analytics 4 — verificar que el ID G-98P5BBFLQM sea el correcto en GA4 -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-98P5BBFLQM"></script>
+    <!-- Preconnect a orígenes críticos (acelera fuentes y datos → mejor LCP). -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://hsaoeuuyxrzxlvcvkiab.supabase.co" crossorigin />
+
+    <!-- Analítica (GA4 + Meta Pixel) con CARGA DIFERIDA: los stubs quedan listos
+         (las llamadas se encolan), pero los scripts pesados se bajan tras la 1ª
+         interacción o a los 4s → no bloquean el hilo principal en la carga (TBT). -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      // send_page_view:false → el page_view lo dispara React (excluye /admin).
-      gtag('config', 'G-98P5BBFLQM', { send_page_view: false });
-    </script>
-    <!-- End Google Analytics 4 -->
-    <!-- Meta Pixel Code -->
-    <script>
-      !function(f,b,e,v,n,t,s)
-      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      gtag('config', 'G-98P5BBFLQM', { send_page_view: false }); // page_view lo dispara React (excluye /admin)
+
+      !function(f,b,e,v,n){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
       n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-      n.queue=[];t=b.createElement(e);t.async=!0;
-      t.src=v;s=b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t,s)}(window, document,'script',
-      'https://connect.facebook.net/en_US/fbevents.js');
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[]}(window,document);
       fbq('init', '3002561230082800');
-      // El PageView lo dispara React (MetaPixelTracker) excluyendo /admin.
+
+      (function(){
+        var loaded=false;
+        function load(){
+          if(loaded)return; loaded=true;
+          var ga=document.createElement('script'); ga.async=true;
+          ga.src='https://www.googletagmanager.com/gtag/js?id=G-98P5BBFLQM'; document.head.appendChild(ga);
+          var fb=document.createElement('script'); fb.async=true;
+          fb.src='https://connect.facebook.net/en_US/fbevents.js'; document.head.appendChild(fb);
+        }
+        var evs=['scroll','mousemove','touchstart','pointerdown','keydown'];
+        function once(){ load(); evs.forEach(function(e){window.removeEventListener(e,once)}); }
+        evs.forEach(function(e){ window.addEventListener(e,once,{passive:true}); });
+        setTimeout(load, 4000); // respaldo si no hay interacción
+      })();
     </script>
-    <!-- End Meta Pixel Code -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
