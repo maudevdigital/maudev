@@ -25,13 +25,30 @@ const GRAPH = "https://graph.facebook.com/v21.0";
 // (cada pieza con su caption coherente). Anclado al 24-jun-2026: ese día en la
 // franja 0 = item 0. Recorre los 15 ítems en 5 días y luego cicla.
 const BASE_DAY = Math.floor(Date.UTC(2026, 5, 24) / 86400000);
-function currentIndex() {
+function slotInfo() {
   const now = new Date();
   const dayNum = Math.floor(now.getTime() / 86400000); // día UTC
   const h = now.getUTCHours();
   const franja = h < 15 ? 0 : h < 19 ? 1 : 2; // crons 13/17/21 UTC ≈ 09/13/17 Chile
+  const weekday = now.getUTCDay(); // 0=Dom..6=Sáb
   const seq = (dayNum - BASE_DAY) * 3 + franja;
-  return ((seq % CONTENT.length) + CONTENT.length) % CONTENT.length;
+  const index = ((seq % CONTENT.length) + CONTENT.length) % CONTENT.length;
+  return { index, franja, weekday };
+}
+
+// CADENCIA POR PLATAFORMA (cada red en su ritmo óptimo, no el mismo volumen a todas).
+// franja: 0=09:00, 1=13:00, 2=17:00 (Chile).
+//   Instagram/TikTok: 2/día (reels escalan)  → franjas 0 y 2.
+//   Facebook: 1/día                          → franja 1.
+//   LinkedIn: 1/día y SOLO días hábiles (Lun-Vie) → franja 1. (LinkedIn penaliza postear de más.)
+function platformsForSlot(franja, weekday) {
+  const habil = weekday >= 1 && weekday <= 5;
+  return {
+    ig: franja === 0 || franja === 2,
+    tt: franja === 0 || franja === 2,
+    fb: franja === 1,
+    li: franja === 1 && habil,
+  };
 }
 
 function buildContent(index) {
@@ -135,45 +152,47 @@ async function publishFacebook(env, imageUrl, caption) {
 // Doc: Posts API + Images API (versionada). Flujo: initializeUpload → PUT bytes → POST /rest/posts.
 const LI_API = "https://api.linkedin.com";
 const LI_VERSION = "202601"; // versión vigente de la LinkedIn API (formato YYYYMM)
-async function publishLinkedIn(env, imageUrl, caption) {
-  if (!env.LINKEDIN_ACCESS_TOKEN || !env.LINKEDIN_PERSON_URN) return null;
-  const author = env.LINKEDIN_PERSON_URN;
-  const h = {
+function liHeaders(env) {
+  return {
     Authorization: `Bearer ${env.LINKEDIN_ACCESS_TOKEN}`,
     "LinkedIn-Version": LI_VERSION,
     "X-Restli-Protocol-Version": "2.0.0",
   };
+}
 
-  // 1) Inicializar la subida de imagen → obtener uploadUrl + urn de imagen.
+// Sube UNA imagen a LinkedIn → devuelve su URN (urn:li:image:...).
+async function uploadLinkedInImage(env, imageUrl) {
+  const h = liHeaders(env);
   const initRes = await fetch(`${LI_API}/rest/images?action=initializeUpload`, {
     method: "POST",
     headers: { ...h, "content-type": "application/json" },
-    body: JSON.stringify({ initializeUploadRequest: { owner: author } }),
+    body: JSON.stringify({ initializeUploadRequest: { owner: env.LINKEDIN_PERSON_URN } }),
   });
   const init = await initRes.json();
   const uploadUrl = init?.value?.uploadUrl;
   const imageUrn = init?.value?.image;
-  if (!initRes.ok || !uploadUrl || !imageUrn) throw new Error(`LI init: ${JSON.stringify(init)}`);
-
-  // 2) Descargar la imagen y subir los bytes a uploadUrl.
+  if (!initRes.ok || !uploadUrl || !imageUrn) throw new Error(`LI img init: ${JSON.stringify(init)}`);
   const imgBytes = await (await fetch(imageUrl)).arrayBuffer();
   const upRes = await fetch(uploadUrl, {
     method: "PUT",
     headers: { Authorization: `Bearer ${env.LINKEDIN_ACCESS_TOKEN}` },
     body: imgBytes,
   });
-  if (!upRes.ok) throw new Error(`LI upload: ${upRes.status} ${await upRes.text()}`);
+  if (!upRes.ok) throw new Error(`LI img upload: ${upRes.status} ${await upRes.text()}`);
+  return imageUrn;
+}
 
-  // 3) Crear el post referenciando la imagen.
+// Crea un post en LinkedIn con un `content` dado (imagen, multiImage o video).
+async function createLinkedInPost(env, caption, content) {
   const postRes = await fetch(`${LI_API}/rest/posts`, {
     method: "POST",
-    headers: { ...h, "content-type": "application/json" },
+    headers: { ...liHeaders(env), "content-type": "application/json" },
     body: JSON.stringify({
-      author,
+      author: env.LINKEDIN_PERSON_URN,
       commentary: caption,
       visibility: "PUBLIC",
       distribution: { feedDistribution: "MAIN_FEED", targetEntities: [], thirdPartyDistributionChannels: [] },
-      content: { media: { altText: "maudev", id: imageUrn } },
+      content,
       lifecycleState: "PUBLISHED",
       isReshareDisabledByAuthor: false,
     }),
@@ -181,6 +200,23 @@ async function publishLinkedIn(env, imageUrl, caption) {
   const postId = postRes.headers.get("x-restli-id");
   if (!postRes.ok || !postId) throw new Error(`LI post: ${postRes.status} ${await postRes.text()}`);
   return postId;
+}
+
+// Post con UNA imagen.
+async function publishLinkedIn(env, imageUrl, caption) {
+  if (!env.LINKEDIN_ACCESS_TOKEN || !env.LINKEDIN_PERSON_URN) return null;
+  const urn = await uploadLinkedInImage(env, imageUrl);
+  return createLinkedInPost(env, caption, { media: { altText: "maudev", id: urn } });
+}
+
+// Post NATIVO de varias imágenes (carrusel deslizable) → se ven TODAS las slides.
+async function publishLinkedInCarousel(env, imageUrls, caption) {
+  if (!env.LINKEDIN_ACCESS_TOKEN || !env.LINKEDIN_PERSON_URN) return null;
+  const images = [];
+  for (const url of imageUrls) {
+    images.push({ id: await uploadLinkedInImage(env, url), altText: "maudev" });
+  }
+  return createLinkedInPost(env, caption, { multiImage: { images } });
 }
 
 // ─── LinkedIn: subir VIDEO (reel) y publicar ─────────────────────────────────
@@ -374,51 +410,49 @@ async function logPost(env, row) {
 
 async function runOnce(env, forcedIndex) {
   if (!CONTENT.length) throw new Error("CONTENT vacío.");
-  const index = Number.isInteger(forcedIndex)
-    ? ((forcedIndex % CONTENT.length) + CONTENT.length) % CONTENT.length
-    : currentIndex();
+  const forced = Number.isInteger(forcedIndex);
+  const info = slotInfo();
+  const index = forced ? (((forcedIndex % CONTENT.length) + CONTENT.length) % CONTENT.length) : info.index;
+  // Disparo manual → publica en TODAS. Cron → cadencia por plataforma.
+  const p = forced ? { ig: true, fb: true, li: true, tt: true } : platformsForSlot(info.franja, info.weekday);
+
   const { id, kind, media, caption, liCaption, preview } = buildContent(index);
   const isReel = kind === "reel";
   const videoUrl = isReel ? media : null;
   const images = isReel ? null : media; // array de URLs
 
-  // Instagram (requerido): reel o carrusel.
-  const postId = isReel
-    ? await publishReel(env, videoUrl, caption)
-    : await publishCarousel(env, images, caption);
-
-  // Facebook (best-effort): video o álbum.
-  let fbId = null, fbError = null;
-  try {
-    fbId = isReel
-      ? await publishFacebookVideo(env, videoUrl, caption)
-      : await publishFacebookCarousel(env, images, caption);
-  } catch (e) {
-    fbError = e.message;
-  }
-
-  // LinkedIn (best-effort): video si reel; imagen de portada si carrusel.
-  let liId = null, liError = null;
-  try {
-    liId = isReel
-      ? await publishLinkedInVideo(env, videoUrl, caption)
-      : await publishLinkedIn(env, images[0], liCaption);
-  } catch (e) {
-    liError = e.message;
-  }
-
-  // TikTok (best-effort): solo reels. Llega como borrador al inbox.
-  let ttId = null, ttError = null;
-  if (isReel) {
+  // Instagram
+  let postId = null, igError = null;
+  if (p.ig) {
     try {
-      ttId = await publishTikTok(env, videoUrl, caption);
-    } catch (e) {
-      ttError = e.message;
-    }
+      postId = isReel ? await publishReel(env, videoUrl, caption) : await publishCarousel(env, images, caption);
+    } catch (e) { igError = e.message; }
   }
 
-  await logPost(env, { ig_post_id: postId, fb_post_id: fbId, li_post_id: liId, tt_publish_id: ttId, hook: preview, media_kind: kind, content_id: id, image_url: isReel ? videoUrl : images[0], caption, created_at: new Date().toISOString() });
-  return { index, id, kind, postId, fbId, fbError, liId, liError, ttId, ttError, preview };
+  // Facebook (best-effort)
+  let fbId = null, fbError = null;
+  if (p.fb) {
+    try {
+      fbId = isReel ? await publishFacebookVideo(env, videoUrl, caption) : await publishFacebookCarousel(env, images, caption);
+    } catch (e) { fbError = e.message; }
+  }
+
+  // LinkedIn (best-effort): video si reel; carrusel multi-imagen nativo si carrusel.
+  let liId = null, liError = null;
+  if (p.li) {
+    try {
+      liId = isReel ? await publishLinkedInVideo(env, videoUrl, caption) : await publishLinkedInCarousel(env, images, liCaption);
+    } catch (e) { liError = e.message; }
+  }
+
+  // TikTok (best-effort): solo reels.
+  let ttId = null, ttError = null;
+  if (p.tt && isReel) {
+    try { ttId = await publishTikTok(env, videoUrl, caption); } catch (e) { ttError = e.message; }
+  }
+
+  await logPost(env, { ig_post_id: postId, fb_post_id: fbId, li_post_id: liId, tt_publish_id: ttId, hook: preview, media_kind: kind, content_id: id, image_url: isReel ? videoUrl : (images && images[0]), caption, created_at: new Date().toISOString() });
+  return { index, id, kind, platforms: p, postId, igError, fbId, fbError, liId, liError, ttId, ttError, preview };
 }
 
 // ─── Flujo TikTok para /admin (Login Kit + Content Posting API, demo de review) ─
