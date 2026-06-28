@@ -172,6 +172,268 @@ Plus, Google ranks fast sites higher. Before approving a project, ask how they'l
 The good news: these 7 mistakes are avoided with the same few demands. Before signing, make sure to: compare by what's included; have scope and price **in writing**; get the **code and domain in your name**; see **working progress**; know what **support** includes; and talk to **whoever will build it**. If your provider answers these clearly and in writing, you'll dodge almost every problem.${ctaEN}`,
   },
 
+  {
+    id: "como-se-calcula-precio-software-2026",
+    title: "Cómo se calcula el precio de un software (la fórmula real)",
+    title_en: "How software pricing really works (the real formula)",
+    excerpt:
+      "Por qué el mismo proyecto puede costar 10 veces distinto, qué factores multiplican el precio, cómo cotizan los buenos y por qué un número instantáneo es mala señal.",
+    excerpt_en:
+      "Why the same project can cost 10x differently, what multiplies the price, how the good ones quote, and why an instant number is a bad sign.",
+    category: "desarrollo",
+    read_time: 20,
+    author: AUTHOR,
+    tags: ["precios", "desarrollo de software", "cotizacion", "software a medida", "chile"],
+    cover_image: "/blog/como-se-calcula-precio-software-2026.png",
+    created_date: "2026-06-30T09:00:00-04:00",
+    content: `"¿Cuánto cuesta un software?" no tiene una respuesta porque el precio no es un número fijo: es el resultado de unas pocas decisiones que lo multiplican. Dos proyectos que se describen igual en una frase pueden costar diez veces distinto. Acá te explicamos la fórmula real —sin tecnicismos— para que entiendas de dónde sale el número y puedas leer una cotización con ojo crítico.
+
+![El mismo software puede costar 10 veces distinto según las decisiones detrás](/blog/precio-software-stat.png)
+
+## Lo que de verdad mueve el precio
+
+El costo no lo define "una app": lo definen estos factores, y cada uno multiplica.
+
+| Factor | Qué hace al precio |
+|---|---|
+| **Alcance** | Cada función extra suma. Es el factor #1. |
+| **Complejidad de la lógica** | Reglas de negocio, cálculos, validaciones. |
+| **Integraciones** | Conectarse con facturación, pagos, ERP, WhatsApp. |
+| **Usuarios y roles** | Más roles = más pantallas y más pruebas. |
+| **Diseño / experiencia** | De cara al cliente exige más pulido. |
+| **Escala y rendimiento** | Aguantar volumen cuesta más al inicio. |
+| **Quién lo construye** | Freelance, agencia, equipo senior… |
+
+## Cómo cotizan los que saben
+
+Un buen proveedor no te tira un número en cinco minutos. El proceso real es:
+
+1. **Descubrimiento:** entender tu negocio y cerrar el alcance.
+2. **Desglose por componentes:** estimar cada parte (pantallas, lógica, integraciones, pruebas, infraestructura).
+3. **Rango realista:** un buen presupuesto es un rango con supuestos claros, no un número mágico.
+
+Lo que pagas incluye cosas invisibles pero esenciales: arquitectura, diseño, pruebas, despliegue y soporte. Sin eso, el precio "baja" pero el software no sirve.
+
+## Por qué un número instantáneo es mala señal
+
+Si te cotizan al toque sin preguntar casi nada, significa una de dos: o te van a dar una plantilla genérica disfrazada de "a medida", o están adivinando y ese número va a subir apenas empiece el proyecto. **La pregunta correcta no es "¿cuánto cuesta?", sino "¿qué incluye y bajo qué supuestos?".**
+
+---
+
+**Para no equivocarte al comparar cotizaciones,** armamos una guía gratis con rangos reales, qué exigir y un checklist. [Descárgala aquí](/guia).
+
+---
+
+## En resumen
+
+El software no tiene un precio único porque no es un producto único. El número sale de una conversación seria sobre tu negocio y de un desglose honesto. Desconfía de los números mágicos y compara por lo que incluye, no por la cifra final.${cta}`,
+    content_en: `"How much does software cost?" has no single answer because price isn't a fixed number: it's the result of a few decisions that multiply it. Two projects described the same way can cost ten times differently. Here's the real formula so you can read a quote critically.
+
+![The same software can cost 10x differently depending on the decisions behind it](/blog/precio-software-stat.png)
+
+## What really moves the price
+
+| Factor | Effect on price |
+|---|---|
+| **Scope** | Every extra feature adds up. The #1 factor. |
+| **Logic complexity** | Business rules, calculations, validations. |
+| **Integrations** | Billing, payments, ERP, WhatsApp. |
+| **Users and roles** | More roles = more screens and testing. |
+| **Design / UX** | Customer-facing needs more polish. |
+| **Scale and performance** | Handling volume costs more upfront. |
+| **Who builds it** | Freelancer, agency, senior team… |
+
+## How the pros quote
+
+A good provider won't throw a number at you in five minutes. The real process: **discovery** (understand your business, lock scope) → **component breakdown** (estimate each part) → **realistic range** with clear assumptions, not a magic number. What you pay includes invisible essentials: architecture, design, testing, deployment and support.
+
+## Why an instant number is a bad sign
+
+If they quote instantly without asking much, it means one of two things: a generic template disguised as "custom", or a guess that will rise once the project starts. The right question isn't "how much?", but "what's included and under what assumptions?".
+
+---
+
+**To compare quotes without getting fooled,** we built a free guide with real ranges, what to demand and a checklist. [Download it here](/guia).
+
+---
+
+## In short
+
+Software has no single price because it's not a single product. The number comes from a serious conversation and an honest breakdown. Distrust magic numbers and compare by what's included, not by the final figure.${ctaEN}`,
+  },
+  {
+    id: "integraciones-software-valor-2026",
+    title: "Integraciones: dónde está el verdadero valor de tu sistema",
+    title_en: "Integrations: where the real value of your system lives",
+    excerpt:
+      "Tu software no vive solo. El valor real aparece cuando tus herramientas se hablan entre sí. Qué es una integración, por qué se subestima y cuánto cuesta NO integrar.",
+    excerpt_en:
+      "Your software doesn't live alone. The real value shows when your tools talk to each other. What an integration is, why it's underestimated, and the cost of NOT integrating.",
+    category: "desarrollo",
+    read_time: 20,
+    author: AUTHOR,
+    tags: ["integraciones", "automatizacion", "software a medida", "apis", "chile"],
+    cover_image: "/blog/integraciones-software-valor-2026.png",
+    created_date: "2026-07-01T09:00:00-04:00",
+    content: `La mayoría piensa que el valor de un software está en sus pantallas. La verdad es que, muchas veces, el valor está en lo invisible: en que tus herramientas **se hablen entre sí**. Un sistema que vive aislado te obliga a copiar y pegar datos a mano; uno bien integrado hace que la información fluya sola. Esa diferencia es, muchas veces, la que de verdad mueve la aguja.
+
+![Las integraciones son donde más se subestima el esfuerzo, y donde está el verdadero valor](/blog/integraciones-quote.png)
+
+## Qué es una integración (sin tecnicismos)
+
+Es conectar tu software con otros sistemas para que compartan datos automáticamente. Ejemplos típicos en Chile:
+
+| Integración | Qué resuelve |
+|---|---|
+| **Facturación / SII** | Emite documentos sin recargar a mano. |
+| **Pasarela de pago** | Cobra online y confirma el pago solo. |
+| **WhatsApp** | Responde y notifica a tus clientes. |
+| **ERP / contabilidad** | Tus datos en un solo lugar, sin doble digitación. |
+| **CRM / planillas** | El equipo deja de copiar y pegar. |
+
+## Por qué se subestima (y se complica)
+
+Las integraciones son, junto con la lógica de negocio, donde más se subestima el esfuerzo. Algunas APIs están bien documentadas; otras son un campo minado de casos borde, límites y errores raros. Por eso una cotización seria las desglosa: "integrar X" puede ser una tarde o tres semanas según cómo esté el otro lado.
+
+## El costo de NO integrar
+
+Cuando tus sistemas no se hablan, lo pagas todos los días: tu equipo pierde horas moviendo datos entre apps, se cometen errores de copiado, y la información nunca está actualizada en todos lados. Ese costo escondido suele ser mayor que el de construir la integración una vez.
+
+---
+
+**Si estás evaluando un sistema,** nuestra guía gratis te ayuda a saber qué exigir (incluidas las integraciones) antes de pagar. [Descárgala aquí](/guia).
+
+---
+
+## En resumen
+
+No mires solo las pantallas: pregunta con qué se conecta tu software y cómo. Las integraciones son donde más valor —y más ahorro— se genera, y donde más se subestima el esfuerzo. Bien hechas, dejan de hacerte trabajar para que el sistema trabaje por ti.${cta}`,
+    content_en: `Most people think a software's value is in its screens. The truth is that, often, the value is in the invisible: in your tools **talking to each other**. An isolated system forces you to copy-paste data by hand; a well-integrated one makes information flow on its own.
+
+![Integrations are where effort is most underestimated, and where the real value lives](/blog/integraciones-quote.png)
+
+## What an integration is (no jargon)
+
+Connecting your software with other systems so they share data automatically. Typical examples in Chile:
+
+| Integration | What it solves |
+|---|---|
+| **Billing / tax authority** | Issues documents without manual reloading. |
+| **Payment gateway** | Charges online and confirms payment itself. |
+| **WhatsApp** | Replies to and notifies your clients. |
+| **ERP / accounting** | Your data in one place, no double entry. |
+| **CRM / spreadsheets** | The team stops copy-pasting. |
+
+## Why it's underestimated (and gets complicated)
+
+Integrations are, alongside business logic, where effort is most underestimated. Some APIs are well documented; others are a minefield of edge cases and limits. A serious quote breaks them down: "integrate X" can be an afternoon or three weeks depending on the other side.
+
+## The cost of NOT integrating
+
+When your systems don't talk, you pay daily: hours moving data between apps, copy errors, and information never up to date everywhere. That hidden cost usually beats building the integration once.
+
+---
+
+**If you're evaluating a system,** our free guide helps you know what to demand (including integrations) before you pay. [Download it here](/guia).
+
+---
+
+## In short
+
+Don't just look at screens: ask what your software connects to and how. Integrations are where the most value —and savings— are generated, and where effort is most underestimated. Done right, they make the system work for you.${ctaEN}`,
+  },
+  {
+    id: "mvp-lanzar-producto-minimo-2026",
+    title: "MVP: cómo lanzar tu producto digital con el mínimo presupuesto",
+    title_en: "MVP: how to launch your digital product on a minimum budget",
+    excerpt:
+      "No necesitas 'la app completa'. Necesitas un MVP: lo mínimo que aporta valor, sale al mercado y crece con lo que aprendes. Cómo definirlo y qué errores evitar.",
+    excerpt_en:
+      "You don't need 'the full app'. You need an MVP: the minimum that delivers value, hits the market and grows with what you learn. How to define it and what mistakes to avoid.",
+    category: "desarrollo",
+    read_time: 20,
+    author: AUTHOR,
+    tags: ["mvp", "producto", "startup", "presupuesto", "chile"],
+    cover_image: "/blog/mvp-lanzar-producto-minimo-2026.png",
+    created_date: "2026-07-02T09:00:00-04:00",
+    content: `Una de las razones por las que la gente no se atreve a construir su idea es el presupuesto: creen que necesitan "la app completa" desde el día uno. No es así. La forma inteligente —y la más barata— de empezar es un **MVP**: el producto mínimo viable. Lo mínimo que ya aporta valor, te deja salir al mercado y crecer con lo que aprendes (y, ojalá, con lo que ya estás facturando).
+
+![Un MVP no es una versión a medias: es lo mínimo que ya aporta valor y te deja aprender rápido](/blog/mvp-quote.png)
+
+## Qué es un MVP (y qué NO es)
+
+Un MVP **no** es una versión a medias ni un prototipo de mentira. Es la versión más pequeña que **resuelve el problema principal** de tus usuarios y se puede usar de verdad. La gracia es construir poco y aprender rápido, no construir todo y rezar.
+
+## Cómo definir tu MVP
+
+La pregunta clave: ¿cuál es la UNA cosa que tu producto debe hacer bien para aportar valor? Eso entra. El resto, espera.
+
+| Entra en el MVP | Déjalo para después |
+|---|---|
+| El flujo principal que resuelve el problema | Funciones "estaría bueno tener" |
+| Lo que tus primeros usuarios necesitan ya | Personalizaciones avanzadas |
+| Cobrar / capturar valor (si aplica) | Integraciones secundarias |
+| Lo mínimo para verse profesional | Pulido excesivo y casos raros |
+
+## Errores comunes
+
+- **Querer construir todo de una.** Es más caro, más lento y más riesgoso. Si no lo usan, gastaste de más.
+- **Perfeccionismo.** El MVP no tiene que ser perfecto; tiene que enseñarte si vas bien.
+- **Confundir MVP con "cualquier cosa mal hecha".** Mínimo no es chapucero: lo que entra, entra bien hecho.
+
+## Cuánto cuesta y cuánto demora
+
+Un MVP simple se construye en **semanas**; uno mediano, en un par de meses. La inversión típica parte mucho más abajo que un producto completo, justamente porque construyes solo lo esencial. Y lo mejor: con lo que aprendes (y facturas) financias las siguientes etapas.
+
+---
+
+**¿Tienes una idea y no sabes por dónde partir?** Nuestra guía gratis te ayuda a planear sin gastar de más. [Descárgala aquí](/guia) o cuéntanos tu idea en un [diagnóstico gratuito](/contacto).
+
+---
+
+## En resumen
+
+No necesitas la app completa para empezar: necesitas lo mínimo que aporta valor. Construye poco, sal al mercado, aprende y crece. Es la forma más barata —y más inteligente— de convertir una idea en un producto real.${cta}`,
+    content_en: `One reason people don't dare build their idea is budget: they think they need "the full app" from day one. You don't. The smart —and cheapest— way to start is an **MVP**: the minimum viable product. The least that already delivers value, lets you hit the market and grow with what you learn.
+
+![An MVP isn't a half-baked version: it's the minimum that already delivers value and lets you learn fast](/blog/mvp-quote.png)
+
+## What an MVP is (and isn't)
+
+An MVP is **not** a half-version or a fake prototype. It's the smallest version that **solves the main problem** for your users and can actually be used. The point is to build little and learn fast, not build everything and pray.
+
+## How to define your MVP
+
+The key question: what's the ONE thing your product must do well to deliver value? That's in. The rest waits.
+
+| In the MVP | Leave for later |
+|---|---|
+| The core flow that solves the problem | "Nice to have" features |
+| What your first users need now | Advanced customization |
+| Charging / capturing value (if any) | Secondary integrations |
+| The minimum to look professional | Over-polish and rare cases |
+
+## Common mistakes
+
+- **Building it all at once.** Pricier, slower, riskier. If they don't use it, you overspent.
+- **Perfectionism.** The MVP doesn't have to be perfect; it has to teach you if you're on track.
+- **Confusing MVP with "anything done badly".** Minimum isn't sloppy: what's in is done well.
+
+## Cost and timeline
+
+A simple MVP is built in **weeks**; a mid-sized one in a couple of months. The typical investment starts far below a full product, precisely because you build only the essentials.
+
+---
+
+**Have an idea and don't know where to start?** Our free guide helps you plan without overspending. [Download it here](/guia) or tell us your idea in a [free consult](/contacto).
+
+---
+
+## In short
+
+You don't need the full app to start: you need the minimum that delivers value. Build little, hit the market, learn and grow. It's the cheapest —and smartest— way to turn an idea into a real product.${ctaEN}`,
+  },
+
   // ===== Semana 24–28 de junio · serie high-ticket / desarrollo de software =====
   {
     id: "cuanto-cuesta-software-a-medida-2026",
