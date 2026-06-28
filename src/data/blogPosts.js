@@ -28,6 +28,150 @@ const ctaEN = `
 Want to apply this to your business? At **Maudev** we build websites, custom software and automations for SMBs and founders in Chile and Latin America. [Book a free consult](/contacto).`;
 
 export const blogPosts = [
+  // ===== Semana 29 jun – 5 jul · serie 2 (desarrollo de software / automatización) =====
+  {
+    id: "errores-caros-al-pedir-software-2026",
+    title: "Errores caros al pedir una web o software (y cómo evitarlos)",
+    title_en: "Costly mistakes when ordering a website or software (and how to avoid them)",
+    excerpt:
+      "Los 7 errores que hacen que un proyecto de software termine costando el doble: elegir por precio, no definir el alcance, olvidar la mantención y más. Con tabla resumen y checklist.",
+    excerpt_en:
+      "The 7 mistakes that make a software project cost twice as much: choosing by price, no defined scope, forgetting maintenance and more. With a summary table and checklist.",
+    category: "desarrollo",
+    read_time: 20,
+    author: AUTHOR,
+    tags: ["desarrollo de software", "errores", "como contratar", "precios", "chile"],
+    cover_image: "/blog/errores-caros-al-pedir-software-2026.png",
+    created_date: "2026-06-29T09:00:00-04:00",
+    content: `Encargar una web o un software es de las inversiones más caras que hace un negocio, y casi nadie te enseña a hacerlo bien. El resultado: la mayoría comete los mismos errores, y termina pagando dos o tres veces por lo mismo. En esta guía repasamos los **7 errores más caros** —los que vemos una y otra vez— y, sobre todo, cómo evitarlos. Si estás por pedir un desarrollo, esto te puede ahorrar millones.
+
+## Error 1: Elegir por precio
+
+Es el error madre, del que nacen casi todos los demás. Cuando comparas cotizaciones y eliges la más barata "porque hace lo mismo", casi siempre te equivocas. **El software barato no es barato: es incompleto.** Lo que falta —pruebas, seguridad, soporte, documentación— no se ve en la demo, pero lo pagas después, más caro.
+
+![Lo barato no es barato: es incompleto](/blog/errores-caros-quote.png)
+
+Hemos rescatado muchísimos proyectos donde el cliente pagó dos veces: una por el software barato que no servía, y otra (más cara) por rehacerlo bien. **Compara las propuestas por lo que INCLUYEN, no por el número final.**
+
+## Error 2: No dejar el alcance por escrito
+
+"Hazme una app para gestionar mis pedidos" puede significar diez cosas distintas. Si no defines por escrito qué hace y qué NO hace el software, vas directo a la pesadilla de "esto estaba incluido o no". Un buen proveedor parte por un **descubrimiento**: entender tu negocio y cerrar un alcance claro antes de programar. Sin eso, cualquier precio es ficción.
+
+## Error 3: No exigir que el código quede a tu nombre
+
+Este es el que más sorprende. Mucha gente paga por un software y descubre, demasiado tarde, que **no es dueña ni del código ni del dominio**. Quedas secuestrado: solo quien lo hizo puede tocarlo, y te cobra lo que quiera. Que el código y el dominio queden a TU nombre debe estar **por escrito en el contrato**. No es un detalle: es la diferencia entre tener un activo o un problema.
+
+## Error 4: Saltarse las pruebas y la seguridad
+
+El "camino feliz" (todo sale bien) es el 20% del trabajo. El otro 80% es qué pasa cuando algo falla: datos raros, errores del usuario, casos borde, intentos de hackeo. El software sin pruebas funciona el día de la demo y se cae el día que tienes 50 clientes adentro. La seguridad es invisible… hasta que filtras datos de tus clientes. **Pregunta siempre: ¿cómo prueban y cómo aseguran el sistema?**
+
+## Error 5: Aceptar una "caja negra"
+
+Si tu proveedor desaparece y reaparece al final con "todo listo", es una bandera roja gigante. Un proceso sano avanza por **etapas visibles** (sprints): cada una o dos semanas ves algo funcionando, lo pruebas y corriges el rumbo a tiempo. Esperar meses a ciegas es la receta para recibir algo que no era lo que querías.
+
+## Error 6: Olvidar la mantención
+
+El software, como un auto, no termina cuando te lo entregan: ahí **empieza a vivir**. Vas a querer mejoras, van a aparecer cosas que ajustar, y de vez en cuando algo fallará. Presupuestar solo la construcción y olvidar la mantención es el error clásico. Reserva un porcentaje anual del valor del proyecto para mantenerlo y hacerlo crecer.
+
+## Error 7: No medir la velocidad
+
+Una web lenta espanta clientes antes de que vean lo que ofreces. Y no es un capricho técnico: es plata.
+
+![53% abandona tu web si tarda más de 3 segundos](/blog/errores-caros-stat.png)
+
+Además, Google posiciona mejor lo rápido. Una web que carga en más de 2-3 segundos pierde visitas Y ranking. Antes de aprobar un proyecto, pregunta cómo van a garantizar la velocidad (stack moderno, código limpio, no una plantilla pesada llena de plugins).
+
+## Resumen: los 7 errores de un vistazo
+
+| Error | Lo que te cuesta | Cómo evitarlo |
+|---|---|---|
+| Elegir por precio | Rehacer todo (pagas 2 veces) | Compara por lo que incluye |
+| Sin alcance por escrito | Sobrecostos y peleas | Descubrimiento + contrato claro |
+| El código no es tuyo | Quedas secuestrado | Exígelo por escrito |
+| Saltarse pruebas/seguridad | Se cae con clientes reales | Pregunta cómo testean |
+| Aceptar una caja negra | Sorpresas al final | Avances cada 1-2 semanas |
+| Olvidar la mantención | El software envejece | Presupuesta % anual |
+| No medir velocidad | Pierdes ventas y ranking | Exige stack moderno y rápido |
+
+---
+
+**¿Quieres ir un paso más allá?** Reunimos todo esto —precios reales, cómo elegir proveedor, qué exigir y un checklist— en una guía gratuita. [Descárgala aquí](/guia) y tómala como tu lista de control antes de invertir.
+
+---
+
+## Cómo evitarlos todos de una vez
+
+La buena noticia: estos 7 errores se evitan con las mismas pocas exigencias. Antes de firmar, asegúrate de:
+
+- Comparar propuestas por lo que incluyen (no por el precio final).
+- Tener un alcance y un precio **por escrito**.
+- Que el **código y el dominio queden a tu nombre**.
+- Ver **avances funcionando** durante el proyecto.
+- Saber qué incluye el **soporte** y por cuánto tiempo.
+- Hablar con **quien va a programar**, no solo con un vendedor.
+
+Si tu proveedor responde estas cosas claro y por escrito, vas a evitar casi todos los problemas. Si las evade, ya tienes tu respuesta.${cta}`,
+    content_en: `Ordering a website or software is one of the most expensive investments a business makes, and almost nobody teaches you to do it right. The result: most people make the same mistakes and end up paying twice or three times for the same thing. Here are the **7 most costly mistakes** —the ones we see over and over— and, above all, how to avoid them.
+
+## Mistake 1: Choosing by price
+
+The mother of all mistakes. When you compare quotes and pick the cheapest "because it does the same thing", you're almost always wrong. **Cheap software isn't cheap: it's incomplete.** What's missing —testing, security, support, documentation— doesn't show in the demo, but you pay for it later, more expensively.
+
+![Cheap isn't cheap: it's incomplete](/blog/errores-caros-quote.png)
+
+Compare proposals by what they INCLUDE, not by the final number.
+
+## Mistake 2: No written scope
+
+"Build me an app to manage my orders" can mean ten different things. If you don't define in writing what the software does and doesn't do, you head straight into the "was this included or not" nightmare. A good provider starts with **discovery**: understanding your business and locking a clear scope before coding.
+
+## Mistake 3: Not demanding the code in your name
+
+This one surprises the most. Many people pay for software and discover, too late, that they own neither the code nor the domain. You're held hostage: only the builder can touch it, and charges whatever they want. Code and domain in YOUR name must be **in the contract**.
+
+## Mistake 4: Skipping testing and security
+
+The "happy path" is 20% of the work. The other 80% is what happens when things go wrong: bad data, user errors, edge cases, hack attempts. Software without tests works on demo day and falls over with 50 clients inside. Always ask: how do you test and secure the system?
+
+## Mistake 5: Accepting a "black box"
+
+If your provider vanishes and reappears at the end with "it's all done", that's a huge red flag. A healthy process advances in **visible stages** (sprints): every week or two you see something working and can course-correct in time.
+
+## Mistake 6: Forgetting maintenance
+
+Software, like a car, doesn't end at delivery — that's when it starts living. Budgeting only the build and forgetting maintenance is the classic mistake. Reserve a yearly percentage of the project's value to maintain and grow it.
+
+## Mistake 7: Not measuring speed
+
+A slow website scares customers away before they see what you offer. And it's not a technical whim: it's money.
+
+![53% abandon your site if it takes more than 3 seconds](/blog/errores-caros-stat.png)
+
+Plus, Google ranks fast sites higher. Before approving a project, ask how they'll guarantee speed (modern stack, clean code, not a heavy template full of plugins).
+
+## Summary: the 7 mistakes at a glance
+
+| Mistake | What it costs | How to avoid it |
+|---|---|---|
+| Choosing by price | Rebuilding (pay twice) | Compare by what's included |
+| No written scope | Overruns and fights | Discovery + clear contract |
+| Code isn't yours | You're held hostage | Demand it in writing |
+| Skipping testing/security | Falls over with real clients | Ask how they test |
+| Accepting a black box | Surprises at the end | Progress every 1-2 weeks |
+| Forgetting maintenance | Software ages | Budget a yearly % |
+| Not measuring speed | Lost sales and ranking | Demand a modern, fast stack |
+
+---
+
+**Want to go a step further?** We packed all of this —real prices, how to choose a provider, what to demand and a checklist— into a free guide. [Download it here](/guia) and use it as your control list before investing.
+
+---
+
+## How to avoid them all at once
+
+The good news: these 7 mistakes are avoided with the same few demands. Before signing, make sure to: compare by what's included; have scope and price **in writing**; get the **code and domain in your name**; see **working progress**; know what **support** includes; and talk to **whoever will build it**. If your provider answers these clearly and in writing, you'll dodge almost every problem.${ctaEN}`,
+  },
+
   // ===== Semana 24–28 de junio · serie high-ticket / desarrollo de software =====
   {
     id: "cuanto-cuesta-software-a-medida-2026",
