@@ -37,6 +37,7 @@ const AdminPortfolio = lazy(() => import('./pages/admin/AdminPortfolio'));
 const AdminTikTok = lazy(() => import('./pages/admin/AdminTikTok'));
 const LpDiagnostico = lazy(() => import('./pages/lp/Diagnostico'));
 const LinkInBio = lazy(() => import('./pages/LinkInBio'));
+const Guia = lazy(() => import('./pages/Guia'));
 
 const Spinner = () => (
   <div className="fixed inset-0 flex items-center justify-center">
@@ -78,6 +79,7 @@ const AuthenticatedApp = () => {
         <Route path="/lp/diagnostico" element={<LpDiagnostico />} />
         <Route path="/ig" element={<LinkInBio />} />
         <Route path="/links" element={<LinkInBio />} />
+        <Route path="/guia" element={<Guia />} />
         <Route element={<AdminGuard />}>
           <Route element={<AdminLayout />}>
             <Route path="/admin" element={<Dashboard />} />
