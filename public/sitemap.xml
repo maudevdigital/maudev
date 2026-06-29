@@ -264,9 +264,31 @@
   <!-- Serie 2 (29 jun – 5 jul) -->
   <url>
     <loc>https://maudev.cl/blog/errores-caros-al-pedir-software-2026</loc>
-    <lastmod>2026-06-29</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <lastmod>2026-06-29</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://maudev.cl/blog/como-se-calcula-precio-software-2026</loc>
+    <lastmod>2026-06-30</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://maudev.cl/blog/integraciones-software-valor-2026</loc>
+    <lastmod>2026-07-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://maudev.cl/blog/mvp-lanzar-producto-minimo-2026</loc>
+    <lastmod>2026-07-02</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://maudev.cl/blog/mantencion-software-costo-2026</loc>
+    <lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://maudev.cl/blog/automatizacion-ia-pymes-2026</loc>
+    <lastmod>2026-07-04</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://maudev.cl/blog/seguridad-respaldos-software-2026</loc>
+    <lastmod>2026-07-05</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
   </url>
 
 </urlset>

@@ -434,6 +434,253 @@ A simple MVP is built in **weeks**; a mid-sized one in a couple of months. The t
 You don't need the full app to start: you need the minimum that delivers value. Build little, hit the market, learn and grow. It's the cheapest —and smartest— way to turn an idea into a real product.${ctaEN}`,
   },
 
+  {
+    id: "mantencion-software-costo-2026",
+    title: "Mantención de software: el costo que nadie te cuenta",
+    title_en: "Software maintenance: the cost nobody tells you about",
+    excerpt:
+      "El software no termina cuando te lo entregan: ahí empieza a vivir. Qué incluye la mantención, cuánto presupuestar al año y qué pasa si la ignoras.",
+    excerpt_en:
+      "Software doesn't end at delivery: that's when it starts living. What maintenance includes, how much to budget yearly, and what happens if you ignore it.",
+    category: "desarrollo",
+    read_time: 20,
+    author: AUTHOR,
+    tags: ["mantencion", "desarrollo de software", "costos", "soporte", "chile"],
+    cover_image: "/blog/mantencion-software-costo-2026.png",
+    created_date: "2026-07-03T09:00:00-04:00",
+    content: `Cuando presupuestas un software, casi todos miran solo el precio de construirlo. Pero el software, como un auto, también tiene costo de uso: la **mantención**. Ignorarla es el error clásico —presupuestar la compra y olvidar la bencina— y termina cobrándose caro. Acá te contamos qué incluye, cuánto reservar y por qué importa.
+
+![15-20% del valor del proyecto al año es lo razonable para mantener tu software vivo](/blog/mantencion-stat.png)
+
+## Qué incluye la mantención
+
+No es "arreglar lo que se rompe". Es mantener el software vivo, seguro y útil:
+
+| Tipo | Qué cubre |
+|---|---|
+| **Correctiva** | Arreglar errores que aparecen con el uso real. |
+| **Evolutiva** | Agregar mejoras y funciones nuevas. |
+| **Infraestructura** | Servidores, dominios, respaldos, monitoreo. |
+| **Seguridad** | Actualizaciones y parches para no quedar expuesto. |
+
+## Cuánto presupuestar
+
+Como referencia, **un 15-20% anual del valor del proyecto** es razonable para mantenerlo y hacerlo crecer. Puede ser menos si el sistema es chico y estable, o más si está en plena evolución. Lo importante es que exista en tu presupuesto desde el día uno.
+
+## Qué pasa si no mantienes
+
+El software que no se mantiene **envejece y se vuelve un riesgo**: acumula errores, queda desactualizado, y un día una falla de seguridad o una librería vieja te pasa la cuenta. Además, sin alguien que responda, cualquier problema te deja parado. La mantención no es un gasto opcional: es lo que protege la inversión que ya hiciste.
+
+---
+
+**Antes de invertir en software,** revisa qué incluye el soporte y la mantención. Lo dejamos claro en nuestra guía gratis. [Descárgala aquí](/guia).
+
+---
+
+## En resumen
+
+Presupuestar solo la construcción es planificar a medias. Reserva un porcentaje anual para mantención, exige soporte por escrito, y trata tu software como lo que es: un activo vivo que, bien cuidado, te rinde por años.${cta}`,
+    content_en: `When you budget software, almost everyone looks only at the build price. But software, like a car, has a running cost too: **maintenance**. Ignoring it is the classic mistake —budget the purchase, forget the fuel— and it bites back. Here's what it includes, how much to set aside and why it matters.
+
+![15-20% of the project value per year is reasonable to keep your software alive](/blog/mantencion-stat.png)
+
+## What maintenance includes
+
+It's not just "fix what breaks". It's keeping the software alive, secure and useful:
+
+| Type | What it covers |
+|---|---|
+| **Corrective** | Fixing bugs that appear with real use. |
+| **Evolutionary** | Adding improvements and new features. |
+| **Infrastructure** | Servers, domains, backups, monitoring. |
+| **Security** | Updates and patches to avoid exposure. |
+
+## How much to budget
+
+As a reference, **15-20% of the project value per year** is reasonable to maintain and grow it. Less if the system is small and stable, more if it's actively evolving. The key is that it exists in your budget from day one.
+
+## What happens if you don't maintain it
+
+Unmaintained software **ages and becomes a risk**: it piles up bugs, falls out of date, and one day a security flaw or an old library bills you. Without someone to respond, any problem leaves you stuck. Maintenance isn't optional: it protects the investment you already made.
+
+---
+
+**Before investing in software,** check what support and maintenance include. We spell it out in our free guide. [Download it here](/guia).
+
+---
+
+## In short
+
+Budgeting only the build is half a plan. Set aside a yearly percentage for maintenance, demand support in writing, and treat your software as what it is: a living asset that, well cared for, pays off for years.${ctaEN}`,
+  },
+  {
+    id: "automatizacion-ia-pymes-2026",
+    title: "Automatización con IA para PYMEs en 2026: qué sí y qué no",
+    title_en: "AI automation for SMBs in 2026: what works and what doesn't",
+    excerpt:
+      "La IA está en todo, pero ¿qué sirve de verdad para una PYME? Qué conviene automatizar con IA, qué NO delegarle, y cómo empezar sin caer en el humo.",
+    excerpt_en:
+      "AI is everywhere, but what actually works for an SMB? What's worth automating with AI, what NOT to hand over, and how to start without the hype.",
+    category: "automatizacion",
+    read_time: 20,
+    author: AUTHOR,
+    tags: ["ia", "automatizacion", "pymes", "tendencias 2026", "chile"],
+    cover_image: "/blog/automatizacion-ia-pymes-2026.png",
+    created_date: "2026-07-04T09:00:00-04:00",
+    content: `En 2026 todo el mundo te ofrece "IA". Y entre tanto ruido, la pregunta honesta para una PYME es: ¿qué sirve de verdad y qué es humo? La IA bien usada puede ahorrarte horas y recuperarte ventas; mal usada, te mete en problemas. Acá va lo concreto: qué sí y qué no.
+
+![La IA acelera el desarrollo, pero no reemplaza entender tu negocio ni responsabilizarse de que funcione](/blog/ia-pymes-quote.png)
+
+## Qué SÍ conviene automatizar con IA
+
+| Sí | Por qué |
+|---|---|
+| **Responder y calificar leads** | Contesta al instante y filtra; la velocidad vende. |
+| **Atención 24/7 (primer nivel)** | Responde dudas frecuentes mientras duermes. |
+| **Redactar borradores** | Correos, descripciones, respuestas… tú revisas. |
+| **Clasificar y resumir** | Ordena consultas, resume documentos largos. |
+| **Búsqueda interna inteligente** | Encuentra info en tus propios datos. |
+
+## Qué NO delegarle (todavía)
+
+- **Decisiones críticas sin supervisión.** La IA propone; tú decides.
+- **Responsabilidad legal o financiera.** Cotizaciones, contratos y números siempre con revisión humana.
+- **"Que lo haga todo solo".** La IA es una herramienta del equipo, no el equipo. Necesita criterio, datos limpios y supervisión.
+- **Tu trato con el cliente cuando importa.** Lo automático escala; lo humano cierra.
+
+## Cómo empezar sin caer en el humo
+
+Igual que cualquier automatización: parte por **lo que más se repite y más errores genera**. No automatices el caos —ordena el proceso primero— y mide el resultado. Una IA que te ahorra 10 horas a la semana y recupera ventas se paga sola; una que suena "futurista" pero no mueve la aguja, es humo.
+
+---
+
+**¿Quieres aplicar IA con cabeza en tu negocio?** Te ayudamos a ver qué automatizar primero. Empieza con nuestra [guía gratis](/guia) o un [diagnóstico gratuito](/contacto).
+
+---
+
+## En resumen
+
+La IA en 2026 es una gran herramienta para una PYME, siempre que la uses para lo que sirve: acelerar, filtrar y ahorrar horas, con supervisión humana donde importa. Lo que de verdad funciona no es "magia": es resolver, con buen criterio, lo que más te quita tiempo hoy.${cta}`,
+    content_en: `In 2026 everyone offers you "AI". Amid the noise, the honest question for an SMB is: what actually works and what's hype? Used well, AI saves you hours and recovers sales; used badly, it gets you in trouble. Here's the concrete part: what works and what doesn't.
+
+![AI speeds up development, but it doesn't replace understanding your business or being responsible for it working](/blog/ia-pymes-quote.png)
+
+## What IS worth automating with AI
+
+| Yes | Why |
+|---|---|
+| **Responding and qualifying leads** | Instant reply and filtering; speed sells. |
+| **24/7 first-level support** | Answers FAQs while you sleep. |
+| **Drafting** | Emails, descriptions, replies… you review. |
+| **Classifying and summarizing** | Sorts inquiries, summarizes long docs. |
+| **Smart internal search** | Finds info in your own data. |
+
+## What NOT to hand over (yet)
+
+- **Critical decisions without supervision.** AI proposes; you decide.
+- **Legal or financial responsibility.** Quotes, contracts and numbers always with human review.
+- **"Let it do everything alone".** AI is a team tool, not the team. It needs judgment, clean data and supervision.
+- **Your client relationship when it matters.** Automation scales; human closes.
+
+## How to start without the hype
+
+Like any automation: start with **what repeats most and causes the most errors**. Don't automate chaos —fix the process first— and measure. AI that saves you 10 hours a week and recovers sales pays for itself; AI that sounds "futuristic" but moves nothing is hype.
+
+---
+
+**Want to apply AI wisely in your business?** We help you see what to automate first. Start with our [free guide](/guia) or a [free consult](/contacto).
+
+---
+
+## In short
+
+AI in 2026 is a great tool for an SMB, as long as you use it for what it's good at: speeding up, filtering and saving hours, with human supervision where it counts. What truly works isn't "magic": it's solving, with good judgment, what eats your time today.${ctaEN}`,
+  },
+  {
+    id: "seguridad-respaldos-software-2026",
+    title: "Seguridad y respaldos: lo que tu software debe tener para no ser un riesgo",
+    title_en: "Security and backups: what your software must have to not be a risk",
+    excerpt:
+      "La seguridad es invisible hasta que falla. Lo mínimo que tu software debe tener (control de acceso, cifrado, respaldos automáticos) y qué preguntarle a tu proveedor.",
+    excerpt_en:
+      "Security is invisible until it fails. The minimum your software must have (access control, encryption, automatic backups) and what to ask your provider.",
+    category: "desarrollo",
+    read_time: 20,
+    author: AUTHOR,
+    tags: ["seguridad", "respaldos", "desarrollo de software", "datos", "chile"],
+    cover_image: "/blog/seguridad-respaldos-software-2026.png",
+    created_date: "2026-07-05T09:00:00-04:00",
+    content: `La seguridad de un software es como el seguro de un auto: invisible y "innecesaria"… hasta el día que la necesitas. Para entonces ya es tarde. Una filtración de datos puede costarte clientes, multas y reputación; perder información sin respaldo puede dejarte parado. La buena noticia: con unas pocas cosas bien hechas, evitas casi todos los desastres.
+
+![La seguridad es invisible, hasta que filtras los datos de tus clientes](/blog/seguridad-quote.png)
+
+## Lo mínimo que tu software debe tener
+
+| Medida | Para qué |
+|---|---|
+| **Control de acceso (roles)** | Que cada uno vea y haga solo lo suyo. |
+| **Validaciones** | Que datos mal formados no rompan ni engañen al sistema. |
+| **Datos sensibles cifrados** | Contraseñas y datos protegidos, no en texto plano. |
+| **Respaldos automáticos** | Recuperar la información si algo sale mal. |
+| **Actualizaciones / parches** | No quedar expuesto por librerías viejas. |
+| **HTTPS y buenas prácticas** | Conexión segura, protección básica. |
+
+## Los respaldos: tu red de seguridad
+
+Un respaldo es una copia de tus datos que te permite volver atrás si algo se borra, se corrompe o te hackean. Sin respaldos automáticos y probados, un error o un ataque puede borrar meses de trabajo. La pregunta no es "¿pasará algo?", sino "¿estoy listo cuando pase?". Respaldos frecuentes, automáticos y **que se prueban** (un respaldo que nunca restauraste no sirve) son la diferencia entre un susto y una catástrofe.
+
+## Qué preguntarle a tu proveedor
+
+- ¿Cómo controlan el acceso y los permisos?
+- ¿Los datos sensibles van cifrados?
+- ¿Hay respaldos automáticos? ¿Cada cuánto y dónde?
+- ¿Cómo manejan las actualizaciones de seguridad?
+
+Si las respuestas son claras, vas bien. Si te miran raro, mala señal: la seguridad no se "agrega después", se construye desde el inicio.
+
+---
+
+**¿Tu software cumple lo mínimo?** En nuestra guía gratis dejamos el checklist de qué exigir, seguridad incluida. [Descárgala aquí](/guia) o pide un [diagnóstico gratuito](/contacto).
+
+---
+
+## En resumen
+
+La seguridad y los respaldos no son un lujo ni un "extra": son lo que separa un software que te sostiene de uno que te puede hundir. Exígelos desde el día uno, pregunta sin miedo, y trata los datos de tus clientes como lo que son: una responsabilidad.${cta}`,
+    content_en: `Software security is like car insurance: invisible and "unnecessary"… until the day you need it. By then it's too late. A data breach can cost you clients, fines and reputation; losing data without a backup can leave you stuck. The good news: with a few things done right, you avoid almost every disaster.
+
+![Security is invisible, until you leak your clients' data](/blog/seguridad-quote.png)
+
+## The minimum your software must have
+
+| Measure | What for |
+|---|---|
+| **Access control (roles)** | Each person sees and does only their part. |
+| **Validations** | Malformed data can't break or trick the system. |
+| **Encrypted sensitive data** | Passwords and data protected, not plain text. |
+| **Automatic backups** | Recover information if something goes wrong. |
+| **Updates / patches** | Not exposed by old libraries. |
+| **HTTPS and good practices** | Secure connection, basic protection. |
+
+## Backups: your safety net
+
+A backup is a copy of your data that lets you roll back if something is deleted, corrupted or hacked. Without automatic, tested backups, one error or attack can wipe months of work. The question isn't "will something happen?", but "am I ready when it does?". Frequent, automatic backups **that are tested** (a backup you never restored is worthless) are the difference between a scare and a catastrophe.
+
+## What to ask your provider
+
+How do you control access and permissions? Is sensitive data encrypted? Are there automatic backups —how often and where? How do you handle security updates? If the answers are clear, you're good. If they look puzzled, bad sign: security isn't "added later", it's built from the start.
+
+---
+
+**Does your software meet the minimum?** Our free guide includes the checklist of what to demand, security included. [Download it here](/guia) or request a [free consult](/contacto).
+
+---
+
+## In short
+
+Security and backups aren't a luxury or an "extra": they're what separates software that holds you up from one that can sink you. Demand them from day one, ask without fear, and treat your clients' data as what it is: a responsibility.${ctaEN}`,
+  },
+
   // ===== Semana 24–28 de junio · serie high-ticket / desarrollo de software =====
   {
     id: "cuanto-cuesta-software-a-medida-2026",
