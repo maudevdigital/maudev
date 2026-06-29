@@ -107,7 +107,7 @@ export const RemotionRoot: React.FC = () => {
           height={1920}
           defaultProps={ps}
           calculateMetadata={async ({ props }) => {
-            const sceneFrames = props.scenes.reduce((a, s) => a + s.frames, 0) + 130;
+            const sceneFrames = props.scenes.reduce((a, s) => a + s.frames, 0) + 270; // + marca + CTA final
             if (props.voice) {
               const dur = await getAudioDurationInSeconds(staticFile(props.voice));
               return { durationInFrames: Math.max(sceneFrames, Math.ceil(dur * FPS) + FPS) };

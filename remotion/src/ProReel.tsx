@@ -24,6 +24,9 @@ export type ProReelProps = {
   accent?: string;
   secondary?: string;
   tagline?: string;
+  // CTA final del video: incita a comentar para recibir el lead magnet por DM.
+  ctaKeyword?: string; // palabra clave a comentar (ej. "GUÍA")
+  ctaLine?: string; // bajada (ej. "y te enviamos el PDF gratis al privado")
 };
 
 // ── LUCES: blobs de color que derivan (mesh gradient animado) ────────────────
@@ -157,6 +160,23 @@ const BrandReveal: React.FC<{ tagline: string; accent: string }> = ({ tagline, a
 
 const FX: ProFx[] = ["slideU", "slideL", "scale", "slideR", "wipe", "slideU"];
 
+// CTA final: incita a comentar la palabra clave para recibir el PDF por DM.
+const CommentCta: React.FC<{ keyword: string; line: string; accent: string }> = ({ keyword, line, accent }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const s = spring({ frame, fps, config: { damping: 200 } });
+  const pulse = 1 + Math.sin((frame / fps) * 6) * 0.05;
+  return (
+    <AbsoluteFill style={{ alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 22, padding: 80, textAlign: "center", opacity: s, transform: `translateY(${interpolate(s, [0, 1], [40, 0])}px)`, filter: "drop-shadow(0 16px 36px rgba(0,0,0,0.6))" }}>
+      <div style={{ fontFamily: FONTS.sans, fontSize: 58, fontWeight: 800, color: COLORS.text }}>Comenta</div>
+      <div style={{ fontFamily: FONTS.sans, fontSize: 128, fontWeight: 900, color: accent, letterSpacing: -2, transform: `scale(${pulse})`, textShadow: `0 0 44px ${accent}66` }}>{keyword}</div>
+      <div style={{ fontFamily: FONTS.sans, fontSize: 46, fontWeight: 700, color: COLORS.text, maxWidth: 840, lineHeight: 1.2 }}>{line}</div>
+      <div style={{ fontSize: 84, marginTop: 4 }}>👇</div>
+      <div style={{ fontFamily: FONTS.mono, fontSize: 28, color: COLORS.muted, marginTop: 6 }}>maudev.cl</div>
+    </AbsoluteFill>
+  );
+};
+
 export const ProReel: React.FC<ProReelProps> = ({
   scenes,
   voice,
@@ -164,6 +184,8 @@ export const ProReel: React.FC<ProReelProps> = ({
   accent = COLORS.primary,
   secondary = "#8b9cff",
   tagline = "Software y automatización para crecer sin fricción",
+  ctaKeyword = "GUÍA",
+  ctaLine = "y te enviamos el PDF gratis al privado",
 }) => {
   const { durationInFrames } = useVideoConfig();
   return (
@@ -189,8 +211,11 @@ export const ProReel: React.FC<ProReelProps> = ({
             {i > 0 ? <LightSweep /> : null}
           </Series.Sequence>
         ))}
-        <Series.Sequence durationInFrames={130}>
+        <Series.Sequence durationInFrames={110}>
           <BrandReveal tagline={tagline} accent={accent} />
+        </Series.Sequence>
+        <Series.Sequence durationInFrames={160}>
+          <CommentCta keyword={ctaKeyword} line={ctaLine} accent={accent} />
         </Series.Sequence>
       </Series>
 

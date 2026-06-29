@@ -6,8 +6,10 @@
 //   id · kind ("reel"|"carousel") · media (url | array) · caption · liCaption (LinkedIn) · blog
 
 const TAGS = "#desarrollodesoftware #softwareamedida #pymeschile";
-const GUIA = "👉 Descarga gratis nuestra guía para decidir bien: maudev.cl/guia";
-const DIAG = "👉 Cuéntanos tu proyecto, diagnóstico gratis: maudev.cl/contacto";
+// CTA = incitar comentario (la palabra clave dispara el DM con el PDF). El link
+// NO va en la descripción: el CTA sale al final del video.
+const GUIA = "💬 Comenta GUÍA y te enviamos GRATIS al privado nuestra guía para decidir bien tu software 👇";
+const DIAG = "💬 Comenta GUÍA y te enviamos GRATIS al privado nuestra guía (precios, cómo elegir y qué exigir) 👇";
 const S = "https://maudev.cl/social";
 
 export const CONTENT = [
