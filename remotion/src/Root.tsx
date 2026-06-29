@@ -5,10 +5,12 @@ import { ValueCard } from "./ValueCard";
 import { ScriptedVideo } from "./ScriptedVideo";
 import { CinematicReel } from "./CinematicReel";
 import { VoiceReel } from "./VoiceReel";
+import { ProReel } from "./ProReel";
 import { AvatarReel } from "./AvatarReel";
 import { tips } from "./tips";
 import { scripts } from "./scripts";
 import { voiceScripts } from "./voiceScripts";
+import { proScripts } from "./proScripts";
 import { carousels } from "./carousels";
 import { SKINS, MUSIC_BY_SKIN } from "./skins";
 
@@ -92,6 +94,28 @@ export const RemotionRoot: React.FC = () => {
           ),
         })}
       />
+
+      {/* Reels PRO de la semana (animaciones/luces/transiciones + voz + música). */}
+      {proScripts.map((ps) => (
+        <Composition
+          key={ps.id}
+          id={`ProReel-${ps.id}`}
+          component={ProReel}
+          durationInFrames={700}
+          fps={FPS}
+          width={1080}
+          height={1920}
+          defaultProps={ps}
+          calculateMetadata={async ({ props }) => {
+            const sceneFrames = props.scenes.reduce((a, s) => a + s.frames, 0) + 130;
+            if (props.voice) {
+              const dur = await getAudioDurationInSeconds(staticFile(props.voice));
+              return { durationInFrames: Math.max(sceneFrames, Math.ceil(dur * FPS) + FPS) };
+            }
+            return { durationInFrames: sceneFrames };
+          }}
+        />
+      ))}
 
       {/* Reel CINEMATOGRÁFICO (letterbox, grano, glow) con voz en off ElevenLabs. */}
       <Composition
