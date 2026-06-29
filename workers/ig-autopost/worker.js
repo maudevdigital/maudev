@@ -394,6 +394,43 @@ async function publishFacebookCarousel(env, imageUrls, caption) {
   return j.id;
 }
 
+// ─── Automatización comentario → DM (lead magnet) ─────────────────────────────
+// Cuando alguien comenta la palabra clave en un reel/post, le respondemos en
+// PRIVADO con el PDF de la guía. Requiere:
+//   - Webhook de Meta suscrito al campo "comments" (callback /webhook + verify token)
+//   - Permiso instagram_manage_messages en el token (pasa por App Review de Meta)
+const GUIA_PDF = "https://maudev.cl/guia-software-a-medida.pdf";
+const norm = (s) => (s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+const DM_TEXT = `¡Gracias por comentar! 🚀 Aquí tienes tu guía gratis para decidir bien tu software —precios reales, cómo elegir proveedor y qué exigir—: ${GUIA_PDF}
+
+Cualquier duda, escríbenos por aquí. — maudev`;
+
+async function sendIgPrivateReply(env, commentId, text) {
+  // Respuesta privada a un comentario de Instagram (DM).
+  const r = await fetch(`${GRAPH}/${env.IG_USER_ID}/messages`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ recipient: { comment_id: commentId }, message: { text }, access_token: env.IG_ACCESS_TOKEN }),
+  });
+  return r.json();
+}
+
+async function handleCommentWebhook(env, body) {
+  const keyword = norm(env.DM_KEYWORD || "guia");
+  for (const entry of body?.entry || []) {
+    for (const ch of entry.changes || []) {
+      if (ch.field !== "comments") continue;
+      const v = ch.value || {};
+      if (!v.id) continue;
+      // No respondernos a nosotros mismos.
+      if (v.from && (v.from.id === env.IG_USER_ID)) continue;
+      if (norm(v.text).includes(keyword)) {
+        await sendIgPrivateReply(env, v.id, DM_TEXT).catch(() => {});
+      }
+    }
+  }
+}
+
 async function logPost(env, row) {
   if (!env.SUPABASE_URL || !env.SUPABASE_SERVICE_KEY) return;
   await fetch(`${env.SUPABASE_URL}/rest/v1/ig_posts`, {
@@ -503,6 +540,20 @@ export default {
     const url = new URL(req.url);
     const path = url.pathname;
     if (req.method === "OPTIONS") return new Response(null, { headers: CORS });
+
+    // 0) Webhook de Meta (comentario → DM con el PDF).
+    if (path === "/webhook") {
+      if (req.method === "GET") {
+        if (url.searchParams.get("hub.mode") === "subscribe" && url.searchParams.get("hub.verify_token") === env.META_VERIFY_TOKEN) {
+          return new Response(url.searchParams.get("hub.challenge") || "", { status: 200 });
+        }
+        return new Response("forbidden", { status: 403 });
+      }
+      if (req.method === "POST") {
+        try { await handleCommentWebhook(env, await req.json()); } catch (e) { /* no romper la respuesta */ }
+        return new Response("EVENT_RECEIVED", { status: 200 });
+      }
+    }
 
     // 1) Iniciar login de TikTok (Login Kit) → redirige a la pantalla de TikTok.
     if (path === "/tiktok/auth") {

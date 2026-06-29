@@ -11,7 +11,9 @@ const items = {
   "pro-seguridad": "La seguridad de tu software es invisible, hasta que falla. Una filtración de datos cuesta clientes, multas y reputación. Control de acceso, cifrado y respaldos automáticos no son un lujo: exígelos desde el día uno. maudev.",
   "pro-checklist": "Antes de pagar por un software, exige esto: que el código quede a tu nombre, precio y alcance por escrito, y avances que ves funcionando. Si tu proveedor lo evade, corre. maudev.",
 };
-for (const [out, text] of Object.entries(items)) {
+const CTA = " Comenta la palabra guía, y te enviamos gratis el PDF al privado.";
+for (const [out, base] of Object.entries(items)) {
+  const text = base + CTA;
   let r = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE}?output_format=mp3_44100_128`, { method: "POST", headers: { "xi-api-key": KEY, "content-type": "application/json" }, body: JSON.stringify({ text, model_id: "eleven_v3", voice_settings: { stability: 0.45, similarity_boost: 0.8, style: 0.5, use_speaker_boost: true } }) });
   if (!r.ok) r = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE}?output_format=mp3_44100_128`, { method: "POST", headers: { "xi-api-key": KEY, "content-type": "application/json" }, body: JSON.stringify({ text, model_id: "eleven_multilingual_v2", voice_settings: { stability: 0.45, similarity_boost: 0.8, style: 0.5, use_speaker_boost: true } }) });
   if (!r.ok) { console.log(out, "ERROR", r.status); continue; }
