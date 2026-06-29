@@ -45,7 +45,7 @@ function platformsForSlot(franja, weekday) {
   const habil = weekday >= 1 && weekday <= 5;
   return {
     ig: franja === 0 || franja === 2,
-    tt: franja === 0 || franja === 2,
+    tt: false, // DESACTIVADO hasta que TikTok apruebe la API (reactivar: franja===0||franja===2)
     fb: franja === 1,
     li: franja === 1 && habil,
   };
