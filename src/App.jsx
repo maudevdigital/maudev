@@ -30,6 +30,7 @@ const Ahora = lazy(() => import('./pages/Ahora'));
 const Contrato = lazy(() => import('./pages/Contrato'));
 const Terminos = lazy(() => import('./pages/Terminos'));
 const Privacidad = lazy(() => import('./pages/Privacidad'));
+const EliminacionDatos = lazy(() => import('./pages/EliminacionDatos'));
 const Dashboard = lazy(() => import('./pages/admin/Dashboard'));
 const AdminBlog = lazy(() => import('./pages/admin/AdminBlog'));
 const AdminLeads = lazy(() => import('./pages/admin/AdminLeads'));
@@ -76,6 +77,7 @@ const AuthenticatedApp = () => {
         <Route path="/blog/:postId" element={<BlogPostDetail />} />
         <Route path="/terminos" element={<Terminos />} />
         <Route path="/privacidad" element={<Privacidad />} />
+        <Route path="/eliminacion-datos" element={<EliminacionDatos />} />
         <Route path="/lp/diagnostico" element={<LpDiagnostico />} />
         <Route path="/ig" element={<LinkInBio />} />
         <Route path="/links" element={<LinkInBio />} />
