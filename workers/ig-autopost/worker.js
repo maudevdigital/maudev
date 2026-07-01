@@ -528,6 +528,90 @@ async function tiktokExchange(env, code) {
   return r.json();
 }
 
+// ─── Métricas para el dashboard del admin (IG + FB engagement; LinkedIn limitado) ─
+// Usa el token de Página (IG_ACCESS_TOKEN) que ya sirve para IG (enlazado a la
+// página) y para el feed de la página. Solo lectura de engagement público
+// (likes/comentarios). El alcance/impresiones requieren instagram_manage_insights
+// (App Review) y se suman cuando Meta apruebe.
+async function getMetrics(env) {
+  const out = { generatedAt: new Date().toISOString(), ig: null, fb: null, li: null };
+  const T = env.IG_ACCESS_TOKEN;
+
+  // Instagram
+  try {
+    const acc = await (await fetch(`${GRAPH}/${env.IG_USER_ID}?fields=username,followers_count,media_count&access_token=${T}`)).json();
+    if (acc.error) throw new Error(acc.error.message);
+    const media = await (await fetch(`${GRAPH}/${env.IG_USER_ID}/media?fields=id,caption,like_count,comments_count,timestamp,media_type,permalink,thumbnail_url,media_url&limit=25&access_token=${T}`)).json();
+    const posts = (media.data || []).map((m) => ({
+      id: m.id,
+      caption: (m.caption || "").replace(/\s+/g, " ").slice(0, 100),
+      likes: m.like_count || 0,
+      comments: m.comments_count || 0,
+      eng: (m.like_count || 0) + (m.comments_count || 0),
+      type: m.media_type,
+      permalink: m.permalink,
+      thumb: m.media_type === "VIDEO" ? m.thumbnail_url : m.media_url,
+      timestamp: m.timestamp,
+    }));
+    const likes = posts.reduce((a, p) => a + p.likes, 0);
+    const comments = posts.reduce((a, p) => a + p.comments, 0);
+    out.ig = {
+      username: acc.username,
+      followers: acc.followers_count || 0,
+      mediaCount: acc.media_count || 0,
+      totals: { likes, comments, posts: posts.length },
+      avgEng: posts.length ? Math.round(((likes + comments) / posts.length) * 10) / 10 : 0,
+      posts,
+    };
+  } catch (e) { out.ig = { error: e.message }; }
+
+  // Facebook (página). El engagement por post (reactions/comments) requiere
+  // pages_read_user_content (App Review); mientras tanto mostramos seguidores +
+  // conteo + últimos posts, e intentamos el engagement de forma tolerante.
+  try {
+    const page = await (await fetch(`${GRAPH}/${env.FB_PAGE_ID}?fields=name,fan_count,followers_count&access_token=${T}`)).json();
+    if (page.error) throw new Error(page.error.message);
+    // 1º intento: con engagement. Si Meta lo bloquea, caemos al feed simple.
+    let feed = await (await fetch(`${GRAPH}/${env.FB_PAGE_ID}/published_posts?fields=id,message,created_time,permalink_url,reactions.summary(total_count).limit(0),comments.summary(total_count).limit(0),shares&limit=20&access_token=${T}`)).json();
+    let engagementOk = !feed.error;
+    if (feed.error) {
+      feed = await (await fetch(`${GRAPH}/${env.FB_PAGE_ID}/published_posts?fields=id,message,created_time,permalink_url&limit=20&access_token=${T}`)).json();
+    }
+    const posts = (feed.data || []).map((p) => ({
+      id: p.id,
+      caption: (p.message || "").replace(/\s+/g, " ").slice(0, 100),
+      likes: p.reactions?.summary?.total_count ?? null,
+      comments: p.comments?.summary?.total_count ?? null,
+      shares: p.shares?.count ?? null,
+      eng: engagementOk ? (p.reactions?.summary?.total_count || 0) + (p.comments?.summary?.total_count || 0) + (p.shares?.count || 0) : null,
+      permalink: p.permalink_url,
+      timestamp: p.created_time,
+    }));
+    out.fb = {
+      name: page.name,
+      followers: page.followers_count || page.fan_count || 0,
+      engagementAvailable: engagementOk,
+      totals: {
+        likes: engagementOk ? posts.reduce((a, p) => a + (p.likes || 0), 0) : null,
+        comments: engagementOk ? posts.reduce((a, p) => a + (p.comments || 0), 0) : null,
+        posts: posts.length,
+      },
+      note: engagementOk ? null : "Likes/comentarios por post requieren el permiso pages_read_user_content (App Review).",
+      posts,
+    };
+  } catch (e) { out.fb = { error: e.message }; }
+
+  // LinkedIn — la API orgánica de miembro no expone métricas sin acceso de
+  // organización; se informa honestamente en vez de inventar datos.
+  out.li = {
+    available: false,
+    connected: !!(env.LINKEDIN_ACCESS_TOKEN && env.LINKEDIN_PERSON_URN),
+    note: "LinkedIn no expone métricas orgánicas por API sin acceso de organización (partner). Se publica correctamente, pero las estadísticas se ven en LinkedIn.",
+  };
+
+  return out;
+}
+
 export default {
   async scheduled(_event, env, ctx) {
     ctx.waitUntil(
@@ -594,6 +678,13 @@ export default {
       } catch (e) {
         return jsonCors({ ok: false, error: e.message }, 500);
       }
+    }
+
+    // 4b) Métricas para el dashboard del admin (solo desde maudev.cl).
+    if (path === "/metrics") {
+      if (req.headers.get("origin") !== ADMIN_ORIGIN) return jsonCors({ error: "origin" }, 403);
+      try { return jsonCors(await getMetrics(env)); }
+      catch (e) { return jsonCors({ error: e.message }, 500); }
     }
 
     // 5) Disparo manual de la publicación a todos los canales (uso interno).

@@ -36,6 +36,7 @@ const AdminBlog = lazy(() => import('./pages/admin/AdminBlog'));
 const AdminLeads = lazy(() => import('./pages/admin/AdminLeads'));
 const AdminPortfolio = lazy(() => import('./pages/admin/AdminPortfolio'));
 const AdminTikTok = lazy(() => import('./pages/admin/AdminTikTok'));
+const AdminMetricas = lazy(() => import('./pages/admin/AdminMetricas'));
 const LpDiagnostico = lazy(() => import('./pages/lp/Diagnostico'));
 const LinkInBio = lazy(() => import('./pages/LinkInBio'));
 const Guia = lazy(() => import('./pages/Guia'));
@@ -89,6 +90,7 @@ const AuthenticatedApp = () => {
             <Route path="/admin/leads" element={<AdminLeads />} />
             <Route path="/admin/portafolio" element={<AdminPortfolio />} />
             <Route path="/admin/tiktok" element={<AdminTikTok />} />
+            <Route path="/admin/metricas" element={<AdminMetricas />} />
           </Route>
         </Route>
         <Route path="*" element={<PageNotFound />} />

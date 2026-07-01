@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, FileText, Users, ExternalLink, LogOut, Briefcase, Music2 } from "lucide-react";
+import { LayoutDashboard, FileText, Users, ExternalLink, LogOut, Briefcase, Music2, BarChart3 } from "lucide-react";
 import { useAuth } from "@/lib/AuthContext";
 import Logo from "@/components/landing/Logo";
 
@@ -8,6 +8,7 @@ const navItems = [
   { label: "Portafolio", path: "/admin/portafolio", icon: Briefcase },
   { label: "Blog", path: "/admin/blog", icon: FileText },
   { label: "Leads", path: "/admin/leads", icon: Users },
+  { label: "Métricas", path: "/admin/metricas", icon: BarChart3 },
   { label: "TikTok", path: "/admin/tiktok", icon: Music2 },
 ];
 
