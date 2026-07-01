@@ -415,6 +415,19 @@ async function sendIgPrivateReply(env, commentId, text) {
   return r.json();
 }
 
+// Aviso interno a Lucas por Telegram (leads, comentarios, formularios).
+// No-op silencioso si no están configurados los secrets del bot.
+async function sendTelegram(env, text) {
+  if (!env.TELEGRAM_BOT_TOKEN || !env.TELEGRAM_CHAT_ID) return;
+  try {
+    await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ chat_id: env.TELEGRAM_CHAT_ID, text, parse_mode: "HTML", disable_web_page_preview: true }),
+    });
+  } catch { /* nunca romper el flujo por un aviso */ }
+}
+
 async function handleCommentWebhook(env, body) {
   const keyword = norm(env.DM_KEYWORD || "guia");
   for (const entry of body?.entry || []) {
@@ -426,6 +439,10 @@ async function handleCommentWebhook(env, body) {
       if (v.from && (v.from.id === env.IG_USER_ID)) continue;
       if (norm(v.text).includes(keyword)) {
         await sendIgPrivateReply(env, v.id, DM_TEXT).catch(() => {});
+        // Aviso a Lucas: mientras el App Review no esté listo, el DM automático
+        // rebota → este ping te permite responder a mano en segundos.
+        const who = v.from?.username ? "@" + v.from.username : (v.from?.id || "?");
+        await sendTelegram(env, `💬 <b>Comentario "${env.DM_KEYWORD || "guía"}" en Instagram</b>\nDe: ${who}\nTexto: ${v.text || ""}\n\n👉 Si el DM automático aún no está activo (App Review), mándale el PDF a mano.`);
       }
     }
   }
@@ -684,6 +701,22 @@ export default {
       } catch (e) {
         return jsonCors({ ok: false, error: e.message }, 500);
       }
+    }
+
+    // 4a) Aviso de lead nuevo → Telegram (desde el sitio, tras Lead.create).
+    if (path === "/notify-lead" && req.method === "POST") {
+      const origin = req.headers.get("origin");
+      if (!isAdminOrigin(origin)) return jsonCors({ ok: false, error: "origin" }, 403, origin);
+      try {
+        const b = await req.json();
+        const line = (k, v) => (v ? `\n${k}: ${v}` : "");
+        await sendTelegram(env,
+          `🎯 <b>Nuevo lead</b> (${b.source || "sitio"})` +
+          line("Nombre", b.name) + line("Email", b.email) +
+          line("WhatsApp", b.whatsapp) + line("Interés", b.interest || b.content_name) +
+          `\n\n👉 Detalle en maudev.cl/admin/leads`);
+        return jsonCors({ ok: true }, 200, origin);
+      } catch (e) { return jsonCors({ ok: false, error: e.message }, 500, origin); }
     }
 
     // 4b) Métricas para el dashboard del admin (maudev.cl + localhost dev).

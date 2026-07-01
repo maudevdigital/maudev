@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 const CAPI_WORKER = "https://maudev-meta-capi.maudevchile.workers.dev";
+const IG_WORKER = "https://ig-autopost.maudevchile.workers.dev";
 
 // El panel /admin NO debe aparecer en analítica (ni GA ni Pixel).
 const isPrivate = (path) => path.startsWith("/admin");
@@ -73,6 +74,22 @@ export async function trackLeadEvent({ email, phone, params = {} } = {}) {
   } catch {
     // No bloquear el flujo si el worker falla
   }
+
+  // 3. Aviso interno por Telegram (fire-and-forget; no bloquea ni rompe nada).
+  try {
+    fetch(`${IG_WORKER}/notify-lead`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email,
+        whatsapp: phone,
+        name: params.name,
+        interest: params.interest,
+        content_name: params.content_name,
+        source: params.source || params.content_category,
+      }),
+    }).catch(() => {});
+  } catch { /* noop */ }
 
   return eventId;
 }
