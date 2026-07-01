@@ -495,14 +495,20 @@ async function runOnce(env, forcedIndex) {
 // ─── Flujo TikTok para /admin (Login Kit + Content Posting API, demo de review) ─
 const ADMIN_ORIGIN = "https://maudev.cl";
 const TIKTOK_REDIRECT = "https://maudev.cl/admin/tiktok";
-const CORS = {
-  "Access-Control-Allow-Origin": ADMIN_ORIGIN,
-  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-  "Access-Control-Allow-Headers": "content-type",
-  "Cache-Control": "no-store",
-};
-const jsonCors = (data, status = 200) =>
-  new Response(JSON.stringify(data), { status, headers: { "content-type": "application/json", ...CORS } });
+// Orígenes permitidos para el admin (prod + dev local con Vite).
+const ADMIN_ORIGINS = [ADMIN_ORIGIN, "http://localhost:5173", "http://localhost:4173"];
+const isAdminOrigin = (o) => ADMIN_ORIGINS.includes(o);
+function corsHeaders(origin) {
+  return {
+    "Access-Control-Allow-Origin": isAdminOrigin(origin) ? origin : ADMIN_ORIGIN,
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+    "Access-Control-Allow-Headers": "content-type",
+    "Cache-Control": "no-store",
+  };
+}
+const CORS = corsHeaders(ADMIN_ORIGIN);
+const jsonCors = (data, status = 200, origin) =>
+  new Response(JSON.stringify(data), { status, headers: { "content-type": "application/json", ...corsHeaders(origin) } });
 
 function tiktokAuthUrl(env) {
   const u = new URL("https://www.tiktok.com/v2/auth/authorize/");
@@ -623,7 +629,7 @@ export default {
   async fetch(req, env) {
     const url = new URL(req.url);
     const path = url.pathname;
-    if (req.method === "OPTIONS") return new Response(null, { headers: CORS });
+    if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders(req.headers.get("origin")) });
 
     // 0) Webhook de Meta (comentario → DM con el PDF).
     if (path === "/webhook") {
@@ -680,11 +686,12 @@ export default {
       }
     }
 
-    // 4b) Métricas para el dashboard del admin (solo desde maudev.cl).
+    // 4b) Métricas para el dashboard del admin (maudev.cl + localhost dev).
     if (path === "/metrics") {
-      if (req.headers.get("origin") !== ADMIN_ORIGIN) return jsonCors({ error: "origin" }, 403);
-      try { return jsonCors(await getMetrics(env)); }
-      catch (e) { return jsonCors({ error: e.message }, 500); }
+      const origin = req.headers.get("origin");
+      if (!isAdminOrigin(origin)) return jsonCors({ error: "origin" }, 403, origin);
+      try { return jsonCors(await getMetrics(env), 200, origin); }
+      catch (e) { return jsonCors({ error: e.message }, 500, origin); }
     }
 
     // 5) Disparo manual de la publicación a todos los canales (uso interno).
