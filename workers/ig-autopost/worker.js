@@ -794,6 +794,34 @@ async function processReminders(env) {
   }
 }
 
+// ── Generador de cotizaciones ────────────────────────────────────────────────
+// El admin calcula la propuesta (motor de precios en /admin/cotizaciones) y el
+// worker la persiste en KV con un id no adivinable. El cliente la ve en
+// maudev.cl/propuesta/{id}. Opcional: se le envía por email (Resend).
+function newProposalId() {
+  const bytes = crypto.getRandomValues(new Uint8Array(9));
+  return Array.from(bytes, (b) => "abcdefghijklmnopqrstuvwxyz0123456789"[b % 36]).join("");
+}
+
+async function proposalEmail(env, prop, url) {
+  const first = (prop.client?.name || "").trim().split(" ")[0];
+  const hola = first ? `¡Hola ${first}!` : "¡Hola!";
+  const html = `<div style="background:#f4f6f8;padding:32px 12px;font-family:Arial,Helvetica,sans-serif">
+  <div style="max-width:560px;margin:0 auto;background:#ffffff;border-radius:12px;overflow:hidden;border:1px solid #e3e6ea">
+    <div style="background:#0a0a0a;padding:18px 28px">
+      <span style="font-size:18px;font-weight:bold;color:#fafafa">mau</span><span style="font-size:18px;font-weight:bold;color:#19d4d4">dev</span>
+    </div>
+    <div style="padding:28px;color:#1a1a1a;font-size:15px;line-height:1.6">
+      <p>${hola}</p>
+      <p>Preparamos la propuesta para <strong>${prop.project?.title || "tu proyecto"}</strong>: alcance, metodología de trabajo, plazos y precio fijo, todo por escrito.</p>
+      <a href="${url}" style="display:inline-block;margin-top:14px;background:#0e7d88;color:#ffffff;text-decoration:none;font-weight:bold;padding:12px 22px;border-radius:8px">Ver propuesta completa</a>
+      <p style="margin-top:16px;font-size:13px;color:#5b6470">La propuesta tiene una validez de ${prop.validityDays || 14} días. Cualquier duda, responde este correo y lo conversamos.</p>
+      <p style="margin-top:22px;font-size:12px;color:#8a94a0">maudev · Desarrollo web, software a medida y automatización · <a href="https://maudev.cl" style="color:#0e7d88">maudev.cl</a></p>
+    </div>
+  </div></div>`;
+  await resendSend(env, prop.client.email, `Propuesta: ${prop.project?.title || "tu proyecto"} — maudev`, html);
+}
+
 // Snapshot diario de métricas → KV (para el gráfico de tendencia del admin).
 // Compacto: solo los números que sirven para comparar semana a semana.
 async function snapshotMetrics(env) {
@@ -913,6 +941,49 @@ export default {
         await sendFollowUp(env, b).catch((e) => console.error("followup:", e.message));
         return jsonCors({ ok: true }, 200, origin);
       } catch (e) { return jsonCors({ ok: false, error: e.message }, 500, origin); }
+    }
+
+    // ── Propuestas (generador de cotizaciones) ────────────────────────────
+    // Crear (desde /admin/cotizaciones).
+    if (path === "/proposal" && req.method === "POST") {
+      const origin = req.headers.get("origin");
+      if (!isAdminOrigin(origin)) return jsonCors({ ok: false, error: "origin" }, 403, origin);
+      if (!env.METRICS_KV) return jsonCors({ ok: false, error: "sin KV" }, 500, origin);
+      try {
+        const prop = await req.json();
+        if (!prop?.project?.title || !prop?.price) return jsonCors({ ok: false, error: "faltan project.title o price" }, 400, origin);
+        const id = newProposalId();
+        prop.id = id;
+        prop.createdAt = new Date().toISOString();
+        await env.METRICS_KV.put(`prop:${id}`, JSON.stringify(prop));
+        const url = `https://maudev.cl/propuesta/${id}`;
+        let emailed = false;
+        if (prop.sendEmail && prop.client?.email && env.RESEND_API_KEY) {
+          await proposalEmail(env, prop, url).then(() => { emailed = true; }).catch(() => {});
+        }
+        await sendTelegram(env, `📄 <b>Propuesta creada</b>\n${prop.project.title} — ${prop.client?.name || "?"}\nPrecio: $${Number(prop.price).toLocaleString("es-CL")}\n${emailed ? "✉️ Enviada al cliente por email." : "Link listo para compartir."}\n${url}`);
+        return jsonCors({ ok: true, id, url, emailed }, 200, origin);
+      } catch (e) { return jsonCors({ ok: false, error: e.message }, 500, origin); }
+    }
+    // Leer una (la ve el cliente en maudev.cl/propuesta/{id}).
+    if (path === "/proposal" && req.method === "GET") {
+      const origin = req.headers.get("origin");
+      if (!isAdminOrigin(origin)) return jsonCors({ error: "origin" }, 403, origin);
+      const id = (url.searchParams.get("id") || "").replace(/[^a-z0-9]/g, "");
+      const prop = id && env.METRICS_KV ? await env.METRICS_KV.get(`prop:${id}`, "json") : null;
+      if (!prop) return jsonCors({ error: "not_found" }, 404, origin);
+      return jsonCors(prop, 200, origin);
+    }
+    // Listar (admin).
+    if (path === "/proposals") {
+      const origin = req.headers.get("origin");
+      if (!isAdminOrigin(origin)) return jsonCors({ error: "origin" }, 403, origin);
+      if (!env.METRICS_KV) return jsonCors({ proposals: [] }, 200, origin);
+      const list = await env.METRICS_KV.list({ prefix: "prop:" });
+      const props = (await Promise.all(list.keys.slice(-60).map((k) => env.METRICS_KV.get(k.name, "json")))).filter(Boolean);
+      props.sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || ""));
+      const proposals = props.map((p) => ({ id: p.id, title: p.project?.title, client: p.client?.name, price: p.price, createdAt: p.createdAt }));
+      return jsonCors({ proposals }, 200, origin);
     }
 
     // 4b-pre) Histórico de métricas (snapshots diarios del KV, más nuevo al final).

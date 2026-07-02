@@ -37,6 +37,8 @@ const AdminLeads = lazy(() => import('./pages/admin/AdminLeads'));
 const AdminPortfolio = lazy(() => import('./pages/admin/AdminPortfolio'));
 const AdminTikTok = lazy(() => import('./pages/admin/AdminTikTok'));
 const AdminMetricas = lazy(() => import('./pages/admin/AdminMetricas'));
+const AdminCotizaciones = lazy(() => import('./pages/admin/AdminCotizaciones'));
+const Propuesta = lazy(() => import('./pages/Propuesta'));
 const LpDiagnostico = lazy(() => import('./pages/lp/Diagnostico'));
 const LinkInBio = lazy(() => import('./pages/LinkInBio'));
 const Guia = lazy(() => import('./pages/Guia'));
@@ -79,6 +81,7 @@ const AuthenticatedApp = () => {
         <Route path="/terminos" element={<Terminos />} />
         <Route path="/privacidad" element={<Privacidad />} />
         <Route path="/eliminacion-datos" element={<EliminacionDatos />} />
+        <Route path="/propuesta/:proposalId" element={<Propuesta />} />
         <Route path="/lp/diagnostico" element={<LpDiagnostico />} />
         <Route path="/ig" element={<LinkInBio />} />
         <Route path="/links" element={<LinkInBio />} />
@@ -91,6 +94,7 @@ const AuthenticatedApp = () => {
             <Route path="/admin/portafolio" element={<AdminPortfolio />} />
             <Route path="/admin/tiktok" element={<AdminTikTok />} />
             <Route path="/admin/metricas" element={<AdminMetricas />} />
+            <Route path="/admin/cotizaciones" element={<AdminCotizaciones />} />
           </Route>
         </Route>
         <Route path="*" element={<PageNotFound />} />
