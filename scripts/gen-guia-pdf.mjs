@@ -63,12 +63,12 @@ doc.moveDown(0.4);
 p("Construir software a medida es una de las decisiones más caras —y más rentables— que toma una empresa. Pero casi nadie te enseña a tomarla bien, y la mayoría termina pagando dos veces. Esta guía resume lo esencial para que decidas con cabeza fría: cuánto cuesta de verdad, cuándo conviene, cómo elegir con quién, qué retorno esperar y qué exigir antes de firmar.");
 
 h2("1. ¿Cuánto cuesta de verdad?");
-p("No hay un precio único: depende del alcance, la complejidad de la lógica, las integraciones, los usuarios y roles, el diseño, la escala y quién lo construye. Rangos realistas en Chile (2026), como orden de magnitud:");
-priceRow("Landing / sitio a medida", "$600.000 – $2.500.000");
-priceRow("MVP (primera versión funcional)", "$3.000.000 – $12.000.000");
-priceRow("Sistema de gestión interno", "$8.000.000 – $40.000.000");
-priceRow("Plataforma / producto digital", "desde $40.000.000");
-p("Ojo: eso es la construcción inicial. El software, como un auto, también tiene mantención. Y si te cotizan en 5 minutos sin entender tu negocio, cuidado: o es una plantilla disfrazada, o ese precio va a subir.");
+p("No hay un precio único: depende del alcance, la complejidad de la lógica, las integraciones, los usuarios y roles, el diseño y la escala. Estos son los rangos con los que trabajamos en Chile (2026), como orden de magnitud:");
+priceRow("Landing / sitio de conversión", "$390.000 – $900.000");
+priceRow("Automatización / integraciones", "$290.000 – $700.000");
+priceRow("Software a medida (app, dashboard, MVP)", "desde $900.000");
+priceRow("Sistema o plataforma más grande", "se cotiza por proyecto");
+p("Ojo: eso es la construcción inicial. El software, como un auto, también tiene mantención (desde $49.000/mes). Y si te cotizan en 5 minutos sin entender tu negocio, cuidado: o es una plantilla disfrazada, o ese precio va a subir. El precio fijo exacto para tu caso te llega por escrito en el diagnóstico, sin costos ocultos.");
 
 h2("2. ¿A medida o una herramienta de mercado (SaaS)?");
 p("El SaaS gana en lo estándar, rápido y barato de partida. El software a medida gana cuando el proceso ES tu ventaja, cuando ya peleas con la herramienta, o cuando el costo de arrendar para siempre supera al de construir lo tuyo.");
