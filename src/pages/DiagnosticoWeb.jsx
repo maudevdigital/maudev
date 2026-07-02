@@ -161,7 +161,7 @@ export default function DiagnosticoWeb() {
       });
       await trackLeadEvent({
         email: email.trim(),
-        params: { content_name: "Diagnostico web", content_category: "web_dev" },
+        params: { content_name: "Diagnostico web", content_category: "web_dev", source: "diagnostico_web" },
       });
       setSent(true);
       toast.success(t("Listo. Te enviamos el análisis detallado en menos de 24h.", "Done. We'll send the detailed analysis within 24h."));

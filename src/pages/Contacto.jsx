@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Mail, MessageCircle, CheckCircle, Send, ShieldCheck, ExternalLink } from "lucide-react";
+import { Mail, MessageCircle, CheckCircle, Send, ShieldCheck, ExternalLink, Calendar } from "lucide-react";
 import { getWhatsAppUrl, whatsappEnabled } from "@/components/landing/WhatsAppFloat";
 import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
@@ -92,7 +92,7 @@ export default function Contacto() {
       await trackLeadEvent({
         email: form.email.trim(),
         phone: `${country.dial}${form.phone.trim()}`,
-        params: { content_name: "Formulario contacto", content_category: form.interest },
+        params: { content_name: "Formulario contacto", content_category: form.interest, name: form.name.trim(), source: "contact_page" },
       });
       setSent(true);
       toast.success(t("Mensaje recibido. Te respondemos pronto.", "Message received. We'll reply soon."));
@@ -124,7 +124,23 @@ export default function Contacto() {
 
       <section className="pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid sm:grid-cols-2 gap-4 lg:gap-6 mb-12">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 mb-12">
+            <a
+              href="https://cal.com/lucas-maulen-mlfaql/30min"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-card border border-primary/40 rounded-2xl p-6 hover:border-primary transition-colors group sm:col-span-2 lg:col-span-1"
+            >
+              <div className="h-10 w-10 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center mb-4">
+                <Calendar className="h-5 w-5 text-primary" />
+              </div>
+              <h3 className="font-bold mb-1 flex items-center gap-2">
+                {t("Agenda tu diagnóstico gratis", "Book your free assessment")}
+                <ExternalLink className="h-3.5 w-3.5 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+              </h3>
+              <p className="text-sm text-primary font-medium">{t("Elige día y hora → 30 min, sin compromiso", "Pick a slot → 30 min, no strings")}</p>
+            </a>
+
             <a
               href={`mailto:${CONTACT_EMAIL}`}
               className="bg-card border border-border rounded-2xl p-6 hover:border-foreground/30 transition-colors group"

@@ -82,7 +82,7 @@ export default function Cotizador() {
       });
       await trackLeadEvent({
         email: form.email.trim(),
-        params: { content_name: "Cotizador", content_category: type.value },
+        params: { content_name: "Cotizador", content_category: type.value, name: form.name.trim(), source: "cotizador" },
       });
       setSent(true);
     } catch {

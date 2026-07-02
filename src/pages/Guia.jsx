@@ -67,7 +67,7 @@ export default function Guia() {
       await trackLeadEvent({
         email: form.email.trim(),
         phone: `${country.dial}${form.phone.trim()}`,
-        params: { content_name: "Guía software a medida", content_category: "lead_magnet" },
+        params: { content_name: "Guía software a medida", content_category: "lead_magnet", name: form.name.trim(), source: "lead_magnet_guia" },
       });
       setDone(true);
       download();

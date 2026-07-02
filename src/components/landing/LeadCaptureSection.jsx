@@ -58,7 +58,7 @@ export default function LeadCaptureSection() {
       await trackLeadEvent({
         email: form.email.trim(),
         phone: `${country.dial}${form.phone.trim()}`,
-        params: { content_name: "Landing lead form", content_category: form.interest },
+        params: { content_name: "Landing lead form", content_category: form.interest, name: form.name.trim(), source: "contact_form" },
       });
       setSent(true);
       toast.success(t("Mensaje enviado. Te contactaremos pronto.", "Message sent. We'll get back to you soon."));

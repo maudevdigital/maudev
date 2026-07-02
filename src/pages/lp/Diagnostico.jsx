@@ -61,7 +61,7 @@ export default function LpDiagnostico() {
       await trackLeadEvent({
         email: form.email.trim(),
         phone: `${country.dial}${form.phone.trim()}`,
-        params: { content_name: "LP Diagnostico", content_category: form.interest },
+        params: { content_name: "LP Diagnostico", content_category: form.interest, name: form.name.trim(), source: "lp_diagnostico" },
       });
       setSent(true);
     } catch {

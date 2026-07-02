@@ -78,7 +78,7 @@ export default function HeroSection() {
       });
       await trackLeadEvent({
         email,
-        params: { content_name: "Hero funnel", content_category: selected || "general" },
+        params: { content_name: "Hero funnel", content_category: selected || "general", source: "hero_funnel" },
       });
       setStep(2);
       toast.success(t("Solicitud recibida. Te contactamos en menos de 24h.", "Request received. We'll get back to you within 24h."));

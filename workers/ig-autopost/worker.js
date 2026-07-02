@@ -699,6 +699,101 @@ async function getTikTokMetrics(env) {
   }
 }
 
+// ── Seguimiento por email (Resend) ──────────────────────────────────────────
+// Al captar un lead: email inmediato según la fuente + recordatorio a las 48h.
+// Dedupe por email (7 días) para no escribirle dos veces a la misma persona.
+const CAL_FALLBACK = "https://cal.com/lucas-maulen-mlfaql/30min";
+const GUIA_PDF_URL = "https://maudev.cl/guia-software-a-medida.pdf";
+
+function emailShell(inner, cal) {
+  return `<div style="background:#f4f6f8;padding:32px 12px;font-family:Arial,Helvetica,sans-serif">
+  <div style="max-width:560px;margin:0 auto;background:#ffffff;border-radius:12px;overflow:hidden;border:1px solid #e3e6ea">
+    <div style="background:#0a0a0a;padding:18px 28px">
+      <span style="font-size:18px;font-weight:bold;color:#fafafa">mau</span><span style="font-size:18px;font-weight:bold;color:#19d4d4">dev</span>
+    </div>
+    <div style="padding:28px;color:#1a1a1a;font-size:15px;line-height:1.6">${inner}
+      <a href="${cal}" style="display:inline-block;margin-top:18px;background:#0e7d88;color:#ffffff;text-decoration:none;font-weight:bold;padding:12px 22px;border-radius:8px">Agendar diagnóstico gratis (30 min)</a>
+      <p style="margin-top:22px;font-size:12px;color:#8a94a0">maudev · Desarrollo web, software a medida y automatización · <a href="https://maudev.cl" style="color:#0e7d88">maudev.cl</a></p>
+    </div>
+  </div></div>`;
+}
+
+function followUpContent(lead, cal) {
+  const first = (lead.name || "").trim().split(" ")[0];
+  const hola = first ? `¡Hola ${first}!` : "¡Hola!";
+  const src = `${lead.source || ""} ${lead.content_name || ""}`.toLowerCase();
+  if (/guia|guía|lead_magnet/.test(src)) {
+    return {
+      subject: "Tu guía está lista 📘 (y el siguiente paso)",
+      html: emailShell(`<p>${hola}</p>
+        <p>Gracias por descargar nuestra guía para decidir bien tu software. Si no la tienes a mano, <a href="${GUIA_PDF_URL}" style="color:#0e7d88;font-weight:bold">descárgala de nuevo aquí</a>.</p>
+        <p>Si quieres, la aplicamos a tu caso: en 30 minutos revisamos tu idea o proceso y te decimos qué conviene construir, plazos realistas y un precio fijo por escrito. Sin costo y sin compromiso.</p>`, cal),
+    };
+  }
+  if (/cotiz/.test(src)) {
+    return {
+      subject: "Recibimos tu cotización — el precio fijo va en camino",
+      html: emailShell(`<p>${hola}</p>
+        <p>Gracias por usar nuestro cotizador. Ya tienes un rango de referencia; el siguiente paso es el <strong>precio fijo por escrito</strong> para tu caso, con alcance e hitos claros.</p>
+        <p>Agenda un diagnóstico gratis de 30 minutos y en menos de 24 horas después recibes la propuesta.</p>`, cal),
+    };
+  }
+  return {
+    subject: "Recibimos tu mensaje — hablemos de tu proyecto",
+    html: emailShell(`<p>${hola}</p>
+      <p>Gracias por escribirnos a maudev. Vimos tu solicitud y te vamos a responder muy pronto.</p>
+      <p>Si prefieres avanzar de una, agenda directamente un diagnóstico gratis de 30 minutos: revisamos tu caso y te decimos qué conviene, con plazos y precio fijo por escrito.</p>`, cal),
+  };
+}
+
+async function resendSend(env, to, subject, html) {
+  const r = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, "content-type": "application/json" },
+    body: JSON.stringify({ from: "Lucas de maudev <contacto@maudev.cl>", reply_to: "contacto@maudev.cl", to: [to], subject, html }),
+  });
+  if (!r.ok) throw new Error(`resend: ${r.status} ${(await r.text()).slice(0, 140)}`);
+  return r.json();
+}
+
+async function sendFollowUp(env, lead) {
+  if (!env.RESEND_API_KEY || !lead?.email) return;
+  const email = lead.email.trim().toLowerCase();
+  // Dedupe: máx. 1 secuencia por email cada 7 días.
+  if (env.METRICS_KV) {
+    if (await env.METRICS_KV.get(`fu-sent:${email}`)) return;
+    await env.METRICS_KV.put(`fu-sent:${email}`, "1", { expirationTtl: 7 * 86400 });
+  }
+  const cal = env.CAL_LINK || CAL_FALLBACK;
+  const { subject, html } = followUpContent(lead, cal);
+  await resendSend(env, email, subject, html);
+  // Programa el recordatorio (48h después), procesado por el cron diario.
+  if (env.METRICS_KV) {
+    await env.METRICS_KV.put(
+      `fu-remind:${email}`,
+      JSON.stringify({ email, name: lead.name || "", at: Date.now() + 48 * 3600 * 1000 }),
+      { expirationTtl: 10 * 86400 },
+    );
+  }
+}
+
+async function processReminders(env) {
+  if (!env.RESEND_API_KEY || !env.METRICS_KV) return;
+  const cal = env.CAL_LINK || CAL_FALLBACK;
+  const list = await env.METRICS_KV.list({ prefix: "fu-remind:" });
+  for (const k of list.keys) {
+    const rec = await env.METRICS_KV.get(k.name, "json");
+    if (!rec) continue;
+    if (Date.now() < rec.at) continue;
+    const first = (rec.name || "").trim().split(" ")[0];
+    const hola = first ? `¡Hola ${first}!` : "¡Hola!";
+    await resendSend(env, rec.email, "¿Agendamos tu diagnóstico gratis?", emailShell(`<p>${hola}</p>
+      <p>Hace un par de días nos dejaste tus datos en maudev. ¿Sigues dándole vueltas a tu proyecto?</p>
+      <p>El diagnóstico es gratis, dura 30 minutos y sales con claridad: qué construir, en cuánto tiempo y a qué precio fijo. Elige el horario que te acomode:</p>`, cal)).catch(() => {});
+    await env.METRICS_KV.delete(k.name);
+  }
+}
+
 // Snapshot diario de métricas → KV (para el gráfico de tendencia del admin).
 // Compacto: solo los números que sirven para comparar semana a semana.
 async function snapshotMetrics(env) {
@@ -728,6 +823,7 @@ export default {
         .catch((err) => console.error("Error ig-autopost:", err.message)),
     );
     ctx.waitUntil(snapshotMetrics(env).catch((e) => console.error("snapshot:", e.message)));
+    ctx.waitUntil(processReminders(env).catch((e) => console.error("reminders:", e.message)));
   },
   async fetch(req, env) {
     const url = new URL(req.url);
@@ -813,6 +909,8 @@ export default {
           line("Nombre", b.name) + line("Email", b.email) +
           line("WhatsApp", b.whatsapp) + line("Interés", b.interest || b.content_name) +
           `\n\n👉 Detalle en maudev.cl/admin/leads`);
+        // Seguimiento automático por email (no bloquea la respuesta si falla).
+        await sendFollowUp(env, b).catch((e) => console.error("followup:", e.message));
         return jsonCors({ ok: true }, 200, origin);
       } catch (e) { return jsonCors({ ok: false, error: e.message }, 500, origin); }
     }
