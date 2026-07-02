@@ -23,7 +23,10 @@ const CLIENT_ID = process.env.LINKEDIN_CLIENT_ID;
 const CLIENT_SECRET = process.env.LINKEDIN_CLIENT_SECRET;
 const REDIRECT_URI = process.env.LINKEDIN_REDIRECT_URI;
 const CODE = process.env.LINKEDIN_CODE;
-const SCOPE = "openid profile w_member_social";
+// Para publicar en la PÁGINA de empresa se necesita el producto "Community
+// Management API" en la app de LinkedIn (agrega w_organization_social). Si aún
+// no lo tienes aprobado, quita las 2 últimas y publicará como perfil.
+const SCOPE = "openid profile w_member_social w_organization_social r_organization_social";
 
 if (!CLIENT_ID || !REDIRECT_URI) {
   console.error("Falta LINKEDIN_CLIENT_ID y/o LINKEDIN_REDIRECT_URI.");
@@ -78,4 +81,23 @@ if (!me.sub) {
 console.log("\n✅ Listo. Configura estos secrets en el worker:\n");
 console.log(`LINKEDIN_ACCESS_TOKEN = ${tok.access_token}`);
 console.log(`LINKEDIN_PERSON_URN   = urn:li:person:${me.sub}`);
+
+// Busca las PÁGINAS de empresa que administras (necesita w_organization_social).
+try {
+  const aclRes = await fetch(
+    "https://api.linkedin.com/rest/organizationAcls?q=roleAssignee&role=ADMINISTRATOR&state=APPROVED",
+    { headers: { Authorization: `Bearer ${tok.access_token}`, "LinkedIn-Version": "202601", "X-Restli-Protocol-Version": "2.0.0" } },
+  );
+  const acl = await aclRes.json();
+  const orgs = (acl.elements || []).map((e) => e.organization).filter(Boolean);
+  if (orgs.length) {
+    console.log("\n📄 Páginas que administras (elige una para el secret):");
+    for (const o of orgs) console.log(`LINKEDIN_ORG_URN = ${o}`);
+    console.log("\n(Si aparece, el worker publicará en la PÁGINA en vez de tu perfil).");
+  } else {
+    console.log("\n⚠️ No se detectaron páginas administradas (¿falta el producto 'Community Management API' o no eres admin de una página?).");
+  }
+} catch (e) {
+  console.log("\n(No se pudieron leer las páginas:", e.message, ")");
+}
 console.log(`\n(Usuario: ${me.name || "?"} — token válido ~${Math.round((tok.expires_in || 0) / 86400)} días)\n`);

@@ -159,6 +159,9 @@ function liHeaders(env) {
     "X-Restli-Protocol-Version": "2.0.0",
   };
 }
+// Autor de las publicaciones: la PÁGINA de empresa (urn:li:organization:{id}) si
+// está configurada; si no, el perfil personal como respaldo.
+const liAuthor = (env) => env.LINKEDIN_ORG_URN || env.LINKEDIN_PERSON_URN;
 
 // Sube UNA imagen a LinkedIn → devuelve su URN (urn:li:image:...).
 async function uploadLinkedInImage(env, imageUrl) {
@@ -166,7 +169,7 @@ async function uploadLinkedInImage(env, imageUrl) {
   const initRes = await fetch(`${LI_API}/rest/images?action=initializeUpload`, {
     method: "POST",
     headers: { ...h, "content-type": "application/json" },
-    body: JSON.stringify({ initializeUploadRequest: { owner: env.LINKEDIN_PERSON_URN } }),
+    body: JSON.stringify({ initializeUploadRequest: { owner: liAuthor(env) } }),
   });
   const init = await initRes.json();
   const uploadUrl = init?.value?.uploadUrl;
@@ -188,7 +191,7 @@ async function createLinkedInPost(env, caption, content) {
     method: "POST",
     headers: { ...liHeaders(env), "content-type": "application/json" },
     body: JSON.stringify({
-      author: env.LINKEDIN_PERSON_URN,
+      author: liAuthor(env),
       commentary: caption,
       visibility: "PUBLIC",
       distribution: { feedDistribution: "MAIN_FEED", targetEntities: [], thirdPartyDistributionChannels: [] },
@@ -204,14 +207,14 @@ async function createLinkedInPost(env, caption, content) {
 
 // Post con UNA imagen.
 async function publishLinkedIn(env, imageUrl, caption) {
-  if (!env.LINKEDIN_ACCESS_TOKEN || !env.LINKEDIN_PERSON_URN) return null;
+  if (!env.LINKEDIN_ACCESS_TOKEN || !liAuthor(env)) return null;
   const urn = await uploadLinkedInImage(env, imageUrl);
   return createLinkedInPost(env, caption, { media: { altText: "maudev", id: urn } });
 }
 
 // Post NATIVO de varias imágenes (carrusel deslizable) → se ven TODAS las slides.
 async function publishLinkedInCarousel(env, imageUrls, caption) {
-  if (!env.LINKEDIN_ACCESS_TOKEN || !env.LINKEDIN_PERSON_URN) return null;
+  if (!env.LINKEDIN_ACCESS_TOKEN || !liAuthor(env)) return null;
   const images = [];
   for (const url of imageUrls) {
     images.push({ id: await uploadLinkedInImage(env, url), altText: "maudev" });
@@ -223,8 +226,8 @@ async function publishLinkedInCarousel(env, imageUrls, caption) {
 // Flujo Videos API: initializeUpload → PUT de los bytes (1+ partes con ETag) →
 // finalizeUpload → POST /rest/posts con la URN del video.
 async function publishLinkedInVideo(env, videoUrl, caption) {
-  if (!env.LINKEDIN_ACCESS_TOKEN || !env.LINKEDIN_PERSON_URN) return null;
-  const author = env.LINKEDIN_PERSON_URN;
+  if (!env.LINKEDIN_ACCESS_TOKEN || !liAuthor(env)) return null;
+  const author = liAuthor(env);
   const h = {
     Authorization: `Bearer ${env.LINKEDIN_ACCESS_TOKEN}`,
     "LinkedIn-Version": LI_VERSION,
