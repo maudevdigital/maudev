@@ -16,6 +16,18 @@ export default function AdminTikTok() {
   const [result, setResult] = useState(null); // { ok, msg }
   const [queue, setQueue] = useState([]);
   const [copied, setCopied] = useState(null); // id copiado
+  const [uploaded, setUploaded] = useState(() => {
+    try { return new Set(JSON.parse(localStorage.getItem("tt_uploaded") || "[]")); } catch { return new Set(); }
+  });
+
+  const markUploaded = (id) => {
+    setUploaded((prev) => {
+      const next = new Set(prev); next.add(id);
+      try { localStorage.setItem("tt_uploaded", JSON.stringify([...next])); } catch { /* noop */ }
+      return next;
+    });
+  };
+  const resetUploaded = () => { setUploaded(new Set()); try { localStorage.removeItem("tt_uploaded"); } catch { /* noop */ } };
 
   useEffect(() => { document.title = "TikTok · Maudev admin"; }, []);
 
@@ -68,6 +80,7 @@ export default function AdminTikTok() {
         body: JSON.stringify({ id }),
       });
       const d = await r.json();
+      if (d.ok) markUploaded(id);
       setResult(d.ok ? { ok: true, msg: "Borrador subido a TikTok ✅ — ábrelo en la app, pega la descripción y publica." } : { ok: false, msg: "Error: " + (d.error || "") });
     } catch (e) {
       setResult({ ok: false, msg: e.message });
@@ -138,10 +151,20 @@ export default function AdminTikTok() {
 
       {/* Cola de contenido: reels + descripción SEO para copiar */}
       <section className="rounded-xl border border-border bg-card p-6">
-        <h2 className="font-semibold flex items-center gap-2 mb-4"><UploadCloud className="h-4 w-4" /> Cola de contenido ({queue.length})</h2>
+        <div className="flex items-center justify-between gap-3 mb-4">
+          <h2 className="font-semibold flex items-center gap-2"><UploadCloud className="h-4 w-4" /> Cola de contenido ({queue.filter((r) => !uploaded.has(r.id)).length})</h2>
+          {uploaded.size > 0 && (
+            <button onClick={resetUploaded} className="text-xs text-muted-foreground hover:text-foreground underline">
+              {uploaded.size} subido(s) oculto(s) · restablecer
+            </button>
+          )}
+        </div>
         <div className="space-y-3">
           {queue.length === 0 && <p className="text-sm text-muted-foreground">Cargando cola…</p>}
-          {queue.map((r) => (
+          {queue.length > 0 && queue.every((r) => uploaded.has(r.id)) && (
+            <p className="text-sm text-muted-foreground">Todos subidos ✅. Usa "restablecer" para volver a mostrarlos.</p>
+          )}
+          {queue.filter((r) => !uploaded.has(r.id)).map((r) => (
             <div key={r.id} className="rounded-lg border border-border/60 bg-background/40 p-4">
               <div className="flex items-center justify-between gap-3 mb-2">
                 <p className="text-sm font-medium text-foreground truncate">{r.id}</p>
