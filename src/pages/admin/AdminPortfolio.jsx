@@ -258,7 +258,7 @@ export default function AdminPortfolio() {
 
       {/* Dialog */}
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="w-[calc(100vw-1rem)] sm:w-auto max-w-2xl h-[95dvh] sm:h-auto sm:max-h-[90vh] overflow-y-auto p-4 sm:p-6 rounded-lg">
           <DialogHeader>
             <DialogTitle>{editing ? "Editar proyecto" : "Nuevo proyecto"}</DialogTitle>
           </DialogHeader>

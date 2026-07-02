@@ -40,8 +40,28 @@ function StatCard({ icon: Icon, label, value, sub, accent }) {
   );
 }
 
+// Delta entre el snapshot más nuevo y el de hace `days` (o el más antiguo disponible).
+function trendDelta(history, field, days = 7) {
+  if (!history || history.length < 2) return null;
+  const last = history[history.length - 1];
+  const target = history.length > days ? history[history.length - 1 - days] : history[0];
+  if (last?.[field] == null || target?.[field] == null) return null;
+  return last[field] - target[field];
+}
+
+const DeltaBadge = ({ value, suffix = "" }) => {
+  if (value == null) return <span className="text-muted-foreground/60">—</span>;
+  const up = value > 0;
+  return (
+    <span className={`font-mono text-xs ${up ? "text-primary" : value < 0 ? "text-destructive" : "text-muted-foreground"}`}>
+      {up ? "+" : ""}{value}{suffix}
+    </span>
+  );
+};
+
 export default function AdminMetricas() {
   const [data, setData] = useState(null);
+  const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -56,6 +76,10 @@ export default function AdminMetricas() {
       })
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false));
+    fetch(`${WORKER}/metrics/history`)
+      .then((r) => r.json())
+      .then((d) => setHistory(d.history || []))
+      .catch(() => {});
   }, []);
 
   useEffect(() => { load(); }, [load]);
@@ -110,6 +134,63 @@ export default function AdminMetricas() {
             <StatCard icon={TrendingUp} accent="text-pink-500" label="Promedio engagement / post" value={ig.avgEng ?? "—"} sub={`sobre ${ig.totals?.posts ?? 0} posts`} />
             <StatCard icon={FbIcon} accent="text-blue-600" label="Seguidores FB" value={fb.followers ?? "—"} sub={`${fb.totals?.posts ?? 0} posts publicados`} />
             <StatCard icon={Eye} accent="text-foreground" label="Vistas TikTok" value={tt.available ? tt.totals?.views ?? 0 : "—"} sub={tt.available ? `${tt.totals?.posts ?? 0} videos` : (tt.connected ? "sin datos aún" : "no conectado")} />
+          </div>
+
+          {/* Tendencia (snapshots diarios) */}
+          <div className="bg-card border border-border rounded-xl p-4 sm:p-5 mb-8">
+            <div className="flex items-center gap-2 mb-1">
+              <TrendingUp className="h-4 w-4 text-primary" />
+              <h3 className="font-semibold text-sm">Tendencia (últimos 7 días)</h3>
+            </div>
+            {history.length < 2 ? (
+              <p className="text-sm text-muted-foreground py-3">
+                Recolectando datos: se guarda un registro diario automático. Desde mañana verás la evolución
+                (seguidores, engagement y vistas, día a día).
+              </p>
+            ) : (
+              <>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-3 mb-4">
+                  {[
+                    { label: "Seguidores IG", field: "igFollowers" },
+                    { label: "Likes IG", field: "igLikes" },
+                    { label: "Vistas TikTok", field: "ttViews" },
+                    { label: "Seguidores FB", field: "fbFollowers" },
+                  ].map(({ label, field }) => (
+                    <div key={field} className="rounded-lg bg-secondary/40 border border-border/60 px-3 py-2.5">
+                      <p className="text-[11px] text-muted-foreground">{label}</p>
+                      <p className="text-lg font-bold font-mono">{history[history.length - 1]?.[field] ?? "—"}</p>
+                      <DeltaBadge value={trendDelta(history, field)} />
+                    </div>
+                  ))}
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-xs font-mono">
+                    <thead>
+                      <tr className="text-muted-foreground border-b border-border/60">
+                        <th className="text-left py-1.5 pr-3">Día</th>
+                        <th className="text-right py-1.5 px-3">Seg. IG</th>
+                        <th className="text-right py-1.5 px-3">Likes IG</th>
+                        <th className="text-right py-1.5 px-3">Coment. IG</th>
+                        <th className="text-right py-1.5 px-3">Vistas TT</th>
+                        <th className="text-right py-1.5 pl-3">Seg. FB</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {history.slice(-14).reverse().map((s) => (
+                        <tr key={s.date} className="border-b border-border/30 last:border-0">
+                          <td className="py-1.5 pr-3 text-muted-foreground">{s.date.slice(5)}</td>
+                          <td className="text-right py-1.5 px-3">{s.igFollowers ?? "—"}</td>
+                          <td className="text-right py-1.5 px-3">{s.igLikes ?? "—"}</td>
+                          <td className="text-right py-1.5 px-3">{s.igComments ?? "—"}</td>
+                          <td className="text-right py-1.5 px-3">{s.ttViews ?? "—"}</td>
+                          <td className="text-right py-1.5 pl-3">{s.fbFollowers ?? "—"}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </>
+            )}
           </div>
 
           {/* Ranking IG */}

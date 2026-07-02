@@ -699,6 +699,27 @@ async function getTikTokMetrics(env) {
   }
 }
 
+// Snapshot diario de métricas → KV (para el gráfico de tendencia del admin).
+// Compacto: solo los números que sirven para comparar semana a semana.
+async function snapshotMetrics(env) {
+  if (!env.METRICS_KV) return;
+  const date = new Date().toISOString().slice(0, 10);
+  const key = `snap:${date}`;
+  if (await env.METRICS_KV.get(key)) return; // ya existe el de hoy
+  const m = await getMetrics(env);
+  const snap = {
+    date,
+    igFollowers: m.ig?.followers ?? null,
+    igLikes: m.ig?.totals?.likes ?? null,
+    igComments: m.ig?.totals?.comments ?? null,
+    ttViews: m.tt?.totals?.views ?? null,
+    ttLikes: m.tt?.totals?.likes ?? null,
+    ttPosts: m.tt?.totals?.posts ?? null,
+    fbFollowers: m.fb?.followers ?? null,
+  };
+  await env.METRICS_KV.put(key, JSON.stringify(snap));
+}
+
 export default {
   async scheduled(_event, env, ctx) {
     ctx.waitUntil(
@@ -706,6 +727,7 @@ export default {
         .then((r) => console.log("Publicado:", r.postId, "—", r.preview))
         .catch((err) => console.error("Error ig-autopost:", err.message)),
     );
+    ctx.waitUntil(snapshotMetrics(env).catch((e) => console.error("snapshot:", e.message)));
   },
   async fetch(req, env) {
     const url = new URL(req.url);
@@ -793,6 +815,21 @@ export default {
           `\n\n👉 Detalle en maudev.cl/admin/leads`);
         return jsonCors({ ok: true }, 200, origin);
       } catch (e) { return jsonCors({ ok: false, error: e.message }, 500, origin); }
+    }
+
+    // 4b-pre) Histórico de métricas (snapshots diarios del KV, más nuevo al final).
+    if (path === "/metrics/history") {
+      const origin = req.headers.get("origin");
+      if (!isAdminOrigin(origin)) return jsonCors({ error: "origin" }, 403, origin);
+      if (!env.METRICS_KV) return jsonCors({ history: [] }, 200, origin);
+      try {
+        // Asegura el snapshot de hoy aunque el cron aún no haya corrido.
+        await snapshotMetrics(env).catch(() => {});
+        const list = await env.METRICS_KV.list({ prefix: "snap:" });
+        const keys = list.keys.map((k) => k.name).sort().slice(-30);
+        const history = (await Promise.all(keys.map((k) => env.METRICS_KV.get(k, "json")))).filter(Boolean);
+        return jsonCors({ history }, 200, origin);
+      } catch (e) { return jsonCors({ error: e.message }, 500, origin); }
     }
 
     // 4b) Métricas para el dashboard del admin (maudev.cl + localhost dev).

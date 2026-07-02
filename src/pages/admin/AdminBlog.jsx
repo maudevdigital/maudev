@@ -177,7 +177,7 @@ export default function AdminBlog() {
       </div>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto bg-card border-border">
+        <DialogContent className="w-[calc(100vw-1rem)] sm:w-auto max-w-3xl h-[95dvh] sm:h-auto sm:max-h-[90vh] overflow-y-auto bg-card border-border p-4 sm:p-6 rounded-lg">
           <DialogHeader>
             <DialogTitle>{editing ? "Editar Artículo" : "Nuevo Artículo"}</DialogTitle>
           </DialogHeader>

@@ -90,7 +90,7 @@ export default function AdminTikTok() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6 md:p-10">
+    <div className="max-w-3xl mx-auto p-4 sm:p-6 md:p-10">
       <div className="flex items-center gap-3 mb-2">
         <Music2 className="h-6 w-6 text-primary" />
         <h1 className="text-2xl font-bold">TikTok</h1>
@@ -100,8 +100,8 @@ export default function AdminTikTok() {
       </p>
 
       {/* Paso 1 — Login Kit */}
-      <section className="rounded-xl border border-border bg-card p-6 mb-6">
-        <div className="flex items-center justify-between gap-4">
+      <section className="rounded-xl border border-border bg-card p-4 sm:p-6 mb-6">
+        <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <h2 className="font-semibold flex items-center gap-2"><LogIn className="h-4 w-4" /> 1. Conectar con TikTok</h2>
             <p className="text-sm text-muted-foreground mt-1">Inicia sesión con la cuenta de TikTok (Login Kit).</p>
@@ -166,9 +166,9 @@ export default function AdminTikTok() {
           )}
           {queue.filter((r) => !uploaded.has(r.id)).map((r) => (
             <div key={r.id} className="rounded-lg border border-border/60 bg-background/40 p-4">
-              <div className="flex items-center justify-between gap-3 mb-2">
-                <p className="text-sm font-medium text-foreground truncate">{r.id}</p>
-                <div className="flex items-center gap-2 shrink-0">
+              <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <p className="text-sm font-medium text-foreground truncate min-w-0">{r.id}</p>
+                <div className="flex flex-wrap items-center gap-2">
                   <button
                     onClick={() => copy(r.id, r.caption)}
                     className="inline-flex items-center gap-1.5 text-xs px-2.5 py-1.5 rounded-md bg-secondary hover:bg-secondary/70 border border-border"

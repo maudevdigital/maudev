@@ -5,3 +5,8 @@ compatibility_date = "2026-06-01"
 # Cron: 3 publicaciones por día — 13:00, 17:00 y 21:00 UTC (≈ 09:00, 13:00, 17:00 Chile).
 [triggers]
 crons = ["0 13 * * *", "0 17 * * *", "0 21 * * *"]
+
+# Histórico de métricas: 1 snapshot diario (clave snap:YYYY-MM-DD).
+[[kv_namespaces]]
+binding = "METRICS_KV"
+id = "30510207b25544e68c751ba826c2464c"

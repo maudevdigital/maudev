@@ -34,12 +34,13 @@ export default function AdminLayout() {
       {sidebarOpen && (
         <div className="md:hidden fixed inset-0 z-50">
           <div className="absolute inset-0 bg-black/50" onClick={() => setSidebarOpen(false)} />
-          <div className="relative h-full">
+          {/* w-64 = ancho real del sidebar: deja el backdrop clickeable y la X visible */}
+          <div className="relative h-full w-64 overflow-y-auto">
             <button
               type="button"
               onClick={() => setSidebarOpen(false)}
               aria-label="Cerrar menú"
-              className="absolute top-3 -right-11 h-9 w-9 rounded-md bg-card border border-border flex items-center justify-center text-foreground hover:bg-secondary"
+              className="fixed top-3 left-68 z-10 h-9 w-9 rounded-md bg-card border border-border flex items-center justify-center text-foreground hover:bg-secondary"
             >
               <X className="h-5 w-5" />
             </button>
