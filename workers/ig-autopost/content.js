@@ -136,3 +136,22 @@ ${GUIA}
 ${TAGS} #comocontratar #consejospymes #empresaschile`,
   },
 ];
+
+// ── Cola SÓLO para TikTok (semana 6–12 jul) — contenido NUEVO, distinto al que
+// va a IG/FB/LinkedIn. Alto volumen para testear qué funciona. La descripción
+// (con emojis) se copia al publicar el borrador; el video NO lleva emojis.
+const T = "https://maudev.cl/social";
+const TT = "💬 Comenta GUÍA y te enviamos GRATIS la guía para decidir bien tu software 👇";
+const TH = "#software #pymeschile #desarrollodesoftware #emprendimiento";
+export const TIKTOK_QUEUE = [
+  { id: "pro-plazos-semana", media: `${T}/pro-plazos-semana.mp4`, caption: `🚩 ¿Te prometen un sistema serio "para la otra semana"? Desconfía. El buen software toma tiempo; los atajos se pagan caro.\n\n${TT}\n\n${TH} #plazos` },
+  { id: "pro-cuanto-demora", media: `${T}/pro-cuanto-demora.mp4`, caption: `⏱️ ¿Cuánto DEBE demorar un software? Un MVP: semanas. Un sistema mediano: meses. Si te prometen todo en días, ojo.\n\n${TT}\n\n${TH} #mvp` },
+  { id: "pro-rapido-caro", media: `${T}/pro-rapido-caro.mp4`, caption: `💸 Lo rápido y barato se paga dos veces: sin pruebas, sin seguridad, sin soporte. Lo que ahorras hoy lo gastas mañana.\n\n${TT}\n\n${TH} #precios` },
+  { id: "pro-3-preguntas", media: `${T}/pro-3-preguntas.mp4`, caption: `🔍 Antes de pagar por tu software, pregunta 3 cosas: ¿de quién queda el código? ¿precio y alcance por escrito? ¿avances funcionando?\n\n${TT}\n\n${TH} #consejos` },
+  { id: "pro-codigo-nombre", media: `${T}/pro-codigo-nombre.mp4`, caption: `🏃 La pregunta que espanta a los malos proveedores: ¿el código queda a MI nombre? Si dudan, corre. El código es tuyo, siempre.\n\n${TT}\n\n${TH} #software` },
+  { id: "pro-senales-estafa", media: `${T}/pro-senales-estafa.mp4`, caption: `⚠️ Señales de que te van a estafar con tu software: te cotizan sin entender tu negocio, no muestran avances, precio muy bajo.\n\n${TT}\n\n${TH} #alerta` },
+  { id: "pro-hechos", media: `${T}/pro-hechos.mp4`, caption: `✅ No creas en promesas, cree en cosas funcionando. Pide ver proyectos reales, no capturas. Habla con quien programa.\n\n${TT}\n\n${TH} #consejos` },
+  { id: "pro-valor-real", media: `${T}/pro-valor-real.mp4`, caption: `🔗 El valor de tu software no está en las pantallas bonitas: está en que tus herramientas se hablen. Sin integración, copias y pegas todo el día.\n\n${TT}\n\n${TH} #integraciones` },
+  { id: "pro-copiar-pegar", media: `${T}/pro-copiar-pegar.mp4`, caption: `🔁 ¿Copias y pegas datos entre apps todos los días? Es tiempo y plata que pierdes. Con sistemas conectados, la info fluye sola.\n\n${TT}\n\n${TH} #automatizacion` },
+  { id: "pro-saas-medida", media: `${T}/pro-saas-medida.mp4`, caption: `⚖️ ¿SaaS o software a medida? El SaaS gana en lo estándar; lo a medida cuando el proceso es tu ventaja. La jugada maestra: combinar.\n\n${TT}\n\n${TH} #saas` },
+];

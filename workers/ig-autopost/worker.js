@@ -15,7 +15,7 @@
 //
 // Cron: se define en wrangler.toml.
 
-import { CONTENT } from "./content.js";
+import { CONTENT, TIKTOK_QUEUE } from "./content.js";
 
 const GRAPH = "https://graph.facebook.com/v21.0";
 
@@ -497,12 +497,15 @@ async function runOnce(env, forcedIndex) {
     } catch (e) { liError = e.message; }
   }
 
-  // TikTok (best-effort): solo reels, como BORRADOR al inbox.
+  // TikTok (best-effort): contenido NUEVO exclusivo de TikTok (cola propia, no
+  // lo que va a IG/FB/LinkedIn), como BORRADOR al inbox. 1/día (franja 0).
   let ttId = null, ttError = null;
-  if (p.tt && isReel) {
+  if (p.tt && TIKTOK_QUEUE.length) {
     try {
-      ttId = await publishTikTok(env, videoUrl);
-      if (ttId) await sendTelegram(env, `🎵 <b>Borrador nuevo en TikTok</b>\nVideo: ${id}\n\n👉 Abre TikTok, revisa, pega la descripción SEO (está en maudev.cl/admin/tiktok) y publica.`);
+      const ttDay = Math.floor(Date.now() / 86400000) - BASE_DAY;
+      const ttItem = TIKTOK_QUEUE[((ttDay % TIKTOK_QUEUE.length) + TIKTOK_QUEUE.length) % TIKTOK_QUEUE.length];
+      ttId = await publishTikTok(env, ttItem.media);
+      if (ttId) await sendTelegram(env, `🎵 <b>Borrador nuevo en TikTok</b>\nVideo: ${ttItem.id}\n\n👉 Abre TikTok, pega la descripción SEO (maudev.cl/admin/tiktok) y publica.`);
     } catch (e) { ttError = e.message; }
   }
 
@@ -737,25 +740,19 @@ export default {
         return jsonCors({ ok: false, error: e.message }, 500);
       }
     }
-    // 4) Cola de contenido TikTok: reels con su descripción SEO lista para copiar.
+    // 4) Cola de contenido TikTok: videos NUEVOS (solo TikTok) + descripción SEO.
     if (path === "/tiktok/queue") {
       const origin = req.headers.get("origin");
       if (!isAdminOrigin(origin)) return jsonCors({ error: "origin" }, 403, origin);
-      const reels = CONTENT.filter((c) => c.kind === "reel").map((c) => ({
-        id: c.id,
-        media: c.media,
-        caption: c.caption, // misma descripción SEO (hook + hashtags) para pegar al publicar
-      }));
-      return jsonCors({ reels, connected: !!env.TIKTOK_REFRESH_TOKEN }, 200, origin);
+      return jsonCors({ reels: TIKTOK_QUEUE, connected: !!env.TIKTOK_REFRESH_TOKEN }, 200, origin);
     }
-    // 4b) Subir un reel como BORRADOR al inbox de TikTok (manual desde el admin).
+    // 4b) Subir un video como BORRADOR al inbox de TikTok (manual desde el admin).
     if (path === "/tiktok/publish" && req.method === "POST") {
       const origin = req.headers.get("origin");
       if (!isAdminOrigin(origin)) return jsonCors({ ok: false, error: "origin" }, 403, origin);
       try {
         const body = await req.json().catch(() => ({}));
-        const reels = CONTENT.filter((c) => c.kind === "reel");
-        const item = (body.id && reels.find((r) => r.id === body.id)) || reels[0] || {};
+        const item = (body.id && TIKTOK_QUEUE.find((r) => r.id === body.id)) || TIKTOK_QUEUE[0] || {};
         const videoUrl = item.media || env.TIKTOK_DEMO_VIDEO || "https://maudev.cl/social/pro-errores.mp4";
         const pid = await publishTikTok(env, videoUrl);
         if (pid) await sendTelegram(env, `🎵 <b>Borrador subido a TikTok</b>\nVideo: ${item.id || "?"}\n\n👉 Ábrelo en TikTok, pega la descripción y publica.`);
