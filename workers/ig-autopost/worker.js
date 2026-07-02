@@ -772,7 +772,10 @@ export default {
         if (pid) await sendTelegram(env, `🎵 <b>Borrador subido a TikTok</b>\nVideo: ${item.id || "?"}\n\n👉 Ábrelo en TikTok, pega la descripción y publica.`);
         return jsonCors({ ok: !!pid, publishId: pid }, 200, origin);
       } catch (e) {
-        return jsonCors({ ok: false, error: e.message }, 500, origin);
+        const friendly = /too_many_pending_share|spam_risk/.test(e.message)
+          ? "TikTok tiene borradores pendientes sin publicar. Publica los que ya subiste en la app y reintenta."
+          : e.message;
+        return jsonCors({ ok: false, error: friendly }, 500, origin);
       }
     }
 
