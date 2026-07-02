@@ -124,24 +124,88 @@ const LightSweep: React.FC = () => {
   );
 };
 
+// ¿La palabra es un dato/cifra? (número, %, "10x", "24/7", "$3M"...) → se resalta.
+const isStat = (w: string) => /\d/.test(w) || /^[x×]\d/i.test(w) || /\d+\/\d+/.test(w);
+const clean = (w: string) => w.replace(/[.,;:!?"()]+$/g, "");
+
+// Separa un emoji inicial del texto para mostrarlo como ícono animado.
+const EMOJI_RE = /^(\p{Extended_Pictographic}(?:‍\p{Extended_Pictographic}|️)*)\s*/u;
+function splitEmoji(text: string): { icon: string | null; rest: string } {
+  const m = text.match(EMOJI_RE);
+  if (m) return { icon: m[1], rest: text.slice(m[0].length).trim() };
+  return { icon: null, rest: text };
+}
+
+// Ícono (emoji) grande con glow y entrada elástica + flotación sutil.
+const AutoIcon: React.FC<{ icon: string; accent: string }> = ({ icon, accent }) => {
+  const frame = useCurrentFrame();
+  const { fps, durationInFrames } = useVideoConfig();
+  const s = spring({ frame, fps, config: { damping: 12, mass: 0.8 } });
+  const float = Math.sin((frame / fps) * 2.2) * 10;
+  const out = interpolate(frame, [durationInFrames - 12, durationInFrames], [1, 0], { extrapolateLeft: "clamp" });
+  return (
+    <div style={{ position: "relative", marginBottom: 20, opacity: out, transform: `scale(${interpolate(s, [0, 1], [0.2, 1])}) translateY(${float}px) rotate(${interpolate(s, [0, 1], [-18, 0])}deg)` }}>
+      <div style={{ position: "absolute", inset: -40, borderRadius: "50%", background: `radial-gradient(circle, ${accent}55, transparent 70%)`, filter: "blur(20px)" }} />
+      <div style={{ position: "relative", fontSize: 150, lineHeight: 1, filter: "drop-shadow(0 14px 30px rgba(0,0,0,0.55))" }}>{icon}</div>
+    </div>
+  );
+};
+
 // Texto cinético: palabra por palabra, con sombra y entrada por fx.
-const Kinetic: React.FC<{ text: string; fx: ProFx; color: string; size: number }> = ({ text, fx, color, size }) => {
+// Las cifras/datos se resaltan en el color de acento + un poco más grandes.
+const Kinetic: React.FC<{ text: string; fx: ProFx; color: string; size: number; accent: string }> = ({ text, fx, color, size, accent }) => {
   const frame = useCurrentFrame();
   const { fps, durationInFrames } = useVideoConfig();
   const out = interpolate(frame, [durationInFrames - 12, durationInFrames], [1, 0], { extrapolateLeft: "clamp" });
-  const words = text.split(" ");
+  const words = text.split(" ").filter(Boolean);
   return (
     <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "0 18px", opacity: out, maxWidth: 920 }}>
       {words.map((w, i) => {
         const s = spring({ frame: frame - i * 3, fps, config: { damping: 200 } });
         const st = enterStyle(fx, s);
+        const stat = isStat(clean(w));
+        const pop = stat ? interpolate(spring({ frame: frame - i * 3 - 4, fps, config: { damping: 9 } }), [0, 1], [1.35, 1]) : 1;
         return (
-          <span key={i} style={{ ...st, display: "inline-block", fontFamily: FONTS.sans, fontWeight: 900, fontSize: size, color, letterSpacing: -1, lineHeight: 1.08, textShadow: "0 14px 34px rgba(0,0,0,0.65)" }}>
+          <span key={i} style={{ ...st, display: "inline-block", fontFamily: FONTS.sans, fontWeight: 900, fontSize: stat ? size * 1.14 : size, color: stat ? accent : color, letterSpacing: -1, lineHeight: 1.08, textShadow: stat ? `0 0 30px ${accent}88, 0 14px 34px rgba(0,0,0,0.65)` : "0 14px 34px rgba(0,0,0,0.65)", transform: `${st.transform ?? ""} scale(${pop})` }}>
             {w}
           </span>
         );
       })}
     </div>
+  );
+};
+
+// Barra de progreso del reel (retención) — usa el frame RAÍZ (fuera del Series).
+const ProgressBar: React.FC<{ accent: string; secondary: string }> = ({ accent, secondary }) => {
+  const frame = useCurrentFrame();
+  const { durationInFrames } = useVideoConfig();
+  const w = interpolate(frame, [0, durationInFrames], [0, 100], { extrapolateRight: "clamp" });
+  return (
+    <div style={{ position: "absolute", top: 0, left: 0, height: 7, width: `${w}%`, background: `linear-gradient(90deg, ${accent}, ${secondary})`, boxShadow: `0 0 16px ${accent}aa`, zIndex: 5 }} />
+  );
+};
+
+// Partículas flotantes (puntos/anillos) para profundidad tech.
+const Particles: React.FC<{ accent: string; count?: number }> = ({ accent, count = 14 }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const t = frame / fps;
+  return (
+    <AbsoluteFill style={{ pointerEvents: "none", overflow: "hidden" }}>
+      {Array.from({ length: count }).map((_, i) => {
+        const bx = random(`px${i}`) * 100;
+        const by = random(`py${i}`) * 100;
+        const sp = 0.3 + random(`ps${i}`) * 0.6;
+        const sz = 4 + random(`pz${i}`) * 10;
+        const ring = random(`pr${i}`) > 0.6;
+        const dy = Math.sin(t * sp + i) * 26;
+        const dx = Math.cos(t * sp * 0.8 + i) * 18;
+        const op = 0.12 + random(`po${i}`) * 0.22;
+        return (
+          <div key={i} style={{ position: "absolute", left: `${bx}%`, top: `${by}%`, width: sz, height: sz, borderRadius: "50%", background: ring ? "transparent" : accent, border: ring ? `2px solid ${accent}` : "none", opacity: op, transform: `translate(${dx}px, ${dy}px)` }} />
+        );
+      })}
+    </AbsoluteFill>
   );
 };
 
@@ -177,6 +241,22 @@ const CommentCta: React.FC<{ keyword: string; line: string; accent: string }> = 
   );
 };
 
+// Bloque de escena: ícono (emoji) animado + texto cinético con Ken Burns sutil.
+const SceneBlock: React.FC<{ scene: ProScene; index: number; accent: string }> = ({ scene, index, accent }) => {
+  const frame = useCurrentFrame();
+  const kb = 1 + interpolate(frame, [0, scene.frames], [0, 0.06], { extrapolateRight: "clamp" });
+  const { icon, rest } = splitEmoji(scene.text);
+  const fx = scene.fx ?? FX[index % FX.length];
+  return (
+    <AbsoluteFill style={{ alignItems: "center", justifyContent: "center", padding: 90, textAlign: "center" }}>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", transform: `scale(${kb})` }}>
+        {icon ? <AutoIcon icon={icon} accent={accent} /> : null}
+        <Kinetic text={rest || scene.text} fx={fx} color={scene.accent ? accent : COLORS.text} size={scene.size ?? 78} accent={accent} />
+      </div>
+    </AbsoluteFill>
+  );
+};
+
 export const ProReel: React.FC<ProReelProps> = ({
   scenes,
   voice,
@@ -200,14 +280,13 @@ export const ProReel: React.FC<ProReelProps> = ({
       <Blob color={secondary} x={76} y={66} size={680} speed={0.42} phase={2} />
       <Blob color={accent} x={62} y={20} size={460} speed={0.6} phase={4} />
       <Grid accent={accent} />
+      <Particles accent={accent} />
       <Spotlight accent={accent} />
 
       <Series>
         {scenes.map((s, i) => (
           <Series.Sequence key={i} durationInFrames={s.frames}>
-            <AbsoluteFill style={{ alignItems: "center", justifyContent: "center", padding: 90, textAlign: "center" }}>
-              <Kinetic text={s.text} fx={s.fx ?? FX[i % FX.length]} color={s.accent ? accent : COLORS.text} size={s.size ?? 78} />
-            </AbsoluteFill>
+            <SceneBlock scene={s} index={i} accent={accent} />
             {i > 0 ? <LightSweep /> : null}
           </Series.Sequence>
         ))}
@@ -222,6 +301,7 @@ export const ProReel: React.FC<ProReelProps> = ({
       {/* SOMBRAS: viñeta + piso + grano por encima */}
       <Vignette />
       <Grain />
+      <ProgressBar accent={accent} secondary={secondary} />
       <div style={{ position: "absolute", bottom: 0, left: 0, height: 8, width: "100%", background: `linear-gradient(90deg, ${accent}, ${secondary})` }} />
     </AbsoluteFill>
   );
