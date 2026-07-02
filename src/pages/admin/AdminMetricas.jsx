@@ -68,10 +68,10 @@ export default function AdminMetricas() {
   const ttTop = [...(tt.posts || [])].sort((a, b) => (b.views - a.views) || (b.eng - a.eng)).slice(0, 10);
 
   return (
-    <div className="p-6 lg:p-8">
-      <div className="mb-8 flex items-start justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-black tracking-tight">Métricas</h1>
+    <div className="p-4 sm:p-6 lg:p-8 max-w-full overflow-x-hidden">
+      <div className="mb-6 sm:mb-8 flex flex-wrap items-start justify-between gap-3">
+        <div className="min-w-0">
+          <h1 className="text-xl sm:text-2xl font-black tracking-tight">Métricas</h1>
           <p className="text-sm text-muted-foreground mt-1">
             Engagement por red para decidir qué contenido funciona.
             {data?.generatedAt && (
@@ -104,7 +104,7 @@ export default function AdminMetricas() {
       ) : (
         <>
           {/* Resumen por red */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 mb-8">
             <StatCard icon={IgIcon} accent="text-pink-500" label={`Seguidores IG${ig.username ? ` · @${ig.username}` : ""}`} value={ig.followers ?? "—"} sub={`${ig.mediaCount ?? 0} publicaciones`} />
             <StatCard icon={Heart} accent="text-pink-500" label="Engagement IG (últimos posts)" value={ig.totals ? ig.totals.likes + ig.totals.comments : "—"} sub={ig.totals ? `${ig.totals.likes} likes · ${ig.totals.comments} coment.` : ""} />
             <StatCard icon={TrendingUp} accent="text-pink-500" label="Promedio engagement / post" value={ig.avgEng ?? "—"} sub={`sobre ${ig.totals?.posts ?? 0} posts`} />
@@ -113,7 +113,7 @@ export default function AdminMetricas() {
           </div>
 
           {/* Ranking IG */}
-          <div className="bg-card border border-border rounded-xl p-5 mb-8">
+          <div className="bg-card border border-border rounded-xl p-4 sm:p-5 mb-8">
             <div className="flex items-center gap-2 mb-4">
               <Trophy className="h-4 w-4 text-primary" />
               <h3 className="font-semibold text-sm">Top posts de Instagram por engagement</h3>
@@ -154,7 +154,7 @@ export default function AdminMetricas() {
           </div>
 
           {/* Ranking TikTok — los "ganadores" para promover a IG/FB/LinkedIn */}
-          <div className="bg-card border border-border rounded-xl p-5 mb-8">
+          <div className="bg-card border border-border rounded-xl p-4 sm:p-5 mb-8">
             <div className="flex items-center gap-2 mb-1">
               <Music2 className="h-4 w-4 text-foreground" />
               <h3 className="font-semibold text-sm">Top TikTok — ganadores de la semana</h3>
