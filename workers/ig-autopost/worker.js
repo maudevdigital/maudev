@@ -45,7 +45,7 @@ function platformsForSlot(franja, weekday) {
   const habil = weekday >= 1 && weekday <= 5;
   return {
     ig: franja === 0 || franja === 2,
-    tt: false, // DESACTIVADO hasta que TikTok apruebe la API (reactivar: franja===0||franja===2)
+    tt: franja === 0, // BORRADOR al inbox 1/día (franja 0); tú lo revisas y publicas
     fb: franja === 1,
     li: franja === 1 && habil,
   };
@@ -308,29 +308,24 @@ async function refreshTikTokToken(env) {
   return j.access_token;
 }
 
-async function publishTikTok(env, videoUrl, caption) {
+// Sube el video como BORRADOR al inbox de TikTok (scope video.upload). El dueño
+// abre TikTok, revisa, pega la descripción SEO (desde el admin) y publica. Esto
+// funciona sin auditoría de la app (a diferencia de Direct Post) y no arriesga
+// publicar algo sin querer. La descripción NO se envía por API (TikTok obliga a
+// ponerla en la app al publicar el borrador).
+async function publishTikTok(env, videoUrl) {
   if (!env.TIKTOK_CLIENT_KEY || !env.TIKTOK_CLIENT_SECRET || !env.TIKTOK_REFRESH_TOKEN) return null;
   const accessToken = await refreshTikTokToken(env);
-  // Direct Post: publica el video CON su descripción (title incluye caption + hashtags).
-  // En sandbox / app no auditada la privacidad debe ser SELF_ONLY; en producción
-  // aprobada se cambia a PUBLIC_TO_EVERYONE con el secret TIKTOK_PRIVACY.
-  const res = await fetch("https://open.tiktokapis.com/v2/post/publish/video/init/", {
+  const res = await fetch("https://open.tiktokapis.com/v2/post/publish/inbox/video/init/", {
     method: "POST",
     headers: { Authorization: `Bearer ${accessToken}`, "content-type": "application/json; charset=UTF-8" },
     body: JSON.stringify({
-      post_info: {
-        title: (caption || "").slice(0, 2150),
-        privacy_level: env.TIKTOK_PRIVACY || "SELF_ONLY",
-        disable_comment: false,
-        disable_duet: false,
-        disable_stitch: false,
-      },
       source_info: { source: "PULL_FROM_URL", video_url: videoUrl },
     }),
   });
   const j = await res.json();
   const pid = j?.data?.publish_id;
-  if (!res.ok || !pid) throw new Error(`TikTok direct post: ${JSON.stringify(j)}`);
+  if (!res.ok || !pid) throw new Error(`TikTok inbox draft: ${JSON.stringify(j)}`);
   return pid;
 }
 
@@ -499,10 +494,13 @@ async function runOnce(env, forcedIndex) {
     } catch (e) { liError = e.message; }
   }
 
-  // TikTok (best-effort): solo reels.
+  // TikTok (best-effort): solo reels, como BORRADOR al inbox.
   let ttId = null, ttError = null;
   if (p.tt && isReel) {
-    try { ttId = await publishTikTok(env, videoUrl, caption); } catch (e) { ttError = e.message; }
+    try {
+      ttId = await publishTikTok(env, videoUrl);
+      if (ttId) await sendTelegram(env, `🎵 <b>Borrador nuevo en TikTok</b>\nVideo: ${id}\n\n👉 Abre TikTok, revisa, pega la descripción SEO (está en maudev.cl/admin/tiktok) y publica.`);
+    } catch (e) { ttError = e.message; }
   }
 
   await logPost(env, { ig_post_id: postId, fb_post_id: fbId, li_post_id: liId, tt_publish_id: ttId, hook: preview, media_kind: kind, content_id: id, image_url: isReel ? videoUrl : (images && images[0]), caption, created_at: new Date().toISOString() });
@@ -690,16 +688,31 @@ export default {
         return jsonCors({ ok: false, error: e.message }, 500);
       }
     }
-    // 4) Publicar un reel en TikTok (demuestra Content Posting API).
+    // 4) Cola de contenido TikTok: reels con su descripción SEO lista para copiar.
+    if (path === "/tiktok/queue") {
+      const origin = req.headers.get("origin");
+      if (!isAdminOrigin(origin)) return jsonCors({ error: "origin" }, 403, origin);
+      const reels = CONTENT.filter((c) => c.kind === "reel").map((c) => ({
+        id: c.id,
+        media: c.media,
+        caption: c.caption, // misma descripción SEO (hook + hashtags) para pegar al publicar
+      }));
+      return jsonCors({ reels, connected: !!env.TIKTOK_REFRESH_TOKEN }, 200, origin);
+    }
+    // 4b) Subir un reel como BORRADOR al inbox de TikTok (manual desde el admin).
     if (path === "/tiktok/publish" && req.method === "POST") {
-      if (req.headers.get("origin") !== ADMIN_ORIGIN) return jsonCors({ ok: false, error: "origin" }, 403);
+      const origin = req.headers.get("origin");
+      if (!isAdminOrigin(origin)) return jsonCors({ ok: false, error: "origin" }, 403, origin);
       try {
-        const demo = CONTENT.find((c) => c.kind === "reel") || {};
-        const videoUrl = env.TIKTOK_DEMO_VIDEO || demo.media || "https://maudev.cl/social/d1-cotizan-rapido.mp4";
-        const pid = await publishTikTok(env, videoUrl, demo.caption || "maudev · software a medida");
-        return jsonCors({ ok: !!pid, publishId: pid });
+        const body = await req.json().catch(() => ({}));
+        const reels = CONTENT.filter((c) => c.kind === "reel");
+        const item = (body.id && reels.find((r) => r.id === body.id)) || reels[0] || {};
+        const videoUrl = item.media || env.TIKTOK_DEMO_VIDEO || "https://maudev.cl/social/pro-errores.mp4";
+        const pid = await publishTikTok(env, videoUrl);
+        if (pid) await sendTelegram(env, `🎵 <b>Borrador subido a TikTok</b>\nVideo: ${item.id || "?"}\n\n👉 Ábrelo en TikTok, pega la descripción y publica.`);
+        return jsonCors({ ok: !!pid, publishId: pid }, 200, origin);
       } catch (e) {
-        return jsonCors({ ok: false, error: e.message }, 500);
+        return jsonCors({ ok: false, error: e.message }, 500, origin);
       }
     }
 
