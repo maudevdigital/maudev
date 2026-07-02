@@ -27,7 +27,8 @@ export default function AdminLayout() {
 
   return (
     <div className="min-h-screen bg-background text-foreground flex">
-      <div className="hidden md:block">
+      {/* sticky + h-screen: el sidebar queda fijo mientras el contenido hace scroll */}
+      <div className="hidden md:block sticky top-0 h-screen shrink-0">
         <AdminSidebar />
       </div>
 

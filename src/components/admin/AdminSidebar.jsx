@@ -22,7 +22,7 @@ export default function AdminSidebar() {
   };
 
   return (
-    <aside className="w-64 min-h-screen bg-card border-r border-border flex flex-col">
+    <aside className="w-64 h-full min-h-0 bg-card border-r border-border flex flex-col overflow-y-auto">
       <div className="p-5 border-b border-border">
         <Link to="/" className="flex items-center gap-2.5 text-primary">
           <Logo size={28} />
