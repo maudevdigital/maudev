@@ -631,7 +631,52 @@ async function getMetrics(env) {
     note: "LinkedIn no expone métricas orgánicas por API sin acceso de organización (partner). Se publica correctamente, pero las estadísticas se ven en LinkedIn.",
   };
 
+  // TikTok
+  out.tt = await getTikTokMetrics(env);
+
   return out;
+}
+
+// Métricas de TikTok (scope video.list). Devuelve videos publicados con sus
+// vistas/likes/comentarios/compartidos → sirve para detectar los ganadores.
+async function getTikTokMetrics(env) {
+  if (!env.TIKTOK_CLIENT_KEY || !env.TIKTOK_REFRESH_TOKEN) return { available: false, connected: false, note: "TikTok no conectado." };
+  try {
+    const token = await refreshTikTokToken(env);
+    const fields = "id,title,video_description,view_count,like_count,comment_count,share_count,cover_image_url,share_url,create_time";
+    const r = await fetch(`https://open.tiktokapis.com/v2/video/list/?fields=${fields}`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}`, "content-type": "application/json" },
+      body: JSON.stringify({ max_count: 20 }),
+    });
+    const j = await r.json();
+    if (j.error && j.error.code && j.error.code !== "ok") throw new Error(j.error.message || j.error.code);
+    const vids = (j.data?.videos || []).map((v) => ({
+      id: v.id,
+      caption: (v.title || v.video_description || "").replace(/\s+/g, " ").slice(0, 100),
+      views: v.view_count || 0,
+      likes: v.like_count || 0,
+      comments: v.comment_count || 0,
+      shares: v.share_count || 0,
+      eng: (v.like_count || 0) + (v.comment_count || 0) + (v.share_count || 0),
+      thumb: v.cover_image_url,
+      permalink: v.share_url,
+      timestamp: v.create_time ? new Date(v.create_time * 1000).toISOString() : null,
+    }));
+    return {
+      available: true,
+      connected: true,
+      totals: {
+        views: vids.reduce((a, p) => a + p.views, 0),
+        likes: vids.reduce((a, p) => a + p.likes, 0),
+        comments: vids.reduce((a, p) => a + p.comments, 0),
+        posts: vids.length,
+      },
+      posts: vids,
+    };
+  } catch (e) {
+    return { available: false, connected: true, error: e.message };
+  }
 }
 
 export default {

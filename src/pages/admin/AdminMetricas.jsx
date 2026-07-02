@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import {
-  Heart, MessageCircle, Users,
+  Heart, MessageCircle, Users, Music2, Eye,
   RefreshCw, TrendingUp, ExternalLink, Trophy, AlertCircle,
 } from "lucide-react";
 
@@ -63,7 +63,9 @@ export default function AdminMetricas() {
   const ig = data?.ig || {};
   const fb = data?.fb || {};
   const li = data?.li || {};
+  const tt = data?.tt || {};
   const igTop = [...(ig.posts || [])].sort((a, b) => b.eng - a.eng).slice(0, 10);
+  const ttTop = [...(tt.posts || [])].sort((a, b) => (b.views - a.views) || (b.eng - a.eng)).slice(0, 10);
 
   return (
     <div className="p-6 lg:p-8">
@@ -107,6 +109,7 @@ export default function AdminMetricas() {
             <StatCard icon={Heart} accent="text-pink-500" label="Engagement IG (últimos posts)" value={ig.totals ? ig.totals.likes + ig.totals.comments : "—"} sub={ig.totals ? `${ig.totals.likes} likes · ${ig.totals.comments} coment.` : ""} />
             <StatCard icon={TrendingUp} accent="text-pink-500" label="Promedio engagement / post" value={ig.avgEng ?? "—"} sub={`sobre ${ig.totals?.posts ?? 0} posts`} />
             <StatCard icon={FbIcon} accent="text-blue-600" label="Seguidores FB" value={fb.followers ?? "—"} sub={`${fb.totals?.posts ?? 0} posts publicados`} />
+            <StatCard icon={Eye} accent="text-foreground" label="Vistas TikTok" value={tt.available ? tt.totals?.views ?? 0 : "—"} sub={tt.available ? `${tt.totals?.posts ?? 0} videos` : (tt.connected ? "sin datos aún" : "no conectado")} />
           </div>
 
           {/* Ranking IG */}
@@ -143,6 +146,44 @@ export default function AdminMetricas() {
                       <span className="inline-flex items-center gap-1 text-pink-500"><Heart className="h-3.5 w-3.5" />{p.likes}</span>
                       <span className="inline-flex items-center gap-1 text-muted-foreground"><MessageCircle className="h-3.5 w-3.5" />{p.comments}</span>
                       <ExternalLink className="h-3 w-3 text-muted-foreground/50" />
+                    </div>
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Ranking TikTok — los "ganadores" para promover a IG/FB/LinkedIn */}
+          <div className="bg-card border border-border rounded-xl p-5 mb-8">
+            <div className="flex items-center gap-2 mb-1">
+              <Music2 className="h-4 w-4 text-foreground" />
+              <h3 className="font-semibold text-sm">Top TikTok — ganadores de la semana</h3>
+            </div>
+            <p className="text-[11px] text-muted-foreground mb-4">Los de más vistas/interacción son los que conviene promover a IG, FB y LinkedIn.</p>
+            {tt.error ? (
+              <p className="text-sm text-muted-foreground py-4">TikTok: {tt.error} — reconecta en <a className="text-primary hover:underline" href="/admin/tiktok">/admin/tiktok</a>.</p>
+            ) : !tt.connected ? (
+              <p className="text-sm text-muted-foreground py-4">TikTok no conectado. Conéctalo en <a className="text-primary hover:underline" href="/admin/tiktok">/admin/tiktok</a>.</p>
+            ) : ttTop.length === 0 ? (
+              <p className="text-sm text-muted-foreground py-4">Aún no hay videos publicados en TikTok (los borradores no cuentan hasta publicarlos).</p>
+            ) : (
+              <div className="space-y-1">
+                {ttTop.map((p, i) => (
+                  <a key={p.id} href={p.permalink} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-2.5 px-2 rounded-lg hover:bg-secondary/60 transition-colors border-b border-border/40 last:border-0">
+                    <span className={`w-6 text-center text-xs font-mono font-bold shrink-0 ${i < 3 ? "text-primary" : "text-muted-foreground"}`}>{i + 1}</span>
+                    {p.thumb ? (
+                      <img src={p.thumb} alt="" className="h-11 w-11 rounded-md object-cover shrink-0 bg-secondary" loading="lazy" />
+                    ) : (
+                      <div className="h-11 w-11 rounded-md bg-secondary shrink-0" />
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs text-foreground truncate">{p.caption || "(sin texto)"}</p>
+                      <p className="text-[11px] text-muted-foreground mt-0.5">{fmtDate(p.timestamp)}</p>
+                    </div>
+                    <div className="flex items-center gap-3 shrink-0 text-xs font-mono">
+                      <span className="inline-flex items-center gap-1 text-foreground"><Eye className="h-3.5 w-3.5" />{p.views}</span>
+                      <span className="inline-flex items-center gap-1 text-pink-500"><Heart className="h-3.5 w-3.5" />{p.likes}</span>
+                      <span className="inline-flex items-center gap-1 text-muted-foreground"><MessageCircle className="h-3.5 w-3.5" />{p.comments}</span>
                     </div>
                   </a>
                 ))}
