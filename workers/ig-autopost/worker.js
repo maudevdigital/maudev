@@ -528,7 +528,8 @@ const jsonCors = (data, status = 200, origin) =>
 function tiktokAuthUrl(env) {
   const u = new URL("https://www.tiktok.com/v2/auth/authorize/");
   u.searchParams.set("client_key", env.TIKTOK_CLIENT_KEY);
-  u.searchParams.set("scope", "user.info.basic,video.publish");
+  // video.upload = borradores al inbox · video.list = leer métricas de videos publicados.
+  u.searchParams.set("scope", "user.info.basic,video.publish,video.upload,video.list");
   u.searchParams.set("response_type", "code");
   u.searchParams.set("redirect_uri", TIKTOK_REDIRECT);
   u.searchParams.set("state", "maudev" + Math.random().toString(36).slice(2, 8));
