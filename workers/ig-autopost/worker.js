@@ -319,16 +319,30 @@ async function refreshTikTokToken(env) {
 async function publishTikTok(env, videoUrl) {
   if (!env.TIKTOK_CLIENT_KEY || !env.TIKTOK_CLIENT_SECRET || !env.TIKTOK_REFRESH_TOKEN) return null;
   const accessToken = await refreshTikTokToken(env);
-  const res = await fetch("https://open.tiktokapis.com/v2/post/publish/inbox/video/init/", {
+  // Descargamos el video (lo hospedamos nosotros) y lo subimos por FILE_UPLOAD.
+  // Así evitamos verificar el dominio (requisito de PULL_FROM_URL, que fallaba
+  // en silencio: TikTok devolvía un publish_id pero nunca llegaba el borrador).
+  const vres = await fetch(videoUrl);
+  if (!vres.ok) throw new Error(`no se pudo descargar el video: ${vres.status}`);
+  const bytes = new Uint8Array(await vres.arrayBuffer());
+  const size = bytes.length;
+  const init = await fetch("https://open.tiktokapis.com/v2/post/publish/inbox/video/init/", {
     method: "POST",
     headers: { Authorization: `Bearer ${accessToken}`, "content-type": "application/json; charset=UTF-8" },
     body: JSON.stringify({
-      source_info: { source: "PULL_FROM_URL", video_url: videoUrl },
+      source_info: { source: "FILE_UPLOAD", video_size: size, chunk_size: size, total_chunk_count: 1 },
     }),
   });
-  const j = await res.json();
+  const j = await init.json();
   const pid = j?.data?.publish_id;
-  if (!res.ok || !pid) throw new Error(`TikTok inbox draft: ${JSON.stringify(j)}`);
+  const uploadUrl = j?.data?.upload_url;
+  if (!init.ok || !pid || !uploadUrl) throw new Error(`TikTok inbox init: ${JSON.stringify(j)}`);
+  const put = await fetch(uploadUrl, {
+    method: "PUT",
+    headers: { "Content-Type": "video/mp4", "Content-Range": `bytes 0-${size - 1}/${size}` },
+    body: bytes,
+  });
+  if (!put.ok) throw new Error(`TikTok upload PUT: ${put.status} ${(await put.text()).slice(0, 120)}`);
   return pid;
 }
 
