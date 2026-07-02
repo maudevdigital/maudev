@@ -53,8 +53,9 @@ wordmark(M, 70, 22, true);
 doc.fillColor(CYAN).font("Helvetica-Bold").fontSize(12).text("GUÍA GRATUITA", M, 150, { characterSpacing: 2 });
 doc.fillColor("#fafafa").font("Helvetica-Bold").fontSize(34).text("Software a medida\nsin perder plata", M, 180, { lineGap: 4 });
 doc.fillColor("#a9b2bd").font("Helvetica").fontSize(13).text("Cómo decidir bien: precios reales, cuándo conviene, con quién construir y qué exigir. Sin tecnicismos.", M, 290, { width: CW - 60, lineGap: 4 });
-doc.fillColor(CYAN).font("Helvetica").fontSize(11).text("maudev.cl", M, H - 80);
-doc.fillColor("#6b7480").font("Helvetica").fontSize(9).text("Desarrollo web · Software a medida · Automatización — Chile", M, H - 62);
+doc.page.margins.bottom = 0; // permite escribir al pie sin que pdfkit cree páginas
+doc.fillColor(CYAN).font("Helvetica").fontSize(11).text("maudev.cl", M, H - 80, { lineBreak: false });
+doc.fillColor("#6b7480").font("Helvetica").fontSize(9).text("Desarrollo web · Software a medida · Automatización — Chile", M, H - 62, { lineBreak: false });
 
 // ---- CONTENIDO ----
 doc.addPage();
@@ -103,9 +104,9 @@ p("Error caro: automatizar el caos. Si el proceso es malo, solo lo harás más r
 h2("5. De idea a sistema: el proceso");
 p("Un proyecto sano no es una caja negra. Tiene etapas claras y tú ves el avance:");
 bullets([
-  "Descubrimiento (entender tu negocio) → Diseño y arquitectura.",
+  "Descubrimiento (entender tu negocio) » Diseño y arquitectura.",
   "Desarrollo por sprints: ves algo funcionando cada 1-2 semanas.",
-  "Pruebas (QA) → Despliegue seguro → Soporte y evolución.",
+  "Pruebas (QA) » Despliegue seguro » Soporte y evolución.",
 ]);
 p("Plazos realistas: un MVP, semanas a un par de meses; un sistema mediano, 2 a 5 meses. Desconfía de quien promete algo serio 'para la próxima semana'. Y recuerda: los mejores proyectos son los que el cliente acompaña (feedback a tiempo).");
 
@@ -146,9 +147,10 @@ doc.fillColor(CYAN).font("Helvetica-Bold").fontSize(11).text("maudev.cl/contacto
 const range = doc.bufferedPageRange();
 for (let i = 1; i < range.count; i++) {
   doc.switchToPage(i);
+  doc.page.margins.bottom = 0; // clave: sin esto pdfkit añade páginas en blanco
   doc.fillColor(MUTE).font("Helvetica").fontSize(8);
-  doc.text("maudev · Software a medida sin perder plata", M, H - 38, { width: CW * 0.7 });
-  doc.text(`${i} / ${range.count - 1}`, M + CW * 0.7, H - 38, { width: CW * 0.3, align: "right" });
+  doc.text("maudev · Software a medida sin perder plata", M, H - 38, { width: CW * 0.7, lineBreak: false });
+  doc.text(`${i} / ${range.count - 1}`, M + CW * 0.7, H - 38, { width: CW * 0.3, align: "right", lineBreak: false });
 }
 
 doc.end();
