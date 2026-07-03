@@ -15,6 +15,7 @@ const sourceLabels = {
   cotizador: "Cotizador",
   diagnostico_web: "Diagnóstico web",
   lp_diagnostico: "LP Diagnóstico",
+  prospeccion: "Prospección",
 };
 const pretty = (v) => sourceLabels[v] || (v ? v.replaceAll("_", " ") : "otro");
 

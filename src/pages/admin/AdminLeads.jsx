@@ -37,6 +37,7 @@ const sourceLabels = {
   cotizador: "Cotizador",
   diagnostico_web: "Diagnóstico web",
   lp_diagnostico: "LP Diagnóstico",
+  prospeccion: "Prospección",
 };
 
 // Cualquier valor no mapeado se muestra legible (sin guiones bajos).
