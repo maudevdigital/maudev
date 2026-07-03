@@ -10,7 +10,7 @@ import { t } from "@/lib/i18n";
 // vez, saluda según el ORIGEN del visitante y ofrece acciones rápidas.
 // Personalización por URL: ?src=tt|ig|fb|li (red social de origen) y ?n=Nombre.
 // Ej. para la bio de TikTok: maudev.cl/links?src=tt
-const CAL_URL = "https://cal.com/lucas-maulen-mlfaql/30min";
+const CAL_URL = "https://cal.com/maudev/30min";
 const OPEN_DELAY_MS = 3500;
 
 const SOURCE_GREETINGS = {

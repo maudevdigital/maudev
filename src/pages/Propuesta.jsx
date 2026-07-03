@@ -7,7 +7,7 @@ import {
 import Logo from "@/components/landing/Logo";
 
 const WORKER = "https://ig-autopost.maudevchile.workers.dev";
-const CAL_URL = "https://cal.com/lucas-maulen-mlfaql/30min";
+const CAL_URL = "https://cal.com/maudev/30min";
 const CONTACT = "contacto@maudev.cl";
 
 const fmtCLP = (n) => "$" + Number(n || 0).toLocaleString("es-CL");

@@ -126,7 +126,7 @@ export default function Contacto() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 mb-12">
             <a
-              href="https://cal.com/lucas-maulen-mlfaql/30min"
+              href="https://cal.com/maudev/30min"
               target="_blank"
               rel="noopener noreferrer"
               className="bg-card border border-primary/40 rounded-2xl p-6 hover:border-primary transition-colors group sm:col-span-2 lg:col-span-1"
