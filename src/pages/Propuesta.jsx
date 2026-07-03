@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import {
   CheckCircle2, Calendar, Printer, Mail, ShieldCheck, Layers,
   Clock, Wallet, ExternalLink, FileText,
@@ -30,6 +30,8 @@ function Section({ icon: Icon, title, children }) {
 
 export default function Propuesta() {
   const { proposalId } = useParams();
+  const { search } = useLocation();
+  const isPreview = new URLSearchParams(search).get("preview") === "1";
   const [prop, setProp] = useState(null);
   const [state, setState] = useState("loading"); // loading | ok | notfound
 
@@ -41,7 +43,7 @@ export default function Propuesta() {
   }, []);
 
   useEffect(() => {
-    fetch(`${WORKER}/proposal?id=${encodeURIComponent(proposalId)}`)
+    fetch(`${WORKER}/proposal?id=${encodeURIComponent(proposalId)}${isPreview ? "&preview=1" : ""}`)
       .then((r) => (r.ok ? r.json() : Promise.reject()))
       .then((d) => { setProp(d); setState("ok"); document.title = `Propuesta · ${d.project?.title || "maudev"}`; })
       .catch(() => setState("notfound"));

@@ -1,9 +1,11 @@
 import { useState, useEffect, useMemo } from "react";
 import { api } from "@/api/maudev";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Trash2, Search, MessageCircle, Mail } from "lucide-react";
+import { Trash2, Search, MessageCircle, Mail, AlarmClock } from "lucide-react";
 import { toast } from "sonner";
 import moment from "moment";
+
+const WORKER = "https://ig-autopost.maudevchile.workers.dev";
 
 const statusColors = {
   new: "bg-secondary text-foreground border-border",
@@ -64,10 +66,51 @@ function StatusSelect({ lead, onChange, className = "" }) {
   );
 }
 
+// Agenda un recordatorio de seguimiento (el cron avisa por Telegram ese día).
+function RemindSelect({ lead }) {
+  const schedule = async (days) => {
+    try {
+      const r = await fetch(`${WORKER}/remind`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          name: lead.name || lead.email || "Lead",
+          note: `Lead (${lead.source || "sitio"})${lead.interest ? " · " + lead.interest : ""}`,
+          whatsapp: lead.whatsapp || "",
+          days,
+        }),
+      }).then((x) => x.json());
+      if (!r.ok) throw new Error(r.error || "error");
+      toast.success(`Recordatorio en ${days} día(s) — te avisará Telegram.`);
+    } catch (e) {
+      toast.error("No se pudo agendar: " + e.message);
+    }
+  };
+  return (
+    <div className="relative h-8 w-8" title="Recordar seguimiento">
+      <AlarmClock className="h-3.5 w-3.5 text-muted-foreground absolute inset-0 m-auto pointer-events-none" />
+      <select
+        value=""
+        onChange={(e) => e.target.value && schedule(Number(e.target.value))}
+        className="h-8 w-8 opacity-0 absolute inset-0 cursor-pointer"
+        aria-label="Recordar seguimiento"
+      >
+        <option value="" disabled>Recordar en…</option>
+        <option value="1">Mañana</option>
+        <option value="3">3 días</option>
+        <option value="7">1 semana</option>
+        <option value="14">2 semanas</option>
+      </select>
+      <span className="absolute inset-0 rounded-md border border-border pointer-events-none" />
+    </div>
+  );
+}
+
 function ContactActions({ lead }) {
   const wa = waLink(lead.whatsapp);
   return (
     <div className="flex items-center gap-1.5">
+      <RemindSelect lead={lead} />
       {wa && (
         <a
           href={wa}

@@ -822,6 +822,46 @@ async function proposalEmail(env, prop, url) {
   await resendSend(env, prop.client.email, `Propuesta: ${prop.project?.title || "tu proyecto"} — maudev`, html);
 }
 
+// ── Recordatorios de seguimiento (prospección/leads) ────────────────────────
+// El admin agenda "recordar en N días" → el cron diario avisa por Telegram con
+// el link de WhatsApp listo. Claves KV remind:{ts}:{rand}.
+async function processFollowUpReminders(env) {
+  if (!env.METRICS_KV) return;
+  const list = await env.METRICS_KV.list({ prefix: "remind:" });
+  for (const k of list.keys) {
+    const r = await env.METRICS_KV.get(k.name, "json");
+    if (!r) continue;
+    if (Date.now() < r.dueAt) continue;
+    const wa = (r.whatsapp || "").replace(/\D/g, "");
+    await sendTelegram(env,
+      `📌 <b>Seguimiento hoy</b>\n${r.name}` +
+      (r.note ? `\n${r.note}` : "") +
+      (wa.length >= 8 ? `\nhttps://wa.me/${wa}` : "") +
+      `\n\n👉 maudev.cl/admin/leads`);
+    await env.METRICS_KV.delete(k.name);
+  }
+}
+
+// ── Cobros: recordatorio de saldo pendiente al llegar la entrega ────────────
+async function processBillingReminders(env) {
+  if (!env.METRICS_KV) return;
+  const today = new Date().toISOString().slice(0, 10);
+  const list = await env.METRICS_KV.list({ prefix: "bill:" });
+  for (const k of list.keys) {
+    const b = await env.METRICS_KV.get(k.name, "json");
+    if (!b || b.balancePaid) continue;
+    if (!b.deliveryDate || b.deliveryDate > today) continue;
+    const flag = `billremind:${b.id}:${today}`;
+    if (await env.METRICS_KV.get(flag)) continue;
+    await env.METRICS_KV.put(flag, "1", { expirationTtl: 2 * 86400 });
+    const saldo = Math.round((b.price || 0) / 2);
+    await sendTelegram(env,
+      `💰 <b>Saldo pendiente de cobro</b>\n${b.title} — ${b.client}` +
+      `\nSaldo (50%): $${saldo.toLocaleString("es-CL")}` +
+      `\nEntrega: ${b.deliveryDate}\n\n👉 maudev.cl/admin/cobros`);
+  }
+}
+
 // Snapshot diario de métricas → KV (para el gráfico de tendencia del admin).
 // Compacto: solo los números que sirven para comparar semana a semana.
 async function snapshotMetrics(env) {
@@ -852,6 +892,8 @@ export default {
     );
     ctx.waitUntil(snapshotMetrics(env).catch((e) => console.error("snapshot:", e.message)));
     ctx.waitUntil(processReminders(env).catch((e) => console.error("reminders:", e.message)));
+    ctx.waitUntil(processFollowUpReminders(env).catch((e) => console.error("followups:", e.message)));
+    ctx.waitUntil(processBillingReminders(env).catch((e) => console.error("billing:", e.message)));
   },
   async fetch(req, env) {
     const url = new URL(req.url);
@@ -965,14 +1007,80 @@ export default {
         return jsonCors({ ok: true, id, url, emailed }, 200, origin);
       } catch (e) { return jsonCors({ ok: false, error: e.message }, 500, origin); }
     }
-    // Leer una (la ve el cliente en maudev.cl/propuesta/{id}).
+    // Leer una (la ve el cliente en maudev.cl/propuesta/{id}). Registra la
+    // vista y avisa por Telegram (salvo preview=1, que usa el admin).
     if (path === "/proposal" && req.method === "GET") {
       const origin = req.headers.get("origin");
       if (!isAdminOrigin(origin)) return jsonCors({ error: "origin" }, 403, origin);
       const id = (url.searchParams.get("id") || "").replace(/[^a-z0-9]/g, "");
       const prop = id && env.METRICS_KV ? await env.METRICS_KV.get(`prop:${id}`, "json") : null;
       if (!prop) return jsonCors({ error: "not_found" }, 404, origin);
+      if (url.searchParams.get("preview") !== "1") {
+        prop.views = (prop.views || 0) + 1;
+        prop.lastViewedAt = new Date().toISOString();
+        await env.METRICS_KV.put(`prop:${id}`, JSON.stringify(prop));
+        // Aviso con freno de 6h por propuesta (no spamear si la abren varias veces).
+        if (!(await env.METRICS_KV.get(`pview:${id}`))) {
+          await env.METRICS_KV.put(`pview:${id}`, "1", { expirationTtl: 6 * 3600 });
+          await sendTelegram(env, `👀 <b>Propuesta VISTA</b>\n${prop.project?.title} — ${prop.client?.name || "?"}\nVistas totales: ${prop.views}\n\n💡 Buen momento para escribirle.`);
+        }
+      }
       return jsonCors(prop, 200, origin);
+    }
+    // Recordatorio de seguimiento (desde Leads/Prospección del admin).
+    if (path === "/remind" && req.method === "POST") {
+      const origin = req.headers.get("origin");
+      if (!isAdminOrigin(origin)) return jsonCors({ ok: false, error: "origin" }, 403, origin);
+      if (!env.METRICS_KV) return jsonCors({ ok: false, error: "sin KV" }, 500, origin);
+      try {
+        const b = await req.json();
+        const days = Math.max(1, Math.min(60, Number(b.days) || 3));
+        await env.METRICS_KV.put(
+          `remind:${Date.now()}:${Math.random().toString(36).slice(2, 7)}`,
+          JSON.stringify({ name: b.name || "?", note: b.note || "", whatsapp: b.whatsapp || "", dueAt: Date.now() + days * 86400000 }),
+          { expirationTtl: 90 * 86400 },
+        );
+        return jsonCors({ ok: true, days }, 200, origin);
+      } catch (e) { return jsonCors({ ok: false, error: e.message }, 500, origin); }
+    }
+    // Cobros (50% inicio / 50% saldo) — registros en KV bill:{id}.
+    if (path === "/billing") {
+      const origin = req.headers.get("origin");
+      if (!isAdminOrigin(origin)) return jsonCors({ ok: false, error: "origin" }, 403, origin);
+      if (!env.METRICS_KV) return jsonCors({ ok: false, error: "sin KV" }, 500, origin);
+      if (req.method === "GET") {
+        const list = await env.METRICS_KV.list({ prefix: "bill:" });
+        const bills = (await Promise.all(list.keys.map((k) => env.METRICS_KV.get(k.name, "json")))).filter(Boolean);
+        bills.sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || ""));
+        return jsonCors({ bills }, 200, origin);
+      }
+      if (req.method === "POST") {
+        try {
+          const b = await req.json();
+          if (b.op === "create") {
+            const id = newProposalId();
+            const bill = {
+              id, title: b.title || "?", client: b.client || "?", price: Number(b.price) || 0,
+              deliveryDate: b.deliveryDate || null, proposalId: b.proposalId || null,
+              upfrontPaid: null, balancePaid: null, createdAt: new Date().toISOString(),
+            };
+            await env.METRICS_KV.put(`bill:${id}`, JSON.stringify(bill));
+            return jsonCors({ ok: true, bill }, 200, origin);
+          }
+          if (b.op === "toggle" && b.id && ["upfrontPaid", "balancePaid"].includes(b.field)) {
+            const bill = await env.METRICS_KV.get(`bill:${b.id}`, "json");
+            if (!bill) return jsonCors({ ok: false, error: "no existe" }, 404, origin);
+            bill[b.field] = bill[b.field] ? null : new Date().toISOString().slice(0, 10);
+            await env.METRICS_KV.put(`bill:${b.id}`, JSON.stringify(bill));
+            return jsonCors({ ok: true, bill }, 200, origin);
+          }
+          if (b.op === "delete" && b.id) {
+            await env.METRICS_KV.delete(`bill:${b.id}`);
+            return jsonCors({ ok: true }, 200, origin);
+          }
+          return jsonCors({ ok: false, error: "op inválida" }, 400, origin);
+        } catch (e) { return jsonCors({ ok: false, error: e.message }, 500, origin); }
+      }
     }
     // Listar (admin).
     if (path === "/proposals") {
@@ -982,7 +1090,7 @@ export default {
       const list = await env.METRICS_KV.list({ prefix: "prop:" });
       const props = (await Promise.all(list.keys.slice(-60).map((k) => env.METRICS_KV.get(k.name, "json")))).filter(Boolean);
       props.sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || ""));
-      const proposals = props.map((p) => ({ id: p.id, title: p.project?.title, client: p.client?.name, price: p.price, createdAt: p.createdAt }));
+      const proposals = props.map((p) => ({ id: p.id, title: p.project?.title, client: p.client?.name, price: p.price, createdAt: p.createdAt, views: p.views || 0, lastViewedAt: p.lastViewedAt || null }));
       return jsonCors({ proposals }, 200, origin);
     }
 

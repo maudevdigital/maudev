@@ -109,7 +109,18 @@ export default function AdminProspeccion() {
         consent: false,
       });
       setSaved((s) => new Set(s).add(b.id));
-      toast.success(`${b.name} guardado en Leads.`);
+      // Seguimiento automático: en prospección fría la venta está en el 2° toque.
+      fetch("https://ig-autopost.maudevchile.workers.dev/remind", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          name: b.name,
+          note: `Prospecto ${rubroLabel} · ${comuna.trim()} — ¿respondió el 1er WhatsApp?`,
+          whatsapp: b.phone || "",
+          days: 3,
+        }),
+      }).catch(() => {});
+      toast.success(`${b.name} guardado en Leads · seguimiento agendado en 3 días ⏰`);
     } catch (e) {
       toast.error("No se pudo guardar: " + (e.message || "error"));
     }

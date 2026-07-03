@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
-import { FileText, Copy, Check, Loader2, ExternalLink, Plus, Trash2, Send } from "lucide-react";
+import { FileText, Copy, Check, Loader2, ExternalLink, Plus, Trash2, Send, Eye, Wallet } from "lucide-react";
+import { Link } from "react-router-dom";
 import { toast } from "sonner";
 
 const WORKER = "https://ig-autopost.maudevchile.workers.dev";
@@ -136,6 +137,21 @@ export default function AdminCotizaciones() {
     try { await navigator.clipboard.writeText(text); setCopied(id); setTimeout(() => setCopied(null), 1500); } catch { /* noop */ }
   };
 
+  // Propuesta aceptada → crea el registro de cobro (50/50) en /admin/cobros.
+  const createBill = async (p) => {
+    try {
+      const r = await fetch(`${WORKER}/billing`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ op: "create", title: p.title, client: p.client, price: p.price, proposalId: p.id }),
+      }).then((x) => x.json());
+      if (!r.ok) throw new Error(r.error || "error");
+      toast.success("Cobro creado — gestiónalo en Cobros 💰");
+    } catch (e) {
+      toast.error("No se pudo crear el cobro: " + e.message);
+    }
+  };
+
   const input = "w-full h-9 px-3 rounded-lg bg-background border border-border text-sm focus:outline-none focus:border-primary/50";
   const label = "text-xs font-mono text-muted-foreground mb-1.5 block";
 
@@ -247,7 +263,7 @@ export default function AdminCotizaciones() {
             <button onClick={() => copy("new", created.url)} className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-md bg-secondary border border-border">
               {copied === "new" ? <><Check className="h-3.5 w-3.5 text-green-500" /> Copiado</> : <><Copy className="h-3.5 w-3.5" /> Copiar link</>}
             </button>
-            <a href={created.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-md bg-secondary border border-border">
+            <a href={`${created.url}?preview=1`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-md bg-secondary border border-border">
               <ExternalLink className="h-3.5 w-3.5" /> Ver
             </a>
           </div>
@@ -265,12 +281,24 @@ export default function AdminCotizaciones() {
               <div key={p.id} className="flex flex-wrap items-center gap-2 py-2.5 px-2 rounded-lg hover:bg-secondary/50 border-b border-border/40 last:border-0">
                 <div className="flex-1 min-w-0">
                   <p className="text-sm text-foreground truncate">{p.title} <span className="text-muted-foreground">· {p.client}</span></p>
-                  <p className="text-[11px] font-mono text-muted-foreground">{fmtCLP(p.price)} · {p.createdAt?.slice(0, 10)}</p>
+                  <p className="text-[11px] font-mono text-muted-foreground flex flex-wrap items-center gap-x-2">
+                    <span>{fmtCLP(p.price)} · {p.createdAt?.slice(0, 10)}</span>
+                    {p.views > 0 ? (
+                      <span className="inline-flex items-center gap-1 text-primary" title={`Última vista: ${p.lastViewedAt?.slice(0, 16).replace("T", " ")}`}>
+                        <Eye className="h-3 w-3" /> {p.views} vista{p.views > 1 ? "s" : ""}
+                      </span>
+                    ) : (
+                      <span className="text-muted-foreground/50">· sin abrir aún</span>
+                    )}
+                  </p>
                 </div>
+                <button onClick={() => createBill(p)} title="Propuesta aceptada → crear cobro 50/50" className="inline-flex items-center gap-1.5 text-xs px-2.5 py-1.5 rounded-md bg-secondary border border-border hover:border-primary/40">
+                  <Wallet className="h-3.5 w-3.5" />
+                </button>
                 <button onClick={() => copy(p.id, `https://maudev.cl/propuesta/${p.id}`)} className="inline-flex items-center gap-1.5 text-xs px-2.5 py-1.5 rounded-md bg-secondary border border-border">
                   {copied === p.id ? <Check className="h-3.5 w-3.5 text-green-500" /> : <Copy className="h-3.5 w-3.5" />}
                 </button>
-                <a href={`https://maudev.cl/propuesta/${p.id}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-xs px-2.5 py-1.5 rounded-md bg-secondary border border-border">
+                <a href={`https://maudev.cl/propuesta/${p.id}?preview=1`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-xs px-2.5 py-1.5 rounded-md bg-secondary border border-border">
                   <ExternalLink className="h-3.5 w-3.5" />
                 </a>
               </div>
