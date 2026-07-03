@@ -44,18 +44,24 @@ export default function AdminProspeccion() {
     if (!comuna.trim()) { toast.error("Escribe una comuna (ej: Providencia)."); return; }
     setLoading(true); setResults(null);
     try {
-      // 1) Nominatim: comuna → id de área OSM (restringido a Chile).
+      // 1) Nominatim: comuna → área OSM. OJO: q= es texto libre y NO se puede
+      // combinar con parámetros estructurados (country=) — eso devolvía 400.
       const nom = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&country=Chile&q=${encodeURIComponent(comuna.trim())}&limit=1&featuretype=settlement`,
-        { headers: { "Accept-Language": "es" } },
+        `https://nominatim.openstreetmap.org/search?format=jsonv2&limit=3&accept-language=es&q=${encodeURIComponent(comuna.trim().replace(/,?\s*chile$/i, "") + ", Chile")}`,
       ).then((r) => r.json());
-      const place = nom?.[0];
-      if (!place?.osm_id) throw new Error(`No encontré la comuna "${comuna}" en Chile.`);
-      const areaId = (place.osm_type === "relation" ? 3600000000 : 3400000000) + Number(place.osm_id);
+      const place = (nom || []).find((p) => p.osm_type === "relation") || nom?.[0];
+      if (!place?.osm_id) throw new Error(`No encontré "${comuna}" en Chile. Prueba solo el nombre de la comuna.`);
 
-      // 2) Overpass: negocios del rubro dentro del área.
+      // 2) Overpass: negocios del rubro. Si la comuna tiene polígono (relation)
+      // buscamos dentro del área; si no, en un radio de 6 km desde su centro.
       const f = RUBROS.find((r) => r.value === rubro)?.filter;
-      const q = `[out:json][timeout:30];area(${areaId})->.a;(node${f}(area.a);way${f}(area.a););out center tags 80;`;
+      let zone;
+      if (place.osm_type === "relation") {
+        zone = `area(${3600000000 + Number(place.osm_id)})->.a;(node${f}(area.a);way${f}(area.a););`;
+      } else {
+        zone = `(node${f}(around:6000,${place.lat},${place.lon});way${f}(around:6000,${place.lat},${place.lon}););`;
+      }
+      const q = `[out:json][timeout:30];${zone}out center tags 80;`;
       const ov = await fetch("https://overpass-api.de/api/interpreter", {
         method: "POST",
         headers: { "content-type": "application/x-www-form-urlencoded" },
