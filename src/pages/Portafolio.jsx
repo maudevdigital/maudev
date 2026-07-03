@@ -30,7 +30,7 @@ export default function Portafolio() {
       <section className="pt-32 pb-16 lg:pt-40 lg:pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <span className="text-xs font-mono text-primary tracking-wider uppercase">// {t("portafolio", "portfolio")}</span>
+            <span className="kicker">{t("portafolio", "portfolio")}</span>
             <h1 className="text-4xl sm:text-5xl font-black tracking-tight mt-3 mb-6">
               {t("Proyectos", "Real")} <span className="text-primary">{t("reales", "projects")}</span>
             </h1>

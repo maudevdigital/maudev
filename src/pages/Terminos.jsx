@@ -135,7 +135,7 @@ export default function Terminos() {
 
           {/* Header */}
           <div className="mb-12 pb-8 border-b border-border/40">
-            <span className="text-xs font-mono text-primary tracking-wider uppercase">// legal</span>
+            <span className="kicker">legal</span>
             <h1 className="text-4xl font-black tracking-tight mt-3 mb-3">
               {t("Términos y condiciones", "Terms & conditions")}
             </h1>

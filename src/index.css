@@ -194,6 +194,28 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Etiqueta de seccion minimalista: guion de color + label espaciado.
+   Reemplaza al viejo prefijo "//" en todos los encabezados. */
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+.kicker::before {
+  content: "";
+  width: 1.4rem;
+  height: 1px;
+  background: var(--color-primary);
+  opacity: 0.8;
+  flex-shrink: 0;
+}
+
+
 /* ================================================================
    Blog prose — estilos para el contenido Markdown renderizado
    via ReactMarkdown dentro de .blog-prose

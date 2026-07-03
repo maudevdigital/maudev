@@ -9,7 +9,7 @@ import MetaPixelTracker from './lib/MetaPixelTracker';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import AdminGuard from './components/admin/AdminGuard';
-import WhatsAppFloat from '@/components/landing/WhatsAppFloat';
+import ChatWidget from '@/components/landing/ChatWidget';
 import AdminLayout from './components/admin/AdminLayout';
 import Landing from './pages/Landing'; // eager: es la home (LCP) y la entrada más común
 
@@ -112,7 +112,7 @@ function App() {
           <ScrollToTop />
           <MetaPixelTracker />
           <AuthenticatedApp />
-          <WhatsAppFloat />
+          <ChatWidget />
         </Router>
         <Toaster richColors position="top-right" />
       </QueryClientProvider>

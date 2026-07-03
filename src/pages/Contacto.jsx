@@ -109,7 +109,7 @@ export default function Contacto() {
 
       <section className="pt-32 pb-16 lg:pt-40 lg:pb-12">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <span className="text-xs font-mono text-primary tracking-wider uppercase">// {t("contacto", "contact")}</span>
+          <span className="kicker">{t("contacto", "contact")}</span>
           <h1 className="text-4xl sm:text-5xl font-black tracking-tight mt-3 mb-6">
             {t("Hablemos de tu", "Let's talk about your")} <span className="text-primary">{t("proyecto", "project")}</span>
           </h1>

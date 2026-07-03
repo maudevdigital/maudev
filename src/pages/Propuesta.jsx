@@ -93,7 +93,7 @@ export default function Propuesta() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10 print:py-4">
         {/* Encabezado */}
         <header className="mb-8 pb-8 border-b border-border/40">
-          <p className="text-xs font-mono text-primary tracking-wider uppercase mb-2">// propuesta de proyecto</p>
+          <p className="kicker mb-2">propuesta de proyecto</p>
           <h1 className="text-3xl sm:text-4xl font-black tracking-tight mb-3">{p.project?.title}</h1>
           {p.project?.description && <p className="text-muted-foreground">{p.project.description}</p>}
           <div className="flex flex-wrap gap-x-6 gap-y-1.5 mt-5 text-sm">
@@ -119,7 +119,7 @@ export default function Propuesta() {
         <Section icon={FileText} title="Cómo trabajamos (metodología Scrum)">
           <p className="mb-4">
             Trabajamos por <strong className="text-foreground">sprints</strong>: ciclos cortos con entregas que puedes
-            ver funcionando. No esperas hasta el final para conocer tu producto — lo ves crecer y das feedback en cada etapa.
+            ver funcionando. No esperas hasta el final para conocer tu producto: lo ves crecer y das feedback en cada etapa.
           </p>
           <div className="space-y-2">
             {(p.sprints || []).map((s, i) => (

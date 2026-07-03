@@ -38,7 +38,7 @@ export default function StatsSection() {
       <div className="absolute inset-0 grid-pattern opacity-20" />
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <div className="text-center mb-10">
-          <span className="text-xs font-mono text-primary tracking-wider uppercase">// {t("todo incluido", "everything included")}</span>
+          <span className="kicker">{t("todo incluido", "everything included")}</span>
           <p className="text-muted-foreground mt-3 max-w-2xl mx-auto">
             {t(
               "Entregamos proyectos funcionando, no archivos sueltos: dominio, servidor y todo lo necesario para operar queda configurado desde el día uno.",

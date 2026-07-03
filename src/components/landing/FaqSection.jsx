@@ -116,8 +116,8 @@ export default function FaqSection() {
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-14">
           <div>
-            <span className="text-xs font-mono text-primary tracking-wider uppercase">
-              // {t("preguntas frecuentes", "frequently asked")}
+            <span className="kicker">
+              {t("preguntas frecuentes", "frequently asked")}
             </span>
             <h2 className="text-3xl sm:text-4xl font-black tracking-tight mt-3 mb-3">
               {t("Todo lo que necesitas", "Everything you need")}

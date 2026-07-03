@@ -102,7 +102,7 @@ export default function ProcessSection() {
 
           {/* Left — sticky header */}
           <div className="lg:sticky lg:top-32">
-            <span className="text-xs font-mono text-primary tracking-wider uppercase">// {t("proceso", "process")}</span>
+            <span className="kicker">{t("proceso", "process")}</span>
             <h2 className="text-3xl sm:text-4xl font-black tracking-tight mt-3 mb-4">
               {t("Cómo trabajamos", "How we work")}
             </h2>
@@ -119,7 +119,7 @@ export default function ProcessSection() {
 
           {/* Right — vertical timeline */}
           <div className="relative">
-            <div className="absolute left-6 top-0 bottom-0 w-px bg-linear-to-b from-foreground/30 via-foreground/10 to-transparent" />
+            <div className="absolute left-5 sm:left-6 top-0 bottom-0 w-px bg-linear-to-b from-foreground/30 via-foreground/10 to-transparent" />
 
             <div className="space-y-0">
               {steps.map((s, i) => (
@@ -129,10 +129,10 @@ export default function ProcessSection() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, margin: "-60px" }}
                   transition={{ delay: i * 0.1, duration: 0.55, ease: [0.25, 0.46, 0.45, 0.94] }}
-                  className="relative flex gap-4 sm:gap-8 pb-9 sm:pb-10 last:pb-0 group"
+                  className="relative flex gap-3 sm:gap-8 pb-9 sm:pb-10 last:pb-0 group"
                 >
-                  <div className="relative shrink-0 w-12 flex justify-center">
-                    <div className="relative z-10 h-11 w-11 sm:h-12 sm:w-12 rounded-xl bg-card border border-border group-hover:border-foreground/40 flex items-center justify-center transition-colors duration-300">
+                  <div className="relative shrink-0 w-10 sm:w-12 flex justify-center">
+                    <div className="relative z-10 h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-card border border-border group-hover:border-foreground/40 flex items-center justify-center transition-colors duration-300">
                       <s.icon className="h-5 w-5 text-muted-foreground group-hover:text-foreground transition-colors duration-300" />
                     </div>
                   </div>
@@ -155,7 +155,7 @@ export default function ProcessSection() {
                       ))}
                     </ul>
                     <div className="flex flex-wrap items-center gap-3">
-                      <span className="inline-flex items-center text-[11px] font-mono text-muted-foreground/60 border border-border/50 px-2.5 py-1 rounded-md bg-secondary/30">
+                      <span className="inline-flex items-center max-w-full text-[11px] font-mono text-muted-foreground/60 border border-border/50 px-2.5 py-1 rounded-md bg-secondary/30">
                         {s.detail}
                       </span>
                       {s.link && (
@@ -172,19 +172,17 @@ export default function ProcessSection() {
               ))}
             </div>
 
-            {/* Tech stack — marquee infinito (lista duplicada para el loop) */}
+            {/* Tech stack: chips estáticos (el marquee se veía cortado en móvil) */}
             <div className="mt-10 pt-8 border-t border-border/40">
               <p className="text-xs font-mono text-muted-foreground uppercase tracking-wider mb-4">
                 {t("Tecnologías que usamos", "Technologies we use")}
               </p>
-              <div className="relative overflow-hidden marquee-mask">
-                <div className="marquee-track flex w-max">
-                  {[...stack, ...stack].map((tech, i) => (
-                    <span key={`${tech}-${i}`} className="mr-2 text-xs font-mono px-3 py-1.5 rounded-md bg-secondary border border-border/60 text-muted-foreground whitespace-nowrap">
-                      {tech}
-                    </span>
-                  ))}
-                </div>
+              <div className="flex flex-wrap gap-2">
+                {stack.map((tech) => (
+                  <span key={tech} className="text-xs font-mono px-3 py-1.5 rounded-md bg-secondary border border-border/60 text-muted-foreground">
+                    {tech}
+                  </span>
+                ))}
               </div>
             </div>
           </div>

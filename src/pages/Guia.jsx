@@ -86,7 +86,7 @@ export default function Guia() {
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Izquierda: la oferta */}
           <div>
-            <span className="text-xs font-mono text-primary tracking-wider uppercase">// {t("guía gratuita", "free guide")}</span>
+            <span className="kicker">{t("guía gratuita", "free guide")}</span>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight mt-3 mb-5 leading-tight">
               {t("Software a medida ", "Custom software ")}
               <span className="text-primary">{t("sin perder plata", "without wasting money")}</span>

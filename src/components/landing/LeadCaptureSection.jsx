@@ -76,7 +76,7 @@ export default function LeadCaptureSection() {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
           {/* Columna izquierda */}
           <div>
-            <span className="text-xs font-mono text-primary tracking-wider uppercase">// {t("diagnóstico gratuito", "free consult")}</span>
+            <span className="kicker">{t("diagnóstico gratuito", "free consult")}</span>
             <h2 className="text-3xl sm:text-4xl font-black tracking-tight mt-3 mb-4">
               {t("Cuéntanos tu proyecto,", "Tell us about your project,")} <span className="text-primary">{t("te respondemos en 24h", "we reply within 24h")}</span>
             </h2>
@@ -204,7 +204,7 @@ export default function LeadCaptureSection() {
                 </Button>
 
                 <p className="text-[11px] text-muted-foreground text-center">
-                  {t(`Te responde ${founder.firstName}, no un bot.`, `${founder.firstName} replies — not a bot.`)}{" "}
+                  {t(`Te responde ${founder.firstName}, no un bot.`, `${founder.firstName} replies, not a bot.`)}{" "}
                   {t("No compartimos tus datos con terceros.", "We don't share your data with third parties.")}
                 </p>
               </form>

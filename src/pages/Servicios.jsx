@@ -90,7 +90,7 @@ export default function Servicios() {
       <section className="pt-32 pb-16 lg:pt-40 lg:pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <span className="text-xs font-mono text-primary tracking-wider uppercase">// {t("servicios", "services")}</span>
+            <span className="kicker">{t("servicios", "services")}</span>
             <h1 className="text-4xl sm:text-5xl font-black tracking-tight mt-3 mb-6">
               {t("Lo que", "What we")} <span className="text-primary">{t("construimos", "build")}</span> {t("para ti", "for you")}
             </h1>

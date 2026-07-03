@@ -46,7 +46,7 @@ export default function GuaranteeSection() {
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-14">
-          <span className="text-xs font-mono text-primary tracking-wider uppercase">// {t("garantía maudev", "the maudev guarantee")}</span>
+          <span className="kicker">{t("garantía maudev", "the maudev guarantee")}</span>
           <h2 className="text-3xl sm:text-4xl font-black tracking-tight mt-3 mb-4">
             {t("El riesgo lo tomamos", "We take the risk,")} <span className="text-primary">{t("nosotros, no tú", "not you")}</span>
           </h2>

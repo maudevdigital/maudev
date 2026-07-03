@@ -48,7 +48,7 @@ export default function SobreNosotros() {
 
       <section className="pt-32 pb-16 lg:pt-40 lg:pb-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <span className="text-xs font-mono text-primary tracking-wider uppercase">// {t("sobre nosotros", "about us")}</span>
+          <span className="kicker">{t("sobre nosotros", "about us")}</span>
           <h1 className="text-4xl sm:text-5xl font-black tracking-tight mt-3 mb-6">
             {t("Un estudio de desarrollo con", "A development studio with")} <span className="text-primary">{t("nombre y apellido", "a real name behind it")}</span>
           </h1>
@@ -87,7 +87,7 @@ export default function SobreNosotros() {
             </div>
 
             <div className="text-center sm:text-left">
-              <span className="text-xs font-mono text-primary tracking-wider uppercase">// {t("quién está detrás", "who's behind it")}</span>
+              <span className="kicker">{t("quién está detrás", "who's behind it")}</span>
               <h2 className="text-2xl font-black tracking-tight mt-2 mb-1">{founder.name}</h2>
               <p className="text-sm text-primary font-medium mb-3">{founder.role}</p>
               <p className="text-sm text-muted-foreground leading-relaxed mb-4 max-w-xl">

@@ -57,7 +57,7 @@ export default function ComparisonSection() {
 
       <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-14">
-          <span className="text-xs font-mono text-primary tracking-wider uppercase">// {t("comparación honesta", "honest comparison")}</span>
+          <span className="kicker">{t("comparación honesta", "honest comparison")}</span>
           <h2 className="text-3xl sm:text-4xl font-black tracking-tight mt-3 mb-4">
             {t("¿Agencia, marketplace", "Agency, marketplace")} <span className="text-primary">{t("o maudev?", "or maudev?")}</span>
           </h2>
@@ -112,8 +112,8 @@ export default function ComparisonSection() {
 
         <p className="mt-6 text-center text-xs text-muted-foreground font-mono">
           {t(
-            "Si tu proyecto necesita un equipo de 20 personas, una agencia grande es mejor opción — y te lo diremos.",
-            "If your project needs a 20-person team, a big agency is the better option — and we'll tell you so."
+            "Si tu proyecto necesita un equipo de 20 personas, una agencia grande es mejor opción, y te lo diremos.",
+            "If your project needs a 20-person team, a big agency is the better option, and we'll tell you so."
           )}
         </p>
       </div>

@@ -180,7 +180,7 @@ export default function Privacidad() {
           {/* Header */}
           <div className="mb-12 pb-8 border-b border-border/40">
             <div className="flex items-center gap-3 mb-3">
-              <span className="text-xs font-mono text-primary tracking-wider uppercase">// legal</span>
+              <span className="kicker">legal</span>
               <span className="inline-flex items-center gap-1.5 text-xs font-mono px-2.5 py-1 rounded-full bg-primary/8 text-primary border border-primary/15">
                 <Shield className="h-3 w-3" />
                 {t("Protección de datos", "Data protection")}

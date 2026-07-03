@@ -167,7 +167,7 @@ export default function Contrato() {
 
           {/* Encabezado (pantalla): contexto de transparencia + selector de variante */}
           <div className="mb-10 pb-8 border-b border-border/40">
-            <span className="text-xs font-mono text-primary tracking-wider uppercase print-hidden">// {t("transparencia", "transparency")}</span>
+            <span className="kicker print-hidden">{t("transparencia", "transparency")}</span>
             <h1 className="text-3xl sm:text-4xl font-black tracking-tight mt-3 mb-3 print-hidden">
               {t("Modelo de contrato", "Contract template")}
             </h1>

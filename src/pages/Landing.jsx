@@ -6,8 +6,6 @@ import ServicesSection from "../components/landing/ServicesSection";
 import ProcessSection from "../components/landing/ProcessSection";
 import GuaranteeSection from "../components/landing/GuaranteeSection";
 import PortafolioPreview from "../components/landing/PortafolioPreview";
-import ComparisonSection from "../components/landing/ComparisonSection";
-import BlogPreview from "../components/landing/BlogPreview";
 import FaqSection from "../components/landing/FaqSection";
 import LeadCaptureSection from "../components/landing/LeadCaptureSection";
 import Footer from "../components/landing/Footer";
@@ -17,7 +15,6 @@ import { t } from "@/lib/i18n";
 // Para usar imágenes propias, agrega los archivos a /public y referencia "/hero.png" etc.
 const HERO_IMAGE = null;
 const SERVICES_IMAGE = null;
-const BLOG_IMAGE = null;
 
 export default function Landing() {
   useEffect(() => {
@@ -39,15 +36,16 @@ export default function Landing() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      {/* Orden pensado para conversión y menos densidad de texto:
+          gancho → qué hacemos → prueba (portafolio) → cómo → garantía → dudas → captura.
+          Comparación vive en /precios; el blog se llega por navbar/footer. */}
       <Navbar />
       <HeroSection heroImage={HERO_IMAGE} />
       <StatsSection />
       <ServicesSection servicesImage={SERVICES_IMAGE} />
+      <PortafolioPreview />
       <ProcessSection />
       <GuaranteeSection />
-      <PortafolioPreview />
-      <ComparisonSection />
-      <BlogPreview blogImage={BLOG_IMAGE} />
       <FaqSection />
       <LeadCaptureSection />
       <Footer />

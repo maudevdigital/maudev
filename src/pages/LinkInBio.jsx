@@ -1,15 +1,17 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Zap, Code2, Tag, Briefcase, BookOpen, Calculator, MessageCircle, ArrowUpRight } from "lucide-react";
+import { Zap, Code2, Tag, Briefcase, BookOpen, Calculator, MessageCircle, ArrowUpRight, Download } from "lucide-react";
 import Logo from "@/components/landing/Logo";
 import { getWhatsAppUrl, whatsappEnabled } from "@/components/landing/WhatsAppFloat";
 import { availability, founder } from "@/data/site";
 import { t } from "@/lib/i18n";
 
-// Página "link in bio" para Instagram (maudev.cl/ig). Mobile-first, sin navbar/
-// footer: un hub de enlaces que convierte el tráfico de IG en acciones del sitio.
+// Página "link in bio" universal para TODAS las redes (maudev.cl/links, con
+// alias /ig). Mobile-first, sin navbar/footer: un hub de enlaces que convierte
+// el tráfico de RRSS en acciones del sitio.
 const links = [
   { to: "/contacto", icon: Zap, label: t("Pedir diagnóstico gratis", "Get a free assessment"), desc: t("Respuesta en menos de 24h", "Reply within 24h"), primary: true },
+  { to: "/guia", icon: Download, label: t("Guía gratis: software sin perder plata", "Free guide: software without wasting money"), desc: t("Precios reales, cómo elegir y qué exigir", "Real prices, how to choose, what to demand") },
   { to: "/servicios", icon: Code2, label: t("Servicios", "Services"), desc: t("Web, software y automatización", "Web, software & automation") },
   { to: "/precios", icon: Tag, label: t("Precios", "Pricing"), desc: t("Transparentes, sin letra chica", "Transparent, no fine print") },
   { to: "/portafolio", icon: Briefcase, label: t("Portafolio", "Portfolio"), desc: t("Proyectos reales en producción", "Real projects in production") },
@@ -78,7 +80,7 @@ export default function LinkInBio() {
 
           {whatsappEnabled && (
             <a
-              href={getWhatsAppUrl(t("Hola, los encontré en Instagram y quiero saber más.", "Hi, I found you on Instagram and want to know more."))}
+              href={getWhatsAppUrl(t("Hola, los encontré en sus redes y quiero saber más.", "Hi, I found you on social media and want to know more."))}
               target="_blank"
               rel="noopener noreferrer"
               className="group flex items-center gap-4 rounded-2xl border border-border bg-card p-4 hover:border-[#25D366]/50 transition-all"

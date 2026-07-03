@@ -43,7 +43,7 @@ export default function PortafolioPreview() {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-end justify-between mb-12">
           <div>
-            <span className="text-xs font-mono text-primary tracking-wider uppercase">// {t("portafolio", "portfolio")}</span>
+            <span className="kicker">{t("portafolio", "portfolio")}</span>
             <h2 className="text-3xl sm:text-4xl font-black tracking-tight mt-3">
               {t("Proyectos", "Projects")} <span className="text-primary">{t("construidos", "we've built")}</span>
             </h2>

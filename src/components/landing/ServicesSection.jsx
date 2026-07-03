@@ -19,8 +19,8 @@ const services = [
     num: "01",
     title: t("Que tu web te traiga clientes", "A website that brings you customers"),
     desc: t(
-      "Una landing que aparece en Google, carga al instante y convierte visitas en consultas reales — mientras tú atiendes tu negocio. Diseño profesional, SEO técnico y captura de leads desde el primer día.",
-      "A landing page that ranks on Google, loads instantly and turns visits into real inquiries — while you run your business. Professional design, technical SEO and lead capture from day one."
+      "Una landing que aparece en Google, carga al instante y convierte visitas en consultas reales mientras tú atiendes tu negocio. Diseño profesional, SEO técnico y captura de leads desde el primer día.",
+      "A landing page that ranks on Google, loads instantly and turns visits into real inquiries while you run your business. Professional design, technical SEO and lead capture from day one."
     ),
     tags: ["SEO", t("Conversión", "Conversion"), "CRO"],
   },
@@ -64,7 +64,7 @@ export default function ServicesSection() {
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <span className="text-xs font-mono text-primary tracking-wider uppercase">// {t("servicios", "services")}</span>
+          <span className="kicker">{t("servicios", "services")}</span>
           <h2 className="text-3xl sm:text-4xl font-black tracking-tight mt-3 mb-4">
             {t("Todo lo que necesitas", "Everything you need")} <span className="text-primary">{t("en un solo equipo", "in a single team")}</span>
           </h2>

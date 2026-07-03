@@ -182,7 +182,7 @@ export default function DiagnosticoWeb() {
 
         <div className="relative max-w-3xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-10">
-            <span className="text-xs font-mono text-primary tracking-wider uppercase">// {t("diagnóstico en vivo", "live audit")}</span>
+            <span className="kicker">{t("diagnóstico en vivo", "live audit")}</span>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight mt-3 mb-4">
               {t("¿Tu web está", "Is your website")} <span className="text-primary glow-text">{t("perdiendo clientes?", "losing you customers?")}</span>
             </h1>

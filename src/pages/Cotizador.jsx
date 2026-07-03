@@ -118,7 +118,7 @@ export default function Cotizador() {
         <div className="absolute inset-0 grid-pattern opacity-30 pointer-events-none" />
         <div className="relative max-w-2xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-10">
-            <span className="text-xs font-mono text-primary tracking-wider uppercase">// {t("cotizador", "estimator")}</span>
+            <span className="kicker">{t("cotizador", "estimator")}</span>
             <h1 className="text-3xl sm:text-4xl font-black tracking-tight mt-3 mb-4">
               {t("Estima tu proyecto", "Estimate your project")} <span className="text-primary">{t("en 1 minuto", "in 1 minute")}</span>
             </h1>

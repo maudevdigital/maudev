@@ -28,7 +28,7 @@ export default function Ahora() {
       <section className="relative pt-32 pb-24 lg:pt-40 overflow-hidden min-h-screen">
         <div className="absolute inset-0 grid-pattern opacity-30 pointer-events-none" />
         <div className="relative max-w-3xl mx-auto px-4 sm:px-6">
-          <span className="text-xs font-mono text-primary tracking-wider uppercase">// {t("ahora", "now")}</span>
+          <span className="kicker">{t("ahora", "now")}</span>
           <h1 className="text-4xl sm:text-5xl font-black tracking-tight mt-3 mb-5">
             {t("En qué estamos", "What we're working on")} <span className="text-primary">{t("trabajando", "right now")}</span>
           </h1>

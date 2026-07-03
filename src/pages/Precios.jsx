@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Check, X, ArrowRight, Calculator, Globe, Bot, Code2 } from "lucide-react";
 import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
+import ComparisonSection from "@/components/landing/ComparisonSection";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { t } from "@/lib/i18n";
@@ -93,7 +94,7 @@ export default function Precios() {
       <section className="relative pt-32 pb-12 lg:pt-40 overflow-hidden">
         <div className="absolute inset-0 grid-pattern opacity-30 pointer-events-none" />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <span className="text-xs font-mono text-primary tracking-wider uppercase">// {t("precios", "pricing")}</span>
+          <span className="kicker">{t("precios", "pricing")}</span>
           <h1 className="text-4xl sm:text-5xl font-black tracking-tight mt-3 mb-5">
             {t("Precios transparentes,", "Transparent pricing,")} <span className="text-primary">{t("sin letra chica", "no fine print")}</span>
           </h1>
@@ -215,6 +216,9 @@ export default function Precios() {
           </div>
         </div>
       </section>
+
+      {/* Comparación honesta: vive aquí (contexto de decisión de compra), no en el home */}
+      <ComparisonSection />
 
       <Footer />
     </div>

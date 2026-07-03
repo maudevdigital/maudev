@@ -301,7 +301,7 @@ export default function BlogPostDetail() {
           const cta = ctaByCategory[post.category] || defaultCta;
           return (
             <div className="mt-16 p-8 bg-card border border-border rounded-2xl text-center">
-              <span className="text-xs font-mono text-primary tracking-wider uppercase">// {t("¿te resultó útil?", "was this helpful?")}</span>
+              <span className="kicker">{t("¿te resultó útil?", "was this helpful?")}</span>
               <h3 className="text-xl font-bold mt-3 mb-2">{cta.title}</h3>
               <p className="text-sm text-muted-foreground mb-5 max-w-lg mx-auto">{cta.desc}</p>
               <Link
