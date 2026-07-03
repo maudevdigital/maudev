@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import Logo from "@/components/landing/Logo";
 import { t } from "@/lib/i18n";
 import { getWhatsAppUrl, whatsappEnabled } from "@/components/landing/WhatsAppFloat";
-import { availability, founder, CTA_LABEL } from "@/data/site";
+import { founder, CTA_LABEL } from "@/data/site";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -26,16 +26,6 @@ export default function Footer() {
                 "Web development, custom software and automation for founders and SMBs in Chile."
               )}
             </p>
-            {/* Widget de disponibilidad real (editar en src/data/site.js) */}
-            <Link
-              to="/ahora"
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/20 bg-primary/5 hover:bg-primary/10 transition-colors"
-            >
-              <div className={`h-1.5 w-1.5 rounded-full ${availability.open ? "bg-primary animate-pulse" : "bg-muted-foreground"}`} />
-              <span className="text-[10px] font-mono text-primary tracking-wider uppercase">
-                {availability.label} · {availability.period}
-              </span>
-            </Link>
           </div>
 
           <div>

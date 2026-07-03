@@ -4,6 +4,7 @@
 // Los componentes usan pick(post, "title"|"excerpt"|"content") según el idioma.
 
 import { t } from "@/lib/i18n";
+import { julyPosts } from "./blogPostsJul2026";
 
 const AUTHOR = "Equipo Maudev";
 
@@ -28,6 +29,8 @@ const ctaEN = `
 Want to apply this to your business? At **Maudev** we build websites, custom software and automations for SMBs and founders in Chile and Latin America. [Book a free consult](/contacto).`;
 
 export const blogPosts = [
+  // ===== Julio 2026 · 4 posts SEO (AnswerThePublic) — ver blogPostsJul2026.js =====
+  ...julyPosts,
   // ===== Semana 29 jun – 5 jul · serie 2 (desarrollo de software / automatización) =====
   {
     id: "errores-caros-al-pedir-software-2026",

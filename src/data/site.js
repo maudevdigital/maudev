@@ -18,13 +18,17 @@ export const founder = {
 };
 
 // ─── Disponibilidad ─────────────────────────────────────────────────────────
-// Actualiza esto cada mes. Si open=false, el badge y el widget cambian a
-// "Agenda abierta para <nextMonth>". Nada de escasez inventada: lo que diga
-// aquí debe ser verdad.
+// El período es DINÁMICO: siempre muestra el mes en curso (se actualiza solo
+// al cambiar de mes). Solo toca `open` si dejas de aceptar proyectos.
+// Nada de escasez inventada: lo que diga aquí debe ser verdad.
+const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+const now = new Date();
+const currentPeriod = (locale) =>
+  cap(now.toLocaleDateString(locale, { month: "long", year: "numeric" }).replace(" de ", " ")); // "julio de 2026" → "Julio 2026"
 export const availability = {
   open: true,
   label: t("Disponible para nuevos proyectos", "Available for new projects"),
-  period: t("Junio 2026", "June 2026"),
+  period: t(currentPeriod("es-CL"), currentPeriod("en-US")),
 };
 
 // ─── CTA principal ──────────────────────────────────────────────────────────
