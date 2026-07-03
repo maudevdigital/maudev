@@ -86,6 +86,36 @@ const faqs = [
     ),
     tag: t("Precios", "Pricing"),
   },
+  // Preguntas alineadas a búsquedas reales en Google Chile (AnswerThePublic, jul 2026):
+  // "página web con carrito de compras" (140/mes) · "página web con ia" (140/mes) ·
+  // "desarrollo de software a medida" (110/mes) · "metodologías" (140/mes).
+  {
+    num: "10",
+    q: t("¿Hacen páginas web con carrito de compras (e-commerce)?", "Do you build websites with a shopping cart (e-commerce)?"),
+    a: t(
+      "Sí. Construimos tiendas online con carrito de compras, pasarela de pago (Webpay, MercadoPago, Stripe), gestión de productos y seguimiento de pedidos. También conectamos tu tienda con tu inventario o sistemas actuales para que no dupliques trabajo.",
+      "Yes. We build online stores with a shopping cart, payment gateway (Webpay, MercadoPago, Stripe), product management and order tracking. We also connect your store to your inventory or existing systems so you don't duplicate work."
+    ),
+    tag: t("E-commerce", "E-commerce"),
+  },
+  {
+    num: "11",
+    q: t("¿Pueden crear una página web con IA integrada?", "Can you build a website with integrated AI?"),
+    a: t(
+      "Sí. Integramos IA donde aporta de verdad: chatbots que responden y califican clientes 24/7, respuestas automáticas a consultas frecuentes, resúmenes y clasificación de mensajes, y automatización de procesos repetitivos. Siempre con supervisión humana en las decisiones importantes.",
+      "Yes. We integrate AI where it truly helps: chatbots that answer and qualify customers 24/7, automatic replies to common questions, message summarization and classification, and automation of repetitive processes. Always with human oversight on important decisions."
+    ),
+    tag: t("IA", "AI"),
+  },
+  {
+    num: "12",
+    q: t("¿Qué es el software a medida y qué metodología usan?", "What is custom software and which methodology do you use?"),
+    a: t(
+      "El software a medida se diseña para tu proceso exacto, a diferencia de las herramientas genéricas de suscripción. Trabajamos con metodología Scrum: sprints cortos con entregas que ves funcionando cada 1 a 2 semanas, para que des feedback a tiempo y el resultado calce con tu negocio.",
+      "Custom software is designed for your exact process, unlike generic subscription tools. We work with Scrum: short sprints with working deliveries every 1-2 weeks, so you give timely feedback and the result fits your business."
+    ),
+    tag: t("Metodología", "Methodology"),
+  },
 ];
 
 export default function FaqSection() {

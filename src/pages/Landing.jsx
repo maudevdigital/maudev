@@ -19,7 +19,7 @@ const SERVICES_IMAGE = null;
 export default function Landing() {
   useEffect(() => {
     document.title = t(
-      "Maudev · Desarrollo web, software y automatización en Chile",
+      "Maudev · Software a medida, páginas web y automatización con IA en Chile",
       "Maudev · Web development, software and automation in Chile"
     );
     const meta = document.querySelector('meta[name="description"]');
@@ -27,7 +27,7 @@ export default function Landing() {
       meta.setAttribute(
         "content",
         t(
-          "Desarrollamos sitios web, software a medida y automatización de procesos para emprendedores y PYMEs en Chile. Diagnóstico gratis.",
+          "Desarrollo de software a medida, páginas web con IA y carrito de compras, y automatización de procesos para PYMEs en Chile. Precio fijo por escrito y diagnóstico gratis.",
           "We build websites, custom software and process automation for founders and SMBs in Chile. Free consult."
         )
       );

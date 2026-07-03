@@ -80,7 +80,7 @@ const services = [
 
 export default function Servicios() {
   useEffect(() => {
-    document.title = t("Servicios · Maudev", "Services · Maudev");
+    document.title = t("Servicios: páginas web, e-commerce, software a medida y automatización con IA · Maudev", "Services: websites, e-commerce, custom software and AI automation · Maudev");
   }, []);
 
   return (
