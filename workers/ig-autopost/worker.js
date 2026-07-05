@@ -507,7 +507,8 @@ async function runOnce(env, forcedIndex) {
   let liId = null, liError = null;
   if (p.li) {
     try {
-      liId = isReel ? await publishLinkedInVideo(env, videoUrl, caption) : await publishLinkedInCarousel(env, images, liCaption);
+      // LinkedIn siempre con su caption profesional (sin "Comenta GUÍA": ahí el CTA es link).
+      liId = isReel ? await publishLinkedInVideo(env, videoUrl, liCaption) : await publishLinkedInCarousel(env, images, liCaption);
     } catch (e) { liError = e.message; }
   }
 
@@ -702,7 +703,7 @@ async function getTikTokMetrics(env) {
 // ── Seguimiento por email (Resend) ──────────────────────────────────────────
 // Al captar un lead: email inmediato según la fuente + recordatorio a las 48h.
 // Dedupe por email (7 días) para no escribirle dos veces a la misma persona.
-const CAL_FALLBACK = "https://cal.com/lucas-maulen-mlfaql/30min";
+const CAL_FALLBACK = "https://cal.com/maudev/30min";
 const GUIA_PDF_URL = "https://maudev.cl/guia-software-a-medida.pdf";
 
 function emailShell(inner, cal) {
