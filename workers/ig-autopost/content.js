@@ -2,9 +2,9 @@
 // coherente + hashtags SEO + CTA "Comenta GUÍA" (dispara el DM automático de
 // Meta). liCaption = versión LinkedIn (sin comenta-GUÍA: ahí el CTA es link).
 //
-// SEMANA 6-12 JUL: 12 ítems. Con len=12 y 3 franjas/día, los CARRUSELES en los
-// índices 1, 4, 7 y 10 caen SIEMPRE en franja 1 (FB + LinkedIn multi-imagen);
-// los reels (voz Chris + motor 2.0) rotan en las franjas 0 y 2 de Instagram.
+// REGLA: NUNCA se repite contenido. El worker consume estas piezas como COLAS
+// (reels → Instagram 2/día; carruseles → FB+LinkedIn 1/día) marcando cada id
+// como publicado en KV. Cola vacía = no publica + aviso por Telegram.
 // Temas y keywords validados con AnswerThePublic (Google Chile).
 
 const TAGS = "#desarrollodesoftware #softwareamedida #pymeschile";
@@ -261,6 +261,42 @@ Compara las cotizaciones por lo que INCLUYEN, no por el número final.
 ${LI_GUIA}
 
 ${TAGS} #precios`,
+  },
+  // reel · voz Gustavo (nativa)
+  {
+    id: "pro-copiar-pegar", kind: "reel", media: `${S}/pro-copiar-pegar.mp4`, blog: "automatizacion-ia-pymes-2026",
+    caption: `🔁 ¿Copias y pegas datos entre apps todos los días?
+
+Ese es tiempo y plata que pierdes. Cuando tus sistemas se conectan, la información fluye sola y tu equipo se dedica a vender.
+
+${GUIA}
+
+${TAGS} #automatizacion #integraciones`,
+    liCaption: `¿Tu equipo copia y pega datos entre aplicaciones todos los días?
+
+Ese es un costo invisible en horas y errores. Cuando los sistemas se conectan (integraciones), la información fluye sola y el equipo se dedica a vender.
+
+${LI_GUIA}
+
+${TAGS} #automatizacion`,
+  },
+  // reel · voz Gustavo (nativa)
+  {
+    id: "pro-saas-medida", kind: "reel", media: `${S}/pro-saas-medida.mp4`, blog: "wix-vs-pagina-web-a-medida-2026",
+    caption: `⚖️ ¿SaaS o software a medida?
+
+El SaaS gana en lo estándar. Lo a medida gana cuando el proceso es TU ventaja, o cuando ya peleas con la herramienta. La jugada maestra: combinar.
+
+${GUIA}
+
+${TAGS} #saas #softwareamedida`,
+    liCaption: `¿SaaS o software a medida? Falsa dicotomía.
+
+El SaaS gana en lo estándar, rápido y barato de partir. Lo a medida gana cuando el proceso es tu ventaja competitiva o cuando ya peleas con la herramienta. La jugada madura: combinar ambos.
+
+${LI_GUIA}
+
+${TAGS} #saas #softwareamedida`,
   },
 ];
 

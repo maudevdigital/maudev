@@ -474,58 +474,101 @@ async function logPost(env, row) {
   }).catch(() => {});
 }
 
+// ── REGLA DE ORO: NUNCA repetir contenido ────────────────────────────────────
+// Cada pieza se publica UNA sola vez por canal. El KV guarda los IDs ya
+// publicados (qdone:ig / qdone:fbli / qdone:tt); cuando una cola se agota, NO
+// se publica y llega UN aviso diario por Telegram pidiendo contenido nuevo.
+const REELS_Q = CONTENT.filter((c) => c.kind === "reel");
+const CARS_Q = CONTENT.filter((c) => c.kind === "carousel");
+
+async function takeNext(env, key, arr) {
+  if (!env.METRICS_KV) return { item: arr[0] || null, done: null };
+  const done = new Set((await env.METRICS_KV.get(key, "json")) || []);
+  return { item: arr.find((c) => !done.has(c.id)) || null, done };
+}
+async function markDone(env, key, done, id) {
+  if (!env.METRICS_KV || !done) return;
+  done.add(id);
+  await env.METRICS_KV.put(key, JSON.stringify([...done]));
+}
+async function alertQueueEmpty(env, name) {
+  if (!env.METRICS_KV) return;
+  const k = `qalert:${name}:${new Date().toISOString().slice(0, 10)}`;
+  if (await env.METRICS_KV.get(k)) return;
+  await env.METRICS_KV.put(k, "1", { expirationTtl: 2 * 86400 });
+  await sendTelegram(env, `📭 <b>Cola de ${name} AGOTADA</b>\nNo se publicó nada (regla: nunca repetir contenido).\n\n👉 Hay que generar contenido nuevo.`);
+}
+
 async function runOnce(env, forcedIndex) {
   if (!CONTENT.length) throw new Error("CONTENT vacío.");
   const forced = Number.isInteger(forcedIndex);
   const info = slotInfo();
-  const index = forced ? (((forcedIndex % CONTENT.length) + CONTENT.length) % CONTENT.length) : info.index;
-  // Disparo manual → publica en TODAS. Cron → cadencia por plataforma.
-  const p = forced ? { ig: true, fb: true, li: true, tt: true } : platformsForSlot(info.franja, info.weekday);
 
-  const { id, kind, media, caption, liCaption, preview } = buildContent(index);
-  const isReel = kind === "reel";
-  const videoUrl = isReel ? media : null;
-  const images = isReel ? null : media; // array de URLs
+  // Disparo manual (?index=N): publica ese ítem en TODAS las redes según su
+  // tipo, sin tocar las colas (para pruebas/repost deliberado).
+  if (forced) {
+    const index = ((forcedIndex % CONTENT.length) + CONTENT.length) % CONTENT.length;
+    const { id, kind, media, caption, liCaption, preview } = buildContent(index);
+    const isReel = kind === "reel";
+    let postId = null, fbId = null, liId = null, igError = null, fbError = null, liError = null;
+    try { postId = isReel ? await publishReel(env, media, caption) : await publishCarousel(env, media, caption); } catch (e) { igError = e.message; }
+    try { fbId = isReel ? await publishFacebookVideo(env, media, caption) : await publishFacebookCarousel(env, media, caption); } catch (e) { fbError = e.message; }
+    try { liId = isReel ? await publishLinkedInVideo(env, media, liCaption) : await publishLinkedInCarousel(env, media, liCaption); } catch (e) { liError = e.message; }
+    await logPost(env, { ig_post_id: postId, fb_post_id: fbId, li_post_id: liId, hook: preview, media_kind: kind, content_id: id, caption, created_at: new Date().toISOString() });
+    return { forced: true, index, id, kind, postId, igError, fbId, fbError, liId, liError, preview };
+  }
 
-  // Instagram
-  let postId = null, igError = null;
+  const p = platformsForSlot(info.franja, info.weekday);
+  const out = { platforms: p, published: [] };
+
+  // Instagram: consume la cola de REELS (2/día). Se marca consumido solo si
+  // la publicación fue exitosa (si falla, se reintenta en el próximo slot).
   if (p.ig) {
-    try {
-      postId = isReel ? await publishReel(env, videoUrl, caption) : await publishCarousel(env, images, caption);
-    } catch (e) { igError = e.message; }
+    const { item, done } = await takeNext(env, "qdone:ig", REELS_Q);
+    if (!item) await alertQueueEmpty(env, "reels (Instagram)");
+    else {
+      try {
+        out.postId = await publishReel(env, item.media, item.caption);
+        await markDone(env, "qdone:ig", done, item.id);
+        out.published.push(`ig:${item.id}`);
+        await logPost(env, { ig_post_id: out.postId, hook: (item.caption || "").split("\n")[0], media_kind: "reel", content_id: item.id, image_url: item.media, caption: item.caption, created_at: new Date().toISOString() });
+      } catch (e) { out.igError = e.message; }
+    }
   }
 
-  // Facebook (best-effort)
-  let fbId = null, fbError = null;
-  if (p.fb) {
-    try {
-      fbId = isReel ? await publishFacebookVideo(env, videoUrl, caption) : await publishFacebookCarousel(env, images, caption);
-    } catch (e) { fbError = e.message; }
+  // Facebook + LinkedIn: consumen juntos la cola de CARRUSELES (1/día).
+  if (p.fb || p.li) {
+    const { item, done } = await takeNext(env, "qdone:fbli", CARS_Q);
+    if (!item) await alertQueueEmpty(env, "carruseles (FB/LinkedIn)");
+    else {
+      let ok = false;
+      if (p.fb) { try { out.fbId = await publishFacebookCarousel(env, item.media, item.caption); ok = true; } catch (e) { out.fbError = e.message; } }
+      if (p.li) { try { out.liId = await publishLinkedInCarousel(env, item.media, item.liCaption || item.caption); ok = true; } catch (e) { out.liError = e.message; } }
+      if (ok) {
+        await markDone(env, "qdone:fbli", done, item.id);
+        out.published.push(`fbli:${item.id}`);
+        await logPost(env, { fb_post_id: out.fbId, li_post_id: out.liId, hook: (item.caption || "").split("\n")[0], media_kind: "carousel", content_id: item.id, image_url: item.media[0], caption: item.caption, created_at: new Date().toISOString() });
+      }
+    }
   }
 
-  // LinkedIn (best-effort): video si reel; carrusel multi-imagen nativo si carrusel.
-  let liId = null, liError = null;
-  if (p.li) {
-    try {
-      // LinkedIn siempre con su caption profesional (sin "Comenta GUÍA": ahí el CTA es link).
-      liId = isReel ? await publishLinkedInVideo(env, videoUrl, liCaption) : await publishLinkedInCarousel(env, images, liCaption);
-    } catch (e) { liError = e.message; }
+  // TikTok: consume su cola exclusiva, 1 borrador/día, sin repetir jamás.
+  if (p.tt) {
+    const { item, done } = await takeNext(env, "qdone:tt", TIKTOK_QUEUE);
+    if (!item) await alertQueueEmpty(env, "TikTok (borradores)");
+    else {
+      try {
+        out.ttId = await publishTikTok(env, item.media);
+        if (out.ttId) {
+          await markDone(env, "qdone:tt", done, item.id);
+          out.published.push(`tt:${item.id}`);
+          await sendTelegram(env, `🎵 <b>Borrador nuevo en TikTok</b>\nVideo: ${item.id}\n\n👉 Abre TikTok, pega la descripción SEO (maudev.cl/admin/tiktok) y publica.`);
+        }
+      } catch (e) { out.ttError = e.message; }
+    }
   }
 
-  // TikTok (best-effort): contenido NUEVO exclusivo de TikTok (cola propia, no
-  // lo que va a IG/FB/LinkedIn), como BORRADOR al inbox. 1/día (franja 0).
-  let ttId = null, ttError = null;
-  if (p.tt && TIKTOK_QUEUE.length) {
-    try {
-      const ttDay = Math.floor(Date.now() / 86400000) - BASE_DAY;
-      const ttItem = TIKTOK_QUEUE[((ttDay % TIKTOK_QUEUE.length) + TIKTOK_QUEUE.length) % TIKTOK_QUEUE.length];
-      ttId = await publishTikTok(env, ttItem.media);
-      if (ttId) await sendTelegram(env, `🎵 <b>Borrador nuevo en TikTok</b>\nVideo: ${ttItem.id}\n\n👉 Abre TikTok, pega la descripción SEO (maudev.cl/admin/tiktok) y publica.`);
-    } catch (e) { ttError = e.message; }
-  }
-
-  await logPost(env, { ig_post_id: postId, fb_post_id: fbId, li_post_id: liId, tt_publish_id: ttId, hook: preview, media_kind: kind, content_id: id, image_url: isReel ? videoUrl : (images && images[0]), caption, created_at: new Date().toISOString() });
-  return { index, id, kind, platforms: p, postId, igError, fbId, fbError, liId, liError, ttId, ttError, preview };
+  return out;
 }
 
 // ─── Flujo TikTok para /admin (Login Kit + Content Posting API, demo de review) ─
@@ -888,7 +931,7 @@ export default {
   async scheduled(_event, env, ctx) {
     ctx.waitUntil(
       runOnce(env)
-        .then((r) => console.log("Publicado:", r.postId, "—", r.preview))
+        .then((r) => console.log("Publicado:", JSON.stringify(r.published ?? r)))
         .catch((err) => console.error("Error ig-autopost:", err.message)),
     );
     ctx.waitUntil(snapshotMetrics(env).catch((e) => console.error("snapshot:", e.message)));
