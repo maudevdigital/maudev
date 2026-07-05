@@ -1,6 +1,6 @@
 import { writeFileSync } from "fs";
 // Voces semana 6–12 jul con la voz CHRIS (multilingüe, español natural).
-const KEY = process.env.ELEVENLABS_API_KEY, VOICE = "iP95p4xoKVk53GoZ742B"; // Chris
+const KEY = process.env.ELEVENLABS_API_KEY, VOICE = "u1ajuyOsyYeV4hsCaYXs"; // Gustavo (narrador nativo es, plan Starter)
 if (!KEY) { console.error("falta ELEVENLABS_API_KEY"); process.exit(1); }
 const items = {
   "pro-plazos-semana": "¿Te prometen un sistema serio para la otra semana? Desconfía. El software bien hecho toma tiempo. Los atajos se pagan caro después. Mejor bien hecho que rápido y mal.",
