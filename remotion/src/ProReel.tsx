@@ -27,7 +27,19 @@ export type ProReelProps = {
   // CTA final del video: incita a comentar para recibir el lead magnet por DM.
   ctaKeyword?: string; // palabra clave a comentar (ej. "GUÍA")
   ctaLine?: string; // bajada (ej. "y te enviamos el PDF gratis al privado")
+  // Duración REAL de la voz en frames (lo inyecta calculateMetadata). Cuando
+  // existe, las escenas se sincronizan con el audio: cada una dura proporcional
+  // a lo que tarda el narrador en decir su frase.
+  voiceFrames?: number;
 };
+
+// Peso de lectura de un texto: caracteres + pausas de puntuación (el TTS se
+// detiene más en puntos y comas). Sirve para repartir el audio entre escenas.
+const textWeight = (t: string) =>
+  t.length + (t.match(/[.?!:]/g)?.length ?? 0) * 9 + (t.match(/,/g)?.length ?? 0) * 4;
+// La narración siempre termina con este CTA hablado → mapea a la tarjeta final.
+const CTA_SPOKEN_WEIGHT = textWeight("Comenta la palabra guía, y te enviamos gratis el PDF al privado.");
+const OUTRO_FRAMES = 90; // marca maudev al final, después de que termina la voz
 
 // ── LUCES: blobs de color que derivan (mesh gradient animado) ────────────────
 const Blob: React.FC<{ color: string; x: number; y: number; size: number; speed: number; phase: number }> = ({ color, x, y, size, speed, phase }) => {
@@ -266,8 +278,27 @@ export const ProReel: React.FC<ProReelProps> = ({
   tagline = "Software y automatización para crecer sin fricción",
   ctaKeyword = "GUÍA",
   ctaLine = "y te enviamos el PDF gratis al privado",
+  voiceFrames,
 }) => {
   const { durationInFrames } = useVideoConfig();
+
+  // SINCRONIZACIÓN texto↔voz: si conocemos la duración real del audio, cada
+  // escena dura proporcional al peso de lectura de su frase, y la tarjeta CTA
+  // entra justo cuando el narrador dice "Comenta la palabra guía...".
+  let sceneDurs = scenes.map((s) => s.frames);
+  let ctaDur = 160;
+  let synced = false;
+  if (voiceFrames && voiceFrames > 60) {
+    const ws = scenes.map((s) => textWeight(s.text));
+    const bodyW = ws.reduce((a, b) => a + b, 0);
+    const bodyFrames = Math.round((voiceFrames * bodyW) / (bodyW + CTA_SPOKEN_WEIGHT));
+    sceneDurs = ws.map((w) => Math.max(40, Math.round((bodyFrames * w) / bodyW)));
+    const diff = bodyFrames - sceneDurs.reduce((a, b) => a + b, 0);
+    sceneDurs[sceneDurs.length - 1] = Math.max(40, sceneDurs[sceneDurs.length - 1] + diff);
+    ctaDur = Math.max(120, voiceFrames - sceneDurs.reduce((a, b) => a + b, 0) + 12);
+    synced = true;
+  }
+
   return (
     <AbsoluteFill style={{ background: COLORS.bg }}>
       {music ? (
@@ -285,17 +316,32 @@ export const ProReel: React.FC<ProReelProps> = ({
 
       <Series>
         {scenes.map((s, i) => (
-          <Series.Sequence key={i} durationInFrames={s.frames}>
-            <SceneBlock scene={s} index={i} accent={accent} />
+          <Series.Sequence key={i} durationInFrames={sceneDurs[i]}>
+            <SceneBlock scene={{ ...s, frames: sceneDurs[i] }} index={i} accent={accent} />
             {i > 0 ? <LightSweep /> : null}
           </Series.Sequence>
         ))}
-        <Series.Sequence durationInFrames={110}>
-          <BrandReveal tagline={tagline} accent={accent} />
-        </Series.Sequence>
-        <Series.Sequence durationInFrames={160}>
-          <CommentCta keyword={ctaKeyword} line={ctaLine} accent={accent} />
-        </Series.Sequence>
+        {synced ? (
+          <>
+            {/* Con voz: la tarjeta CTA suena junto al "Comenta guía..." y la
+                marca cierra DESPUÉS de que termina el narrador. */}
+            <Series.Sequence durationInFrames={ctaDur}>
+              <CommentCta keyword={ctaKeyword} line={ctaLine} accent={accent} />
+            </Series.Sequence>
+            <Series.Sequence durationInFrames={OUTRO_FRAMES}>
+              <BrandReveal tagline={tagline} accent={accent} />
+            </Series.Sequence>
+          </>
+        ) : (
+          <>
+            <Series.Sequence durationInFrames={110}>
+              <BrandReveal tagline={tagline} accent={accent} />
+            </Series.Sequence>
+            <Series.Sequence durationInFrames={ctaDur}>
+              <CommentCta keyword={ctaKeyword} line={ctaLine} accent={accent} />
+            </Series.Sequence>
+          </>
+        )}
       </Series>
 
       {/* SOMBRAS: viñeta + piso + grano por encima */}

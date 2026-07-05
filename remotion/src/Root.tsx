@@ -107,11 +107,14 @@ export const RemotionRoot: React.FC = () => {
           height={1920}
           defaultProps={ps}
           calculateMetadata={async ({ props }) => {
-            const sceneFrames = props.scenes.reduce((a, s) => a + s.frames, 0) + 270; // + marca + CTA final
+            // Con voz: mide el audio REAL y se lo inyecta al componente para
+            // sincronizar cada escena con la narración (+90f de marca final).
             if (props.voice) {
               const dur = await getAudioDurationInSeconds(staticFile(props.voice));
-              return { durationInFrames: Math.max(sceneFrames, Math.ceil(dur * FPS) + FPS) };
+              const voiceFrames = Math.ceil(dur * FPS);
+              return { durationInFrames: voiceFrames + 90 + 8, props: { ...props, voiceFrames } };
             }
+            const sceneFrames = props.scenes.reduce((a, s) => a + s.frames, 0) + 270; // + marca + CTA final
             return { durationInFrames: sceneFrames };
           }}
         />
