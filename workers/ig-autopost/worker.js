@@ -45,7 +45,8 @@ function platformsForSlot(franja, weekday) {
   const habil = weekday >= 1 && weekday <= 5;
   return {
     ig: franja === 0 || franja === 2,
-    tt: franja === 0, // BORRADOR al inbox 1/día (franja 0); tú lo revisas y publicas
+    // TikTok en PAUSA hasta el 9-jul (recuperacion de supresion por burst del 2-jul).
+    tt: franja === 0 && Date.now() >= Date.UTC(2026, 6, 9, 12), // 1 borrador/día desde el jue 9
     fb: franja === 1,
     li: franja === 1 && habil,
   };
