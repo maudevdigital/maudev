@@ -298,6 +298,247 @@ ${LI_GUIA}
 
 ${TAGS} #saas #softwareamedida`,
   },
+  // ── Lote 3 · temas ATP frescos · voz Gustavo ──
+  {
+    id: "pro-google", kind: "reel", media: `${S}/pro-google.mp4`, blog: "wix-vs-pagina-web-a-medida-2026",
+    caption: `🔎 ¿Por qué tu negocio no aparece en Google?
+
+No es mala suerte: tu página no está optimizada, tarda en cargar o ni siquiera está en Google Maps. Aparecer es técnica, no magia.
+
+${GUIA}
+
+${TAGS} #seo #google #posicionamiento`,
+    liCaption: `¿Por qué tu negocio no aparece en Google?
+
+No es mala suerte: es técnica. Optimización, velocidad de carga y presencia en Google Maps son los tres frentes donde se gana o se pierde la visibilidad local.
+
+${LI_GUIA}
+
+${TAGS} #seo #marketingdigital`,
+  },
+  {
+    id: "pro-dominio", kind: "reel", media: `${S}/pro-dominio.mp4`, blog: "errores-caros-al-pedir-software-2026",
+    caption: `🌐 Tu dominio cuesta $12.000 al año... y puede costarte el negocio.
+
+Si queda a nombre de tu proveedor, tu negocio es rehén. Cómpralo tú, renuévalo tú. Es tuyo.
+
+${GUIA}
+
+${TAGS} #dominio #paginaweb`,
+    liCaption: `El activo digital más barato y más olvidado: tu dominio (~$12.000/año).
+
+Si queda a nombre del proveedor, tu presencia digital es rehén de un tercero. Regla simple: el dominio se compra y renueva a nombre del dueño del negocio, siempre.
+
+${LI_GUIA}
+
+${TAGS} #dominio #activosdigitales`,
+  },
+  {
+    id: "pro-web-vende", kind: "reel", media: `${S}/pro-web-vende.mp4`, blog: "wix-vs-pagina-web-a-medida-2026",
+    caption: `✨ Una página bonita NO es una página que vende.
+
+Las que venden tienen: mensaje claro en 3 segundos, un botón visible, prueba social y carga instantánea. Lo bonito atrae; lo claro convierte.
+
+${GUIA}
+
+${TAGS} #paginaweb #conversion #ventas`,
+    liCaption: `Una página bonita no es lo mismo que una página que vende.
+
+Las que venden comparten 4 rasgos: mensaje claro en 3 segundos, un llamado a la acción visible, prueba social y carga instantánea. El diseño atrae; la claridad convierte.
+
+${LI_GUIA}
+
+${TAGS} #conversion #paginaweb`,
+  },
+  {
+    id: "pro-velocidad", kind: "reel", media: `${S}/pro-velocidad.mp4`, blog: "wix-vs-pagina-web-a-medida-2026",
+    caption: `⚡ Tu página tarda 5 segundos en cargar. Más de la mitad de tus visitas se fue antes de verla.
+
+La velocidad no es un detalle técnico: es plata.
+
+${GUIA}
+
+${TAGS} #velocidadweb #paginaweb`,
+    liCaption: `La velocidad de carga no es un detalle técnico: es facturación.
+
+Más de la mitad de las visitas abandona una página lenta antes de verla. Cada segundo cuesta clientes, y Google también lo castiga en el ranking.
+
+${LI_GUIA}
+
+${TAGS} #rendimientoweb #seo`,
+  },
+  {
+    id: "pro-corredores", kind: "reel", media: `${S}/pro-corredores.mp4`, blog: "wix-vs-pagina-web-a-medida-2026",
+    caption: `🏠 Corredor de propiedades: los portales te ARRIENDAN visibilidad.
+
+Una web propia con tus fichas, filtros y WhatsApp directo trabaja para ti, no para el portal. Tu cartera merece casa propia.
+
+${GUIA}
+
+${TAGS} #corredordepropiedades #inmobiliaria #propiedades`,
+    liCaption: `Para corredores de propiedades: los portales cumplen un rol, pero te arriendan la visibilidad y comparten tus leads con la competencia.
+
+Una web propia (fichas con filtros, WhatsApp directo, captación de propietarios y tu marca al frente) convierte tu cartera en un activo que trabaja para ti.
+
+${LI_GUIA}
+
+${TAGS} #inmobiliaria #corretaje`,
+  },
+  {
+    id: "pro-maps", kind: "reel", media: `${S}/pro-maps.mp4`, blog: "wix-vs-pagina-web-a-medida-2026",
+    caption: `📍 Si tu negocio no está en Google Maps, para medio Chile NO EXISTE.
+
+El perfil es gratis, sale en las búsquedas de tu comuna y junta reseñas que venden por ti. Hazlo hoy.
+
+${GUIA}
+
+${TAGS} #googlemaps #seolocal #negocioslocales`,
+    liCaption: `El Perfil de Empresa en Google (Maps) es la herramienta gratuita más subutilizada por las PYMEs.
+
+Aparece en las búsquedas de tu comuna, acumula reseñas que venden por ti y se configura en menos de una hora. Si tu negocio aún no está, es la primera tarea de la semana.
+
+${LI_GUIA}
+
+${TAGS} #seolocal #googlemaps`,
+  },
+  {
+    id: "pro-cuando-no", kind: "reel", media: `${S}/pro-cuando-no.mp4`, blog: "errores-caros-al-pedir-software-2026",
+    caption: `🚫 3 casos donde NO te conviene pagar una web todavía:
+
+1. No tienes claro qué vendes.
+2. Vives bien del boca a boca.
+3. No vas a responder los mensajes.
+
+Primero el proceso, después la tecnología.
+
+${GUIA}
+
+${TAGS} #honestidad #consejospymes`,
+    liCaption: `Honestidad incómoda: hay casos donde NO conviene pagar una web todavía.
+
+Si no está claro qué se vende, si el boca a boca aún da abasto, o si nadie va a responder los mensajes que lleguen. La tecnología amplifica un proceso que funciona; no arregla uno que no existe.
+
+${LI_GUIA}
+
+${TAGS} #estrategiadigital #pymes`,
+  },
+  {
+    id: "pro-logo-web", kind: "reel", media: `${S}/pro-logo-web.mp4`, blog: "wix-vs-pagina-web-a-medida-2026",
+    caption: `🎨 ¿Logo bonito o página que vende?
+
+Si el presupuesto alcanza para uno, parte por la que vende. El logo se mejora después; los clientes que se van hoy no vuelven.
+
+${GUIA}
+
+${TAGS} #branding #paginaweb #prioridades`,
+    liCaption: `¿Logo o página web? La pregunta clásica del presupuesto acotado.
+
+Nuestra postura: parte por donde entra la plata. Un logo se puede mejorar en cualquier momento; los clientes que no encuentran cómo comprarte hoy, no vuelven mañana.
+
+${LI_GUIA}
+
+${TAGS} #branding #estrategia`,
+  },
+  // ── Carruseles lote 3 (cw3) ──
+  {
+    id: "cw3-seo", kind: "carousel", media: Array.from({ length: 7 }, (_, i) => `${S}/cw3-seo-${i + 1}.png`), blog: "wix-vs-pagina-web-a-medida-2026",
+    caption: `🔎 ¿Por qué tu negocio NO aparece en Google?
+
+No es suerte: es técnica. Lo primero es GRATIS (perfil de Google Maps + reseñas), y después tu página hace el resto. Anuncios vs orgánico adentro.
+
+Desliza 👉
+
+${GUIA}
+
+${TAGS} #seo #google #seolocal`,
+    liCaption: `¿Por qué un negocio no aparece en Google? Casi siempre por lo mismo:
+
+1. No tiene Perfil de Empresa (Google Maps): gratis y sale en las búsquedas de la comuna.
+2. Su página es lenta o no usa las palabras que el cliente busca.
+3. No responde las preguntas que la gente googlea.
+
+Y la decisión anuncios vs orgánico: los anuncios se arriendan, el SEO se construye.
+
+${LI_GUIA}
+
+${TAGS} #seo #marketingdigital`,
+  },
+  {
+    id: "cw3-anatomia", kind: "carousel", media: Array.from({ length: 7 }, (_, i) => `${S}/cw3-anatomia-${i + 1}.png`), blog: "wix-vs-pagina-web-a-medida-2026",
+    caption: `🧩 Una página que SÍ vende tiene estos 7 elementos.
+
+Mensaje claro en 3 segundos, UN botón, prueba social, velocidad, celular perfecto, WhatsApp a un toque y medición. Revisa la tuya 👉
+
+${GUIA}
+
+${TAGS} #paginaweb #conversion #ventasonline`,
+    liCaption: `Anatomía de una página que vende (los 7 elementos):
+
+Mensaje claro en 3 segundos · un solo llamado a la acción · prueba social · carga instantánea · perfecta en el celular · WhatsApp a un toque · y medición instalada (el que casi nadie tiene: sin datos no hay mejora).
+
+Lo bonito atrae. Lo claro convierte.
+
+${LI_GUIA}
+
+${TAGS} #conversion #ux`,
+  },
+  {
+    id: "cw3-corredores", kind: "carousel", media: Array.from({ length: 7 }, (_, i) => `${S}/cw3-corredores-${i + 1}.png`), blog: "wix-vs-pagina-web-a-medida-2026",
+    caption: `🏠 Corredores de propiedades: tu cartera merece CASA PROPIA.
+
+Los portales te arriendan visibilidad y comparten tus leads con la competencia. Lo que tu web propia debe tener, adentro 👉
+
+${GUIA}
+
+${TAGS} #corredordepropiedades #inmobiliaria #corretaje`,
+    liCaption: `Para corredores de propiedades: portal vs web propia.
+
+El portal cobra por publicar y destacar, comparte los interesados con la competencia y hace crecer su marca (no la tuya). Una web propia con fichas filtrables, WhatsApp directo, captación de propietarios y autoadministración convierte tu cartera en un activo propio, desde $390.000.
+
+${LI_GUIA}
+
+${TAGS} #inmobiliaria #proptech`,
+  },
+  {
+    id: "cw3-errores-web", kind: "carousel", media: Array.from({ length: 7 }, (_, i) => `${S}/cw3-errores-web-${i + 1}.png`), blog: "wix-vs-pagina-web-a-medida-2026",
+    caption: `🚨 6 errores de páginas web que ESPANTAN clientes.
+
+Lentitud, mal en el celular, sin candado, mensaje confuso, sin botón de contacto y fotos falsas. ¿Cuántos tiene la tuya? 👉
+
+${GUIA}
+
+${TAGS} #paginaweb #errores #conversion`,
+    liCaption: `6 errores de páginas web que espantan clientes (y el orden correcto para arreglarlos):
+
+Los que se ven al llegar: lentitud, mal en móvil, sin https. Los que matan la venta: mensaje confuso, sin llamado a la acción, fotos de stock.
+
+El arreglo: velocidad y móvil primero, mensaje + botón después, confianza al final.
+
+${LI_GUIA}
+
+${TAGS} #ux #conversion`,
+  },
+  {
+    id: "cw3-costos", kind: "carousel", media: Array.from({ length: 6 }, (_, i) => `${S}/cw3-costos-${i + 1}.png`), blog: "cuanto-cuesta-pagina-web-carrito-compras-2026",
+    caption: `💰 ¿Cuánto cuesta MANTENER una página web al año?
+
+Dominio ~$12.000/año, hosting puede ser $0, mantención opcional. Y los cobros que NO deberías aceptar 👉
+
+${GUIA}
+
+${TAGS} #paginaweb #costos #transparencia`,
+    liCaption: `¿Cuánto cuesta mantener una página web al año? Números honestos:
+
+· Dominio: ~$12.000/año (a nombre del dueño, siempre).
+· Hosting: puede ser $0 con infraestructura moderna.
+· Mantención: opcional, desde $49.000/mes si quieres despreocuparte.
+
+Y tres cobros que no deberías aceptar: hosting inflado "de la agencia", renovaciones sin desglose y quedar rehén del proveedor.
+
+${LI_GUIA}
+
+${TAGS} #transparencia #costos`,
+  },
 ];
 
 // ── Cola SÓLO para TikTok — contenido NUEVO, distinto al que va a IG/FB/LI.
@@ -316,4 +557,12 @@ export const TIKTOK_QUEUE = [
   { id: "pro-valor-real", media: `${T}/pro-valor-real.mp4`, caption: `🔗 El valor de tu software no está en las pantallas bonitas: está en que tus herramientas se hablen. Sin integración, copias y pegas todo el día.\n\n${TT}\n\n${TH} #integraciones` },
   { id: "pro-copiar-pegar", media: `${T}/pro-copiar-pegar.mp4`, caption: `🔁 ¿Copias y pegas datos entre apps todos los días? Es tiempo y plata que pierdes. Con sistemas conectados, la info fluye sola.\n\n${TT}\n\n${TH} #automatizacion` },
   { id: "pro-saas-medida", media: `${T}/pro-saas-medida.mp4`, caption: `⚖️ ¿SaaS o software a medida? El SaaS gana en lo estándar; lo a medida cuando el proceso es tu ventaja. La jugada maestra: combinar.\n\n${TT}\n\n${TH} #saas` },
+  { id: "pro-google", media: `${T}/pro-google.mp4`, caption: `🔎 ¿Por qué tu negocio no aparece en Google? No es mala suerte: es técnica. Optimización, velocidad y Google Maps.\n\n${TT}\n\n${TH} #seo` },
+  { id: "pro-dominio", media: `${T}/pro-dominio.mp4`, caption: `🌐 Tu dominio cuesta $12.000 al año y puede costarte el negocio: si queda a nombre del proveedor, eres rehén. Cómpralo TÚ.\n\n${TT}\n\n${TH} #dominio` },
+  { id: "pro-web-vende", media: `${T}/pro-web-vende.mp4`, caption: `✨ Página bonita no es página que vende. Mensaje claro en 3 seg, UN botón, prueba social y velocidad. Lo claro convierte.\n\n${TT}\n\n${TH} #conversion` },
+  { id: "pro-velocidad", media: `${T}/pro-velocidad.mp4`, caption: `⚡ Tu página tarda 5 segundos en cargar: más de la mitad de tus visitas ya se fue. La velocidad es plata.\n\n${TT}\n\n${TH} #velocidad` },
+  { id: "pro-corredores", media: `${T}/pro-corredores.mp4`, caption: `🏠 Corredor de propiedades: los portales te ARRIENDAN visibilidad y comparten tus leads. Tu cartera merece web propia.\n\n${TT}\n\n${TH} #propiedades` },
+  { id: "pro-maps", media: `${T}/pro-maps.mp4`, caption: `📍 Si no estás en Google Maps, para medio Chile no existes. Es gratis y junta reseñas que venden por ti. Hazlo hoy.\n\n${TT}\n\n${TH} #seolocal` },
+  { id: "pro-cuando-no", media: `${T}/pro-cuando-no.mp4`, caption: `🚫 3 casos donde NO te conviene pagar una web todavía. Honestidad: primero el proceso, después la tecnología.\n\n${TT}\n\n${TH} #honesto` },
+  { id: "pro-logo-web", media: `${T}/pro-logo-web.mp4`, caption: `🎨 ¿Logo bonito o página que vende? Parte por donde entra la plata. El logo se mejora después; los clientes de hoy no vuelven.\n\n${TT}\n\n${TH} #prioridades` },
 ];

@@ -189,6 +189,96 @@ export const proScripts: ProScriptDef[] = [
       { text: "Y tu equipo se dedica a vender.", fx: "scale", frames: 82, accent: true },
     ],
   },
+  // ── Lote 3 (jue 9 - dom 12 jul) · temas ATP frescos · voz Gustavo ──
+  {
+    id: "pro-google", label: "Aparecer en Google", voice: "pro-google.mp3", music: "music-viral1.wav", accent: "#19d4d4", tagline: "Que te encuentren",
+    scenes: [
+      { text: "¿Por qué tu negocio no aparece en Google?", fx: "slideU", frames: 95 },
+      { text: "No es mala suerte.", fx: "scale", frames: 60, accent: true, size: 86 },
+      { text: "Tu página no está optimizada,", fx: "slideL", frames: 78 },
+      { text: "tarda en cargar,", fx: "slideR", frames: 58 },
+      { text: "o no está en Google Maps.", fx: "slideU", frames: 78 },
+      { text: "Aparecer es técnica, no magia.", fx: "scale", frames: 85, accent: true },
+    ],
+  },
+  {
+    id: "pro-dominio", label: "Tu dominio", voice: "pro-dominio.mp3", music: "music-focus.wav", accent: "#38b6ff", tagline: "El activo más barato",
+    scenes: [
+      { text: "Tu dominio es la dirección", fx: "slideU", frames: 70 },
+      { text: "de tu negocio en internet.", fx: "slideL", frames: 75 },
+      { text: "Cuesta 12 mil pesos al año.", fx: "scale", frames: 75, accent: true, size: 82 },
+      { text: "Si queda a nombre de tu proveedor,", fx: "slideR", frames: 85 },
+      { text: "tu negocio es rehén.", fx: "scale", frames: 65, accent: true, size: 84 },
+      { text: "Cómpralo tú. Renuévalo tú. Es tuyo.", fx: "slideU", frames: 92, accent: true },
+    ],
+  },
+  {
+    id: "pro-web-vende", label: "Web que vende", voice: "pro-web-vende.mp3", music: "music-viral3.wav", accent: "#2ee6a6", tagline: "Claro convierte",
+    scenes: [
+      { text: "Una página bonita", fx: "slideU", frames: 58 },
+      { text: "no es una página que vende.", fx: "slideL", frames: 80, accent: true },
+      { text: "Las que venden tienen:", fx: "slideR", frames: 62 },
+      { text: "mensaje claro en 3 segundos,", fx: "slideU", frames: 78 },
+      { text: "un botón visible, prueba social,", fx: "slideL", frames: 82 },
+      { text: "y carga instantánea.", fx: "slideR", frames: 65 },
+      { text: "Lo bonito atrae. Lo claro convierte.", fx: "scale", frames: 92, accent: true },
+    ],
+  },
+  {
+    id: "pro-velocidad", label: "Velocidad", voice: "pro-velocidad.mp3", music: "music-tension.wav", accent: "#8b9cff", tagline: "Cada segundo cuenta",
+    scenes: [
+      { text: "Tu página tarda 5 segundos en cargar.", fx: "slideU", frames: 92 },
+      { text: "Más de la mitad de las visitas", fx: "slideL", frames: 75 },
+      { text: "se va antes de verla.", fx: "scale", frames: 65, accent: true, size: 84 },
+      { text: "La velocidad no es un detalle técnico:", fx: "slideR", frames: 85 },
+      { text: "es plata.", fx: "scale", frames: 55, accent: true, size: 96 },
+      { text: "Cada segundo cuenta.", fx: "slideU", frames: 70, accent: true },
+    ],
+  },
+  {
+    id: "pro-corredores", label: "Corredores", voice: "pro-corredores.mp3", music: "music-uplift.wav", accent: "#19d4d4", tagline: "Cartera con casa propia",
+    scenes: [
+      { text: "Si eres corredor de propiedades,", fx: "slideU", frames: 80 },
+      { text: "escucha esto.", fx: "scale", frames: 55, accent: true, size: 88 },
+      { text: "Los portales te arriendan visibilidad.", fx: "slideL", frames: 88 },
+      { text: "Una web propia con tus fichas,", fx: "slideR", frames: 78 },
+      { text: "filtros y WhatsApp directo", fx: "slideU", frames: 72 },
+      { text: "trabaja para ti, no para el portal.", fx: "scale", frames: 88, accent: true },
+    ],
+  },
+  {
+    id: "pro-maps", label: "Google Maps", voice: "pro-maps.mp3", music: "music-viral4.wav", accent: "#38b6ff", tagline: "Existe donde te buscan",
+    scenes: [
+      { text: "Si tu negocio no está en Google Maps,", fx: "slideU", frames: 90 },
+      { text: "para medio Chile no existe.", fx: "scale", frames: 78, accent: true, size: 80 },
+      { text: "El perfil es gratis,", fx: "slideL", frames: 58 },
+      { text: "sale en las búsquedas de tu comuna,", fx: "slideR", frames: 85 },
+      { text: "y junta reseñas que venden por ti.", fx: "slideU", frames: 85 },
+      { text: "Hazlo hoy. Es gratis.", fx: "scale", frames: 70, accent: true, size: 84 },
+    ],
+  },
+  {
+    id: "pro-cuando-no", label: "Cuándo NO", voice: "pro-cuando-no.mp3", music: "music-night.wav", accent: "#2ee6a6", tagline: "Honestidad primero",
+    scenes: [
+      { text: "3 casos donde NO te conviene", fx: "slideU", frames: 78 },
+      { text: "pagar una web todavía.", fx: "scale", frames: 68, accent: true, size: 82 },
+      { text: "Si no tienes claro qué vendes.", fx: "slideL", frames: 80 },
+      { text: "Si vives bien del boca a boca.", fx: "slideR", frames: 80 },
+      { text: "Si no vas a responder los mensajes.", fx: "slideU", frames: 85 },
+      { text: "Primero el proceso. Después la tecnología.", fx: "scale", frames: 95, accent: true },
+    ],
+  },
+  {
+    id: "pro-logo-web", label: "Logo o web", voice: "pro-logo-web.mp3", music: "music-viral2.wav", accent: "#8b9cff", tagline: "Invierte donde entra la plata",
+    scenes: [
+      { text: "¿Logo bonito o página que vende?", fx: "slideU", frames: 85 },
+      { text: "Si el presupuesto alcanza para uno,", fx: "slideL", frames: 82 },
+      { text: "parte por la que vende.", fx: "scale", frames: 70, accent: true, size: 82 },
+      { text: "El logo se mejora después.", fx: "slideR", frames: 72 },
+      { text: "Los clientes que se van hoy, no vuelven.", fx: "slideU", frames: 92, accent: true },
+      { text: "Invierte donde entra la plata.", fx: "scale", frames: 82, accent: true },
+    ],
+  },
   {
     id: "pro-saas-medida", label: "SaaS o a medida", voice: "pro-saas-medida.mp3", music: "music-viral2.wav", accent: "#38b6ff", tagline: "La herramienta correcta",
     scenes: [
