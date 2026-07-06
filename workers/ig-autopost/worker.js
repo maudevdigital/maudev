@@ -317,27 +317,44 @@ async function refreshTikTokToken(env) {
 // funciona sin auditoría de la app (a diferencia de Direct Post) y no arriesga
 // publicar algo sin querer. La descripción NO se envía por API (TikTok obliga a
 // ponerla en la app al publicar el borrador).
-async function publishTikTok(env, videoUrl) {
+// DIRECT POST (app auditada en producción desde el 6-jul): publica el video
+// SOLO, con su descripción y en PÚBLICO. Sin borradores ni pasos manuales.
+// Sube los bytes por FILE_UPLOAD (evita la verificación de dominio de URL).
+async function publishTikTok(env, videoUrl, caption = "") {
   if (!env.TIKTOK_CLIENT_KEY || !env.TIKTOK_CLIENT_SECRET || !env.TIKTOK_REFRESH_TOKEN) return null;
   const accessToken = await refreshTikTokToken(env);
-  // Descargamos el video (lo hospedamos nosotros) y lo subimos por FILE_UPLOAD.
-  // Así evitamos verificar el dominio (requisito de PULL_FROM_URL, que fallaba
-  // en silencio: TikTok devolvía un publish_id pero nunca llegaba el borrador).
+
+  // TikTok exige consultar creator_info antes de publicar; además entrega las
+  // opciones de privacidad permitidas para la cuenta.
+  const ci = await (await fetch("https://open.tiktokapis.com/v2/post/publish/creator_info/query/", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${accessToken}`, "content-type": "application/json; charset=UTF-8" },
+  })).json();
+  const allowed = ci?.data?.privacy_level_options || [];
+  const privacy = allowed.includes("PUBLIC_TO_EVERYONE") ? "PUBLIC_TO_EVERYONE" : (allowed[0] || "SELF_ONLY");
+
   const vres = await fetch(videoUrl);
   if (!vres.ok) throw new Error(`no se pudo descargar el video: ${vres.status}`);
   const bytes = new Uint8Array(await vres.arrayBuffer());
   const size = bytes.length;
-  const init = await fetch("https://open.tiktokapis.com/v2/post/publish/inbox/video/init/", {
+  const init = await fetch("https://open.tiktokapis.com/v2/post/publish/video/init/", {
     method: "POST",
     headers: { Authorization: `Bearer ${accessToken}`, "content-type": "application/json; charset=UTF-8" },
     body: JSON.stringify({
+      post_info: {
+        title: (caption || "").slice(0, 2150),
+        privacy_level: privacy,
+        disable_comment: false,
+        disable_duet: false,
+        disable_stitch: false,
+      },
       source_info: { source: "FILE_UPLOAD", video_size: size, chunk_size: size, total_chunk_count: 1 },
     }),
   });
   const j = await init.json();
   const pid = j?.data?.publish_id;
   const uploadUrl = j?.data?.upload_url;
-  if (!init.ok || !pid || !uploadUrl) throw new Error(`TikTok inbox init: ${JSON.stringify(j)}`);
+  if (!init.ok || !pid || !uploadUrl) throw new Error(`TikTok direct post init: ${JSON.stringify(j)}`);
   const put = await fetch(uploadUrl, {
     method: "PUT",
     headers: { "Content-Type": "video/mp4", "Content-Range": `bytes 0-${size - 1}/${size}` },
@@ -559,11 +576,11 @@ async function runOnce(env, forcedIndex) {
     if (!item) await alertQueueEmpty(env, "TikTok (borradores)");
     else {
       try {
-        out.ttId = await publishTikTok(env, item.media);
+        out.ttId = await publishTikTok(env, item.media, item.caption);
         if (out.ttId) {
           await markDone(env, "qdone:tt", done, item.id);
           out.published.push(`tt:${item.id}`);
-          await sendTelegram(env, `🎵 <b>Borrador nuevo en TikTok</b>\nVideo: ${item.id}\n\n👉 Abre TikTok, pega la descripción SEO (maudev.cl/admin/tiktok) y publica.`);
+          await sendTelegram(env, `🎵 <b>PUBLICADO en TikTok</b> (automático, con descripción)\nVideo: ${item.id}`);
         }
       } catch (e) { out.ttError = e.message; }
     }
@@ -1001,8 +1018,8 @@ export default {
         const body = await req.json().catch(() => ({}));
         const item = (body.id && TIKTOK_QUEUE.find((r) => r.id === body.id)) || TIKTOK_QUEUE[0] || {};
         const videoUrl = item.media || env.TIKTOK_DEMO_VIDEO || "https://maudev.cl/social/pro-errores.mp4";
-        const pid = await publishTikTok(env, videoUrl);
-        if (pid) await sendTelegram(env, `🎵 <b>Borrador subido a TikTok</b>\nVideo: ${item.id || "?"}\n\n👉 Ábrelo en TikTok, pega la descripción y publica.`);
+        const pid = await publishTikTok(env, videoUrl, item.caption || "");
+        if (pid) await sendTelegram(env, `🎵 <b>PUBLICADO en TikTok</b> (manual desde admin)\nVideo: ${item.id || "?"}`);
         return jsonCors({ ok: !!pid, publishId: pid }, 200, origin);
       } catch (e) {
         const friendly = /too_many_pending_share|spam_risk/.test(e.message)
