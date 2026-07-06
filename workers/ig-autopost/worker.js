@@ -45,8 +45,7 @@ function platformsForSlot(franja, weekday) {
   const habil = weekday >= 1 && weekday <= 5;
   return {
     ig: franja === 0 || franja === 2,
-    // TikTok en PAUSA hasta el 9-jul (recuperacion de supresion por burst del 2-jul).
-    tt: franja === 0 && Date.now() >= Date.UTC(2026, 6, 9, 12), // 1 borrador/día desde el jue 9
+    tt: franja === 0, // Direct Post automático: 1 video/día con descripción
     fb: franja === 1,
     li: franja === 1 && habil,
   };
@@ -331,19 +330,20 @@ async function publishTikTok(env, videoUrl, caption = "") {
     headers: { Authorization: `Bearer ${accessToken}`, "content-type": "application/json; charset=UTF-8" },
   })).json();
   const allowed = ci?.data?.privacy_level_options || [];
-  const privacy = allowed.includes("PUBLIC_TO_EVERYONE") ? "PUBLIC_TO_EVERYONE" : (allowed[0] || "SELF_ONLY");
+  let privacy = allowed.includes("PUBLIC_TO_EVERYONE") ? "PUBLIC_TO_EVERYONE" : (allowed[0] || "SELF_ONLY");
 
   const vres = await fetch(videoUrl);
   if (!vres.ok) throw new Error(`no se pudo descargar el video: ${vres.status}`);
   const bytes = new Uint8Array(await vres.arrayBuffer());
   const size = bytes.length;
-  const init = await fetch("https://open.tiktokapis.com/v2/post/publish/video/init/", {
+
+  const initPost = (priv) => fetch("https://open.tiktokapis.com/v2/post/publish/video/init/", {
     method: "POST",
     headers: { Authorization: `Bearer ${accessToken}`, "content-type": "application/json; charset=UTF-8" },
     body: JSON.stringify({
       post_info: {
         title: (caption || "").slice(0, 2150),
-        privacy_level: privacy,
+        privacy_level: priv,
         disable_comment: false,
         disable_duet: false,
         disable_stitch: false,
@@ -351,17 +351,33 @@ async function publishTikTok(env, videoUrl, caption = "") {
       source_info: { source: "FILE_UPLOAD", video_size: size, chunk_size: size, total_chunk_count: 1 },
     }),
   });
-  const j = await init.json();
+
+  let init = await initPost(privacy);
+  let j = await init.json();
+  let mode = "publicado";
+  // Sin la auditoría de Content Posting aprobada, TikTok bloquea el Direct
+  // Post en cuentas PÚBLICAS. Fallback: BORRADOR al inbox (funciona siempre;
+  // el dueño pega la descripción del admin y publica). Cuando aprueben la
+  // auditoría, este fallback deja de activarse solo y publica directo.
+  if (!init.ok && JSON.stringify(j).includes("unaudited_client_can_only_post_to_private_accounts")) {
+    init = await fetch("https://open.tiktokapis.com/v2/post/publish/inbox/video/init/", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${accessToken}`, "content-type": "application/json; charset=UTF-8" },
+      body: JSON.stringify({ source_info: { source: "FILE_UPLOAD", video_size: size, chunk_size: size, total_chunk_count: 1 } }),
+    });
+    j = await init.json();
+    mode = "borrador";
+  }
   const pid = j?.data?.publish_id;
   const uploadUrl = j?.data?.upload_url;
-  if (!init.ok || !pid || !uploadUrl) throw new Error(`TikTok direct post init: ${JSON.stringify(j)}`);
+  if (!init.ok || !pid || !uploadUrl) throw new Error(`TikTok init (${mode}): ${JSON.stringify(j)}`);
   const put = await fetch(uploadUrl, {
     method: "PUT",
     headers: { "Content-Type": "video/mp4", "Content-Range": `bytes 0-${size - 1}/${size}` },
     body: bytes,
   });
   if (!put.ok) throw new Error(`TikTok upload PUT: ${put.status} ${(await put.text()).slice(0, 120)}`);
-  return pid;
+  return { pid, mode };
 }
 
 // ─── Instagram Carrusel: imágenes hijas → contenedor CAROUSEL → publicar ──────
@@ -576,11 +592,14 @@ async function runOnce(env, forcedIndex) {
     if (!item) await alertQueueEmpty(env, "TikTok (borradores)");
     else {
       try {
-        out.ttId = await publishTikTok(env, item.media, item.caption);
-        if (out.ttId) {
+        const r = await publishTikTok(env, item.media, item.caption);
+        if (r?.pid) {
+          out.ttId = r.pid;
           await markDone(env, "qdone:tt", done, item.id);
           out.published.push(`tt:${item.id}`);
-          await sendTelegram(env, `🎵 <b>PUBLICADO en TikTok</b> (automático, con descripción)\nVideo: ${item.id}`);
+          await sendTelegram(env, r.mode === "publicado"
+            ? `🎵 <b>PUBLICADO en TikTok</b> (automático, con descripción)\nVideo: ${item.id}`
+            : `🎵 <b>Borrador en TikTok</b> (la auditoría de posteo público sigue pendiente)\nVideo: ${item.id}\n\n👉 Abre TikTok, pega la descripción (maudev.cl/admin/tiktok) y publica.`);
         }
       } catch (e) { out.ttError = e.message; }
     }
@@ -1018,9 +1037,11 @@ export default {
         const body = await req.json().catch(() => ({}));
         const item = (body.id && TIKTOK_QUEUE.find((r) => r.id === body.id)) || TIKTOK_QUEUE[0] || {};
         const videoUrl = item.media || env.TIKTOK_DEMO_VIDEO || "https://maudev.cl/social/pro-errores.mp4";
-        const pid = await publishTikTok(env, videoUrl, item.caption || "");
-        if (pid) await sendTelegram(env, `🎵 <b>PUBLICADO en TikTok</b> (manual desde admin)\nVideo: ${item.id || "?"}`);
-        return jsonCors({ ok: !!pid, publishId: pid }, 200, origin);
+        const r = await publishTikTok(env, videoUrl, item.caption || "");
+        if (r?.pid) await sendTelegram(env, r.mode === "publicado"
+          ? `🎵 <b>PUBLICADO en TikTok</b> (manual desde admin)\nVideo: ${item.id || "?"}`
+          : `🎵 <b>Borrador en TikTok</b> (auditoría de posteo público pendiente)\nVideo: ${item.id || "?"}\n\n👉 Pega la descripción y publica.`);
+        return jsonCors({ ok: !!r?.pid, publishId: r?.pid, mode: r?.mode }, 200, origin);
       } catch (e) {
         const friendly = /too_many_pending_share|spam_risk/.test(e.message)
           ? "TikTok tiene borradores pendientes sin publicar. Publica los que ya subiste en la app y reintenta."
