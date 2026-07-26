@@ -260,3 +260,320 @@ trabajo existe, y el visitante puede verificarla. `npm run capture scissorhands`
 la genera en 30 segundos, y el script ya trae el arreglo para el hero que se
 queda en negro. No es urgente, pero llegado el momento vale más que la
 ilustración.
+
+---
+
+## 7 · Las 8 automatizaciones → `public/img/auto/`
+
+Ocho prompts completos, listos para copiar y pegar. **No hay que editar nada.**
+
+- Formato: **1280×720** · guardar como `.webp` · **máximo 60 KB** cada una
+- Son 8 imágenes en la misma página: a 200 KB cada una serían 1,6 MB de más
+- Van en cian `#19d4d4` porque es **tu** marca. La de Scissorhands va dorada
+  porque representa la marca del cliente. La coherencia es con el dueño de la
+  página donde aparece la imagen.
+
+**La regla que las hace seguras:** una sola palabra legible, todo lo demás
+ilegible. Sin números, sin precios, sin nombres, sin caras. Así la imagen sugiere
+sin afirmar nada que después no se pueda sostener.
+
+Si el modelo te devuelve texto o números legibles, regenera agregando al final:
+
+```
+all text except the single highlighted word must be unreadable blurred abstract
+shapes, no numbers of any kind anywhere in the image
+```
+
+
+---
+
+### Agenda automática → `public/img/auto/agenda-automatica.webp`
+
+```
+A dark premium abstract UI render, 16:9, for a small-business automation product.
+
+Background: deep near-black (#0A0A0A) with a soft radial vignette and a faint cyan
+glow behind the panel. A subtle soft reflection beneath.
+
+Centre: one large floating rounded-rectangle interface panel at a very slight
+three-quarter perspective, with a thin glassy edge highlight, soft drop shadow and
+gentle depth blur toward the edges.
+
+Inside the panel:
+- Top left: ONE legible word in a clean sans-serif reading exactly "Agenda", with a
+  small illegible subtitle underneath
+- Main area: a weekly calendar grid, seven narrow columns and eight rows, with about
+  six time-slot pills filled in glowing cyan spread across different days, suggesting
+  confirmed bookings, and the remaining cells empty
+- Right side: a narrow column with two small cards, the upper one holding a simple
+  line-art clock icon, the lower one a short list of illegible rows
+
+CRITICAL TEXT RULE: apart from the single word "Agenda", every other piece of text
+in the image must be ILLEGIBLE — soft, blurred, abstract letterforms with no readable
+words. Absolutely NO readable numbers, NO prices, NO currency amounts, NO percentages,
+NO person names, NO brand names, NO logos, NO faces, NO photographs of people.
+
+Palette: near-black surfaces, off-white text, cyan and teal accents (#19d4d4) on the
+active elements. Cinematic soft lighting from the upper left.
+
+Style: high-end dark SaaS product render, clean, minimal, sharp focus on the panel,
+generous negative space. Landscape 16:9, 1280x720.
+```
+
+---
+
+### Boleta electrónica → `public/img/auto/boleta-electronica.webp`
+
+```
+A dark premium abstract UI render, 16:9, for a small-business automation product.
+
+Background: deep near-black (#0A0A0A) with a soft radial vignette and a faint cyan
+glow behind the panel. A subtle soft reflection beneath.
+
+Centre: one large floating rounded-rectangle interface panel at a very slight
+three-quarter perspective, with a thin glassy edge highlight, soft drop shadow and
+gentle depth blur toward the edges.
+
+Inside the panel:
+- Top left: ONE legible word in a clean sans-serif reading exactly "Boletas", with a
+  small illegible subtitle underneath
+- Main area: a neat stack of three overlapping invoice documents seen slightly from
+  above, the top one crisp with illegible line items and a large cyan circular
+  checkmark badge in its lower right corner
+- Right side: a narrow column with two small cards, the upper one holding a line-art
+  envelope icon with a small cyan sent-arrow, the lower one a short list of illegible rows
+
+CRITICAL TEXT RULE: apart from the single word "Boletas", every other piece of text
+in the image must be ILLEGIBLE — soft, blurred, abstract letterforms with no readable
+words. Absolutely NO readable numbers, NO prices, NO currency amounts, NO percentages,
+NO person names, NO brand names, NO logos, NO faces, NO photographs of people.
+
+Palette: near-black surfaces, off-white text, cyan and teal accents (#19d4d4) on the
+active elements. Cinematic soft lighting from the upper left.
+
+Style: high-end dark SaaS product render, clean, minimal, sharp focus on the panel,
+generous negative space. Landscape 16:9, 1280x720.
+```
+
+---
+
+### Cobros y pasarela de pago → `public/img/auto/pasarela-de-pago.webp`
+
+```
+A dark premium abstract UI render, 16:9, for a small-business automation product.
+
+Background: deep near-black (#0A0A0A) with a soft radial vignette and a faint cyan
+glow behind the panel. A subtle soft reflection beneath.
+
+Centre: one large floating rounded-rectangle interface panel at a very slight
+three-quarter perspective, with a thin glassy edge highlight, soft drop shadow and
+gentle depth blur toward the edges.
+
+Inside the panel:
+- Top left: ONE legible word in a clean sans-serif reading exactly "Pagos", with a
+  small illegible subtitle underneath
+- Main area: a centred checkout card containing a stylised credit-card shape with
+  illegible masked digits, and below it a large glowing cyan circular checkmark
+  indicating a successful transaction
+- Right side: a narrow column with two small cards, the upper one holding a simple
+  upward trend line in cyan, the lower one a short list of illegible rows
+
+CRITICAL TEXT RULE: apart from the single word "Pagos", every other piece of text
+in the image must be ILLEGIBLE — soft, blurred, abstract letterforms with no readable
+words. Absolutely NO readable numbers, NO prices, NO currency amounts, NO percentages,
+NO person names, NO brand names, NO logos, NO faces, NO photographs of people.
+
+Palette: near-black surfaces, off-white text, cyan and teal accents (#19d4d4) on the
+active elements. Cinematic soft lighting from the upper left.
+
+Style: high-end dark SaaS product render, clean, minimal, sharp focus on the panel,
+generous negative space. Landscape 16:9, 1280x720.
+```
+
+---
+
+### Control de inventario → `public/img/auto/control-inventario.webp`
+
+```
+A dark premium abstract UI render, 16:9, for a small-business automation product.
+
+Background: deep near-black (#0A0A0A) with a soft radial vignette and a faint cyan
+glow behind the panel. A subtle soft reflection beneath.
+
+Centre: one large floating rounded-rectangle interface panel at a very slight
+three-quarter perspective, with a thin glassy edge highlight, soft drop shadow and
+gentle depth blur toward the edges.
+
+Inside the panel:
+- Top left: ONE legible word in a clean sans-serif reading exactly "Stock", with a
+  small illegible subtitle underneath
+- Main area: a table of eight product rows, each with a small horizontal quantity bar
+  in cyan of varying length, and exactly one row highlighted in warm amber with a
+  nearly empty bar, suggesting a low-stock alert
+- Right side: a narrow column with two small cards, the upper one holding a line-art
+  box icon, the lower one a short list of illegible rows
+
+CRITICAL TEXT RULE: apart from the single word "Stock", every other piece of text
+in the image must be ILLEGIBLE — soft, blurred, abstract letterforms with no readable
+words. Absolutely NO readable numbers, NO prices, NO currency amounts, NO percentages,
+NO person names, NO brand names, NO logos, NO faces, NO photographs of people.
+
+Palette: near-black surfaces, off-white text, cyan and teal accents (#19d4d4) on the
+active elements. Cinematic soft lighting from the upper left.
+
+Style: high-end dark SaaS product render, clean, minimal, sharp focus on the panel,
+generous negative space. Landscape 16:9, 1280x720.
+```
+
+---
+
+### Pedidos para restaurantes → `public/img/auto/pedidos-restaurante.webp`
+
+```
+A dark premium abstract UI render, 16:9, for a small-business automation product.
+
+Background: deep near-black (#0A0A0A) with a soft radial vignette and a faint cyan
+glow behind the panel. A subtle soft reflection beneath.
+
+Centre: one large floating rounded-rectangle interface panel at a very slight
+three-quarter perspective, with a thin glassy edge highlight, soft drop shadow and
+gentle depth blur toward the edges.
+
+Inside the panel:
+- Top left: ONE legible word in a clean sans-serif reading exactly "Pedidos", with a
+  small illegible subtitle underneath
+- Main area: three vertical columns of order tickets, like a kanban board, each column
+  headed by a short illegible label; the tickets in the third column carry small cyan
+  checkmarks, suggesting orders moving from received to ready
+- Right side: a narrow column with two small cards, the upper one holding a line-art
+  bell icon, the lower one a short list of illegible rows
+
+CRITICAL TEXT RULE: apart from the single word "Pedidos", every other piece of text
+in the image must be ILLEGIBLE — soft, blurred, abstract letterforms with no readable
+words. Absolutely NO readable numbers, NO prices, NO currency amounts, NO percentages,
+NO person names, NO brand names, NO logos, NO faces, NO photographs of people.
+
+Palette: near-black surfaces, off-white text, cyan and teal accents (#19d4d4) on the
+active elements. Cinematic soft lighting from the upper left.
+
+Style: high-end dark SaaS product render, clean, minimal, sharp focus on the panel,
+generous negative space. Landscape 16:9, 1280x720.
+```
+
+---
+
+### Presencia para profesionales → `public/img/auto/presencia-profesionales.webp`
+
+```
+A dark premium abstract UI render, 16:9, for a small-business automation product.
+
+Background: deep near-black (#0A0A0A) with a soft radial vignette and a faint cyan
+glow behind the panel. A subtle soft reflection beneath.
+
+Centre: one large floating rounded-rectangle interface panel at a very slight
+three-quarter perspective, with a thin glassy edge highlight, soft drop shadow and
+gentle depth blur toward the edges.
+
+Inside the panel:
+- Top left: ONE legible word in a clean sans-serif reading exactly "Presencia", with a
+  small illegible subtitle underneath
+- Main area: a vertical list of four search-result cards; the first one sits slightly
+  forward, outlined in glowing cyan and brighter than the rest, while the three below
+  it are dimmer and recede, suggesting ranking first
+- Right side: a narrow column with two small cards, the upper one holding a line-art
+  map-pin icon, the lower one a short list of illegible rows
+
+CRITICAL TEXT RULE: apart from the single word "Presencia", every other piece of text
+in the image must be ILLEGIBLE — soft, blurred, abstract letterforms with no readable
+words. Absolutely NO readable numbers, NO prices, NO currency amounts, NO percentages,
+NO person names, NO brand names, NO logos, NO faces, NO photographs of people.
+
+Palette: near-black surfaces, off-white text, cyan and teal accents (#19d4d4) on the
+active elements. Cinematic soft lighting from the upper left.
+
+Style: high-end dark SaaS product render, clean, minimal, sharp focus on the panel,
+generous negative space. Landscape 16:9, 1280x720.
+```
+
+---
+
+### Automatización de tareas → `public/img/auto/automatiza-tareas.webp`
+
+```
+A dark premium abstract UI render, 16:9, for a small-business automation product.
+
+Background: deep near-black (#0A0A0A) with a soft radial vignette and a faint cyan
+glow behind the panel. A subtle soft reflection beneath.
+
+Centre: one large floating rounded-rectangle interface panel at a very slight
+three-quarter perspective, with a thin glassy edge highlight, soft drop shadow and
+gentle depth blur toward the edges.
+
+Inside the panel:
+- Top left: ONE legible word in a clean sans-serif reading exactly "Tareas", with a
+  small illegible subtitle underneath
+- Main area: on the left, twelve small repetitive grey rows stacked tightly; thin lines
+  converge from them toward the right where they merge into a single thick glowing cyan
+  flow line ending in one clean card, suggesting many manual steps collapsing into one
+  automated process
+- Right side: a narrow column with two small cards, the upper one holding a line-art
+  gear icon, the lower one a short list of illegible rows
+
+CRITICAL TEXT RULE: apart from the single word "Tareas", every other piece of text
+in the image must be ILLEGIBLE — soft, blurred, abstract letterforms with no readable
+words. Absolutely NO readable numbers, NO prices, NO currency amounts, NO percentages,
+NO person names, NO brand names, NO logos, NO faces, NO photographs of people.
+
+Palette: near-black surfaces, off-white text, cyan and teal accents (#19d4d4) on the
+active elements. Cinematic soft lighting from the upper left.
+
+Style: high-end dark SaaS product render, clean, minimal, sharp focus on the panel,
+generous negative space. Landscape 16:9, 1280x720.
+```
+
+---
+
+### Más que Instagram → `public/img/auto/mas-que-instagram.webp`
+
+```
+A dark premium abstract UI render, 16:9, for a small-business automation product.
+
+Background: deep near-black (#0A0A0A) with a soft radial vignette and a faint cyan
+glow behind the panel. A subtle soft reflection beneath.
+
+Centre: one large floating rounded-rectangle interface panel at a very slight
+three-quarter perspective, with a thin glassy edge highlight, soft drop shadow and
+gentle depth blur toward the edges.
+
+Inside the panel:
+- Top left: ONE legible word in a clean sans-serif reading exactly "Web", with a
+  small illegible subtitle underneath
+- Main area: on the left a small narrow social-profile card with a tiny grid of square
+  thumbnails; a dotted cyan line runs to the right where it expands into a full wide
+  website layout with a header bar, a hero block and three content cards, suggesting
+  outgrowing a social profile
+- Right side: a narrow column with two small cards, the upper one holding a line-art
+  globe icon, the lower one a short list of illegible rows
+
+CRITICAL TEXT RULE: apart from the single word "Web", every other piece of text
+in the image must be ILLEGIBLE — soft, blurred, abstract letterforms with no readable
+words. Absolutely NO readable numbers, NO prices, NO currency amounts, NO percentages,
+NO person names, NO brand names, NO logos, NO faces, NO photographs of people.
+
+Palette: near-black surfaces, off-white text, cyan and teal accents (#19d4d4) on the
+active elements. Cinematic soft lighting from the upper left.
+
+Style: high-end dark SaaS product render, clean, minimal, sharp focus on the panel,
+generous negative space. Landscape 16:9, 1280x720.
+```
+
+---
+
+### Cuando las tengas
+
+Guárdalas en `public/img/auto/` con los nombres exactos de arriba. Si salen en PNG
+o pesadas, avísame y las convierto a WebP optimizado antes del push.
+
+**Nada se rompe si faltan.** La tarjeta del home y el `poster` del video usan
+`onError`: si el archivo no existe, la miniatura se oculta y la tarjeta queda con
+ícono y texto, como estaba. Puedes desplegar hoy y agregarlas después.

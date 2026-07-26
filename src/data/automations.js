@@ -16,6 +16,10 @@ import {
 } from "lucide-react";
 import { t } from "@/lib/i18n";
 
+// IMÁGENES: cada automatización tiene `image` (tarjeta del home, 16:9) y
+// `video` (reel vertical en la landing). Si la imagen no existe todavía, la
+// tarjeta cae al ícono — no se rompe nada. Prompts: docs/prompts-imagenes.md §7
+
 export const AUTOMATIONS = [
   {
     slug: "agenda-automatica",
@@ -26,6 +30,7 @@ export const AUTOMATIONS = [
     tagline: t("Tu hora, a un clic — 24/7", "Your appointment, one click away — 24/7"),
     badges: [t("Más pedido", "Most requested"), t("WhatsApp + Calendar", "WhatsApp + Calendar")],
     video: "/social/pro-agenda.mp4",
+    image: "/img/auto/agenda-automatica.webp", // ver docs/prompts-imagenes.md §7
     relatedBlog: "chatbot-ia-whatsapp-pymes-2026",
     metaDescription: t(
       "Deja que tus clientes agenden solos, 24/7. Confirmación automática por WhatsApp y evento en Google Calendar, sin idas y vueltas.",
@@ -70,6 +75,7 @@ export const AUTOMATIONS = [
     tagline: t("Vende y factura solo", "Sell and invoice on autopilot"),
     badges: [t("SII listo", "Tax-ready"), t("Ahorra horas", "Saves hours")],
     video: "/social/pro-boleta.mp4",
+    image: "/img/auto/boleta-electronica.webp", // ver docs/prompts-imagenes.md §7
     relatedBlog: "integraciones-software-valor-2026",
     metaDescription: t(
       "Deja de emitir boletas a mano en el SII. Al vender, se emite la boleta electrónica, se envía al cliente y queda registrada. Sin re-digitar.",
@@ -114,6 +120,7 @@ export const AUTOMATIONS = [
     tagline: t("Cobra mientras duermes", "Get paid while you sleep"),
     badges: [t("Webpay · Flow · MercadoPago", "Webpay · Flow · MercadoPago"), t("Menos fricción", "Less friction")],
     video: "/social/pro-pasarela.mp4",
+    image: "/img/auto/pasarela-de-pago.webp", // ver docs/prompts-imagenes.md §7
     relatedBlog: "cuanto-cuesta-pagina-web-carrito-compras-2026",
     metaDescription: t(
       "'Hablemos por interno' mata ventas. Con un link de pago el cliente paga en 1 minuto, a cualquier hora, y tú recibes la confirmación al instante.",
@@ -158,6 +165,7 @@ export const AUTOMATIONS = [
     tagline: t("Stock bajo control, sin Excel", "Stock under control, no spreadsheets"),
     badges: [t("Tiempo real", "Real-time"), t("Alertas WhatsApp", "WhatsApp alerts")],
     video: "/social/pro-inventario.mp4",
+    image: "/img/auto/control-inventario.webp", // ver docs/prompts-imagenes.md §7
     relatedBlog: "integraciones-software-valor-2026",
     metaDescription: t(
       "Tu Excel de inventario te cuesta ventas: vendes lo que no tienes o inmovilizas capital. Sincronización en tiempo real y alertas de stock bajo.",
@@ -202,6 +210,7 @@ export const AUTOMATIONS = [
     tagline: t("Pedidos sin comisión", "Orders with zero commission"),
     badges: [t("0% comisión", "0% commission"), t("WhatsApp a cocina", "WhatsApp to kitchen")],
     video: "/social/pro-restaurante.mp4",
+    image: "/img/auto/pedidos-restaurante.webp", // ver docs/prompts-imagenes.md §7
     relatedBlog: "cuanto-cuesta-pagina-web-carrito-compras-2026",
     metaDescription: t(
       "201.000 personas buscan 'restaurante cerca de mí' cada mes en Chile. Las apps cobran hasta 30%. Con pedidos propios: 0% de comisión.",
@@ -246,6 +255,7 @@ export const AUTOMATIONS = [
     tagline: t("Que te encuentren primero", "Be the one they find first"),
     badges: [t("Abogados · Contadores", "Lawyers · Accountants"), t("Intake automático", "Automated intake")],
     video: "/social/pro-abogados.mp4",
+    image: "/img/auto/presencia-profesionales.webp", // ver docs/prompts-imagenes.md §7
     relatedBlog: "wix-vs-pagina-web-a-medida-2026",
     metaDescription: t(
       "Nadie contrata a un abogado sin googlearlo primero. Si no te encuentra, elige a otro. Presencia + intake automático de nuevos clientes.",
@@ -290,6 +300,7 @@ export const AUTOMATIONS = [
     tagline: t("Recupera tus horas", "Get your hours back"),
     badges: [t("A medida", "Custom-built"), t("ROI claro", "Clear ROI")],
     video: "/social/pro-automatizar.mp4",
+    image: "/img/auto/automatiza-tareas.webp", // ver docs/prompts-imagenes.md §7
     relatedBlog: "integraciones-software-valor-2026",
     metaDescription: t(
       "2 horas al día en tareas repetidas son 500 horas al año: más de 12 semanas laborales. Automatizamos lo repetitivo y recuperas ese tiempo.",
@@ -334,6 +345,7 @@ export const AUTOMATIONS = [
     tagline: t("Cuando la red social queda chica", "When social media outgrows you"),
     badges: [t("Señales de crecer", "Growth signals"), t("Web propia", "Own your platform")],
     video: "/social/pro-senales-ig.mp4",
+    image: "/img/auto/mas-que-instagram.webp", // ver docs/prompts-imagenes.md §7
     relatedBlog: "wix-vs-pagina-web-a-medida-2026",
     metaDescription: t(
       "Instagram es una gran vitrina, hasta que queda chica. Si vendes por DM, pierdes historial y dependes del algoritmo, ya necesitas más.",

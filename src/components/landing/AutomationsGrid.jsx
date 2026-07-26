@@ -54,8 +54,26 @@ export default function AutomationsGrid() {
               >
                 <Link
                   to={`/automatizaciones/${a.slug}`}
-                  className="group flex h-full flex-col rounded-2xl border border-border bg-card p-5 transition-all duration-200 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
+                  className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-200 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
                 >
+                  {/* Miniatura. Si la imagen no existe todavía, onError la oculta
+                      y la tarjeta queda como antes: ícono + texto. */}
+                  {a.image && (
+                    <div className="relative aspect-video overflow-hidden border-b border-border/60 bg-secondary/40">
+                      <img
+                        src={a.image}
+                        alt=""
+                        aria-hidden="true"
+                        loading="lazy"
+                        decoding="async"
+                        width={640}
+                        height={360}
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        onError={(e) => { e.currentTarget.parentElement.style.display = "none"; }}
+                      />
+                    </div>
+                  )}
+                  <div className="flex flex-1 flex-col p-5">
                   <Icon className="mb-4 h-6 w-6 text-primary" aria-hidden="true" />
                   <h3 className="mb-1.5 text-base font-bold leading-snug">{a.name}</h3>
                   <p className="mb-4 flex-1 text-sm leading-relaxed text-muted-foreground">
@@ -69,6 +87,7 @@ export default function AutomationsGrid() {
                       className="h-4 w-4 text-muted-foreground transition-transform duration-200 group-hover:translate-x-1 group-hover:text-primary"
                       aria-hidden="true"
                     />
+                  </div>
                   </div>
                 </Link>
               </motion.div>

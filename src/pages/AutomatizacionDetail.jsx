@@ -125,10 +125,12 @@ export default function AutomatizacionDetail() {
               <div className="w-full max-w-[280px] rounded-3xl overflow-hidden border border-border shadow-xl bg-card aspect-[9/16]">
                 <video
                   src={auto.video}
+                  poster={auto.image}
                   autoPlay
                   muted
                   loop
                   playsInline
+                  preload="metadata"
                   className="w-full h-full object-cover"
                 />
               </div>
