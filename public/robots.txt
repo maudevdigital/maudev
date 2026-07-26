@@ -1,7 +1,4 @@
 User-agent: *
 Allow: /
 
-Disallow: /admin
-Disallow: /lp/
-
 Sitemap: https://maudev.cl/sitemap.xml

@@ -45,8 +45,8 @@ export default function ChatWidget() {
     return n.replace(/[^\p{L}\p{N} @._-]/gu, "").slice(0, 30);
   });
 
-  // Auto-abrir una vez por sesión (nunca en admin/propuestas/links: ahí estorba).
-  const hidden = pathname.startsWith("/admin") || pathname.startsWith("/propuesta") || pathname === "/links" || pathname === "/ig";
+  // Auto-abrir una vez por sesión (nunca en el link-in-bio: ahí estorba).
+  const hidden = pathname === "/links" || pathname === "/ig";
   useEffect(() => {
     if (hidden || dismissed) return;
     timer.current = setTimeout(() => {
@@ -78,15 +78,15 @@ export default function ChatWidget() {
     },
     {
       icon: Calculator,
-      label: t("Cotizar mi proyecto", "Estimate my project"),
-      sub: t("Rango de precio en 1 minuto", "Price range in 1 minute"),
-      onClick: () => { close(); navigate("/cotizador"); },
+      label: t("Ver automatizaciones", "See automations"),
+      sub: t("Agenda, boletas, cobros y más", "Booking, invoicing, payments & more"),
+      onClick: () => { close(); navigate("/automatizaciones"); },
     },
     {
       icon: Download,
-      label: t("Descargar la guía gratis", "Download the free guide"),
-      sub: t("Software sin perder plata (PDF)", "Software without wasting money (PDF)"),
-      onClick: () => { close(); navigate("/guia"); },
+      label: t("Ver portafolio", "See portfolio"),
+      sub: t("Proyectos reales en producción", "Real projects in production"),
+      onClick: () => { close(); navigate("/portafolio"); },
     },
   ];
 

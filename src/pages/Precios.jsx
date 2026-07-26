@@ -1,9 +1,9 @@
-import { useEffect } from "react";
+import { useSeo } from "@/lib/useSeo";
 import { Link } from "react-router-dom";
 import { Check, X, ArrowRight, Calculator, Globe, Bot, Code2 } from "lucide-react";
-import Navbar from "@/components/landing/Navbar";
-import Footer from "@/components/landing/Footer";
+import PageShell from "@/components/landing/PageShell";
 import ComparisonSection from "@/components/landing/ComparisonSection";
+import N8nProductsSection from "@/components/landing/N8nProductsSection";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { t } from "@/lib/i18n";
@@ -83,13 +83,17 @@ const plans = [
 ];
 
 export default function Precios() {
-  useEffect(() => {
-    document.title = t("Precios · Maudev", "Pricing · Maudev");
-  }, []);
+  useSeo({
+    title: t("Precios · Maudev", "Pricing · Maudev"),
+    description: t(
+      "Precios publicados de páginas web, software a medida y automatización. Precio fijo por escrito, sin cotizaciones misteriosas.",
+      "Published pricing for websites, custom software and automation. Fixed price in writing, no mystery quotes."
+    ),
+    path: "/precios",
+  });
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Navbar />
+    <PageShell>
 
       <section className="relative pt-32 pb-12 lg:pt-40 overflow-hidden">
         <div className="absolute inset-0 grid-pattern opacity-30 pointer-events-none" />
@@ -194,33 +198,35 @@ export default function Precios() {
               <div>
                 <p className="text-sm font-bold mb-1">{t("Contrato por escrito", "Written contract")}</p>
                 <p className="text-xs text-muted-foreground">
-                  <Link to="/contrato" className="text-primary hover:underline">{t("Lee el modelo de contrato aquí", "Read the contract template here")}</Link>.
+                  {t("Precio y alcance fijados por escrito antes de empezar.", "Price and scope fixed in writing before we start.")}
                 </p>
               </div>
             </div>
           </div>
 
-          {/* CTA al cotizador */}
+          {/* CTA a contacto */}
           <div className="mt-12 text-center">
             <p className="text-sm text-muted-foreground mb-4">
               {t("¿Quieres un número más cercano a tu caso?", "Want a number closer to your case?")}
             </p>
             <Link
-              to="/cotizador"
+              to="/contacto"
               className="inline-flex items-center gap-2 text-sm font-semibold text-primary border border-primary/30 px-6 py-3 rounded-xl hover:bg-primary/5 transition-colors"
             >
               <Calculator className="h-4 w-4" />
-              {t("Estimar mi proyecto en 1 minuto", "Estimate my project in 1 minute")}
+              {t("Pedir diagnóstico gratis", "Get a free assessment")}
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
         </div>
       </section>
 
+      {/* Productos de Automatización n8n paquetizados con compra directa */}
+      <N8nProductsSection />
+
       {/* Comparación honesta: vive aquí (contexto de decisión de compra), no en el home */}
       <ComparisonSection />
 
-      <Footer />
-    </div>
+    </PageShell>
   );
 }

@@ -1,20 +1,48 @@
-// Datos estáticos del portafolio. Para editar, modificar este archivo.
-// Si en el futuro se requiere CRUD desde admin, los proyectos se administran
-// desde la tabla 'projects' de Supabase (ver supabase/schema.sql).
+// Datos estáticos del portafolio: esta es la única fuente de verdad.
+// Para editar un proyecto, modifica este archivo y despliega. No hay panel
+// admin ni base de datos (se eliminaron a propósito: menos superficie que
+// mantener y carga más rápida).
 //
-// ⚠️ IMÁGENES: usar screenshots REALES de cada proyecto (nada de stock).
-// Captura cada sitio (1280x720 aprox) y guarda los archivos en /public/portfolio/:
-//   /public/portfolio/systempro.png
-//   /public/portfolio/partsmr.png
-//   /public/portfolio/paraguayaccess.png
-// Mientras no existan, el componente muestra automáticamente un placeholder
-// monocromo (onError), así que el sitio no se rompe.
+// ⚠️ IMÁGENES: capturas REALES de cada sitio (nada de stock). Van en
+// /public/portfolio/<id>.webp (WebP: ~10x más liviano que PNG y lo soporta
+// el 97% de los navegadores). Cómo generarlas: docs/prompts-imagenes.md §5.
+// Si falta una, SitePreview muestra un placeholder monocromo — no se rompe nada.
 //
 // Cada proyecto incluye su caso de estudio (problem / solution / outcome),
-// usado por la página /portafolio/:id. Campos *_en para inglés.
-// ⚠️ Revisa que los textos de los casos reflejen fielmente cada proyecto.
+// usado por /portafolio/:id. Los campos *_en son la versión en inglés.
+// El orden del array manda: el primero aparece primero en la home.
 
 export const projects = [
+  {
+    id: "scissorhands",
+    title: "Scissorhands",
+    tagline: "Barbería de 25 años que agenda por WhatsApp",
+    tagline_en: "A 25-year-old barbershop that books over WhatsApp",
+    description:
+      "Sitio de una barbería tradicional de Quilpué, funcionando desde 2001. Muestra servicios con precio, galería de cortes reales, trayectoria y opiniones de clientes — y canaliza todo hacia una sola acción: escribir por WhatsApp para tomar hora.",
+    description_en:
+      "Website for a traditional barbershop in Quilpué, running since 2001. It shows services with prices, a gallery of real haircuts, its history and customer reviews — and funnels everything into a single action: message on WhatsApp to book.",
+    problem:
+      "Veinticinco años de oficio y cero presencia en internet. Quien buscaba \"barbería en Quilpué\" simplemente no lo encontraba, y toda la reputación construida a punta de boca a boca no existía para un cliente nuevo. Las horas se coordinaban una por una, interrumpiendo el corte que estaba en curso.",
+    problem_en:
+      "Twenty-five years of craft and zero presence online. Anyone searching for \"barbershop in Quilpué\" simply wouldn't find it, and a reputation built entirely on word of mouth didn't exist for a new customer. Appointments were coordinated one by one, interrupting the haircut in progress.",
+    solution:
+      "Una sola página, optimizada para búsqueda local, con los servicios y el precio a la vista, galería de cortes propios y las opiniones de clientes de años. Cada sección termina en el mismo botón de WhatsApp con el mensaje ya escrito: sin formularios, sin registro, sin app que descargar. Estática sobre Cloudflare Pages, así que carga instantáneo y no tiene costo de servidor.",
+    solution_en:
+      "A single page, optimised for local search, with services and pricing up front, a gallery of the barber's own work and reviews from long-time customers. Every section ends in the same WhatsApp button with the message pre-written: no forms, no sign-up, no app to download. Static on Cloudflare Pages, so it loads instantly and costs nothing to run.",
+    outcome:
+      "Sitio en producción, posicionado para búsquedas de barbería en Quilpué, con un canal de agendamiento abierto 24/7 aunque el local esté cerrado. Es también la prueba de la automatización de agenda que ofrecemos: el mismo patrón, funcionando en un negocio real.",
+    outcome_en:
+      "Live site, positioned for barbershop searches in Quilpué, with a booking channel open 24/7 even when the shop is closed. It's also proof of the booking automation we sell: the same pattern, running in a real business.",
+    stack: ["React", "Vite", "Tailwind", "Cloudflare Pages"],
+    industry: "Barbería / Servicio local",
+    industry_en: "Barbershop / Local service",
+    role: "Diseño, desarrollo y SEO local",
+    role_en: "Design, development and local SEO",
+    image: "/portfolio/scissorhands.webp",
+    url: "https://scissorhand.pages.dev",
+    featured: true,
+  },
   {
     id: "systempro",
     title: "SystemePro",
@@ -41,7 +69,7 @@ export const projects = [
     industry_en: "SaaS / Marketing",
     role: "Producto propio · diseño, desarrollo, infraestructura",
     role_en: "Own product · design, development, infrastructure",
-    image: "/portfolio/systempro.png",
+    image: "/portfolio/systempro.webp",
     url: "https://systemepro.com",
     featured: true,
   },
@@ -71,7 +99,7 @@ export const projects = [
     industry_en: "Retail / Automotive",
     role: "Desarrollo full stack",
     role_en: "Full-stack development",
-    image: "/portfolio/partsmr.png",
+    image: "/portfolio/partsmr.webp",
     url: "https://partsmr.com",
     featured: true,
   },
@@ -101,7 +129,7 @@ export const projects = [
     industry_en: "Services / Migration",
     role: "Desarrollo y diseño",
     role_en: "Development and design",
-    image: "/portfolio/paraguayaccess.png",
+    image: "/portfolio/paraguayaccess.webp",
     url: "https://paraguayaccess.com",
     featured: true,
   },

@@ -1,8 +1,12 @@
 # Maudev
 
-Landing y panel admin para **Maudev**, construido con React 19, Vite, Tailwind CSS v4 y **Supabase** (base de datos, autenticación y storage).
+Sitio de **Maudev** — automatización con IA para PYMEs en Chile.
+React 19 + Vite + Tailwind CSS v4, desplegado en Cloudflare Pages.
 
-> Backend único: **Supabase**. El proyecto no usa Firebase/Firestore. Toda la lógica de datos pasa por `src/api/maudev.js` sobre el cliente de `src/lib/supabase.js`.
+**Sin backend propio.** El contenido (portafolio, automatizaciones, productos)
+vive en archivos versionados dentro de `src/data/`; los leads salen por webhook.
+
+---
 
 ## Desarrollo
 
@@ -13,59 +17,98 @@ npm run dev
 
 ## Variables de entorno
 
-Copia `.env.local.example` a `.env.local` y completa con los datos de tu proyecto (Supabase → Settings → API):
+Copia `.env.local.example` a `.env.local`:
 
 ```txt
-VITE_SUPABASE_URL=https://YOUR_PROJECT.supabase.co
-VITE_SUPABASE_ANON_KEY=eyJhbGciOi....
+VITE_LEAD_WEBHOOK_URL=https://TU-N8N/webhook/maudev-lead
+VITE_PSI_API_KEY=
 ```
 
-## Base de datos
+Si `VITE_LEAD_WEBHOOK_URL` está vacío, los leads caen automáticamente al worker
+`/notify-lead` (Telegram + email), así el formulario nunca queda muerto.
+Ver `src/lib/leads.js`.
 
-El esquema completo está en [`supabase/schema.sql`](supabase/schema.sql). Ejecútalo en **Supabase → SQL Editor → New query**. Crea tres tablas con Row Level Security (RLS):
+---
 
-- `leads` — captación desde la landing (incluye campos UTM para atribución de campañas: `utm_source`, `utm_medium`, `utm_campaign`, `utm_term`, `utm_content`). Cualquiera puede insertar; solo los admin pueden leer/editar.
-- `blog_posts` — contenido del blog (público lee solo `published`).
-- `projects` — portafolio (público lee solo `published`).
+## Arquitectura
 
-Para storage de imágenes crea un bucket público llamado `uploads` (Supabase → Storage).
+### Un solo CTA en todo el sitio
 
-## Admin
+La acción única es **escribir por WhatsApp**. Se define en `src/data/site.js`
+(`CTA_LABEL`, `CTA_MESSAGE`) y se renderiza siempre con
+`src/components/landing/CtaButton.jsx`.
 
-Los correos autorizados para el panel `/admin` se definen en dos lugares que deben mantenerse sincronizados:
+> Si agregas un botón que compita con ese, estás agregando una razón para dudar.
+> El único CTA secundario permitido es el link a `/contacto` para quien prefiere
+> dejar sus datos, y va deliberadamente en texto plano, nunca como botón.
 
-- Frontend: `src/lib/auth.js` (`ADMIN_EMAILS`) — `AdminGuard` bloquea cualquier otra cuenta.
-- Backend: función `public.is_admin()` en `supabase/schema.sql` — las políticas RLS solo permiten a esos correos leer/editar datos privados.
+El prop `context` de `CtaButton` precarga el mensaje de WhatsApp según desde
+dónde se hizo clic, así sabes qué estaba mirando el cliente sin preguntarle.
 
-Admins actuales:
+### Rutas
 
-```txt
-maudevchile@gmail.com
-lucasmaulenr@gmail.com
+| Ruta | Qué es |
+|---|---|
+| `/` | Home única. Absorbió lo que antes eran `/servicios`, `/precios`, `/automatizaciones` y `/portafolio` |
+| `/automatizaciones/:slug` | 8 landings de conversión (destino de los anuncios) |
+| `/portafolio/:projectId` | Casos de estudio |
+| `/contacto` | Formulario, como alternativa a WhatsApp |
+| `/precios` | Productos n8n autoservicio. **Fuera del navbar a propósito**: es otra audiencia (técnica, internacional, en USD) y mezclarla en la home diluye el mensaje |
+| `/terminos` `/privacidad` `/eliminacion-datos` | Legales — obligatorias para pautar en Meta |
+| `/ig` `/links` | Link in bio |
+
+Las rutas fusionadas redirigen con **301 desde `public/_redirects`** (eso es lo
+que lee Google) y además con `<Navigate>` en `App.jsx` para la navegación
+interna. Si agregas o quitas rutas, actualiza los dos lugares **y**
+`public/sitemap.xml`.
+
+### Secciones de la home
+
+`src/pages/Landing.jsx` compone, en este orden:
+
+```
+Hero → AutomationsGrid → PortafolioPreview → Steps → Faq → FinalCta
 ```
 
-El login del panel usa Google OAuth vía Supabase Auth (`api.auth.redirectToLogin`).
+Cada sección termina en el mismo botón de WhatsApp. La garantía vive dentro de
+`FinalCta` y no en su propia sección: es lo último que hay que leer antes de
+apretar, no un tema aparte.
 
-## Tema (blanco y negro, adaptativo)
+---
 
-El diseño es monocromo y se adapta automáticamente al sistema del usuario (claro/oscuro) mediante `prefers-color-scheme`. La detección está en el script inline de `index.html`, que aplica la clase `.dark` y reacciona en vivo a los cambios del sistema. Las variables de color viven en `src/index.css` (`:root` = tema claro, `.dark` = tema oscuro).
+## Media
+
+- `public/social/` contiene **solo los 8 videos** que usan las landings de
+  automatizaciones, comprimidos a ~350 KB (720p, sin audio, porque van con
+  `muted`). Los originales en 1080×1920 están en `_media-archivo/`.
+- `_media-archivo/` está **gitignoreado**. Ahí viven los reels y carruseles de
+  Instagram, que no tienen por qué viajar en el bundle web.
+- Imágenes del home: van en `public/img/`. Los prompts para generarlas están en
+  [`docs/prompts-imagenes.md`](docs/prompts-imagenes.md). Mientras no existan, cada
+  `<img>` tiene `onError` que oculta el contenedor — el sitio no se rompe.
+
+> ⚠️ No vuelvas a poner media pesada en `public/`. Todo lo que esté ahí se
+> despliega en cada build. Fue el motivo de que el repo llegara a 771 MB.
+
+---
 
 ## Producción — Cloudflare Pages
-
-El sitio se despliega en **Cloudflare Pages**. No usa Firebase Hosting.
-
-Configuración del proyecto en Cloudflare Pages:
 
 - Framework preset: `Vite`
 - Build command: `npm run build`
 - Build output directory: `dist`
-- Variables de entorno: `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY`
+- Variable de entorno: `VITE_LEAD_WEBHOOK_URL`
 
-El archivo [`public/_redirects`](public/_redirects) define el fallback SPA (`/* /index.html 200`)
-para que el enrutado de React Router funcione en rutas profundas (`/servicios`, `/portafolio`, etc.).
+`public/_redirects` maneja los 301 y el fallback SPA.
+`public/_headers` maneja cache y seguridad.
 
-> Importante: NO debe existir `public/index.html` ni `public/404.html` (eran archivos
-> por defecto de Firebase Hosting). Vite genera `dist/index.html` desde el `index.html` raíz.
+---
 
-El directorio `workers/uploads/` es un Worker antiguo que validaba tokens de Firebase y
-**ya no se usa**: las subidas de imágenes ahora pasan por Supabase Storage. Puede eliminarse.
+## Pendiente conocido
+
+**Los productos de `src/data/n8nProducts.js` y `src/data/automations.js` tienen
+`checkoutUrlCLP: null` y `checkoutUrlUSD: null`.** Es decir: no se pueden
+comprar. Stripe no opera en Chile, así que la vía es un Merchant of Record
+(Lemon Squeezy, Paddle o Gumroad), que cobra en cualquier moneda, se hace cargo
+del IVA internacional y transfiere a Chile. Ver
+[`docs/plan-ingresos-30-dias.md`](docs/plan-ingresos-30-dias.md).

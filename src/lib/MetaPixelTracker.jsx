@@ -1,14 +1,24 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { isGranted } from "@/lib/consent";
 
 const CAPI_WORKER = "https://maudev-meta-capi.maudevchile.workers.dev";
-const IG_WORKER = "https://ig-autopost.maudevchile.workers.dev";
 
-// El panel /admin NO debe aparecer en analítica (ni GA ni Pixel).
-const isPrivate = (path) => path.startsWith("/admin");
+// Nota sobre consentimiento:
+// Las llamadas a fbq() y gtag() son inofensivas sin consentimiento: los stubs
+// de index.html solo encolan en memoria, y los scripts reales no se descargan
+// hasta que el visitante acepta. No hay red ni cookies.
+//
+// La API de Conversiones SÍ es distinta: manda correo y teléfono a Meta desde
+// el servidor, saltándose el navegador. Eso es tratamiento con fines
+// publicitarios y necesita consentimiento explícito, así que va gateada.
+
+// Ya no hay rutas privadas (el panel /admin se eliminó). Se deja el helper
+// por si mañana vuelve alguna ruta que no deba trackearse.
+const isPrivate = () => false;
 
 // Dispara PageView de Google Analytics 4 + Meta Pixel en cada cambio de ruta
-// (SPA), incluida la carga inicial. Excluye /admin por completo.
+// (SPA), incluida la carga inicial.
 export default function MetaPixelTracker() {
   const { pathname, search } = useLocation();
 
@@ -56,7 +66,11 @@ export async function trackLeadEvent({ email, phone, params = {} } = {}) {
     window.gtag("event", "generate_lead", { ...params, event_id: eventId });
   }
 
-  // 2. CAPI servidor
+  // 2. CAPI servidor — solo con consentimiento publicitario.
+  //    Sin él no se envía nada: el lead igual te llega por el webhook de n8n,
+  //    lo único que se pierde es la atribución del anuncio en Meta.
+  if (!isGranted()) return eventId;
+
   try {
     await fetch(CAPI_WORKER, {
       method: "POST",
@@ -75,22 +89,7 @@ export async function trackLeadEvent({ email, phone, params = {} } = {}) {
     // No bloquear el flujo si el worker falla
   }
 
-  // 3. Aviso interno por Telegram (fire-and-forget; no bloquea ni rompe nada).
-  try {
-    fetch(`${IG_WORKER}/notify-lead`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email,
-        whatsapp: phone,
-        name: params.name,
-        interest: params.interest,
-        content_name: params.content_name,
-        source: params.source || params.content_category,
-      }),
-    }).catch(() => {});
-  } catch { /* noop */ }
-
+  // El aviso interno del lead lo maneja el flujo de n8n (ver lib/leads.js).
   return eventId;
 }
 

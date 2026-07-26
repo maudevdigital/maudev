@@ -1,9 +1,9 @@
-import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Zap, Code2, Tag, Briefcase, BookOpen, Calculator, MessageCircle, ArrowUpRight, Download } from "lucide-react";
+import { Zap, Code2, Tag, Briefcase, Sparkles, MessageCircle, ArrowUpRight } from "lucide-react";
 import Logo from "@/components/landing/Logo";
 import { getWhatsAppUrl, whatsappEnabled } from "@/components/landing/WhatsAppFloat";
 import { availability, founder } from "@/data/site";
+import { useSeo } from "@/lib/useSeo";
 import { t } from "@/lib/i18n";
 
 // Página "link in bio" universal para TODAS las redes (maudev.cl/links, con
@@ -11,24 +11,15 @@ import { t } from "@/lib/i18n";
 // el tráfico de RRSS en acciones del sitio.
 const links = [
   { to: "/contacto", icon: Zap, label: t("Pedir diagnóstico gratis", "Get a free assessment"), desc: t("Respuesta en menos de 24h", "Reply within 24h"), primary: true },
-  { to: "/guia", icon: Download, label: t("Guía gratis: software sin perder plata", "Free guide: software without wasting money"), desc: t("Precios reales, cómo elegir y qué exigir", "Real prices, how to choose, what to demand") },
+  { to: "/automatizaciones", icon: Sparkles, label: t("Automatizaciones", "Automations"), desc: t("Agenda, boletas, cobros y más — con n8n", "Booking, invoicing, payments & more — with n8n") },
   { to: "/servicios", icon: Code2, label: t("Servicios", "Services"), desc: t("Web, software y automatización", "Web, software & automation") },
   { to: "/precios", icon: Tag, label: t("Precios", "Pricing"), desc: t("Transparentes, sin letra chica", "Transparent, no fine print") },
   { to: "/portafolio", icon: Briefcase, label: t("Portafolio", "Portfolio"), desc: t("Proyectos reales en producción", "Real projects in production") },
-  { to: "/blog", icon: BookOpen, label: t("Blog · guías", "Blog · guides"), desc: t("Tendencias y consejos para PYMEs", "Trends & tips for SMBs") },
-  { to: "/cotizador", icon: Calculator, label: t("Cotizador", "Estimator"), desc: t("Estima tu proyecto en 1 minuto", "Estimate your project in 1 min") },
 ];
 
 export default function LinkInBio() {
-  useEffect(() => {
-    document.title = "maudev · " + t("Enlaces", "Links");
-    // No indexar este hub de enlaces (es para tráfico de redes, no SEO).
-    const m = document.createElement("meta");
-    m.name = "robots";
-    m.content = "noindex,follow";
-    document.head.appendChild(m);
-    return () => m.remove();
-  }, []);
+  // Hub de enlaces para tráfico de redes: no indexar.
+  useSeo({ title: "maudev · " + t("Enlaces", "Links"), noindex: true });
 
   return (
     <div className="min-h-screen bg-background text-foreground relative overflow-hidden">

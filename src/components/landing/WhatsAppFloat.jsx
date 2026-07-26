@@ -18,8 +18,8 @@ const ENABLED = true; // Botón activo. El número solo se usa en el link, no se
 
 export default function WhatsAppFloat() {
   const { pathname } = useLocation();
-  // Oculto si está desactivado o en el panel de administración.
-  if (!ENABLED || pathname.startsWith("/admin")) return null;
+  // Oculto en el link-in-bio, que ya tiene su propio botón de WhatsApp.
+  if (!ENABLED || pathname === "/links" || pathname === "/ig") return null;
 
   const href = `https://wa.me/${WA_NUMBER}?text=${WA_MESSAGE}`;
 

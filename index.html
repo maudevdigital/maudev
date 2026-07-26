@@ -54,33 +54,58 @@
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" />
     </noscript>
 
-    <!-- Analítica (GA4 + Meta Pixel) con CARGA DIFERIDA: los stubs quedan listos
-         (las llamadas se encolan), pero los scripts pesados se bajan tras la 1ª
-         interacción o a los 4s → no bloquean el hilo principal en la carga (TBT). -->
+    <!-- Analítica (GA4 + Meta Pixel) BAJO CONSENTIMIENTO.
+         Acá solo se definen los stubs: encolan llamadas en memoria, no hacen
+         red ni escriben cookies. Los scripts reales (gtag.js y fbevents.js) se
+         descargan únicamente cuando el visitante acepta en el banner, vía
+         window.__maudevLoadAnalytics() (ver src/lib/consent.js).
+
+         Ley 21.719: el consentimiento debe ser previo, específico e inequívoco;
+         el tácito ya no vale. Por eso el default de Consent Mode es "denied". -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-98P5BBFLQM', { send_page_view: false }); // page_view lo dispara React (excluye /admin)
 
+      // Google Consent Mode v2 — todo denegado hasta que el usuario acepte.
+      gtag('consent', 'default', {
+        analytics_storage: 'denied',
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        wait_for_update: 500
+      });
+
+      gtag('js', new Date());
+      gtag('config', 'G-98P5BBFLQM', { send_page_view: false }); // page_view lo dispara React
+
+      // Stub del Pixel: encola, no descarga. fbevents.js es quien pone _fbp.
       !function(f,b,e,v,n){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
       n.callMethod.apply(n,arguments):n.queue.push(arguments)};
       if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[]}(window,document);
       fbq('init', '3002561230082800');
 
-      (function(){
-        var loaded=false;
-        function load(){
-          if(loaded)return; loaded=true;
-          var ga=document.createElement('script'); ga.async=true;
-          ga.src='https://www.googletagmanager.com/gtag/js?id=G-98P5BBFLQM'; document.head.appendChild(ga);
-          var fb=document.createElement('script'); fb.async=true;
-          fb.src='https://connect.facebook.net/en_US/fbevents.js'; document.head.appendChild(fb);
-        }
-        var evs=['scroll','mousemove','touchstart','pointerdown','keydown'];
-        function once(){ load(); evs.forEach(function(e){window.removeEventListener(e,once)}); }
-        evs.forEach(function(e){ window.addEventListener(e,once,{passive:true}); });
-        setTimeout(load, 4000); // respaldo si no hay interacción
+      // Carga real, solo bajo consentimiento. Idempotente.
+      // Se mantiene el diferido por interacción/timeout para no castigar el TBT:
+      // aceptar no debe empeorar la velocidad de la página.
+      window.__maudevLoadAnalytics = (function(){
+        var loaded = false;
+        return function(){
+          if (loaded) return; loaded = true;
+          function inject(){
+            var ga=document.createElement('script'); ga.async=true;
+            ga.src='https://www.googletagmanager.com/gtag/js?id=G-98P5BBFLQM';
+            document.head.appendChild(ga);
+            var fb=document.createElement('script'); fb.async=true;
+            fb.src='https://connect.facebook.net/en_US/fbevents.js';
+            document.head.appendChild(fb);
+          }
+          var done=false;
+          function once(){ if(done) return; done=true; inject();
+            evs.forEach(function(e){window.removeEventListener(e,once)}); }
+          var evs=['scroll','mousemove','touchstart','pointerdown','keydown'];
+          evs.forEach(function(e){ window.addEventListener(e,once,{passive:true}); });
+          setTimeout(once, 2000);
+        };
       })();
     </script>
     <script type="application/ld+json">

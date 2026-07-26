@@ -5,34 +5,57 @@ import Footer from "@/components/landing/Footer";
 import { Trash2 } from "lucide-react";
 import { t, lang } from "@/lib/i18n";
 
+// ─────────────────────────────────────────────────────────────────────────────
+// ELIMINACIÓN DE DATOS
+//
+// Esta URL es requisito de Meta para cualquier app que use sus APIs (el Pixel y
+// la Conversions API siguen activos), así que la página se mantiene.
+//
+// ⚠️ REESCRITA: antes describía la automatización de respuestas automáticas en
+// Instagram/Facebook, que se dio de baja junto con el worker `ig-autopost`. Una
+// página legal no puede declarar un tratamiento de datos que ya no ocurre.
+//
+// Ahora cubre los derechos del titular de la Ley 21.719 (ARCO + portabilidad y
+// bloqueo) para cualquier dato que tengamos, venga de donde venga.
+//
+// ⚠️ REVISAR CON ABOGADO antes de publicar.
+// ─────────────────────────────────────────────────────────────────────────────
+
+const EMAIL = "contacto@maudev.cl";
+const mail = (
+  <a href={`mailto:${EMAIL}`} className="text-primary hover:underline">{EMAIL}</a>
+);
+
+const Bullets = ({ items }) => (
+  <ul className="mt-3 space-y-2">
+    {items.map((item, i) => (
+      <li key={i} className="flex items-start gap-2.5 text-sm">
+        <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+        <span>{item}</span>
+      </li>
+    ))}
+  </ul>
+);
+
 const sections = [
   {
     num: "01",
-    title: t("Qué datos tratamos desde redes sociales", "What data we process from social media"),
+    title: t("Qué datos podemos tener sobre ti", "What data we may hold about you"),
     content: (
       <>
         <p>
-          {t(
-            "Cuando interactúas con nuestras cuentas de Instagram o Facebook (por ejemplo, comentando una publicación o escribiéndonos por mensaje directo), nuestra automatización puede procesar:",
-            "When you interact with our Instagram or Facebook accounts (for example, by commenting on a post or sending us a direct message), our automation may process:"
-          )}
+          {t("Dependiendo de cómo hayas llegado a nosotros, podemos tener:", "Depending on how you reached us, we may hold:")}
         </p>
-        <ul className="mt-3 space-y-2">
-          {[
-            t("Tu nombre de usuario y el identificador público de tu perfil", "Your username and your profile's public identifier"),
-            t("El contenido del comentario o mensaje que nos envías", "The content of the comment or message you send us"),
-            t("El identificador de la publicación o comentario asociado", "The identifier of the associated post or comment"),
-          ].map((item, i) => (
-            <li key={i} className="flex items-start gap-2.5 text-sm">
-              <span className="h-1.5 w-1.5 rounded-full bg-primary mt-2 shrink-0" />
-              {item}
-            </li>
-          ))}
-        </ul>
+        <Bullets items={[
+          t("Los datos que escribiste en el formulario de contacto: nombre, correo, teléfono y tu mensaje.", "The data you typed into the contact form: name, email, phone and your message."),
+          t("La conversación que tuvimos por WhatsApp, si nos escribiste por ahí.", "The conversation we had over WhatsApp, if you messaged us there."),
+          t("Los datos de facturación, si llegamos a trabajar juntos.", "Billing data, if we ended up working together."),
+          t("Datos de navegación anónimos o pseudonimizados, si aceptaste las cookies de analítica o publicidad.", "Anonymous or pseudonymised browsing data, if you accepted analytics or advertising cookies."),
+        ]} />
         <p className="mt-3 text-sm">
           {t(
-            "Usamos estos datos únicamente para responderte de forma automática (por ejemplo, enviarte por mensaje directo el material que solicitaste). No los vendemos ni los usamos para publicidad sin tu consentimiento.",
-            "We use this data solely to respond to you automatically (for example, to send you by direct message the material you requested). We don't sell it or use it for advertising without your consent."
+            "No vendemos estos datos ni los usamos para publicidad sin tu consentimiento.",
+            "We do not sell this data nor use it for advertising without your consent."
           )}
         </p>
       </>
@@ -40,30 +63,27 @@ const sections = [
   },
   {
     num: "02",
-    title: t("Cómo solicitar la eliminación de tus datos", "How to request deletion of your data"),
+    title: t("Cómo pedir que los eliminemos", "How to request deletion"),
     content: (
       <>
         <p>
           {t(
-            "Puedes pedir que eliminemos todos los datos personales asociados a ti en cualquier momento, sin necesidad de justificar el motivo. Tienes dos vías:",
-            "You can request that we delete all personal data associated with you at any time, without needing to justify the reason. You have two options:"
-          )}
+            "Puedes pedirlo en cualquier momento y no tienes que justificar el motivo. Escríbenos a",
+            "You can request it at any time and you don't have to justify why. Write to us at"
+          )}{" "}
+          {mail} {t("con el asunto", "with the subject")} <strong className="text-foreground">
+            {t("\"Eliminación de datos\"", "\"Data deletion\"")}
+          </strong>{" "}
+          {t("e incluye:", "and include:")}
         </p>
-        <ul className="mt-3 space-y-2">
-          {[
-            t("Escríbenos a contacto@maudev.cl con el asunto \"Eliminación de datos\" indicando tu usuario de Instagram o Facebook.", "Write to contacto@maudev.cl with the subject \"Data deletion\" stating your Instagram or Facebook username."),
-            t("Envíanos un mensaje directo desde la misma cuenta con la palabra \"ELIMINAR\".", "Send us a direct message from the same account with the word \"DELETE\"."),
-          ].map((item, i) => (
-            <li key={i} className="flex items-start gap-2.5 text-sm">
-              <span className="h-1.5 w-1.5 rounded-full bg-primary mt-2 shrink-0" />
-              {item}
-            </li>
-          ))}
-        </ul>
+        <Bullets items={[
+          t("El correo o teléfono con el que nos contactaste, para poder encontrarte en nuestros registros.", "The email or phone you contacted us with, so we can find you in our records."),
+          t("Qué quieres exactamente: eliminar todo, o solo dejar de recibir comunicaciones.", "What exactly you want: delete everything, or just stop receiving communications."),
+        ]} />
         <p className="mt-3 text-sm">
           {t(
-            "Eliminaremos tus datos de nuestros sistemas en un plazo máximo de 5 días hábiles y te confirmaremos por el mismo medio. La única excepción son los datos que estemos obligados a conservar por ley.",
-            "We will delete your data from our systems within a maximum of 5 business days and confirm it through the same channel. The only exception is data we are legally required to retain."
+            "Te confirmamos por el mismo medio dentro de 5 días hábiles, y el plazo máximo legal de respuesta es de 30 días corridos. El trámite es gratuito. Solo te pediremos verificar tu identidad, para no entregarle tus datos a otra persona.",
+            "We confirm through the same channel within 5 business days, and the maximum legal response period is 30 calendar days. The process is free. We will only ask you to verify your identity, so we don't hand your data to someone else."
           )}
         </p>
       </>
@@ -71,14 +91,81 @@ const sections = [
   },
   {
     num: "03",
-    title: t("Datos en plataformas de Meta", "Data on Meta platforms"),
+    title: t("Qué no podemos borrar, y por qué", "What we can't delete, and why"),
     content: (
-      <p>
-        {t(
-          "Los comentarios y mensajes que publicas también quedan almacenados por Meta (Instagram / Facebook) según sus propias políticas. Para eliminar tu actividad directamente en esas plataformas, usa las opciones de privacidad dentro de la app de Instagram o Facebook, o consulta el Centro de ayuda de Meta.",
-          "The comments and messages you post are also stored by Meta (Instagram / Facebook) under their own policies. To delete your activity directly on those platforms, use the privacy options within the Instagram or Facebook app, or check Meta's Help Center."
-        )}
-      </p>
+      <>
+        <p>
+          {t(
+            "Si trabajamos juntos y emitimos boleta o factura, la normativa tributaria del SII nos obliga a conservar esos documentos por 6 años. Eso incluye tu nombre o razón social y el monto de la operación.",
+            "If we worked together and issued an invoice or receipt, Chilean tax rules (SII) require us to keep those documents for 6 years. That includes your name or company name and the transaction amount."
+          )}
+        </p>
+        <p>
+          {t(
+            "Fuera de eso, borramos todo. Y te decimos exactamente qué queda y hasta cuándo, para que no te quedes con la duda.",
+            "Beyond that, we delete everything. And we tell you exactly what remains and until when, so you're not left wondering."
+          )}
+        </p>
+      </>
+    ),
+  },
+  {
+    num: "04",
+    title: t("Tus otros derechos, no solo el de borrar", "Your other rights, not just deletion"),
+    content: (
+      <>
+        <p>
+          {t(
+            "La Ley N° 21.719 te da más opciones que la eliminación. Se piden todas al mismo correo:",
+            "Law No. 21.719 gives you more options than deletion. All are requested at the same email address:"
+          )}
+        </p>
+        <div className="mt-3 space-y-2">
+          {[
+            { k: t("Acceso", "Access"), v: t("Una copia de todo lo que tenemos sobre ti.", "A copy of everything we hold about you.") },
+            { k: t("Rectificación", "Rectification"), v: t("Corregir un dato equivocado o incompleto.", "Correct data that is wrong or incomplete.") },
+            { k: t("Oposición", "Objection"), v: t("Que dejemos de usar tus datos para un fin concreto, como la analítica.", "Have us stop using your data for a specific purpose, such as analytics.") },
+            { k: t("Portabilidad", "Portability"), v: t("Recibirlos en un formato reutilizable, o que los enviemos a otro proveedor.", "Receive them in a reusable format, or have us send them to another provider.") },
+            { k: t("Bloqueo", "Blocking"), v: t("Congelar el uso de tus datos mientras se resuelve un reclamo.", "Freeze the use of your data while a claim is resolved.") },
+          ].map((r, i) => (
+            <div key={i} className="flex items-start gap-3 border-b border-border/30 pb-2 last:border-b-0">
+              <span className="mt-0.5 w-24 shrink-0 font-mono text-xs text-primary">{r.k}</span>
+              <span className="text-sm">{r.v}</span>
+            </div>
+          ))}
+        </div>
+        <p className="mt-4 text-sm">
+          {t(
+            "Si no quedas conforme con nuestra respuesta, puedes reclamar ante la Agencia de Protección de Datos Personales.",
+            "If you are not satisfied with our response, you may complain to the Personal Data Protection Agency."
+          )}
+        </p>
+      </>
+    ),
+  },
+  {
+    num: "05",
+    title: t("Datos que quedan en plataformas de terceros", "Data held on third-party platforms"),
+    content: (
+      <>
+        <p>
+          {t(
+            "Hay datos que no están en nuestros sistemas y que por lo tanto no podemos borrar por ti:",
+            "Some data is not in our systems and therefore we cannot delete it on your behalf:"
+          )}
+        </p>
+        <Bullets items={[
+          t("Si nos escribiste por WhatsApp, la conversación también queda en tu teléfono y en los servidores de Meta, según sus propias políticas.", "If you messaged us on WhatsApp, the conversation also lives on your phone and on Meta's servers, under their own policies."),
+          t("Si comentaste o reaccionaste en nuestras publicaciones de Instagram o Facebook, esa actividad la administra Meta. Puedes borrarla desde las opciones de privacidad de cada app.", "If you commented or reacted on our Instagram or Facebook posts, that activity is managed by Meta. You can delete it from each app's privacy settings."),
+          t("Las cookies de analítica y publicidad se borran desde tu navegador, o rechazándolas en nuestro aviso de cookies.", "Analytics and advertising cookies are deleted from your browser, or by rejecting them in our cookie notice."),
+        ]} />
+        <p className="mt-3 text-sm">
+          {t(
+            "Sí podemos pedirle a Meta que elimine los eventos de conversión asociados a ti que nosotros les enviamos. Indícalo en tu solicitud y lo gestionamos.",
+            "We can ask Meta to delete the conversion events associated with you that we sent them. Mention it in your request and we'll handle it."
+          )}
+        </p>
+      </>
     ),
   },
 ];
@@ -104,7 +191,7 @@ export default function EliminacionDatos() {
               </span>
             </div>
             <h1 className="text-4xl font-black tracking-tight mt-1 mb-3">
-              {t("Instrucciones para eliminar tus datos", "Instructions to delete your data")}
+              {t("Cómo eliminar tus datos", "How to delete your data")}
             </h1>
             <p className="text-sm text-muted-foreground">
               {t("Última actualización:", "Last updated:")}{" "}
@@ -114,8 +201,8 @@ export default function EliminacionDatos() {
             </p>
             <p className="text-sm text-muted-foreground mt-2">
               {t(
-                "Esta página explica qué datos personales tratamos cuando interactúas con nuestras cuentas de Instagram y Facebook, y cómo puedes pedir que los eliminemos.",
-                "This page explains what personal data we process when you interact with our Instagram and Facebook accounts, and how you can request its deletion."
+                "Un correo y listo. Acá está qué datos podemos tener, cómo pedir que los borremos y qué estamos obligados a conservar.",
+                "One email and you're done. Here's what data we may hold, how to request deletion, and what we're required to keep."
               )}
             </p>
           </div>
@@ -139,13 +226,26 @@ export default function EliminacionDatos() {
             ))}
           </div>
 
-          {/* Privacy link */}
-          <div className="mt-10 p-5 bg-card border border-border rounded-xl flex items-center justify-between gap-4">
+          {/* CTA correo */}
+          <div className="mt-10 flex flex-col items-center gap-3 rounded-xl border border-border bg-card p-6 text-center">
             <p className="text-sm text-muted-foreground">
-              {t("¿Buscas la política de privacidad completa?", "Looking for the full privacy policy?")}
+              {t("¿Quieres que borremos tus datos ahora?", "Want us to delete your data now?")}
             </p>
-            <Link to="/privacidad" className="text-sm font-semibold text-primary hover:underline whitespace-nowrap">
-              {t("Ver privacidad →", "View privacy →")}
+            <a
+              href={`mailto:${EMAIL}?subject=${encodeURIComponent(t("Eliminación de datos", "Data deletion"))}`}
+              className="text-base font-semibold text-primary hover:underline"
+            >
+              {EMAIL}
+            </a>
+          </div>
+
+          {/* Links legales */}
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm">
+            <Link to="/privacidad" className="text-muted-foreground hover:text-primary">
+              {t("Política de privacidad", "Privacy policy")}
+            </Link>
+            <Link to="/terminos" className="text-muted-foreground hover:text-primary">
+              {t("Términos y condiciones", "Terms & conditions")}
             </Link>
           </div>
         </div>

@@ -1,12 +1,13 @@
-import { useEffect } from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight, ExternalLink, AlertCircle, Wrench, Trophy } from "lucide-react";
 import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
 import { motion } from "framer-motion";
 import { getProjectById, projects } from "@/data/projects";
+import { useSeo } from "@/lib/useSeo";
 import { t, pick } from "@/lib/i18n";
-import { CTA_LABEL } from "@/data/site";
+import SitePreview from "@/components/landing/SitePreview";
+import CtaButton from "@/components/landing/CtaButton";
 
 const sections = [
   { key: "problem", icon: AlertCircle, label: t("El problema", "The problem"), num: "01" },
@@ -18,11 +19,18 @@ export default function CasoEstudio() {
   const { projectId } = useParams();
   const project = getProjectById(projectId);
 
-  useEffect(() => {
-    if (project) document.title = `${project.title} · ${t("Caso de estudio", "Case study")} · Maudev`;
-  }, [project]);
+  useSeo(
+    project
+      ? {
+          title: `${project.title} · ${t("Caso de estudio", "Case study")} · Maudev`,
+          description: (pick(project, "tagline") || pick(project, "description") || "").slice(0, 160),
+          path: `/portafolio/${project.id}`,
+          image: project.image,
+        }
+      : {}
+  );
 
-  if (!project) return <Navigate to="/portafolio" replace />;
+  if (!project) return <Navigate to="/" replace />;
 
   const others = projects.filter((p) => p.id !== project.id);
 
@@ -35,7 +43,7 @@ export default function CasoEstudio() {
         <div className="absolute inset-0 grid-pattern opacity-20 pointer-events-none" />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <Link
-            to="/portafolio"
+            to="/#portafolio"
             className="inline-flex items-center gap-1.5 text-xs font-mono text-muted-foreground hover:text-primary transition-colors mb-8 group"
           >
             <ArrowLeft className="h-3.5 w-3.5 group-hover:-translate-x-0.5 transition-transform" />
@@ -67,29 +75,14 @@ export default function CasoEstudio() {
         </div>
       </section>
 
-      {/* Screenshot */}
+      {/* Vista previa del sitio (mismo componente que la home) */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div className="group aspect-video rounded-2xl overflow-hidden border border-border bg-linear-to-br from-foreground/10 to-foreground/5 relative">
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
-            <span className="text-6xl font-black tracking-tight text-foreground/15 select-none">
-              {project.title.slice(0, 2).toUpperCase()}
-            </span>
-            <div className="flex flex-wrap gap-2 justify-center px-8">
-              {project.stack.map((s) => (
-                <span key={s} className="text-xs font-mono px-2 py-1 rounded bg-background/40 border border-border/40 text-foreground/50">
-                  {s}
-                </span>
-              ))}
-            </div>
-          </div>
-          <img
-            src={project.image}
-            alt={`Screenshot de ${project.title}`}
-            loading="lazy"
-            onError={(e) => { e.currentTarget.style.display = "none"; }}
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-        </div>
+        <SitePreview
+          src={project.image}
+          url={project.url}
+          title={project.title}
+          stack={project.stack}
+        />
       </section>
 
       {/* Problema → Solución → Resultado */}
@@ -167,13 +160,9 @@ export default function CasoEstudio() {
               "Tell us your case and within 24h you'll get a proposal with scope, timelines and a fixed price."
             )}
           </p>
-          <Link
-            to="/contacto"
-            className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded-xl text-sm font-semibold hover:bg-primary/90 transition-colors"
-          >
-            {CTA_LABEL}
-            <ArrowRight className="h-4 w-4" />
-          </Link>
+          <div className="flex justify-center">
+            <CtaButton size="lg" context={`caso-${project.id}`} />
+          </div>
         </div>
       </section>
 

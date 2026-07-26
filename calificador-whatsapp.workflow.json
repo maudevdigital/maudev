@@ -1,0 +1,146 @@
+{
+  "name": "Calificador de leads - WhatsApp",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "whatsapp-lead",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "name": "Webhook - Mensaje entrante",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "whatsapp-lead"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Normaliza el payload entrante (ajusta a tu proveedor de WhatsApp API)\nconst body = $input.item.json.body || $input.item.json;\nreturn [{ json: {\n  from: body.from,\n  text: (body.text || '').trim(),\n  timestamp: new Date().toISOString()\n} }];"
+      },
+      "name": "Normalizar mensaje",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": false, "leftValue": "", "typeValidation": "loose" },
+          "conditions": [
+            {
+              "leftValue": "={{$json.text.toLowerCase()}}",
+              "rightValue": "ventas|soporte|administracion|administración",
+              "operator": { "type": "string", "operation": "regex" }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "name": "¿Ya calificó interés?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{ json: {\n  reply: '¡Hola! Soy el asistente de maudev. ¿Qué te gustaría automatizar: ventas, soporte o administración?',\n  qualified: false\n} }];"
+      },
+      "name": "Preparar pregunta de calificación",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 420]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{ json: {\n  reply: 'Gracias, un asesor te contacta en menos de 24h con una propuesta inicial.',\n  qualified: true,\n  interest: $json.text\n} }];"
+      },
+      "name": "Marcar lead calificado",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 180]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v20.0/REPLACE_PHONE_NUMBER_ID/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            { "name": "messaging_product", "value": "whatsapp" },
+            { "name": "to", "value": "={{$json.from}}" },
+            { "name": "text", "value": "={{ {body: $json.reply} }}" }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Responder por WhatsApp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1120, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": false, "leftValue": "", "typeValidation": "loose" },
+          "conditions": [
+            { "leftValue": "={{$json.qualified}}", "rightValue": true, "operator": { "type": "boolean", "operation": "true" } }
+          ],
+          "combinator": "and"
+        }
+      },
+      "name": "¿Lead calificado?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1340, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "REPLACE_CON_TU_WEBHOOK_DE_NOTIFICACION_SLACK_O_EMAIL",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            { "name": "text", "value": "=Nuevo lead calificado de WhatsApp: {{$json.from}} — interés: {{$json.interest}}" }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Notificar al equipo",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1560, 220]
+    },
+    {
+      "parameters": { "respondWith": "text", "responseBody": "OK" },
+      "name": "Responder al webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1560, 400]
+    }
+  ],
+  "connections": {
+    "Webhook - Mensaje entrante": { "main": [[{ "node": "Normalizar mensaje", "type": "main", "index": 0 }]] },
+    "Normalizar mensaje": { "main": [[{ "node": "¿Ya calificó interés?", "type": "main", "index": 0 }]] },
+    "¿Ya calificó interés?": {
+      "main": [
+        [{ "node": "Marcar lead calificado", "type": "main", "index": 0 }],
+        [{ "node": "Preparar pregunta de calificación", "type": "main", "index": 0 }]
+      ]
+    },
+    "Marcar lead calificado": { "main": [[{ "node": "Responder por WhatsApp", "type": "main", "index": 0 }]] },
+    "Preparar pregunta de calificación": { "main": [[{ "node": "Responder por WhatsApp", "type": "main", "index": 0 }]] },
+    "Responder por WhatsApp": { "main": [[{ "node": "¿Lead calificado?", "type": "main", "index": 0 }]] },
+    "¿Lead calificado?": {
+      "main": [
+        [{ "node": "Notificar al equipo", "type": "main", "index": 0 }],
+        [{ "node": "Responder al webhook", "type": "main", "index": 0 }]
+      ]
+    },
+    "Notificar al equipo": { "main": [[{ "node": "Responder al webhook", "type": "main", "index": 0 }]] }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" }
+}

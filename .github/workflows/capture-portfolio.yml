@@ -1,0 +1,54 @@
+name: Capturar vistas previas del portafolio
+
+# Re-captura los sitios del portafolio y commitea las imágenes si cambiaron.
+#
+# Por qué: los sitios de clientes se actualizan y una captura vieja en el
+# portafolio se nota — el visitante hace clic, ve algo distinto y pierde
+# confianza justo en la sección que existe para dársela.
+#
+# No se puede usar un iframe en vivo: esos sitios responden `X-Frame-Options:
+# DENY` y `frame-ancestors 'none'` (verificado). Es la protección correcta
+# contra clickjacking, así que en vez de debilitarla, capturamos seguido.
+
+on:
+  schedule:
+    - cron: "0 9 * * 1" # lunes 09:00 UTC (~06:00 en Chile)
+  workflow_dispatch: {} # botón manual en la pestaña Actions
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # necesita commitear las imágenes actualizadas
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Capturar
+        run: node scripts/capture-portfolio.mjs
+
+      - name: Commit si algo cambió
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/portfolio
+          if git diff --staged --quiet; then
+            echo "Sin cambios: los sitios se ven igual que la semana pasada."
+          else
+            git commit -m "chore: actualizar vistas previas del portafolio"
+            git push
+            echo "Capturas actualizadas y desplegadas."
+          fi

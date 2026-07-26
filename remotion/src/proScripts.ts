@@ -290,4 +290,93 @@ export const proScripts: ProScriptDef[] = [
       { text: "La jugada maestra: combinar.", fx: "scale", frames: 78, accent: true, size: 80 },
     ],
   },
+  // ── Lote 4 · temas ATP frescos (aprobados 7-jul) · voz Gustavo ──
+  {
+    id: "pro-agenda", label: "Agenda online", voice: "pro-agenda.mp3", music: "music-viral1.wav", accent: "#19d4d4", tagline: "Tu hora, a un clic",
+    scenes: [
+      { text: "Los chilenos agendan todo online.", fx: "slideU", frames: 80 },
+      { text: "El Registro Civil, la revisión técnica, el médico.", fx: "slideL", frames: 95 },
+      { text: "¿Y tu negocio?", fx: "scale", frames: 55, accent: true, size: 88 },
+      { text: "Sigue agendando por WhatsApp.", fx: "slideR", frames: 75 },
+      { text: "Las horas que te piden de noche, las pierdes.", fx: "slideU", frames: 92, accent: true },
+      { text: "Una agenda online atiende 24/7 por ti.", fx: "scale", frames: 90, accent: true },
+    ],
+  },
+  {
+    id: "pro-restaurante", label: "Restaurantes", voice: "pro-restaurante.mp3", music: "music-viral3.wav", accent: "#2ee6a6", tagline: "Pedidos sin comisión",
+    scenes: [
+      { text: "201 mil personas buscan", fx: "slideU", frames: 70 },
+      { text: "restaurante cerca de mí, cada mes.", fx: "scale", frames: 88, accent: true, size: 78 },
+      { text: "¿Tu restaurante aparece?", fx: "slideL", frames: 65 },
+      { text: "Las apps de delivery te cobran hasta 30 por ciento.", fx: "slideR", frames: 98, accent: true },
+      { text: "Con web propia: carta, reservas y pedidos directos.", fx: "slideU", frames: 98 },
+      { text: "Cero comisión. Todo el margen para ti.", fx: "scale", frames: 88, accent: true },
+    ],
+  },
+  {
+    id: "pro-boleta", label: "Boleta electrónica", voice: "pro-boleta.mp3", music: "music-focus.wav", accent: "#38b6ff", tagline: "Vende y factura solo",
+    scenes: [
+      { text: "¿Sigues haciendo las boletas a mano", fx: "slideU", frames: 82 },
+      { text: "en la página del SII?", fx: "slideL", frames: 62 },
+      { text: "Es obligatoria desde 2021.", fx: "scale", frames: 70, accent: true, size: 84 },
+      { text: "Y miles de pymes re-digitan todo cada noche.", fx: "slideR", frames: 92 },
+      { text: "Un sistema a medida emite la boleta al vender,", fx: "slideU", frames: 95 },
+      { text: "descuenta stock y ordena tu contabilidad.", fx: "scale", frames: 90, accent: true },
+    ],
+  },
+  {
+    id: "pro-inventario", label: "Inventario", voice: "pro-inventario.mp3", music: "music-tension.wav", accent: "#8b9cff", tagline: "Stock bajo control",
+    scenes: [
+      { text: "Tu Excel de inventario", fx: "slideU", frames: 62 },
+      { text: "te está costando ventas.", fx: "scale", frames: 68, accent: true, size: 84 },
+      { text: "Vendes en tienda, Instagram y WhatsApp,", fx: "slideL", frames: 90 },
+      { text: "pero el stock vive en una planilla.", fx: "slideR", frames: 82 },
+      { text: "Vendes lo que no tienes. O acumulas de más.", fx: "slideU", frames: 95, accent: true },
+      { text: "Un sistema lo sincroniza todo en tiempo real.", fx: "scale", frames: 95, accent: true },
+    ],
+  },
+  {
+    id: "pro-abogados", label: "Profesionales", voice: "pro-abogados.mp3", music: "music-night.wav", accent: "#38b6ff", tagline: "Que te encuentren primero",
+    scenes: [
+      { text: "Nadie contrata a un abogado", fx: "slideU", frames: 72 },
+      { text: "sin googlearlo primero.", fx: "scale", frames: 65, accent: true, size: 84 },
+      { text: "Abogados, contadores, arquitectos:", fx: "slideL", frames: 85 },
+      { text: "tu cliente te busca antes de llamar.", fx: "slideR", frames: 85 },
+      { text: "Si no encuentra nada, elige a otro.", fx: "slideU", frames: 85, accent: true },
+      { text: "Tu web es tu tarjeta, 24/7.", fx: "scale", frames: 75, accent: true, size: 82 },
+    ],
+  },
+  {
+    id: "pro-pasarela", label: "Pasarela de pago", voice: "pro-pasarela.mp3", music: "music-viral2.wav", accent: "#2ee6a6", tagline: "Cobra mientras duermes",
+    scenes: [
+      { text: "\"Hablemos por interno\"", fx: "slideU", frames: 65 },
+      { text: "está matando tus ventas.", fx: "scale", frames: 68, accent: true, size: 84 },
+      { text: "Cada paso extra antes de pagar, pierdes compradores.", fx: "slideL", frames: 100 },
+      { text: "Con pasarela de pago en tu web,", fx: "slideR", frames: 78 },
+      { text: "el cliente paga en un minuto, a cualquier hora.", fx: "slideU", frames: 95 },
+      { text: "Vender mientras duermes es tener pasarela.", fx: "scale", frames: 92, accent: true },
+    ],
+  },
+  {
+    id: "pro-automatizar", label: "Automatización", voice: "pro-automatizar.mp3", music: "music-uplift.wav", accent: "#19d4d4", tagline: "Recupera tus horas",
+    scenes: [
+      { text: "Dos horas al día en tareas repetidas", fx: "slideU", frames: 88 },
+      { text: "son 500 horas al año.", fx: "scale", frames: 70, accent: true, size: 82 },
+      { text: "Copiar datos entre planillas,", fx: "slideL", frames: 72 },
+      { text: "mandar los mismos correos, armar informes.", fx: "slideR", frames: 90 },
+      { text: "Todo eso se puede automatizar.", fx: "slideU", frames: 78, accent: true },
+      { text: "500 horas: doce semanas recuperadas.", fx: "scale", frames: 88, accent: true },
+    ],
+  },
+  {
+    id: "pro-senales-ig", label: "Más que Instagram", voice: "pro-senales-ig.mp3", music: "music-viral4.wav", accent: "#8b9cff", tagline: "Cuando la red queda chica",
+    scenes: [
+      { text: "Señales de que tu negocio", fx: "slideU", frames: 70 },
+      { text: "ya necesita más que Instagram.", fx: "scale", frames: 78, accent: true, size: 80 },
+      { text: "Respondes lo mismo 20 veces al día.", fx: "slideL", frames: 85 },
+      { text: "Pierdes ventas cuando no alcanzas a responder.", fx: "slideR", frames: 95 },
+      { text: "Y en Google no apareces.", fx: "slideU", frames: 68, accent: true },
+      { text: "¿Dos o más? Te falta una web que trabaje por ti.", fx: "scale", frames: 100, accent: true },
+    ],
+  },
 ];

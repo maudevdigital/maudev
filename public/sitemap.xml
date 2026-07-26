@@ -1,298 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generado desde las rutas reales de src/App.jsx. Solo URLs que devuelven 200. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-
   <url>
     <loc>https://maudev.cl/</loc>
-    <changefreq>weekly</changefreq>
+    <lastmod>2026-07-26</lastmod>
     <priority>1.0</priority>
   </url>
-
-  <url>
-    <loc>https://maudev.cl/servicios</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
   <url>
     <loc>https://maudev.cl/precios</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <url>
-    <loc>https://maudev.cl/cotizador</loc>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-07-26</lastmod>
     <priority>0.8</priority>
   </url>
-
-  <url>
-    <loc>https://maudev.cl/diagnostico-web</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://maudev.cl/portafolio</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://maudev.cl/portafolio/systempro</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://maudev.cl/portafolio/partsmr</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://maudev.cl/portafolio/paraguayaccess</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://maudev.cl/blog</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://maudev.cl/blog/por-que-tu-pyme-necesita-una-landing-page</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://maudev.cl/blog/meta-ads-para-principiantes</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://maudev.cl/blog/que-es-una-automatizacion</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://maudev.cl/blog/landing-page-vs-sitio-web</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://maudev.cl/blog/5-procesos-que-toda-pyme-puede-automatizar</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://maudev.cl/blog/como-cobrar-en-usdt-legal-desde-chile</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://maudev.cl/blog/seo-local-en-chile</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://maudev.cl/blog/stripe-vs-mercadopago-vs-webpay</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://maudev.cl/blog/que-es-un-mvp</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://maudev.cl/blog/chatbots-de-whatsapp</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://maudev.cl/blog/como-escribir-una-landing-que-convierte</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://maudev.cl/blog/react-vite-tailwind-stack-moderno</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://maudev.cl/blog/de-excel-a-un-dashboard</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://maudev.cl/blog/como-medir-tus-meta-ads</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://maudev.cl/blog/integrar-pagos-en-tu-web</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://maudev.cl/blog/checklist-seo-tecnico</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://maudev.cl/blog/automatiza-seguimiento-de-leads-n8n-supabase</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://maudev.cl/blog/cuanto-cuesta-una-pagina-web-en-chile-2026</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://maudev.cl/blog/agentes-de-ia-y-automatizacion-para-pymes-2026</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://maudev.cl/blog/software-a-medida-con-ia-en-2026-cuanto-cuesta-y-como-se-construye</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://maudev.cl/blog/pagos-online-y-stablecoins-usdt-para-negocios-en-chile-2026</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://maudev.cl/sobre-nosotros</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://maudev.cl/ahora</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-
   <url>
     <loc>https://maudev.cl/contacto</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <lastmod>2026-07-26</lastmod>
+    <priority>0.8</priority>
   </url>
-
   <url>
-    <loc>https://maudev.cl/contrato</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.4</priority>
-  </url>
-
-  <url>
-    <loc>https://maudev.cl/terminos</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-
-  <url>
-    <loc>https://maudev.cl/privacidad</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-
-  <url>
-    <loc>https://maudev.cl/guia</loc>
-    <changefreq>monthly</changefreq>
+    <loc>https://maudev.cl/automatizaciones/agenda-automatica</loc>
+    <lastmod>2026-07-26</lastmod>
     <priority>0.9</priority>
   </url>
-
-  <!-- Serie high-ticket / desarrollo de software (jun 2026) -->
   <url>
-    <loc>https://maudev.cl/blog/cuanto-cuesta-software-a-medida-2026</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://maudev.cl/automatizaciones/boleta-electronica</loc>
+    <lastmod>2026-07-26</lastmod>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://maudev.cl/blog/software-a-medida-vs-saas-2026</loc>
-    <lastmod>2026-06-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://maudev.cl/automatizaciones/pasarela-de-pago</loc>
+    <lastmod>2026-07-26</lastmod>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://maudev.cl/blog/como-elegir-empresa-desarrollo-software</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://maudev.cl/automatizaciones/control-inventario</loc>
+    <lastmod>2026-07-26</lastmod>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://maudev.cl/blog/roi-automatizacion-procesos-empresa</loc>
-    <lastmod>2026-06-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://maudev.cl/automatizaciones/pedidos-restaurante</loc>
+    <lastmod>2026-07-26</lastmod>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://maudev.cl/blog/de-idea-a-sistema-proceso-desarrollo</loc>
-    <lastmod>2026-06-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- Serie 2 (29 jun – 5 jul) -->
-  <url>
-    <loc>https://maudev.cl/blog/errores-caros-al-pedir-software-2026</loc>
-    <lastmod>2026-06-29</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
+    <loc>https://maudev.cl/automatizaciones/presencia-profesionales</loc>
+    <lastmod>2026-07-26</lastmod>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://maudev.cl/blog/como-se-calcula-precio-software-2026</loc>
-    <lastmod>2026-06-30</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
+    <loc>https://maudev.cl/automatizaciones/automatiza-tareas</loc>
+    <lastmod>2026-07-26</lastmod>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://maudev.cl/blog/integraciones-software-valor-2026</loc>
-    <lastmod>2026-07-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
+    <loc>https://maudev.cl/automatizaciones/mas-que-instagram</loc>
+    <lastmod>2026-07-26</lastmod>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://maudev.cl/blog/mvp-lanzar-producto-minimo-2026</loc>
-    <lastmod>2026-07-02</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
+    <loc>https://maudev.cl/portafolio/systempro</loc>
+    <lastmod>2026-07-26</lastmod>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://maudev.cl/blog/mantencion-software-costo-2026</loc>
-    <lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
+    <loc>https://maudev.cl/portafolio/partsmr</loc>
+    <lastmod>2026-07-26</lastmod>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://maudev.cl/blog/automatizacion-ia-pymes-2026</loc>
-    <lastmod>2026-07-04</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
+    <loc>https://maudev.cl/portafolio/paraguayaccess</loc>
+    <lastmod>2026-07-26</lastmod>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://maudev.cl/blog/seguridad-respaldos-software-2026</loc>
-    <lastmod>2026-07-05</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
+    <loc>https://maudev.cl/terminos</loc>
+    <lastmod>2026-07-26</lastmod>
+    <priority>0.3</priority>
   </url>
-
-  <url><loc>https://maudev.cl/blog/chatbot-ia-whatsapp-pymes-2026</loc><lastmod>2026-07-06</lastmod></url>
-  <url><loc>https://maudev.cl/blog/cuanto-cuesta-pagina-web-carrito-compras-2026</loc><lastmod>2026-07-13</lastmod></url>
-  <url><loc>https://maudev.cl/blog/wix-vs-pagina-web-a-medida-2026</loc><lastmod>2026-07-20</lastmod></url>
-  <url><loc>https://maudev.cl/blog/metodologias-desarrollo-software-2026</loc><lastmod>2026-07-27</lastmod></url>
+  <url>
+    <loc>https://maudev.cl/privacidad</loc>
+    <lastmod>2026-07-26</lastmod>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://maudev.cl/eliminacion-datos</loc>
+    <lastmod>2026-07-26</lastmod>
+    <priority>0.3</priority>
+  </url>
 </urlset>

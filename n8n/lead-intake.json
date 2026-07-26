@@ -1,0 +1,91 @@
+{
+  "name": "maudev · Captación de leads",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "maudev-lead",
+        "responseMode": "onReceived",
+        "options": {
+          "allowedOrigins": "https://maudev.cl"
+        }
+      },
+      "id": "b1a1e001-0001-4001-8001-000000000001",
+      "name": "Webhook Lead",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [260, 300],
+      "webhookId": "maudev-lead"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            { "id": "a1", "name": "name", "value": "={{ $json.body.name }}", "type": "string" },
+            { "id": "a2", "name": "email", "value": "={{ $json.body.email }}", "type": "string" },
+            { "id": "a3", "name": "whatsapp", "value": "={{ $json.body.whatsapp }}", "type": "string" },
+            { "id": "a4", "name": "interest", "value": "={{ $json.body.interest || $json.body.content_name }}", "type": "string" },
+            { "id": "a5", "name": "message", "value": "={{ $json.body.message }}", "type": "string" },
+            { "id": "a6", "name": "source", "value": "={{ $json.body.source }}", "type": "string" },
+            { "id": "a7", "name": "submitted_at", "value": "={{ $json.body.submitted_at }}", "type": "string" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b1a1e001-0002-4001-8001-000000000002",
+      "name": "Normalizar lead",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [480, 300]
+    },
+    {
+      "parameters": {
+        "chatId": "YOUR_TELEGRAM_CHAT_ID",
+        "text": "=🎯 *Nuevo lead* ({{ $json.source }})\nNombre: {{ $json.name }}\nEmail: {{ $json.email }}\nWhatsApp: {{ $json.whatsapp }}\nInterés: {{ $json.interest }}\nMensaje: {{ $json.message }}",
+        "additionalFields": { "parse_mode": "Markdown" }
+      },
+      "id": "b1a1e001-0003-4001-8001-000000000003",
+      "name": "Avisar por Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [720, 200],
+      "notes": "Configura credencial de Telegram y tu chatId."
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": { "__rl": true, "value": "YOUR_GOOGLE_SHEET_ID", "mode": "id" },
+        "sheetName": { "__rl": true, "value": "Leads", "mode": "name" },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": []
+        },
+        "options": {}
+      },
+      "id": "b1a1e001-0004-4001-8001-000000000004",
+      "name": "Guardar en Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [720, 400],
+      "notes": "Crea una hoja con encabezados: name, email, whatsapp, interest, message, source, submitted_at. Configura la credencial de Google."
+    }
+  ],
+  "connections": {
+    "Webhook Lead": {
+      "main": [[{ "node": "Normalizar lead", "type": "main", "index": 0 }]]
+    },
+    "Normalizar lead": {
+      "main": [
+        [
+          { "node": "Avisar por Telegram", "type": "main", "index": 0 },
+          { "node": "Guardar en Sheets", "type": "main", "index": 0 }
+        ]
+      ]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "active": false,
+  "pinData": {}
+}

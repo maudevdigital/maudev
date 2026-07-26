@@ -7,9 +7,9 @@ import Footer from "@/components/landing/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { api } from "@/api/maudev";
 import { getLeadAttribution } from "@/lib/lead-tracking";
-import { trackLeadEvent } from "@/lib/MetaPixelTracker";
+import { useLeadSubmit } from "@/lib/useLeadSubmit";
+import { useSeo } from "@/lib/useSeo";
 import { toast } from "sonner";
 import { t } from "@/lib/i18n";
 
@@ -48,12 +48,16 @@ export default function Contacto() {
     interest: VALID_INTERESTS.includes(preselected) ? preselected : "",
     message: "",
   });
-  const [loading, setLoading] = useState(false);
-  const [sent, setSent] = useState(false);
+  const { submit, loading, sent } = useLeadSubmit();
 
-  useEffect(() => {
-    document.title = t("Contacto · Maudev", "Contact · Maudev");
-  }, []);
+  useSeo({
+    title: t("Contacto · Maudev", "Contact · Maudev"),
+    description: t(
+      "Cuéntanos tu proyecto y te respondemos en 24h. Diagnóstico gratis: web, software y automatización para PYMEs en Chile.",
+      "Tell us about your project and we'll reply within 24h. Free assessment: web, software and automation for SMBs in Chile."
+    ),
+    path: "/contacto",
+  });
 
   // Si el usuario llega con ?servicio=... preselecciona el objetivo.
   useEffect(() => {
@@ -76,9 +80,8 @@ export default function Contacto() {
       toast.error(t(`El teléfono de ${country.label} no parece válido. Revisa el número.`, `The phone number for ${country.label} doesn't look valid. Please check it.`));
       return;
     }
-    setLoading(true);
-    try {
-      await api.entities.Lead.create({
+    await submit({
+      lead: {
         name: form.name.trim(),
         email: form.email.trim(),
         whatsapp: `${country.dial} ${form.phone.trim()}`,
@@ -88,19 +91,14 @@ export default function Contacto() {
         status: "new",
         consent: true,
         ...getLeadAttribution(),
-      });
-      await trackLeadEvent({
+      },
+      track: {
         email: form.email.trim(),
         phone: `${country.dial}${form.phone.trim()}`,
         params: { content_name: "Formulario contacto", content_category: form.interest, name: form.name.trim(), source: "contact_page" },
-      });
-      setSent(true);
-      toast.success(t("Mensaje recibido. Te respondemos pronto.", "Message received. We'll reply soon."));
-    } catch {
-      toast.error(t("No pudimos enviar el mensaje. Intenta nuevamente.", "We couldn't send your message. Please try again."));
-    } finally {
-      setLoading(false);
-    }
+      },
+      successMessage: t("Mensaje recibido. Te respondemos pronto.", "Message received. We'll reply soon."),
+    });
   };
 
   return (

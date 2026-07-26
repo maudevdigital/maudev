@@ -31,29 +31,21 @@ export default function Footer() {
           <div>
             <h4 className="text-xs font-mono text-primary uppercase tracking-wider mb-4">{t("Empresa", "Company")}</h4>
             <ul className="space-y-2">
-              <li><Link to="/servicios" className="text-sm text-muted-foreground hover:text-primary transition-colors">{t("Servicios", "Services")}</Link></li>
-              <li><Link to="/precios" className="text-sm text-muted-foreground hover:text-primary transition-colors">{t("Precios", "Pricing")}</Link></li>
-              <li><Link to="/portafolio" className="text-sm text-muted-foreground hover:text-primary transition-colors">{t("Portafolio", "Portfolio")}</Link></li>
-              <li><Link to="/sobre-nosotros" className="text-sm text-muted-foreground hover:text-primary transition-colors">{t("Sobre nosotros", "About us")}</Link></li>
-              <li><Link to="/ahora" className="text-sm text-muted-foreground hover:text-primary transition-colors">{t("Ahora", "Now")}</Link></li>
-              <li><Link to="/blog" className="text-sm text-muted-foreground hover:text-primary transition-colors">Blog</Link></li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-xs font-mono text-primary uppercase tracking-wider mb-4">{t("Herramientas gratis", "Free tools")}</h4>
-            <ul className="space-y-2">
-              <li><Link to="/diagnostico-web" className="text-sm text-muted-foreground hover:text-primary transition-colors">{t("Diagnóstico de tu web", "Website audit")}</Link></li>
-              <li><Link to="/cotizador" className="text-sm text-muted-foreground hover:text-primary transition-colors">{t("Cotizador de proyectos", "Project estimator")}</Link></li>
+              <li><Link to="/#automatizaciones" className="text-sm text-muted-foreground hover:text-primary transition-colors">{t("Qué automatizo", "What I automate")}</Link></li>
+              <li><Link to="/#portafolio" className="text-sm text-muted-foreground hover:text-primary transition-colors">{t("Trabajos", "Work")}</Link></li>
+              <li><Link to="/#proceso" className="text-sm text-muted-foreground hover:text-primary transition-colors">{t("Cómo funciona", "How it works")}</Link></li>
+              <li><Link to="/precios" className="text-sm text-muted-foreground hover:text-primary transition-colors">{t("Workflows n8n", "n8n workflows")}</Link></li>
+              <li><Link to="/contacto" className="text-sm text-muted-foreground hover:text-primary transition-colors">{t("Contacto", "Contact")}</Link></li>
             </ul>
           </div>
 
           <div>
             <h4 className="text-xs font-mono text-primary uppercase tracking-wider mb-4">Legal</h4>
             <ul className="space-y-2">
-              <li><Link to="/contrato" className="text-sm text-muted-foreground hover:text-primary transition-colors">{t("Modelo de contrato", "Contract template")}</Link></li>
               <li><Link to="/terminos" className="text-sm text-muted-foreground hover:text-primary transition-colors">{t("Términos y condiciones", "Terms & conditions")}</Link></li>
               <li><Link to="/privacidad" className="text-sm text-muted-foreground hover:text-primary transition-colors">{t("Política de privacidad", "Privacy policy")}</Link></li>
+              <li><Link to="/eliminacion-datos" className="text-sm text-muted-foreground hover:text-primary transition-colors">{t("Eliminación de datos", "Data deletion")}</Link></li>
+              <li><button type="button" onClick={() => window.dispatchEvent(new Event("maudev:open-cookies"))} className="text-sm text-muted-foreground hover:text-primary transition-colors text-left">{t("Preferencias de cookies", "Cookie preferences")}</button></li>
             </ul>
           </div>
 

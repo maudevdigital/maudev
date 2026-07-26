@@ -30,10 +30,23 @@ dist-ssr
 .env
 .vite
 
-# Supabase CLI (temporales locales)
-supabase/.temp
+# Temporales varios
 .branches
 .temp
 
 # Remotion render outputs
 remotion/out
+
+# Media pesada de redes sociales (no se despliega; vive fuera del bundle)
+_media-archivo/
+
+# Wrangler local state (miniflare cache)
+**/.wrangler/
+.wrangler/
+
+# Remotion: dependencias y renders
+remotion/node_modules/
+remotion/out/
+
+# Backend antiguo (Supabase + panel admin), conservado como referencia
+_legacy/

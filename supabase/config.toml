@@ -1,6 +1,0 @@
-project_id = "hsaoeuuyxrzxlvcvkiab"
-
-[functions.notify-lead]
-# La función se protege con WEBHOOK_SECRET (no con JWT), porque la invoca el
-# webhook de la base de datos, no un usuario autenticado.
-verify_jwt = false

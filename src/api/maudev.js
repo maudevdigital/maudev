@@ -1,112 +1,52 @@
-// Cliente API de Maudev sobre Supabase.
-// Expone entities (Lead, BlogPost) con métodos list/filter/get/create/update/delete + auth.
+// Capa de datos del sitio (sin backend). Blog y portafolio se sirven desde los
+// archivos locales del repo (versionados en git); los leads salen por el webhook
+// de n8n (ver lib/leads.js). Se conserva la MISMA forma `api.entities.X.method`
+// para no tocar los componentes que ya la consumen.
 
-import { supabase } from '@/lib/supabase';
-import { ADMIN_EMAILS, isAdminEmail } from '@/lib/auth';
+import { projects, getProjectById } from "@/data/projects";
+import { submitLead } from "@/lib/leads";
 
-const toRow = (row) => row;
-
-const parseSort = (sortStr) => {
-  if (!sortStr) return null;
-  const desc = sortStr.startsWith('-');
-  return { column: desc ? sortStr.slice(1) : sortStr, ascending: !desc };
+// Orden: "-campo" = descendente. Registros sin ese campo mantienen su posición.
+const sortBy = (arr, sortStr) => {
+  if (!sortStr) return arr;
+  const desc = sortStr.startsWith("-");
+  const key = desc ? sortStr.slice(1) : sortStr;
+  return [...arr].sort((a, b) => {
+    const av = a[key], bv = b[key];
+    if (av == null && bv == null) return 0;
+    if (av == null) return 1;
+    if (bv == null) return -1;
+    if (av < bv) return desc ? 1 : -1;
+    if (av > bv) return desc ? -1 : 1;
+    return 0;
+  });
 };
 
-const buildQuery = (table, whereObj, sortStr, lim) => {
-  let q = supabase.from(table).select('*');
-  if (whereObj) {
-    for (const [k, v] of Object.entries(whereObj)) q = q.eq(k, v);
-  }
-  const sort = parseSort(sortStr);
-  if (sort) q = q.order(sort.column, { ascending: sort.ascending });
-  if (lim) q = q.limit(lim);
-  return q;
+// Filtro tolerante: si el registro NO tiene la propiedad, pasa (los datos
+// locales no traen `status`, así que `{status:"published"}` deja pasar todo).
+const matches = (row, whereObj) => {
+  if (!whereObj) return true;
+  return Object.entries(whereObj).every(([k, v]) => row[k] === undefined || row[k] === v);
 };
 
-const makeEntity = (table) => ({
+const localEntity = (source, getById) => ({
   list: async (sortStr, lim) => {
-    const { data, error } = await buildQuery(table, null, sortStr, lim);
-    if (error) throw error;
-    return (data || []).map(toRow);
+    const out = sortBy(source, sortStr);
+    return lim ? out.slice(0, lim) : out;
   },
   filter: async (whereObj, sortStr, lim) => {
-    const { data, error } = await buildQuery(table, whereObj, sortStr, lim);
-    if (error) throw error;
-    return (data || []).map(toRow);
+    const out = sortBy(source.filter((r) => matches(r, whereObj)), sortStr);
+    return lim ? out.slice(0, lim) : out;
   },
-  get: async (id) => {
-    const { data, error } = await supabase.from(table).select('*').eq('id', id).single();
-    if (error) throw error;
-    return toRow(data);
-  },
-  create: async (payload) => {
-    const { data, error } = await supabase.from(table).insert(payload).select().single();
-    if (error) throw error;
-    return toRow(data);
-  },
-  update: async (id, payload) => {
-    const { data, error } = await supabase.from(table).update(payload).eq('id', id).select().single();
-    if (error) throw error;
-    return toRow(data);
-  },
-  delete: async (id) => {
-    const { error } = await supabase.from(table).delete().eq('id', id);
-    if (error) throw error;
-    return { id };
-  },
+  get: async (id) => getById(id) || null,
 });
 
-const authApi = {
-  me: async () => {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      const err = new Error('Not authenticated');
-      err.status = 401;
-      throw err;
-    }
-    return {
-      id: user.id,
-      email: user.email,
-      full_name: user.user_metadata?.full_name || user.user_metadata?.name,
-      avatar_url: user.user_metadata?.avatar_url,
-      role: isAdminEmail(user.email) ? 'admin' : 'user',
-    };
-  },
-  redirectToLogin: async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: { redirectTo: `${window.location.origin}/admin` },
-    });
-    if (error) throw error;
-  },
-  logout: async (redirectUrl) => {
-    await supabase.auth.signOut();
-    if (redirectUrl) window.location.href = redirectUrl;
-  },
-};
-
-const integrations = {
-  Core: {
-    // Storage Supabase: bucket 'uploads' debe existir y permitir insert al admin.
-    UploadFile: async ({ file }) => {
-      const ext = (file.name.split('.').pop() || 'bin').toLowerCase();
-      const path = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
-      const { error } = await supabase.storage.from('uploads').upload(path, file, { upsert: false });
-      if (error) throw error;
-      const { data } = supabase.storage.from('uploads').getPublicUrl(path);
-      return { file_url: data.publicUrl };
+export const api = {
+  entities: {
+    Project: localEntity(projects, getProjectById),
+    Lead: {
+      // Único método con efecto: envía el lead al webhook de n8n.
+      create: async (payload) => submitLead(payload),
     },
   },
-};
-
-export const api = {
-  auth: authApi,
-  entities: {
-    BlogPost: makeEntity('blog_posts'),
-    Lead: makeEntity('leads'),
-    Project: makeEntity('projects'),
-  },
-  integrations,
-  _supabase: supabase,
-  _adminEmails: ADMIN_EMAILS,
 };

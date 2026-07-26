@@ -11,7 +11,9 @@ export const founder = {
   name: "Lucas Maulén",
   firstName: "Lucas",
   role: t("Ingeniero Civil Informático · Fundador de maudev", "Computer Science Engineer · Founder of maudev"),
-  photo: "/founder.jpg",
+  // `photo` se quitó: apuntaba a /founder.jpg, que no existe y no se renderiza
+  // en ningún <img>. Si algún día quieres mostrar tu foto, agrégala a
+  // /public/founder.jpg y vuelve a declarar el campo acá.
   // Deja en null los que no quieras mostrar (se ocultan automáticamente).
   github: null, // ej: "https://github.com/maudev"
   linkedin: null, // ej: "https://www.linkedin.com/in/lucasmaulen"
@@ -32,8 +34,23 @@ export const availability = {
 };
 
 // ─── CTA principal ──────────────────────────────────────────────────────────
-// Un solo verbo en todo el sitio. Si lo cambias aquí, cambia en todas partes.
-export const CTA_LABEL = t("Pedir diagnóstico gratis", "Get a free assessment");
+// UNA sola acción en todo el sitio: escribir por WhatsApp.
+// Razón: el público es PYME chilena, que ya vive en WhatsApp. Cero fricción,
+// cero formularios que abandonar, y el propio bot calificador atiende del otro
+// lado (el producto vendiéndose a sí mismo).
+// Si cambias el texto aquí, cambia en navbar, hero, secciones y footer.
+export const CTA_LABEL = t("Hablemos por WhatsApp", "Message us on WhatsApp");
+
+// Mensaje pre-llenado del CTA principal. Que el cliente no tenga que pensar
+// qué escribir es parte de no hacerlo dudar.
+export const CTA_MESSAGE = t(
+  "Hola Lucas, vengo de maudev.cl y quiero automatizar algo en mi negocio.",
+  "Hi Lucas, I came from maudev.cl and I want to automate something in my business."
+);
+
+// Etiqueta secundaria: solo para quien prefiere dejar sus datos en vez de
+// escribir. Nunca compite visualmente con el CTA principal.
+export const CTA_SECONDARY = t("Prefiero que me escriban", "I'd rather be contacted");
 
 // ─── Claims verificables ────────────────────────────────────────────────────
 // Solo afirmaciones que se pueden comprobar haciendo clic o leyendo el contrato.
