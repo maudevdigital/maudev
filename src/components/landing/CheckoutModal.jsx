@@ -5,6 +5,7 @@ import { useLeadSubmit } from "@/lib/useLeadSubmit";
 import { toast } from "sonner";
 import { t } from "@/lib/i18n";
 import { defaultPaymentMethod, priceFor, getRegion } from "@/lib/region";
+import RiskReversal from "@/components/landing/RiskReversal";
 
 export default function CheckoutModal({ product, isOpen, onClose }) {
   const [name, setName] = useState("");
@@ -106,6 +107,9 @@ export default function CheckoutModal({ product, isOpen, onClose }) {
                   className="w-full h-11 px-3.5 rounded-xl bg-background border border-border text-sm text-foreground focus:outline-none focus:border-primary transition-colors"
                 />
               </div>
+            {/* Último punto de duda antes de pagar: repetir la garantía acá
+                cuesta cuatro líneas y quita la objeción más cara. */}
+            <RiskReversal className="mt-4" />
 
               <div>
                 <label className="block text-xs font-mono text-muted-foreground mb-1">

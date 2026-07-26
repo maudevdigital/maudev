@@ -5,6 +5,7 @@ import { ArrowRight, ArrowLeft, Check, AlertTriangle, Plug, ShoppingCart } from 
 import PageShell from "../components/landing/PageShell";
 import PageNotFound from "../lib/PageNotFound";
 import CheckoutModal from "../components/landing/CheckoutModal";
+import RiskReversal from "@/components/landing/RiskReversal";
 import { Button } from "@/components/ui/button";
 import { priceFor } from "@/lib/region";
 import { getAutomationBySlug } from "@/data/automations";
@@ -117,6 +118,10 @@ export default function AutomatizacionDetail() {
                 ))}
               </div>
             )}
+
+            {/* La objeción "¿y si no funciona?" nace al leer el precio, así que
+                se contesta acá y no tres pantallas más abajo. */}
+            <RiskReversal className="mt-6 max-w-md" />
           </div>
 
           {/* Reel como demo visual */}

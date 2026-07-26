@@ -114,6 +114,19 @@ tiene disponibilidad, o el widget manda gente a una página muerta.
 
 ---
 
+## Pendiente para después del deploy
+
+**Prueba social.** El sitio no tiene ni una cita de cliente. Es el mayor vacío de
+confianza que queda, y no se resuelve escribiendo: pídele a tus 4 clientes una
+frase esta semana. Dos líneas cada uno, con nombre y negocio, bastan.
+
+**Separar la oferta por región.** Hoy `RegionToggle` cambia el precio pero no los
+productos. Un visitante fuera de Chile ve 8 servicios de instalación local que no
+puede contratar, traducidos al inglés. Lo correcto: Chile ve automatizaciones,
+internacional ve los packs n8n. Ver `docs/pagos-flow-lemon.md`.
+
+---
+
 ## Ya resuelto
 
 - `public/` de 465 MB → 4,3 MB (videos comprimidos, media de redes archivada)
@@ -125,3 +138,7 @@ tiene disponibilidad, o el widget manda gente a una página muerta.
 - Consentimiento de cookies real, con Consent Mode v2
 - `founder.photo` apuntaba a `/founder.jpg` inexistente — quitado
 - 6 dependencias sin uso fuera
+- Imágenes de las 8 automatizaciones: 9,0 MB en PNG → 176 KB en WebP
+- Reversión de riesgo (garantía, precio fijo, propiedad del código) junto al
+  precio en las 8 landings y en el checkout: antes la palabra "garantía" no
+  aparecía ni una vez en la página que vende
