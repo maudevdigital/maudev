@@ -18,8 +18,6 @@ const KEY = "maudev_consent_v1";
 export const GRANTED = "granted";
 export const DENIED = "denied";
 
-const listeners = new Set();
-
 /** Devuelve "granted", "denied" o null si todavía no decide. */
 export function getConsent() {
   try {
@@ -32,7 +30,6 @@ export function getConsent() {
   }
 }
 
-export const hasDecided = () => getConsent() !== null;
 export const isGranted = () => getConsent() === GRANTED;
 
 /** Guarda la decisión, avisa a Consent Mode y carga (o no) los scripts. */
@@ -56,14 +53,7 @@ export function setConsent(value) {
     window.__maudevLoadAnalytics();
   }
 
-  listeners.forEach((fn) => fn(v));
   return v;
-}
-
-/** Se suscribe a cambios de consentimiento. Devuelve la función para desuscribirse. */
-export function onConsentChange(fn) {
-  listeners.add(fn);
-  return () => listeners.delete(fn);
 }
 
 /**

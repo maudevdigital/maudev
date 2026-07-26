@@ -59,8 +59,6 @@ export function setRegion(r) {
   return v;
 }
 
-export const isChile = () => getRegion() === CL;
-
 /**
  * Precio a mostrar según la región, con el otro entre paréntesis como referencia.
  * Devuelve { main, secondary, currency }.
