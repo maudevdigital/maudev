@@ -48,5 +48,16 @@ _media-archivo/
 remotion/node_modules/
 remotion/out/
 
+# Remotion: audio fuente (música + voces). Pesa ~38 MB y NO se despliega
+# (Cloudflare solo publica dist/). Se regenera con los scripts gen-*-voices.mjs
+# y gen-music.mjs. Vive local, no tiene por qué viajar en el repo.
+remotion/public/*.wav
+remotion/public/*.mp3
+
 # Backend antiguo (Supabase + panel admin), conservado como referencia
 _legacy/
+
+# Tooling de agente (Claude Code / skills). Config de herramientas, no del sitio.
+.claude/
+.agents/
+skills-lock.json

@@ -1,10 +1,19 @@
 import { useLocation } from 'react-router-dom';
 import { t } from '@/lib/i18n';
+import { useSeo } from '@/lib/useSeo';
 
 
 export default function PageNotFound() {
     const location = useLocation();
     const pageName = location.pathname.substring(1);
+
+    // En una SPA sobre Cloudflare Pages toda ruta desconocida devuelve index.html
+    // con 200 (soft 404). No podemos emitir un 404 real sin enumerar cada slug,
+    // así que evitamos el problema de fondo: que Google indexe rutas inventadas.
+    useSeo({
+        title: t("Página no encontrada · Maudev", "Page not found · Maudev"),
+        noindex: true,
+    });
 
     return (
         <div className="min-h-screen flex items-center justify-center p-6 bg-slate-50">
