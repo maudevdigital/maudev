@@ -30,7 +30,8 @@ jobs:
         run: npm run build
         env:
           # Webhook de n8n para los leads del formulario (Settings → Secrets).
-          # Si falta, el sitio cae al worker /notify-lead automáticamente.
+          # Obligatoria: ya no hay fallback. Si falta, el formulario de /contacto
+          # falla explícitamente (ver src/lib/leads.js). El CTA WhatsApp no depende.
           VITE_LEAD_WEBHOOK_URL: ${{ secrets.VITE_LEAD_WEBHOOK_URL }}
 
       - name: Deploy to Cloudflare Pages

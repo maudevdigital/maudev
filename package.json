@@ -8,7 +8,14 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "capture": "node scripts/capture-portfolio.mjs"
+    "capture": "node scripts/capture-portfolio.mjs",
+    "gen:blog-cover": "node scripts/gen-blog-cover.mjs",
+    "gen:blog-graphic": "node scripts/gen-blog-graphic.mjs",
+    "gen:carousel-w2": "node scripts/gen-carousel-w2.mjs",
+    "gen:carousel-w3": "node scripts/gen-carousel-w3.mjs",
+    "gen:carousel-w4": "node scripts/gen-carousel-w4.mjs",
+    "gen:guia-pdf": "node scripts/gen-guia-pdf.mjs",
+    "gen:logo": "node scripts/gen-logo.mjs"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.4",

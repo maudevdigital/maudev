@@ -24,9 +24,11 @@ VITE_LEAD_WEBHOOK_URL=https://TU-N8N/webhook/maudev-lead
 VITE_PSI_API_KEY=
 ```
 
-Si `VITE_LEAD_WEBHOOK_URL` está vacío, los leads caen automáticamente al worker
-`/notify-lead` (Telegram + email), así el formulario nunca queda muerto.
-Ver `src/lib/leads.js`.
+`VITE_LEAD_WEBHOOK_URL` es **obligatoria**: ya no hay fallback (el worker
+`ig-autopost/notify-lead` se dio de baja). Si falta, el formulario de `/contacto`
+falla con un error explícito ("Lead webhook not configured") en vez de morir en
+silencio. El CTA principal es WhatsApp, que no depende de esto. Ver
+`src/lib/leads.js`.
 
 ---
 
@@ -75,6 +77,30 @@ Cada sección termina en el mismo botón de WhatsApp. La garantía vive dentro d
 apretar, no un tema aparte.
 
 ---
+
+## Operación con n8n (fuera del sitio)
+
+Estos archivos de la raíz **no son parte del bundle web** — son para levantar y
+poblar el n8n self-hosted que recibe los leads y corre las automatizaciones:
+
+- `docker-compose.yml` — levanta n8n en local/VPS.
+- `n8n/lead-intake.json` y `calificador-whatsapp.workflow.json` — workflows para
+  importar en n8n (captación de leads y calificación por WhatsApp).
+
+Se usan a mano; no los invoca ningún build ni workflow de GitHub. Ver
+[`docs/`](docs/) para el resto del contexto operativo.
+
+## Scripts de generación de contenido
+
+Los generadores de `scripts/` (portadas de blog, carruseles, logo, guía PDF)
+están registrados en `package.json` con el prefijo `gen:`. Ej.:
+
+```bash
+npm run gen:logo
+npm run gen:carousel-w2
+```
+
+Producen media para redes; no forman parte del build del sitio.
 
 ## Media
 

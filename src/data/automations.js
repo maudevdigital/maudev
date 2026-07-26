@@ -31,7 +31,6 @@ export const AUTOMATIONS = [
     badges: [t("Más pedido", "Most requested"), t("WhatsApp + Calendar", "WhatsApp + Calendar")],
     video: "/social/pro-agenda.mp4",
     image: "/img/auto/agenda-automatica.webp", // ver docs/prompts-imagenes.md §7
-    relatedBlog: "chatbot-ia-whatsapp-pymes-2026",
     metaDescription: t(
       "Deja que tus clientes agenden solos, 24/7. Confirmación automática por WhatsApp y evento en Google Calendar, sin idas y vueltas.",
       "Let clients book themselves, 24/7. Automatic WhatsApp confirmation and Google Calendar events, no back-and-forth."
@@ -76,7 +75,6 @@ export const AUTOMATIONS = [
     badges: [t("SII listo", "Tax-ready"), t("Ahorra horas", "Saves hours")],
     video: "/social/pro-boleta.mp4",
     image: "/img/auto/boleta-electronica.webp", // ver docs/prompts-imagenes.md §7
-    relatedBlog: "integraciones-software-valor-2026",
     metaDescription: t(
       "Deja de emitir boletas a mano en el SII. Al vender, se emite la boleta electrónica, se envía al cliente y queda registrada. Sin re-digitar.",
       "Stop issuing receipts by hand. On each sale, the e-invoice is issued, sent to the client, and logged. No re-typing."
@@ -121,7 +119,6 @@ export const AUTOMATIONS = [
     badges: [t("Webpay · Flow · MercadoPago", "Webpay · Flow · MercadoPago"), t("Menos fricción", "Less friction")],
     video: "/social/pro-pasarela.mp4",
     image: "/img/auto/pasarela-de-pago.webp", // ver docs/prompts-imagenes.md §7
-    relatedBlog: "cuanto-cuesta-pagina-web-carrito-compras-2026",
     metaDescription: t(
       "'Hablemos por interno' mata ventas. Con un link de pago el cliente paga en 1 minuto, a cualquier hora, y tú recibes la confirmación al instante.",
       "'DM me' kills sales. With a payment link clients pay in 1 minute, any time, and you get instant confirmation."
@@ -166,7 +163,6 @@ export const AUTOMATIONS = [
     badges: [t("Tiempo real", "Real-time"), t("Alertas WhatsApp", "WhatsApp alerts")],
     video: "/social/pro-inventario.mp4",
     image: "/img/auto/control-inventario.webp", // ver docs/prompts-imagenes.md §7
-    relatedBlog: "integraciones-software-valor-2026",
     metaDescription: t(
       "Tu Excel de inventario te cuesta ventas: vendes lo que no tienes o inmovilizas capital. Sincronización en tiempo real y alertas de stock bajo.",
       "Your inventory spreadsheet costs you sales: overselling or dead capital. Real-time sync and low-stock alerts."
@@ -211,7 +207,6 @@ export const AUTOMATIONS = [
     badges: [t("0% comisión", "0% commission"), t("WhatsApp a cocina", "WhatsApp to kitchen")],
     video: "/social/pro-restaurante.mp4",
     image: "/img/auto/pedidos-restaurante.webp", // ver docs/prompts-imagenes.md §7
-    relatedBlog: "cuanto-cuesta-pagina-web-carrito-compras-2026",
     metaDescription: t(
       "201.000 personas buscan 'restaurante cerca de mí' cada mes en Chile. Las apps cobran hasta 30%. Con pedidos propios: 0% de comisión.",
       "201,000 people search 'restaurant near me' monthly in Chile. Apps charge up to 30%. With your own ordering: 0% commission."
@@ -256,7 +251,6 @@ export const AUTOMATIONS = [
     badges: [t("Abogados · Contadores", "Lawyers · Accountants"), t("Intake automático", "Automated intake")],
     video: "/social/pro-abogados.mp4",
     image: "/img/auto/presencia-profesionales.webp", // ver docs/prompts-imagenes.md §7
-    relatedBlog: "wix-vs-pagina-web-a-medida-2026",
     metaDescription: t(
       "Nadie contrata a un abogado sin googlearlo primero. Si no te encuentra, elige a otro. Presencia + intake automático de nuevos clientes.",
       "Nobody hires a lawyer without googling first. If they can't find you, they pick someone else. Presence + automated client intake."
@@ -301,7 +295,6 @@ export const AUTOMATIONS = [
     badges: [t("A medida", "Custom-built"), t("ROI claro", "Clear ROI")],
     video: "/social/pro-automatizar.mp4",
     image: "/img/auto/automatiza-tareas.webp", // ver docs/prompts-imagenes.md §7
-    relatedBlog: "integraciones-software-valor-2026",
     metaDescription: t(
       "2 horas al día en tareas repetidas son 500 horas al año: más de 12 semanas laborales. Automatizamos lo repetitivo y recuperas ese tiempo.",
       "2 hours a day on repetitive tasks is 500 hours a year: over 12 work weeks. We automate the repetitive and give that time back."
@@ -346,7 +339,6 @@ export const AUTOMATIONS = [
     badges: [t("Señales de crecer", "Growth signals"), t("Web propia", "Own your platform")],
     video: "/social/pro-senales-ig.mp4",
     image: "/img/auto/mas-que-instagram.webp", // ver docs/prompts-imagenes.md §7
-    relatedBlog: "wix-vs-pagina-web-a-medida-2026",
     metaDescription: t(
       "Instagram es una gran vitrina, hasta que queda chica. Si vendes por DM, pierdes historial y dependes del algoritmo, ya necesitas más.",
       "Instagram is a great storefront, until it isn't. If you sell by DM, lose history, and depend on the algorithm, you need more."
