@@ -1,4 +1,5 @@
 {
+  "id": "maudevLeadIntake01",
   "name": "maudev · Captación de leads",
   "nodes": [
     {
@@ -15,7 +16,8 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [260, 300],
-      "webhookId": "maudev-lead"
+      "webhookId": "maudev-lead",
+      "notes": "Recibe el POST del formulario de maudev.cl. La Production URL de este nodo es la que va en VITE_LEAD_WEBHOOK_URL (Cloudflare Pages y .env.local)."
     },
     {
       "parameters": {
@@ -40,36 +42,35 @@
     },
     {
       "parameters": {
+        "fromEmail": "contacto@maudev.cl",
+        "toEmail": "contacto@maudev.cl",
+        "subject": "=🎯 Nuevo lead: {{ $json.name || 'sin nombre' }} — {{ $json.interest || 'sin interés' }}",
+        "emailFormat": "html",
+        "html": "=<h2 style=\"font-family:sans-serif\">Nuevo lead desde maudev.cl</h2>\n<table style=\"font-family:sans-serif;font-size:14px;line-height:1.6\">\n<tr><td><b>Nombre:</b></td><td>{{ $json.name }}</td></tr>\n<tr><td><b>Email:</b></td><td>{{ $json.email }}</td></tr>\n<tr><td><b>WhatsApp:</b></td><td>{{ $json.whatsapp }}</td></tr>\n<tr><td><b>Interés:</b></td><td>{{ $json.interest }}</td></tr>\n<tr><td><b>Mensaje:</b></td><td>{{ $json.message }}</td></tr>\n<tr><td><b>Origen:</b></td><td>{{ $json.source }}</td></tr>\n<tr><td><b>Enviado:</b></td><td>{{ $json.submitted_at }}</td></tr>\n</table>\n<p style=\"font-family:sans-serif;font-size:13px;color:#666\">Responde este correo para contactar al lead directamente (reply-to apunta a su email).</p>",
+        "options": {
+          "replyTo": "={{ $json.email }}"
+        }
+      },
+      "id": "b1a1e001-0003-4001-8001-000000000003",
+      "name": "Email a contacto@maudev.cl",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [720, 240],
+      "notes": "Notificación principal. Requiere credencial SMTP de Resend (dominio maudev.cl ya verificado). Host: smtp.resend.com · Puerto: 465 (SSL) · Usuario: resend · Clave: API key de Resend. Remitente contacto@maudev.cl funciona porque el dominio está verificado; si Resend lo rechaza, usa leads@maudev.cl."
+    },
+    {
+      "parameters": {
         "chatId": "YOUR_TELEGRAM_CHAT_ID",
         "text": "=🎯 *Nuevo lead* ({{ $json.source }})\nNombre: {{ $json.name }}\nEmail: {{ $json.email }}\nWhatsApp: {{ $json.whatsapp }}\nInterés: {{ $json.interest }}\nMensaje: {{ $json.message }}",
         "additionalFields": { "parse_mode": "Markdown" }
       },
-      "id": "b1a1e001-0003-4001-8001-000000000003",
-      "name": "Avisar por Telegram",
+      "id": "b1a1e001-0004-4001-8001-000000000004",
+      "name": "Avisar por Telegram (opcional)",
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
-      "position": [720, 200],
-      "notes": "Configura credencial de Telegram y tu chatId."
-    },
-    {
-      "parameters": {
-        "operation": "append",
-        "documentId": { "__rl": true, "value": "YOUR_GOOGLE_SHEET_ID", "mode": "id" },
-        "sheetName": { "__rl": true, "value": "Leads", "mode": "name" },
-        "columns": {
-          "mappingMode": "autoMapInputData",
-          "value": {},
-          "matchingColumns": [],
-          "schema": []
-        },
-        "options": {}
-      },
-      "id": "b1a1e001-0004-4001-8001-000000000004",
-      "name": "Guardar en Sheets",
-      "type": "n8n-nodes-base.googleSheets",
-      "typeVersion": 4,
       "position": [720, 400],
-      "notes": "Crea una hoja con encabezados: name, email, whatsapp, interest, message, source, submitted_at. Configura la credencial de Google."
+      "disabled": true,
+      "notes": "OPCIONAL y desactivado. Para usarlo: configura la credencial de Telegram, pon tu chatId y quita 'disabled'. Da un aviso push instantáneo además del email."
     }
   ],
   "connections": {
@@ -79,8 +80,8 @@
     "Normalizar lead": {
       "main": [
         [
-          { "node": "Avisar por Telegram", "type": "main", "index": 0 },
-          { "node": "Guardar en Sheets", "type": "main", "index": 0 }
+          { "node": "Email a contacto@maudev.cl", "type": "main", "index": 0 },
+          { "node": "Avisar por Telegram (opcional)", "type": "main", "index": 0 }
         ]
       ]
     }
