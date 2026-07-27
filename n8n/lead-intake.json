@@ -48,7 +48,8 @@
         "emailFormat": "html",
         "html": "=<h2 style=\"font-family:sans-serif\">Nuevo lead desde maudev.cl</h2>\n<table style=\"font-family:sans-serif;font-size:14px;line-height:1.6\">\n<tr><td><b>Nombre:</b></td><td>{{ $json.name }}</td></tr>\n<tr><td><b>Email:</b></td><td>{{ $json.email }}</td></tr>\n<tr><td><b>WhatsApp:</b></td><td>{{ $json.whatsapp }}</td></tr>\n<tr><td><b>Interés:</b></td><td>{{ $json.interest }}</td></tr>\n<tr><td><b>Mensaje:</b></td><td>{{ $json.message }}</td></tr>\n<tr><td><b>Origen:</b></td><td>{{ $json.source }}</td></tr>\n<tr><td><b>Enviado:</b></td><td>{{ $json.submitted_at }}</td></tr>\n</table>\n<p style=\"font-family:sans-serif;font-size:13px;color:#666\">Responde este correo para contactar al lead directamente (reply-to apunta a su email).</p>",
         "options": {
-          "replyTo": "={{ $json.email }}"
+          "replyTo": "={{ $json.email }}",
+          "appendAttribution": false
         }
       },
       "id": "b1a1e001-0003-4001-8001-000000000003",
