@@ -78,53 +78,71 @@ export default {
       });
     }
 
-    if (!env.RESEND_API_KEY) {
-      return new Response(JSON.stringify({ error: "RESEND_API_KEY no configurada" }), {
-        status: 500,
-        headers: { "Content-Type": "application/json", ...cors },
-      });
-    }
-
-    const subject = `🎯 Nuevo lead: ${data.name || "sin nombre"} — ${data.interest || data.content_name || "sin interés"}`;
-
-    const emailPayload = {
-      from: FROM,
-      to: [TO],
-      subject,
-      html: buildHtml(data),
-    };
-    // reply_to al email del lead, si lo dejó, para responder directo.
-    if (data.email) emailPayload.reply_to = data.email;
-
-    let result;
-    try {
-      const res = await fetch("https://api.resend.com/emails", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${env.RESEND_API_KEY}`,
-        },
-        body: JSON.stringify(emailPayload),
-      });
-      result = await res.json().catch(() => ({}));
-      if (!res.ok) {
-        // No perdemos el lead en silencio: devolvemos error para que el sitio
-        // muestre "intenta de nuevo" en vez de un falso éxito.
-        return new Response(JSON.stringify({ error: "Resend rechazó el envío", detail: result }), {
-          status: 502,
-          headers: { "Content-Type": "application/json", ...cors },
-        });
+    // 1. Guardar en D1 primero: es la fuente durable del lead. Si la base falla,
+    //    el email queda como respaldo; no perdemos el lead por un tema de DB.
+    let stored = false;
+    if (env.DB) {
+      try {
+        await env.DB.prepare(
+          "INSERT INTO leads (name, email, whatsapp, interest, message, source, submitted_at) VALUES (?, ?, ?, ?, ?, ?, ?)"
+        )
+          .bind(
+            data.name ?? null,
+            data.email ?? null,
+            data.whatsapp ?? null,
+            data.interest ?? data.content_name ?? null,
+            data.message ?? null,
+            data.source ?? null,
+            data.submitted_at ?? null
+          )
+          .run();
+        stored = true;
+      } catch {
+        // seguimos: el email es el respaldo
       }
-    } catch (err) {
-      return new Response(JSON.stringify({ error: "No se pudo enviar el email", detail: String(err) }), {
-        status: 502,
-        headers: { "Content-Type": "application/json", ...cors },
-      });
     }
 
-    return new Response(JSON.stringify({ ok: true, id: result.id }), {
-      status: 200,
-      headers: { "Content-Type": "application/json", ...cors },
-    });
+    // 2. Email de aviso (notificación) vía Resend.
+    let emailed = false;
+    let emailDetail;
+    if (env.RESEND_API_KEY) {
+      const emailPayload = {
+        from: FROM,
+        to: [TO],
+        subject: `🎯 Nuevo lead: ${data.name || "sin nombre"} — ${data.interest || data.content_name || "sin interés"}`,
+        html: buildHtml(data),
+      };
+      // reply_to al email del lead, si lo dejó, para responder directo.
+      if (data.email) emailPayload.reply_to = data.email;
+      try {
+        const res = await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${env.RESEND_API_KEY}`,
+          },
+          body: JSON.stringify(emailPayload),
+        });
+        emailDetail = await res.json().catch(() => ({}));
+        emailed = res.ok;
+      } catch (err) {
+        emailDetail = String(err);
+      }
+    }
+
+    // 3. El lead se considera capturado si quedó GUARDADO o AVISADO. Solo
+    //    devolvemos error (para que el sitio pida reintentar) si fallan ambas
+    //    vías — únicamente ahí se perdería de verdad.
+    if (!stored && !emailed) {
+      return new Response(
+        JSON.stringify({ error: "No se pudo capturar el lead", detail: emailDetail }),
+        { status: 502, headers: { "Content-Type": "application/json", ...cors } }
+      );
+    }
+
+    return new Response(
+      JSON.stringify({ ok: true, stored, emailed, id: emailDetail?.id }),
+      { status: 200, headers: { "Content-Type": "application/json", ...cors } }
+    );
   },
 };
