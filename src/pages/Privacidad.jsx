@@ -18,8 +18,10 @@ import { t, lang } from "@/lib/i18n";
 //   los derechos del titular.
 //
 // ⚠️ MANTENER SINCRONIZADO: la lista de encargados (sección 05) tiene que
-// reflejar los servicios que REALMENTE tocan datos. Si cambias el destino de
-// los leads en src/lib/leads.js, o agregas un pixel, actualiza esta lista.
+// reflejar los servicios que REALMENTE tocan datos. Ya se desfasó dos veces:
+// primero declaraba Supabase después de migrar a n8n, y luego Telegram después
+// de migrar al worker. Hoy los leads van a workers/lead-intake/: se guardan en
+// Cloudflare D1 y se avisan por correo vía Resend. Si eso cambia, cambia acá.
 //
 // ⚠️ REVISAR CON ABOGADO antes de publicar. Esto es una base técnica bien
 // informada, no asesoría legal.
@@ -160,7 +162,7 @@ const sections = [
       <>
         <div className="space-y-2">
           {[
-            { k: t("Consultas que no terminan en proyecto", "Enquiries that don't become a project"), v: t("12 meses", "12 months") },
+            { k: t("Formularios guardados en nuestra base de datos", "Form submissions stored in our database"), v: t("12 meses", "12 months") },
             { k: t("Datos de clientes con proyecto ejecutado", "Client data for delivered projects"), v: t("Mientras dure la relación y 5 años después", "For the relationship plus 5 years") },
             { k: t("Documentos tributarios (boletas, facturas)", "Tax documents (invoices, receipts)"), v: t("6 años, por obligación del SII", "6 years, as required by the SII") },
             { k: t("Registros de analítica", "Analytics records"), v: t("14 meses (configuración de GA4)", "14 months (GA4 setting)") },
@@ -199,14 +201,14 @@ const sections = [
               loc: t("EE.UU. / red global", "USA / global network"),
             },
             {
-              name: "n8n",
-              desc: t("Automatización que recibe los formularios y nos avisa", "Automation that receives form submissions and notifies us"),
-              loc: t("Servidor propio — ver nota abajo", "Self-hosted — see note below"),
+              name: "Cloudflare D1",
+              desc: t("Base de datos donde se guardan los formularios que envías", "Database where the forms you submit are stored"),
+              loc: t("EE.UU. / red global", "USA / global network"),
             },
             {
-              name: "Telegram",
-              desc: t("Aviso interno inmediato de un nuevo contacto", "Immediate internal notification of a new contact"),
-              loc: t("Fuera de Chile", "Outside Chile"),
+              name: "Resend",
+              desc: t("Envío del correo que nos avisa de tu contacto", "Delivery of the email that notifies us of your contact"),
+              loc: t("EE.UU.", "USA"),
             },
             {
               name: "Meta",

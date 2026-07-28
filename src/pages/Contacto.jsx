@@ -67,6 +67,11 @@ export default function Contacto() {
   }, [preselected]);
 
   const country = COUNTRIES.find((c) => c.code === form.country) || COUNTRIES[0];
+
+  // Campo trampa contra bots: invisible para una persona, irresistible para un
+  // script que rellena todo lo que encuentra. Si llega con algo, el worker
+  // descarta el envío (y responde 200 para que el bot no aprenda que lo pillaron).
+  const [honeypot, setHoneypot] = useState("");
   const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
 
   const handleSubmit = async (e) => {
@@ -88,6 +93,7 @@ export default function Contacto() {
         interest: form.interest,
         message: form.message.trim(),
         source: "contact_page",
+        empresa_web: honeypot,
         status: "new",
         consent: true,
         ...getLeadAttribution(),
@@ -200,6 +206,18 @@ export default function Contacto() {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+                  {/* Honeypot. aria-hidden + tabIndex -1 para que ningún lector
+                      de pantalla ni tabulación lo alcance. */}
+                  <input
+                    type="text"
+                    name="empresa_web"
+                    value={honeypot}
+                    onChange={(e) => setHoneypot(e.target.value)}
+                    tabIndex={-1}
+                    autoComplete="off"
+                    aria-hidden="true"
+                    className="absolute left-[-9999px] h-0 w-0 opacity-0"
+                  />
                   <div>
                     <label className="text-xs font-mono text-muted-foreground mb-1.5 block">{t("nombre", "name")} *</label>
                     <Input value={form.name} onChange={set("name")} placeholder={t("Tu nombre", "Your name")} className="bg-background border-border h-11" required />

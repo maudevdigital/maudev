@@ -1,0 +1,28 @@
+# Normaliza los finales de línea a LF dentro del repositorio.
+#
+# Sin esto, Windows y la sincronización de OneDrive reescriben CRLF ↔ LF y git
+# reporta el archivo COMPLETO como modificado aunque no cambie ni un carácter.
+# Pasó con worker.js: 148 líneas añadidas y 148 borradas en un archivo de 148.
+#
+# El costo real no es estético: los diffs se vuelven ilegibles, no puedes revisar
+# tus propios cambios, y cualquier merge produce conflictos en archivos que nadie
+# tocó.
+* text=auto eol=lf
+
+# Binarios: git no debe intentar convertir nada acá.
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.webp  binary
+*.gif   binary
+*.ico   binary
+*.mp4   binary
+*.mp3   binary
+*.wav   binary
+*.pdf   binary
+*.woff  binary
+*.woff2 binary
+
+# Archivos que sí o sí llevan CRLF por convención de Windows.
+*.bat   text eol=crlf
+*.cmd   text eol=crlf

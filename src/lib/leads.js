@@ -1,7 +1,8 @@
 // Envío de leads del sitio. Único punto de salida: así el día de mañana se
 // cambia el destino en UN solo lugar.
 //
-// Destino: VITE_LEAD_WEBHOOK_URL → webhook de n8n.
+// Destino: VITE_LEAD_WEBHOOK_URL → worker de Cloudflare (workers/lead-intake/),
+// que guarda el lead en D1 y avisa por correo vía Resend.
 //
 // ⚠️ Ya NO hay fallback. Antes caía al worker `ig-autopost/notify-lead`, pero
 // ese worker se dio de baja junto con el flujo de subida automática a redes.
@@ -16,10 +17,10 @@
 // El payload se reenvía tal cual lo arma cada formulario (name, email, whatsapp,
 // interest, message, source, atribución de campaña, etc.).
 
-const N8N_WEBHOOK = import.meta.env.VITE_LEAD_WEBHOOK_URL || "";
+const LEAD_WEBHOOK = import.meta.env.VITE_LEAD_WEBHOOK_URL || "";
 
 export async function submitLead(data) {
-  if (!N8N_WEBHOOK) {
+  if (!LEAD_WEBHOOK) {
     // Falla temprano y con mensaje claro, en vez de hacer fetch a la nada.
     console.error(
       "[maudev] VITE_LEAD_WEBHOOK_URL no está configurada: el formulario no tiene dónde enviar el lead. " +
@@ -28,7 +29,7 @@ export async function submitLead(data) {
     throw new Error("Lead webhook not configured");
   }
 
-  const res = await fetch(N8N_WEBHOOK, {
+  const res = await fetch(LEAD_WEBHOOK, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ ...data, submitted_at: new Date().toISOString() }),
