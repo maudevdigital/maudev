@@ -2,7 +2,6 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { api } from "@/api/maudev";
 import { trackLeadEvent } from "@/lib/MetaPixelTracker";
-import { t } from "@/lib/i18n";
 
 // Envío de leads en un solo lugar. Antes este bloque (crear lead + trackear en
 // Meta/GA + loading + toasts) estaba copiado en los 4 formularios. Cada form
@@ -25,11 +24,11 @@ export function useLeadSubmit() {
       if (track) await trackLeadEvent(track);
       setSent(true);
       if (successMessage !== null) {
-        toast.success(successMessage || t("Mensaje enviado. Te contactaremos pronto.", "Message sent. We'll get back to you soon."));
+        toast.success(successMessage || "Mensaje enviado. Te contactaremos pronto.");
       }
       return true;
     } catch {
-      toast.error(t("No pudimos enviar el mensaje. Intenta nuevamente.", "We couldn't send your message. Please try again."));
+      toast.error("No pudimos enviar el mensaje. Intenta nuevamente.");
       return false;
     } finally {
       setLoading(false);

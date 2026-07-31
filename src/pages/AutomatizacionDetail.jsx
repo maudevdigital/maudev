@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import { priceFor } from "@/lib/region";
 import { getAutomationBySlug } from "@/data/automations";
 import { useSeo } from "@/lib/useSeo";
-import { t } from "@/lib/i18n";
 
 // Landing de conversión de una automatización. Estructura pensada para que un
 // visitante que cae desde un reel/anuncio entienda el dolor, el resultado y
@@ -99,13 +98,13 @@ export default function AutomatizacionDetail() {
             <div className="flex flex-wrap items-center gap-3 mb-6">
               <Button size="lg" className="font-bold" onClick={() => setIsOpen(true)}>
                 <ShoppingCart className="h-4 w-4" />
-                {t("Solicitar implementación", "Buy now")}
+                Solicitar implementación
               </Button>
               <Link
                 to="/contacto"
                 className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted-foreground hover:text-primary transition-colors"
               >
-                {t("¿Dudas? Diagnóstico gratis", "Questions? Free assessment")}
+                ¿Dudas? Diagnóstico gratis
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
@@ -162,7 +161,7 @@ export default function AutomatizacionDetail() {
       <section className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-center mb-12">
-            {t("Lo que cambia en tu día a día", "What changes in your day-to-day")}
+            Lo que cambia en tu día a día
           </h2>
           <div className="grid sm:grid-cols-3 gap-6">
             {auto.outcomes.map((o) => (
@@ -185,7 +184,7 @@ export default function AutomatizacionDetail() {
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-card/40 border-y border-border/40">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-center mb-12">
-            {t("Cómo funciona", "How it works")}
+            Cómo funciona
           </h2>
           <div className="space-y-5">
             {auto.howItWorks.map((step, idx) => (
@@ -209,7 +208,7 @@ export default function AutomatizacionDetail() {
           <div className="max-w-4xl mx-auto text-center">
             <div className="inline-flex items-center gap-1.5 text-xs font-mono text-muted-foreground uppercase tracking-wider mb-5">
               <Plug className="h-3.5 w-3.5" />
-              {t("Se conecta con", "Connects with")}
+              Se conecta con
             </div>
             <div className="flex flex-wrap justify-center gap-3">
               {auto.integrations.map((int) => (
@@ -230,7 +229,7 @@ export default function AutomatizacionDetail() {
         <section className="py-16 px-4 sm:px-6 lg:px-8 bg-card/40 border-y border-border/40">
           <div className="max-w-3xl mx-auto">
             <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-center mb-10">
-              {t("Preguntas frecuentes", "Frequently asked questions")}
+              Preguntas frecuentes
             </h2>
             <div className="space-y-4">
               {auto.faqs.map((f) => (
@@ -248,7 +247,7 @@ export default function AutomatizacionDetail() {
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto bg-primary/5 border border-primary/20 rounded-2xl p-8 sm:p-12 text-center">
           <h2 className="text-2xl sm:text-3xl font-black tracking-tight mb-3">
-            {t("¿Lo activamos en tu negocio?", "Shall we set it up for your business?")}
+            ¿Lo activamos en tu negocio?
           </h2>
           <div className="flex items-baseline justify-center gap-2 mb-6">
             <span className="text-3xl font-black tracking-tight text-primary font-mono">{priceFor(auto).main}</span>
@@ -257,13 +256,13 @@ export default function AutomatizacionDetail() {
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Button size="lg" className="font-bold" onClick={() => setIsOpen(true)}>
               <ShoppingCart className="h-4 w-4" />
-              {t("Solicitar implementación", "Buy now")}
+              Solicitar implementación
             </Button>
             <Link
               to="/contacto"
               className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted-foreground hover:text-primary transition-colors"
             >
-              {t("Hablar con nosotros primero", "Talk to us first")}
+              Hablar con nosotros primero
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>

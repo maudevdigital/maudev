@@ -8,8 +8,10 @@
 # Rutas históricas sin contenido propio.
 /cotizador          /contacto             301
 /diagnostico-web    /contacto             301
-/blog               /                     301
-/blog/*             /                     301
+
+# /blog/* NO se resuelve acá: lo maneja functions/blog/[[path]].js, que hace
+# 301 uno por uno cuando existe equivalente y 410 Gone cuando no. `_redirects`
+# no soporta 410 y un 301 masivo a la portada sería un soft 404.
 
 # Un asset inexistente debe responder 404. Si cae en el fallback SPA,
 # Cloudflare puede cachear index.html bajo una URL de JavaScript y dejar la

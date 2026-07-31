@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { t } from "@/lib/i18n";
 import { getConsent, setConsent, initConsent, GRANTED, DENIED } from "@/lib/consent";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -84,20 +83,17 @@ export default function CookieConsent() {
             className="w-full max-w-md rounded-2xl border border-border bg-background p-6 shadow-2xl shadow-black/40 sm:p-7"
           >
             <h2 id="cookie-title" className="text-lg font-semibold text-foreground">
-              {t("Antes de continuar", "Before you continue")}
+              Antes de continuar
             </h2>
             <p id="cookie-description" className="mt-3 text-sm leading-relaxed text-muted-foreground">
-              {t(
-                "Usamos cookies para medir qué páginas funcionan y si un anuncio trajo un contacto. Si prefieres que no, el sitio funciona exactamente igual.",
-                "We use cookies to measure which pages work and whether an ad brought in a contact. If you'd rather not, the site works exactly the same."
-              )}{" "}
+              {"Usamos cookies para medir qué páginas funcionan y si un anuncio trajo un contacto. Si prefieres que no, el sitio funciona exactamente igual."}{" "}
               <a
                 href="/privacidad"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary underline underline-offset-2 hover:no-underline"
               >
-                {t("Más detalles", "More details")}
+                Más detalles
               </a>
             </p>
 
@@ -107,14 +103,14 @@ export default function CookieConsent() {
                 onClick={() => decide(GRANTED)}
                 className="h-11 flex-1 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
               >
-                {t("Aceptar", "Accept")}
+                Aceptar
               </button>
               <button
                 type="button"
                 onClick={() => decide(DENIED)}
                 className="h-11 flex-1 rounded-full border border-border px-4 text-sm font-medium text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground"
               >
-                {t("Rechazar", "Reject")}
+                Rechazar
               </button>
             </div>
           </div>

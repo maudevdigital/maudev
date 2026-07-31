@@ -5,7 +5,6 @@ import PageShell from "@/components/landing/PageShell";
 import ComparisonSection from "@/components/landing/ComparisonSection";
 import N8nProductsSection from "@/components/landing/N8nProductsSection";
 import { Button } from "@/components/ui/button";
-import { t } from "@/lib/i18n";
 import { CTA_LABEL } from "@/data/site";
 
 // Precios "desde", coherentes con la FAQ de la landing. Si cambias un precio
@@ -13,69 +12,60 @@ import { CTA_LABEL } from "@/data/site";
 const plans = [
   {
     icon: Globe,
-    name: t("Landing + SEO", "Landing + SEO"),
+    name: "Landing + SEO",
     price: "$390.000",
     currency: "CLP",
-    prefix: t("desde", "from"),
-    time: t("5 a 10 días", "5 to 10 days"),
-    desc: t(
-      "Una página de alta conversión que aparece en Google y captura leads desde el primer día.",
-      "A high-converting page that ranks on Google and captures leads from day one."
-    ),
+    prefix: "desde",
+    time: "5 a 10 días",
+    desc: "Una página de alta conversión que aparece en Google y captura leads desde el primer día.",
     includes: [
-      t("Diseño profesional a medida (no plantilla)", "Custom professional design (no template)"),
-      t("SEO técnico completo y carga rápida", "Full technical SEO and fast loading"),
-      t("Formulario de captura conectado a tu base", "Capture form connected to your database"),
-      t("Google Analytics 4 y Meta Pixel configurados", "Google Analytics 4 and Meta Pixel configured"),
-      t("Dominio y hosting dejados funcionando", "Domain and hosting left running"),
+      "Diseño profesional a medida (no plantilla)",
+      "SEO técnico completo y carga rápida",
+      "Formulario de captura conectado a tu base",
+      "Google Analytics 4 y Meta Pixel configurados",
+      "Dominio y hosting dejados funcionando",
     ],
     excludes: [
-      t("Redacción de contenido extenso (se cotiza aparte)", "Long-form copywriting (quoted separately)"),
-      t("Mantención mensual (plan opcional)", "Monthly maintenance (optional plan)"),
+      "Redacción de contenido extenso (se cotiza aparte)",
+      "Mantención mensual (plan opcional)",
     ],
   },
   {
     icon: Bot,
-    name: t("Automatización", "Automation"),
+    name: "Automatización",
     price: "$290.000",
     currency: "CLP",
-    prefix: t("desde", "from"),
-    time: t("1 a 3 semanas", "1 to 3 weeks"),
-    desc: t(
-      "Workflows y bots que eliminan trabajo manual: seguimiento de leads, respuestas automáticas, integraciones.",
-      "Workflows and bots that remove manual work: lead follow-up, automatic replies, integrations."
-    ),
+    prefix: "desde",
+    time: "1 a 3 semanas",
+    desc: "Workflows y bots que eliminan trabajo manual: seguimiento de leads, respuestas automáticas, integraciones.",
     includes: [
-      t("Diagnóstico del proceso a automatizar", "Assessment of the process to automate"),
-      t("Bot o workflow construido y conectado", "Bot or workflow built and connected"),
-      t("Integración entre tus herramientas actuales", "Integration between your current tools"),
-      t("Despliegue y puesta en marcha funcionando", "Deployment and launch, up and running"),
-      t("Documentación de uso y traspaso", "Usage documentation and handover"),
+      "Diagnóstico del proceso a automatizar",
+      "Bot o workflow construido y conectado",
+      "Integración entre tus herramientas actuales",
+      "Despliegue y puesta en marcha funcionando",
+      "Documentación de uso y traspaso",
     ],
     excludes: [
-      t("Licencias de herramientas de terceros", "Third-party tool licenses"),
+      "Licencias de herramientas de terceros",
     ],
   },
   {
     icon: Code2,
-    name: t("Software a medida", "Custom software"),
-    price: t("Cotización", "Custom quote"),
+    name: "Software a medida",
+    price: "Cotización",
     currency: "",
     prefix: "",
-    time: t("2 a 6+ semanas", "2 to 6+ weeks"),
-    desc: t(
-      "Apps, dashboards, sistemas internos y plataformas SaaS. El alcance se define contigo en el roadmap inicial.",
-      "Apps, dashboards, internal systems and SaaS platforms. The scope is defined with you in the initial roadmap."
-    ),
+    time: "2 a 6+ semanas",
+    desc: "Apps, dashboards, sistemas internos y plataformas SaaS. El alcance se define contigo en el roadmap inicial.",
     includes: [
-      t("Roadmap técnico con hitos y precio fijo", "Technical roadmap with milestones and fixed price"),
-      t("Desarrollo iterativo con entregas parciales", "Iterative development with partial deliveries"),
-      t("Código fuente 100% a tu nombre", "Source code 100% in your name"),
-      t("Dominio, servidor y despliegue en producción", "Domain, server and production deployment"),
-      t("Soporte post-entrega incluido", "Post-delivery support included"),
+      "Roadmap técnico con hitos y precio fijo",
+      "Desarrollo iterativo con entregas parciales",
+      "Código fuente 100% a tu nombre",
+      "Dominio, servidor y despliegue en producción",
+      "Soporte post-entrega incluido",
     ],
     excludes: [
-      t("Costos recurrentes de APIs o servicios de terceros (se transparentan en la propuesta)", "Recurring costs of third-party APIs or services (itemized in the proposal)"),
+      "Costos recurrentes de APIs o servicios de terceros (se transparentan en la propuesta)",
     ],
     featured: true,
   },
@@ -83,11 +73,8 @@ const plans = [
 
 export default function Precios() {
   useSeo({
-    title: t("Precios · Maudev", "Pricing · Maudev"),
-    description: t(
-      "Precios publicados de páginas web, software a medida y automatización. Precio fijo por escrito, sin cotizaciones misteriosas.",
-      "Published pricing for websites, custom software and automation. Fixed price in writing, no mystery quotes."
-    ),
+    title: "Precios · Maudev",
+    description: "Precios publicados de páginas web, software a medida y automatización. Precio fijo por escrito, sin cotizaciones misteriosas.",
     path: "/precios",
     noindex: true,
   });
@@ -98,15 +85,12 @@ export default function Precios() {
       <section className="relative pt-32 pb-12 lg:pt-40 overflow-hidden">
         <div className="absolute inset-0 grid-pattern opacity-30 pointer-events-none" />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <span className="kicker">{t("precios", "pricing")}</span>
+          <span className="kicker">{"precios"}</span>
           <h1 className="text-4xl sm:text-5xl font-black tracking-tight mt-3 mb-5">
-            {t("Precios transparentes,", "Transparent pricing,")} <span className="text-primary">{t("sin letra chica", "no fine print")}</span>
+            {"Precios transparentes,"} <span className="text-primary">{"sin letra chica"}</span>
           </h1>
           <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-            {t(
-              "Publicamos lo que casi nadie publica. Estos son valores \"desde\": el precio exacto y fijo lo recibes por escrito en el diagnóstico gratuito, antes de pagar un peso.",
-              "We publish what almost nobody does. These are \"from\" prices: you get the exact fixed price in writing in the free assessment, before paying a cent."
-            )}
+            {"Publicamos lo que casi nadie publica. Estos son valores \"desde\": el precio exacto y fijo lo recibes por escrito en el diagnóstico gratuito, antes de pagar un peso."}
           </p>
         </div>
       </section>
@@ -134,7 +118,7 @@ export default function Precios() {
                 <p className="text-sm text-muted-foreground leading-relaxed mb-6">{p.desc}</p>
 
                 <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider mb-2.5">
-                  {t("Incluye", "Includes")}
+                  Incluye
                 </p>
                 <ul className="space-y-2 mb-5">
                   {p.includes.map((it) => (
@@ -146,7 +130,7 @@ export default function Precios() {
                 </ul>
 
                 <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider mb-2.5">
-                  {t("No incluye", "Doesn't include")}
+                  No incluye
                 </p>
                 <ul className="space-y-2 mb-7">
                   {p.excludes.map((it) => (
@@ -178,24 +162,21 @@ export default function Precios() {
           {/* Condiciones de pago — las mismas del proceso y la FAQ */}
           <div className="mt-10 bg-card border border-border rounded-2xl p-6 sm:p-8">
             <p className="text-sm text-center text-muted-foreground mb-6 pb-6 border-b border-border/40">
-              {t(
-                "Todos los proyectos se entregan funcionando: dominio, hosting o servidor, SSL y la configuración necesaria para operar están considerados en el precio.",
-                "Every project is delivered up and running: domain, hosting or server, SSL and the configuration needed to operate are covered in the price."
-              )}
+              Todos los proyectos se entregan funcionando: dominio, hosting o servidor, SSL y la configuración necesaria para operar están considerados en el precio.
             </p>
             <div className="grid sm:grid-cols-3 gap-6 text-center">
               <div>
-                <p className="text-sm font-bold mb-1">{t("50% / 50%", "50% / 50%")}</p>
-                <p className="text-xs text-muted-foreground">{t("Anticipo al inicio, saldo contra entrega aprobada.", "Upfront at start, balance on approved delivery.")}</p>
+                <p className="text-sm font-bold mb-1">{"50% / 50%"}</p>
+                <p className="text-xs text-muted-foreground">{"Anticipo al inicio, saldo contra entrega aprobada."}</p>
               </div>
               <div>
                 <p className="text-sm font-bold mb-1">CLP · USD · USDT</p>
-                <p className="text-xs text-muted-foreground">{t("Transferencia en Chile; USD o USDT para el extranjero.", "Bank transfer in Chile; USD or USDT abroad.")}</p>
+                <p className="text-xs text-muted-foreground">{"Transferencia en Chile; USD o USDT para el extranjero."}</p>
               </div>
               <div>
-                <p className="text-sm font-bold mb-1">{t("Contrato por escrito", "Written contract")}</p>
+                <p className="text-sm font-bold mb-1">{"Contrato por escrito"}</p>
                 <p className="text-xs text-muted-foreground">
-                  {t("Precio y alcance fijados por escrito antes de empezar.", "Price and scope fixed in writing before we start.")}
+                  Precio y alcance fijados por escrito antes de empezar.
                 </p>
               </div>
             </div>
@@ -204,14 +185,14 @@ export default function Precios() {
           {/* CTA a contacto */}
           <div className="mt-12 text-center">
             <p className="text-sm text-muted-foreground mb-4">
-              {t("¿Quieres un número más cercano a tu caso?", "Want a number closer to your case?")}
+              ¿Quieres un número más cercano a tu caso?
             </p>
             <Link
               to="/contacto"
               className="inline-flex items-center gap-2 text-sm font-semibold text-primary border border-primary/30 px-6 py-3 rounded-xl hover:bg-primary/5 transition-colors"
             >
               <Calculator className="h-4 w-4" />
-              {t("Pedir diagnóstico gratis", "Get a free assessment")}
+              Pedir diagnóstico gratis
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>

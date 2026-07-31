@@ -62,9 +62,15 @@ for (const page of pages) {
   html = replaceMeta(html, "name", "twitter:image", image);
   html = html.replace(/<link\s+rel="canonical"\s+href="[^"]*"\s*\/?>/i, `<link rel="canonical" href="${canonical}" />`);
 
-  const directory = path.join(dist, page.route.replace(/^\//, ""));
-  await fs.mkdir(directory, { recursive: true });
-  await fs.writeFile(path.join(directory, "index.html"), html);
+  // Se escribe `ruta.html` y NO `ruta/index.html`. Con la forma de directorio,
+  // Cloudflare Pages sirve la URL con barra final y responde 308 a la versión
+  // sin barra — que es justo la que declaran el sitemap y el canonical. Eso
+  // dejaba cada página de servicio como "URL con redirección" en Search
+  // Console. Con el archivo plano, /automatizacion responde 200 y la barra
+  // final es la que redirige.
+  const file = path.join(dist, `${page.route.replace(/^\//, "")}.html`);
+  await fs.mkdir(path.dirname(file), { recursive: true });
+  await fs.writeFile(file, html);
 }
 
 console.log(`Metadatos estáticos generados para ${pages.length} rutas.`);

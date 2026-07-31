@@ -69,6 +69,23 @@ try {
     const response = await page.goto(`${baseUrl}${route}`, { waitUntil: "networkidle" });
     assert(response?.ok(), `${route}: respuesta HTTP ${response?.status()}`);
     assert(await page.locator("h1").count() === 1, `${route}: debe tener exactamente un H1`);
+    assert(
+      await page.evaluate(() => document.documentElement.lang) === "es-CL",
+      `${route}: el atributo lang debe ser es-CL`
+    );
+    // El blog se eliminó: ninguna página puede volver a enlazarlo.
+    assert(
+      await page.locator('a[href*="/blog"]').count() === 0,
+      `${route}: hay un enlace al blog eliminado`
+    );
+    // Sin schema de artículos (el sitio ya no publica contenido editorial).
+    const ldTypes = await page.locator('script[type="application/ld+json"]').evaluateAll(
+      (nodes) => nodes.map((node) => node.textContent).join(" ")
+    );
+    assert(
+      !/"@type"\s*:\s*"(Article|BlogPosting|NewsArticle)"/.test(ldTypes),
+      `${route}: contiene schema de artículo`
+    );
     assert((await page.title()).includes("Maudev"), `${route}: title ausente o incompleto`);
     const canonical = await page.locator('link[rel="canonical"]').getAttribute("href");
     const expectedCanonical = route === "/" ? "https://maudev.cl/" : `https://maudev.cl${route}`;
@@ -133,6 +150,32 @@ try {
     const expected = route === "/" ? "https://maudev.cl/" : `https://maudev.cl${route}`;
     assert(sitemap.includes(`<loc>${expected}</loc>`), `Sitemap: falta ${expected}`);
   }
+  assert(!/\/blog/.test(sitemap), "Sitemap: contiene URLs del blog eliminado");
+
+  // Las páginas prerenderizadas deben quedar como `ruta.html` y NO como
+  // `ruta/index.html`. Con la forma de directorio, Cloudflare Pages sirve la
+  // URL con barra final y devuelve 308 a la que publica el sitemap: cada
+  // página de servicio aparecería en Search Console como "URL con redirección".
+  for (const route of ["/automatizacion", "/software-a-medida", "/desarrollo-web", "/ecommerce", "/casos", "/nosotros", "/contacto"]) {
+    const flat = path.join(root, "dist", `${route.slice(1)}.html`);
+    const asDirectory = path.join(root, "dist", route.slice(1), "index.html");
+    assert(
+      await fs.access(flat).then(() => true, () => false),
+      `Prerender: falta dist${route}.html`
+    );
+    assert(
+      await fs.access(asDirectory).then(() => false, () => true),
+      `Prerender: dist${route}/index.html provocaría un 308 hacia la barra final`
+    );
+  }
+
+  // El destino de /blog/* vive en una Function de Cloudflare, no en _redirects:
+  // un 301 masivo a la portada sería un soft 404.
+  const redirects = await fs.readFile(path.join(root, "public", "_redirects"), "utf8");
+  const blogRule = redirects.split("\n").find((line) => /^\/blog/.test(line.trim()));
+  assert(!blogRule, `_redirects: /blog debe resolverse en functions/blog, no acá (${blogRule})`);
+  const blogFunction = await fs.readFile(path.join(root, "functions", "blog", "[[path]].js"), "utf8");
+  assert(/status:\s*410/.test(blogFunction), "functions/blog: falta la respuesta 410 Gone");
 
   await context.close();
   await browser.close();
