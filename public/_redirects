@@ -1,20 +1,15 @@
-# Cloudflare Pages
-#
-# 1) Redirecciones 301 de las páginas que se fusionaron en la home.
-#    Van ANTES del fallback SPA: Cloudflare evalúa en orden y gana la primera
-#    regla que calza. Esto es lo que lee Google para traspasar el ranking;
-#    el <Navigate> de React solo cubre la navegación interna.
-/servicios          /#automatizaciones   301
-/automatizaciones   /#automatizaciones   301
-/portafolio         /#portafolio         301
-/sobre-nosotros     /                    301
+# Redirecciones permanentes de la arquitectura anterior.
+/servicios          /automatizacion      301
+/automatizaciones   /automatizacion      301
+/portafolio         /casos               301
+/portafolio/*       /casos/:splat        301
+/sobre-nosotros     /nosotros            301
 
-# 2) Rutas que estaban en el sitemap pero nunca existieron (devolvían 404).
-/cotizador          /contacto            301
-/diagnostico-web    /contacto            301
-/blog               /                    301
-/blog/*             /                    301
+# Rutas históricas sin contenido propio.
+/cotizador          /contacto             301
+/diagnostico-web    /contacto             301
+/blog               /                     301
+/blog/*             /                     301
 
-# 3) Fallback SPA: cualquier otra ruta sirve index.html con 200 para que
-#    React Router resuelva /automatizaciones/:slug, /portafolio/:id, etc.
-/*                  /index.html          200
+# Fallback para React Router.
+/*                  /index.html           200

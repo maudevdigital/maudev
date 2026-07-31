@@ -1,9 +1,9 @@
-import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
 import { Trash2 } from "lucide-react";
 import { t, lang } from "@/lib/i18n";
+import { useSeo } from "@/lib/useSeo";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // ELIMINACIÓN DE DATOS
@@ -171,14 +171,16 @@ const sections = [
 ];
 
 export default function EliminacionDatos() {
-  useEffect(() => {
-    document.title = t("Eliminación de datos · Maudev", "Data Deletion · Maudev");
-  }, []);
+  useSeo({
+    title: "Eliminación de datos · Maudev",
+    description: "Cómo solicitar la eliminación, rectificación o portabilidad de tus datos personales en Maudev.",
+    path: "/eliminacion-datos",
+  });
 
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
-      <section className="pt-32 pb-24">
+      <main className="pt-32 pb-24">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
 
           {/* Header */}
@@ -249,7 +251,7 @@ export default function EliminacionDatos() {
             </Link>
           </div>
         </div>
-      </section>
+      </main>
       <Footer />
     </div>
   );

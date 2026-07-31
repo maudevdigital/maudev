@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Check, ArrowRight, ShieldCheck, Zap, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { priceFor } from "@/lib/region";
-import { motion } from "framer-motion";
 import { N8N_PRODUCTS } from "@/data/n8nProducts";
 import CheckoutModal from "./CheckoutModal";
 import { t } from "@/lib/i18n";
@@ -39,15 +38,11 @@ export default function N8nProductsSection() {
 
         {/* Grid de Productos */}
         <div className="grid md:grid-cols-3 gap-6 items-stretch">
-          {N8N_PRODUCTS.map((prod, idx) => {
+          {N8N_PRODUCTS.map((prod) => {
             const Icon = prod.icon;
             return (
-              <motion.div
+              <div
                 key={prod.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1, duration: 0.4 }}
                 className={`flex flex-col bg-card border rounded-2xl p-7 relative transition-all duration-300 ${
                   prod.featured
                     ? "border-primary/50 shadow-lg shadow-primary/5 ring-1 ring-primary/30"
@@ -110,7 +105,7 @@ export default function N8nProductsSection() {
                     <ArrowRight className="h-4 w-4" />
                   </Button>
                 </div>
-              </motion.div>
+              </div>
             );
           })}
         </div>

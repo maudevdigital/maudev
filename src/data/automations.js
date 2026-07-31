@@ -20,7 +20,7 @@ import { t } from "@/lib/i18n";
 // `video` (reel vertical en la landing). Si la imagen no existe todavía, la
 // tarjeta cae al ícono — no se rompe nada. Prompts: docs/prompts-imagenes.md §7
 
-export const AUTOMATIONS = [
+const AUTOMATIONS = [
   {
     slug: "agenda-automatica",
     priceCLP: "$149.000", priceUSD: "$159 USD", period: t("Instalación única", "One-time setup"),

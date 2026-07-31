@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "postbuild": "node scripts/prerender-meta.mjs",
     "lint": "eslint .",
+    "test": "node scripts/validate-site.mjs",
     "preview": "vite preview",
     "capture": "node scripts/capture-portfolio.mjs",
     "gen:blog-cover": "node scripts/gen-blog-cover.mjs",
@@ -18,33 +20,27 @@
     "gen:logo": "node scripts/gen-logo.mjs"
   },
   "dependencies": {
-    "@radix-ui/react-slot": "^1.2.4",
     "@tailwindcss/vite": "^4.2.4",
-    "@tanstack/react-query": "^5.100.9",
-    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "framer-motion": "^12.38.0",
     "lucide-react": "^1.14.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
-    "react-router-dom": "^7.15.0",
+    "react-router-dom": "^7.18.2",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.5.0",
-    "tailwindcss": "^4.2.4",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss": "^4.2.4"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^6.0.1",
     "eslint": "^10.2.1",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.5.0",
     "pdfkit": "^0.19.1",
     "playwright": "^1.56.0",
-    "sharp": "^0.34.5",
+    "sharp": "^0.35.3",
     "vite": "^8.0.10"
   }
 }

@@ -1,54 +1,23 @@
-import { useLocation } from 'react-router-dom';
-import { t } from '@/lib/i18n';
-import { useSeo } from '@/lib/useSeo';
-
+import { ArrowLeft } from "lucide-react";
+import { Link } from "react-router-dom";
+import PageShell from "@/components/landing/PageShell";
+import { useSeo } from "@/lib/useSeo";
 
 export default function PageNotFound() {
-    const location = useLocation();
-    const pageName = location.pathname.substring(1);
+  useSeo({ title: "Página no encontrada · Maudev", description: "La página que buscas no existe o cambió de dirección.", noindex: true });
 
-    // En una SPA sobre Cloudflare Pages toda ruta desconocida devuelve index.html
-    // con 200 (soft 404). No podemos emitir un 404 real sin enumerar cada slug,
-    // así que evitamos el problema de fondo: que Google indexe rutas inventadas.
-    useSeo({
-        title: t("Página no encontrada · Maudev", "Page not found · Maudev"),
-        noindex: true,
-    });
-
-    return (
-        <div className="min-h-screen flex items-center justify-center p-6 bg-slate-50">
-            <div className="max-w-md w-full">
-                <div className="text-center space-y-6">
-                    {/* 404 Error Code */}
-                    <div className="space-y-2">
-                        <h1 className="text-7xl font-light text-slate-300">404</h1>
-                        <div className="h-0.5 w-16 bg-slate-200 mx-auto"></div>
-                    </div>
-                    
-                    {/* Main Message */}
-                    <div className="space-y-3">
-                        <h2 className="text-2xl font-medium text-slate-800">
-                            {t("Página no encontrada", "Page Not Found")}
-                        </h2>
-                        <p className="text-slate-600 leading-relaxed">
-                            {t("La página", "The page")} <span className="font-medium text-slate-700">"{pageName}"</span> {t("no existe en este sitio.", "could not be found in this application.")}
-                        </p>
-                    </div>
-                    
-                    {/* Action Button */}
-                    <div className="pt-6">
-                        <button 
-                            onClick={() => window.location.href = '/'} 
-                            className="inline-flex items-center px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 hover:border-slate-300 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500"
-                        >
-                            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                            </svg>
-                            {t("Ir al inicio", "Go Home")}
-                        </button>
-                    </div>
-                </div>
-            </div>
+  return (
+    <PageShell>
+      <main className="grid min-h-[75vh] place-items-center px-4 pb-20 pt-32 text-center">
+        <div>
+          <p className="font-mono text-sm font-semibold text-primary">ERROR 404</p>
+          <h1 className="mt-5 text-5xl font-extrabold tracking-[-0.06em] sm:text-7xl">Esta ruta no lleva a ningún proceso.</h1>
+          <p className="mx-auto mt-5 max-w-lg text-lg leading-relaxed text-muted-foreground">Puede que la página haya cambiado o que el enlace esté incompleto.</p>
+          <Link to="/" className="mt-8 inline-flex h-12 items-center gap-2 rounded-full bg-primary px-6 text-sm font-bold text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+            <ArrowLeft className="h-4 w-4" aria-hidden="true" /> Volver al inicio
+          </Link>
         </div>
-    )
+      </main>
+    </PageShell>
+  );
 }

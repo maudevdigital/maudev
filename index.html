@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="es">
+<html lang="es-CL">
   <head>
     <meta charset="UTF-8" />
     <meta name="color-scheme" content="light dark" />
     <!-- Color de la barra superior del navegador móvil según preferencia del sistema -->
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#faf9f4" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0b1815" media="(prefers-color-scheme: dark)" />
     <script>
       // Tema claro/oscuro: respeta la elección manual del usuario (localStorage
       // "theme", seteado por el toggle del navbar). Si no hay elección guardada,
@@ -30,27 +30,31 @@
     </script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Desarrollo de software a medida, páginas web con IA y carrito de compras, y automatización de procesos para PYMEs en Chile. Precio fijo por escrito y diagnóstico gratis." />
+    <meta name="description" content="Automatizamos respuestas, reservas, pagos, facturación, inventario y seguimiento para PYMEs. Alcance definido, código a tu nombre y soporte directo." />
     <meta name="robots" content="index, follow" />
-    <meta property="og:title" content="Maudev · Desarrollo web, software y automatización en Chile" />
-    <meta property="og:description" content="Sitios web, sistemas a medida y automatización para PYMEs y emprendedores en Chile. Diseño, código y soporte en un solo equipo." />
+    <link rel="canonical" href="https://maudev.cl/" />
+    <meta property="og:title" content="Automatización y software para empresas en Chile · Maudev" />
+    <meta property="og:description" content="Automatizamos las tareas que frenan tu negocio con sistemas claros, conectados y bajo tu control." />
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Maudev" />
     <meta property="og:locale" content="es_CL" />
     <meta property="og:url" content="https://maudev.cl" />
     <meta property="og:image" content="https://maudev.cl/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Automatización y software para empresas en Chile · Maudev" />
+    <meta name="twitter:description" content="Automatizamos las tareas que frenan tu negocio con sistemas claros, conectados y bajo tu control." />
     <meta name="twitter:image" content="https://maudev.cl/og-image.png" />
-    <title>Maudev · Software a medida, páginas web y automatización con IA en Chile</title>
+    <title>Automatización y software para empresas en Chile · Maudev</title>
     <!-- Preconnect a orígenes críticos (acelera fuentes y datos → mejor LCP). -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
     <!-- Fuentes: carga ASYNC (no bloquea el render). display=swap → texto al instante. -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" media="print" onload="this.media='all'" />
     <noscript>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" />
     </noscript>
 
     <!-- Analítica (GA4 + Meta Pixel) BAJO CONSENTIMIENTO.
@@ -110,22 +114,32 @@
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "ProfessionalService",
-        "name": "Maudev",
-        "description": "Desarrollo web, software a medida y automatización para PYMEs y emprendedores en Chile.",
-        "areaServed": "CL",
-        "email": "contacto@maudev.cl",
-        "url": "https://maudev.cl",
-        "priceRange": "Desde $290.000 CLP",
-        "founder": { "@type": "Person", "name": "Lucas Maulén" },
-        "serviceType": ["Desarrollo Web", "Software a Medida", "Automatización de Procesos", "Consultoría TI"]
+        "@graph": [
+          {
+            "@type": ["Organization", "ProfessionalService"],
+            "@id": "https://maudev.cl/#organization",
+            "name": "Maudev",
+            "description": "Automatización y software para empresas y PYMEs en Chile.",
+            "areaServed": { "@type": "Country", "name": "Chile" },
+            "email": "contacto@maudev.cl",
+            "url": "https://maudev.cl/",
+            "logo": "https://maudev.cl/logo-1024.png",
+            "founder": { "@type": "Person", "name": "Lucas Maulén" },
+            "serviceType": ["Automatización de procesos", "Software a medida", "Desarrollo web", "Ecommerce"]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://maudev.cl/#website",
+            "url": "https://maudev.cl/",
+            "name": "Maudev",
+            "inLanguage": "es-CL",
+            "publisher": { "@id": "https://maudev.cl/#organization" }
+          }
+        ]
       }
     </script>
   </head>
   <body>
-    <!-- Meta Pixel noscript fallback (debe ir en body, no en head) -->
-    <noscript><img height="1" width="1" style="display:none"
-      src="https://www.facebook.com/tr?id=3002561230082800&ev=PageView&noscript=1"/></noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

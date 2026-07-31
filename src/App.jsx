@@ -1,7 +1,5 @@
 import { lazy, Suspense } from "react"
 import { Toaster } from "sonner"
-import { QueryClientProvider } from '@tanstack/react-query'
-import { queryClientInstance } from '@/lib/query-client'
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import ScrollToTop from './lib/ScrollToTop';
@@ -13,6 +11,9 @@ import Landing from './pages/Landing'; // eager: es la home (LCP) y la entrada m
 // El resto se carga BAJO DEMANDA (code-splitting) → bundle inicial mucho menor.
 const AutomatizacionDetail = lazy(() => import('./pages/AutomatizacionDetail'));
 const CasoEstudio = lazy(() => import('./pages/CasoEstudio'));
+const ServicePage = lazy(() => import('./pages/ServicePage'));
+const Cases = lazy(() => import('./pages/Cases'));
+const About = lazy(() => import('./pages/About'));
 const Contacto = lazy(() => import('./pages/Contacto'));
 const Precios = lazy(() => import('./pages/Precios'));
 const Terminos = lazy(() => import('./pages/Terminos'));
@@ -28,7 +29,7 @@ const Spinner = () => (
 
 function App() {
   return (
-    <QueryClientProvider client={queryClientInstance}>
+    <>
       <Router>
         <ScrollToTop />
         <MetaPixelTracker />
@@ -36,8 +37,18 @@ function App() {
           <Routes>
             <Route path="/" element={<Landing />} />
 
+            {/* Arquitectura comercial: una intención principal por página. */}
+            <Route path="/automatizacion" element={<ServicePage serviceKey="automatizacion" />} />
+            <Route path="/software-a-medida" element={<ServicePage serviceKey="software-a-medida" />} />
+            <Route path="/desarrollo-web" element={<ServicePage serviceKey="desarrollo-web" />} />
+            <Route path="/ecommerce" element={<ServicePage serviceKey="ecommerce" />} />
+            <Route path="/casos" element={<Cases />} />
+            <Route path="/casos/:projectId" element={<CasoEstudio />} />
+            <Route path="/nosotros" element={<About />} />
+
             {/* Páginas de conversión: es donde aterrizan los anuncios */}
             <Route path="/automatizaciones/:slug" element={<AutomatizacionDetail />} />
+            {/* Compatibilidad en cliente; Cloudflare realiza el 301 real. */}
             <Route path="/portafolio/:projectId" element={<CasoEstudio />} />
             <Route path="/contacto" element={<Contacto />} />
 
@@ -56,10 +67,10 @@ function App() {
             {/* Rutas fusionadas en la home. Se mantienen como redirect en cliente
                 por si alguien llega desde un link viejo; el 301 real lo hace
                 Cloudflare vía public/_redirects (eso es lo que lee Google). */}
-            <Route path="/servicios" element={<Navigate to="/#automatizaciones" replace />} />
-            <Route path="/automatizaciones" element={<Navigate to="/#automatizaciones" replace />} />
-            <Route path="/portafolio" element={<Navigate to="/#portafolio" replace />} />
-            <Route path="/sobre-nosotros" element={<Navigate to="/" replace />} />
+            <Route path="/servicios" element={<Navigate to="/automatizacion" replace />} />
+            <Route path="/automatizaciones" element={<Navigate to="/automatizacion" replace />} />
+            <Route path="/portafolio" element={<Navigate to="/casos" replace />} />
+            <Route path="/sobre-nosotros" element={<Navigate to="/nosotros" replace />} />
 
             <Route path="*" element={<PageNotFound />} />
           </Routes>
@@ -68,7 +79,7 @@ function App() {
         <CookieConsent />
       </Router>
       <Toaster richColors position="top-right" />
-    </QueryClientProvider>
+    </>
   )
 }
 

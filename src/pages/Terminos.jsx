@@ -1,8 +1,8 @@
-import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
 import { t, lang } from "@/lib/i18n";
+import { useSeo } from "@/lib/useSeo";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // TÉRMINOS Y CONDICIONES
@@ -340,14 +340,16 @@ const sections = [
 ];
 
 export default function Terminos() {
-  useEffect(() => {
-    document.title = t("Términos y Condiciones · Maudev", "Terms & Conditions · Maudev");
-  }, []);
+  useSeo({
+    title: "Términos y condiciones · Maudev",
+    description: "Condiciones de contratación, entrega, propiedad intelectual y soporte de los servicios de Maudev.",
+    path: "/terminos",
+  });
 
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
-      <section className="pt-32 pb-24">
+      <main className="pt-32 pb-24">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
 
           {/* Header */}
@@ -399,7 +401,7 @@ export default function Terminos() {
             </Link>
           </div>
         </div>
-      </section>
+      </main>
       <Footer />
     </div>
   );

@@ -5,7 +5,6 @@ import PageShell from "@/components/landing/PageShell";
 import ComparisonSection from "@/components/landing/ComparisonSection";
 import N8nProductsSection from "@/components/landing/N8nProductsSection";
 import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
 import { t } from "@/lib/i18n";
 import { CTA_LABEL } from "@/data/site";
 
@@ -90,6 +89,7 @@ export default function Precios() {
       "Published pricing for websites, custom software and automation. Fixed price in writing, no mystery quotes."
     ),
     path: "/precios",
+    noindex: true,
   });
 
   return (
@@ -114,12 +114,9 @@ export default function Precios() {
       <section className="pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-3 gap-5 lg:gap-6 items-stretch">
-            {plans.map((p, i) => (
-              <motion.div
+            {plans.map((p) => (
+              <div
                 key={p.name}
-                initial={{ opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1, duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
                 className={`flex flex-col bg-card border rounded-2xl p-7 ${
                   p.featured ? "border-primary/40 glow-cyan" : "border-border"
                 }`}
@@ -174,7 +171,7 @@ export default function Precios() {
                     </Button>
                   </Link>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
 

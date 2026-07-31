@@ -1,99 +1,83 @@
-import { Mail, MessageCircle } from "lucide-react";
-import { GithubIcon, LinkedinIcon } from "@/components/landing/SocialIcons";
 import { Link } from "react-router-dom";
+import { Mail, MessageCircle } from "lucide-react";
 import Logo from "@/components/landing/Logo";
-import { t } from "@/lib/i18n";
-import { getWhatsAppUrl, whatsappEnabled } from "@/components/landing/WhatsAppFloat";
-import { founder, CTA_LABEL } from "@/data/site";
+import { getWhatsAppUrl } from "@/lib/whatsapp";
+import { CTA_MESSAGE } from "@/data/site";
+import { trackAction } from "@/lib/MetaPixelTracker";
+
+const serviceLinks = [
+  ["Automatización", "/automatizacion"],
+  ["Software a medida", "/software-a-medida"],
+  ["Desarrollo web", "/desarrollo-web"],
+  ["Ecommerce", "/ecommerce"],
+];
 
 export default function Footer() {
-  const year = new Date().getFullYear();
-
   return (
-    <footer className="border-t border-border/30 bg-card/50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-8">
-          <div>
-            <div className="flex items-center gap-2.5 mb-4 text-primary">
-              <Logo size={32} />
-              <span className="text-lg font-bold tracking-tight text-foreground">
-                mau<span className="text-primary">dev</span>
-              </span>
-            </div>
-            <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-              {t(
-                "Desarrollo web, software a medida y automatización para emprendedores y PYMEs en Chile.",
-                "Web development, custom software and automation for founders and SMBs in Chile."
-              )}
+    <footer className="border-t border-border bg-secondary/55">
+      <div className="site-container py-12 sm:py-16">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.35fr_1fr_1fr_1fr]">
+          <div className="max-w-sm">
+            <Link to="/" className="inline-flex items-center gap-2.5" aria-label="Maudev, inicio">
+              <Logo size={30} className="text-primary" />
+              <span className="text-lg font-extrabold tracking-[-0.04em]">mau<span className="text-primary">dev</span></span>
+            </Link>
+            <p className="mt-5 text-sm leading-relaxed text-muted-foreground">
+              Automatización y software para empresas que quieren operar con menos tareas manuales.
             </p>
+            <p className="mt-3 text-xs text-muted-foreground">Chile · Atención remota</p>
           </div>
 
           <div>
-            <h4 className="text-xs font-mono text-primary uppercase tracking-wider mb-4">{t("Empresa", "Company")}</h4>
-            <ul className="space-y-2">
-              <li><Link to="/#automatizaciones" className="text-sm text-muted-foreground hover:text-primary transition-colors">{t("Qué automatizo", "What I automate")}</Link></li>
-              <li><Link to="/#portafolio" className="text-sm text-muted-foreground hover:text-primary transition-colors">{t("Trabajos", "Work")}</Link></li>
-              <li><Link to="/#proceso" className="text-sm text-muted-foreground hover:text-primary transition-colors">{t("Cómo funciona", "How it works")}</Link></li>
-              <li><Link to="/precios" className="text-sm text-muted-foreground hover:text-primary transition-colors">{t("Workflows n8n", "n8n workflows")}</Link></li>
-              <li><Link to="/contacto" className="text-sm text-muted-foreground hover:text-primary transition-colors">{t("Contacto", "Contact")}</Link></li>
+            <h2 className="footer-title">Servicios</h2>
+            <ul className="mt-4 space-y-2.5">
+              {serviceLinks.map(([label, href]) => (
+                <li key={href}><Link to={href} className="footer-link">{label}</Link></li>
+              ))}
             </ul>
           </div>
 
           <div>
-            <h4 className="text-xs font-mono text-primary uppercase tracking-wider mb-4">Legal</h4>
-            <ul className="space-y-2">
-              <li><Link to="/terminos" className="text-sm text-muted-foreground hover:text-primary transition-colors">{t("Términos y condiciones", "Terms & conditions")}</Link></li>
-              <li><Link to="/privacidad" className="text-sm text-muted-foreground hover:text-primary transition-colors">{t("Política de privacidad", "Privacy policy")}</Link></li>
-              <li><Link to="/eliminacion-datos" className="text-sm text-muted-foreground hover:text-primary transition-colors">{t("Eliminación de datos", "Data deletion")}</Link></li>
-              <li><button type="button" onClick={() => window.dispatchEvent(new Event("maudev:open-cookies"))} className="text-sm text-muted-foreground hover:text-primary transition-colors text-left">{t("Preferencias de cookies", "Cookie preferences")}</button></li>
+            <h2 className="footer-title">Maudev</h2>
+            <ul className="mt-4 space-y-2.5">
+              <li><Link to="/casos" className="footer-link">Casos</Link></li>
+              <li><Link to="/nosotros" className="footer-link">Nosotros</Link></li>
+              <li><Link to="/contacto" className="footer-link">Contacto</Link></li>
+              <li><Link to="/privacidad" className="footer-link">Privacidad</Link></li>
+              <li><Link to="/terminos" className="footer-link">Términos</Link></li>
+              <li><Link to="/eliminacion-datos" className="footer-link">Eliminación de datos</Link></li>
             </ul>
           </div>
 
           <div>
-            <h4 className="text-xs font-mono text-primary uppercase tracking-wider mb-4">{t("Contacto", "Contact")}</h4>
-            <a
-              href="mailto:contacto@maudev.cl"
-              className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors mb-3"
-            >
-              <Mail className="h-3.5 w-3.5" />
-              contacto@maudev.cl
-            </a>
-            {whatsappEnabled && (
+            <h2 className="footer-title">Contacto</h2>
+            <div className="mt-4 space-y-3">
+              <a href="mailto:contacto@maudev.cl" className="footer-link inline-flex items-center gap-2">
+                <Mail className="h-4 w-4" aria-hidden="true" /> contacto@maudev.cl
+              </a>
               <a
-                href={getWhatsAppUrl()}
+                href={getWhatsAppUrl(CTA_MESSAGE)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-sm text-[#25D366] hover:underline mb-2"
+                onClick={() => trackAction("whatsapp_click", { ubicacion: "footer" })}
+                className="footer-link inline-flex items-center gap-2"
               >
-                <MessageCircle className="h-3.5 w-3.5" />
-                WhatsApp
+                <MessageCircle className="h-4 w-4" aria-hidden="true" /> WhatsApp
               </a>
-            )}
-            <div className="flex items-center gap-3 mb-3">
-              {founder.github && (
-                <a href={founder.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="text-muted-foreground hover:text-primary transition-colors">
-                  <GithubIcon className="h-4 w-4" />
-                </a>
-              )}
-              {founder.linkedin && (
-                <a href={founder.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-muted-foreground hover:text-primary transition-colors">
-                  <LinkedinIcon className="h-4 w-4" />
-                </a>
-              )}
+              <button
+                type="button"
+                onClick={() => window.dispatchEvent(new Event("maudev:open-cookies"))}
+                className="footer-link block text-left"
+              >
+                Preferencias de cookies
+              </button>
             </div>
-            <Link to="/contacto" className="block text-sm text-primary font-medium hover:underline">
-              {CTA_LABEL} →
-            </Link>
           </div>
         </div>
 
-        <div className="mt-12 pt-6 border-t border-border/30 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <p className="text-xs text-muted-foreground">
-            © {year} <span className="font-semibold text-foreground">mau<span className="text-primary">dev</span></span> · Chile.
-          </p>
-          <p className="text-xs text-muted-foreground">
-            {t("Desarrollo · Automatización · Consultoría TI", "Development · Automation · IT Consulting")}
-          </p>
+        <div className="mt-12 flex flex-col gap-3 border-t border-border pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+          <p>© {new Date().getFullYear()} Maudev. Todos los derechos reservados.</p>
+          <p>Automatización · Software · Desarrollo web</p>
         </div>
       </div>
     </footer>

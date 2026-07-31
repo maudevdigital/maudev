@@ -21,8 +21,8 @@
 
 const KEY = "maudev_region_v1";
 
-export const CL = "CL";
-export const INTL = "INTL";
+const CL = "CL";
+const INTL = "INTL";
 
 const CHILE_TIMEZONES = ["America/Santiago", "Pacific/Easter", "America/Punta_Arenas"];
 
@@ -50,13 +50,6 @@ export function getRegion() {
     if (saved === CL || saved === INTL) return saved;
   } catch { /* almacenamiento bloqueado */ }
   return detect();
-}
-
-/** Cambio manual. Persiste para las siguientes visitas. */
-export function setRegion(r) {
-  const v = r === CL ? CL : INTL;
-  try { localStorage.setItem(KEY, v); } catch { /* no persistible */ }
-  return v;
 }
 
 /**

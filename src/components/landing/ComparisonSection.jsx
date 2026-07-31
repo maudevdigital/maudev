@@ -1,5 +1,4 @@
 import { Check, X, Minus } from "lucide-react";
-import { motion } from "framer-motion";
 import { t } from "@/lib/i18n";
 
 // Comparación honesta: cada celda es defendible. Evitar exageraciones —
@@ -69,11 +68,7 @@ export default function ComparisonSection() {
           </p>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.55, ease: [0.25, 0.46, 0.45, 0.94] }}
+        <div
           className="bg-card border border-border rounded-2xl overflow-hidden overflow-x-auto"
         >
           <table className="w-full min-w-[560px] text-sm">
@@ -108,7 +103,7 @@ export default function ComparisonSection() {
               ))}
             </tbody>
           </table>
-        </motion.div>
+        </div>
 
         <p className="mt-6 text-center text-xs text-muted-foreground font-mono">
           {t(

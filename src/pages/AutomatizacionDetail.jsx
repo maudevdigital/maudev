@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import { ArrowRight, ArrowLeft, Check, AlertTriangle, Plug, ShoppingCart } from "lucide-react";
+import { ArrowRight, Check, AlertTriangle, Plug, ShoppingCart } from "lucide-react";
 import PageShell from "../components/landing/PageShell";
+import Breadcrumbs from "@/components/landing/Breadcrumbs";
 import PageNotFound from "../lib/PageNotFound";
 import CheckoutModal from "../components/landing/CheckoutModal";
 import RiskReversal from "@/components/landing/RiskReversal";
@@ -28,21 +28,28 @@ export default function AutomatizacionDetail() {
           description,
           path: `/automatizaciones/${auto.slug}`,
           image: "/og-image.png",
-          type: "product",
+          type: "website",
           jsonLd: {
             "@context": "https://schema.org",
-            "@type": "Service",
-            name: auto.name,
-            description,
-            areaServed: "CL",
-            provider: {
-              "@type": "Organization",
-              name: "Maudev",
-              url: "https://maudev.cl",
-              logo: { "@type": "ImageObject", url: "https://maudev.cl/og-image.png" },
-            },
-            serviceType: "Business process automation",
-            url: `https://maudev.cl/automatizaciones/${auto.slug}`,
+            "@graph": [
+              {
+                "@type": "Service",
+                name: auto.name,
+                description,
+                areaServed: "CL",
+                provider: { "@type": "Organization", name: "Maudev", url: "https://maudev.cl" },
+                serviceType: "Automatización de procesos",
+                url: `https://maudev.cl/automatizaciones/${auto.slug}`,
+              },
+              {
+                "@type": "BreadcrumbList",
+                itemListElement: [
+                  { "@type": "ListItem", position: 1, name: "Inicio", item: "https://maudev.cl/" },
+                  { "@type": "ListItem", position: 2, name: "Automatización", item: "https://maudev.cl/automatizacion" },
+                  { "@type": "ListItem", position: 3, name: auto.name, item: `https://maudev.cl/automatizaciones/${auto.slug}` },
+                ],
+              },
+            ],
           },
         }
       : {}
@@ -61,13 +68,7 @@ export default function AutomatizacionDetail() {
       <section className="pt-28 sm:pt-32 pb-14 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-10 items-center">
           <div>
-            <Link
-              to="/#automatizaciones"
-              className="inline-flex items-center gap-1.5 text-xs font-mono text-muted-foreground hover:text-foreground mb-5"
-            >
-              <ArrowLeft className="h-3.5 w-3.5" />
-              {t("Todas las automatizaciones", "All automations")}
-            </Link>
+            <Breadcrumbs items={[{ label: "Automatización", href: "/automatizacion" }, { label: auto.name }]} />
 
             <div className="h-12 w-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center mb-5 text-primary">
               <Icon className="h-6 w-6" />
@@ -98,7 +99,7 @@ export default function AutomatizacionDetail() {
             <div className="flex flex-wrap items-center gap-3 mb-6">
               <Button size="lg" className="font-bold" onClick={() => setIsOpen(true)}>
                 <ShoppingCart className="h-4 w-4" />
-                {t("Comprar ahora", "Buy now")}
+                {t("Solicitar implementación", "Buy now")}
               </Button>
               <Link
                 to="/contacto"
@@ -164,13 +165,9 @@ export default function AutomatizacionDetail() {
             {t("Lo que cambia en tu día a día", "What changes in your day-to-day")}
           </h2>
           <div className="grid sm:grid-cols-3 gap-6">
-            {auto.outcomes.map((o, idx) => (
-              <motion.div
+            {auto.outcomes.map((o) => (
+              <div
                 key={o.title}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.08, duration: 0.4 }}
                 className="bg-card border border-border rounded-2xl p-6"
               >
                 <div className="inline-flex h-9 w-9 rounded-lg bg-primary/10 border border-primary/20 items-center justify-center text-primary mb-4">
@@ -178,7 +175,7 @@ export default function AutomatizacionDetail() {
                 </div>
                 <h3 className="text-base font-bold mb-1.5">{o.title}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{o.desc}</p>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
@@ -260,7 +257,7 @@ export default function AutomatizacionDetail() {
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Button size="lg" className="font-bold" onClick={() => setIsOpen(true)}>
               <ShoppingCart className="h-4 w-4" />
-              {t("Comprar ahora", "Buy now")}
+              {t("Solicitar implementación", "Buy now")}
             </Button>
             <Link
               to="/contacto"

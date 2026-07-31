@@ -29,12 +29,12 @@ export default function CheckoutModal({ product, isOpen, onClose }) {
     // los maneja este componente (successMessage: null suprime el toast por defecto).
     const ok = await submit({
       lead: {
-        nombre: name,
+        name,
         email: email,
-        telefono: phone,
-        servicio: `Compra n8n: ${product.name}`,
-        mensaje: `Intención de compra: ${product.name} - Método: ${paymentMethod}`,
-        creado_en: new Date().toISOString(),
+        whatsapp: phone || undefined,
+        interest: `Implementación: ${product.name}`,
+        message: `Solicitud de implementación: ${product.name}. Medio preferido: ${paymentMethod}.`,
+        source: "automation_detail",
       },
       successMessage: null,
     });
@@ -59,11 +59,13 @@ export default function CheckoutModal({ product, isOpen, onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+    <div role="dialog" aria-modal="true" aria-labelledby="checkout-title" className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-in fade-in duration-200">
       <div className="relative w-full max-w-lg bg-card border border-border rounded-2xl p-6 sm:p-8 shadow-2xl overflow-hidden">
         {/* Botón cerrar */}
         <button
+          type="button"
           onClick={onClose}
+          aria-label="Cerrar solicitud"
           className="absolute top-4 right-4 p-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
         >
           <X className="h-5 w-5" />
@@ -77,7 +79,7 @@ export default function CheckoutModal({ product, isOpen, onClose }) {
               </span>
             </div>
 
-            <h3 className="text-2xl font-black tracking-tight mb-1">{product.name}</h3>
+            <h3 id="checkout-title" className="text-2xl font-black tracking-tight mb-1">{product.name}</h3>
             <div className="flex items-baseline gap-2 mb-4">
               <span className="text-2xl font-bold font-mono text-primary">{priceFor(product, getRegion()).main}</span>
               {priceFor(product, getRegion()).secondary && (
@@ -88,17 +90,18 @@ export default function CheckoutModal({ product, isOpen, onClose }) {
 
             <p className="text-xs text-muted-foreground mb-6 leading-relaxed">
               {t(
-                "Completa tus datos de facturación para recibir tu paquete de automatización n8n y tu boleta/factura electrónica SII.",
+                "Completa tus datos para confirmar compatibilidad y recibir los pasos de implementación.",
                 "Enter your billing details to receive your n8n automation package and your SII electronic tax receipt."
               )}
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-xs font-mono text-muted-foreground mb-1">
+                <label htmlFor="checkout-name" className="block text-xs font-mono text-muted-foreground mb-1">
                   {t("Nombre completo o Razón Social *", "Full name or Business Name *")}
                 </label>
                 <input
+                  id="checkout-name"
                   type="text"
                   required
                   value={name}
@@ -112,10 +115,11 @@ export default function CheckoutModal({ product, isOpen, onClose }) {
             <RiskReversal className="mt-4" />
 
               <div>
-                <label className="block text-xs font-mono text-muted-foreground mb-1">
+                <label htmlFor="checkout-email" className="block text-xs font-mono text-muted-foreground mb-1">
                   {t("Correo electrónico (para envío de entrega y boleta) *", "Email address (for delivery and receipt) *")}
                 </label>
                 <input
+                  id="checkout-email"
                   type="email"
                   required
                   value={email}
@@ -126,10 +130,11 @@ export default function CheckoutModal({ product, isOpen, onClose }) {
               </div>
 
               <div>
-                <label className="block text-xs font-mono text-muted-foreground mb-1">
+                <label htmlFor="checkout-phone" className="block text-xs font-mono text-muted-foreground mb-1">
                   {t("WhatsApp / Teléfono (opcional para soporte)", "WhatsApp / Phone (optional for support)")}
                 </label>
                 <input
+                  id="checkout-phone"
                   type="tel"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
@@ -179,7 +184,7 @@ export default function CheckoutModal({ product, isOpen, onClose }) {
                 ) : (
                   <>
                     <CreditCard className="h-4 w-4" />
-                    {t("Continuar al Pago Seguro", "Proceed to Secure Payment")}
+                    {t("Solicitar implementación", "Request implementation")}
                     <ArrowRight className="h-4 w-4" />
                   </>
                 )}
@@ -189,7 +194,7 @@ export default function CheckoutModal({ product, isOpen, onClose }) {
             <div className="mt-4 pt-3 border-t border-border/40 flex items-center justify-between text-[11px] text-muted-foreground">
               <span className="flex items-center gap-1">
                 <Lock className="h-3 w-3 text-primary" />
-                {t("Pago encriptado SSL", "SSL encrypted payment")}
+                {t("Datos protegidos con SSL", "SSL encrypted payment")}
               </span>
               <span className="flex items-center gap-1">
                 <ShieldCheck className="h-3 w-3 text-primary" />

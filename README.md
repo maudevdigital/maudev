@@ -1,6 +1,6 @@
 # Maudev
 
-Sitio de **Maudev** — automatización con IA para PYMEs en Chile.
+Sitio de **Maudev** — automatización y software para empresas en Chile.
 React 19 + Vite + Tailwind CSS v4, desplegado en Cloudflare Pages.
 
 **Sin backend propio.** El contenido (portafolio, automatizaciones, productos)
@@ -34,27 +34,26 @@ silencio. El CTA principal es WhatsApp, que no depende de esto. Ver
 
 ## Arquitectura
 
-### Un solo CTA en todo el sitio
+### Conversión
 
-La acción única es **escribir por WhatsApp**. Se define en `src/data/site.js`
-(`CTA_LABEL`, `CTA_MESSAGE`) y se renderiza siempre con
-`src/components/landing/CtaButton.jsx`.
-
-> Si agregas un botón que compita con ese, estás agregando una razón para dudar.
-> El único CTA secundario permitido es el link a `/contacto` para quien prefiere
-> dejar sus datos, y va deliberadamente en texto plano, nunca como botón.
-
-El prop `context` de `CtaButton` precarga el mensaje de WhatsApp según desde
-dónde se hizo clic, así sabes qué estaba mirando el cliente sin preguntarle.
+El CTA principal lleva al formulario breve de `/contacto`. WhatsApp se mantiene
+como alternativa directa en contacto y footer. `CtaButton.jsx` registra el
+contexto del clic; el formulario conserva UTM y envía el lead al webhook actual.
 
 ### Rutas
 
 | Ruta | Qué es |
 |---|---|
-| `/` | Home única. Absorbió lo que antes eran `/servicios`, `/precios`, `/automatizaciones` y `/portafolio` |
+| `/` | Portada: posicionamiento, tres categorías, demostración, casos y CTA |
+| `/automatizacion` | Automatización de procesos para PYMEs |
+| `/software-a-medida` | Sistemas internos, portales y dashboards |
+| `/desarrollo-web` | Sitios web orientados a conversión y SEO técnico |
+| `/ecommerce` | Ecommerce conectado a pagos, inventario y pedidos |
+| `/casos` | Índice de proyectos reales |
+| `/casos/:projectId` | Caso de estudio con problema, solución y beneficio |
+| `/nosotros` | Forma de trabajo y responsable del servicio |
 | `/automatizaciones/:slug` | 8 landings de conversión (destino de los anuncios) |
-| `/portafolio/:projectId` | Casos de estudio |
-| `/contacto` | Formulario, como alternativa a WhatsApp |
+| `/contacto` | Formulario breve y acceso directo a WhatsApp |
 | `/precios` | Productos n8n autoservicio. **Fuera del navbar a propósito**: es otra audiencia (técnica, internacional, en USD) y mezclarla en la home diluye el mensaje |
 | `/terminos` `/privacidad` `/eliminacion-datos` | Legales — obligatorias para pautar en Meta |
 | `/ig` `/links` | Link in bio |
@@ -69,12 +68,11 @@ interna. Si agregas o quitas rutas, actualiza los dos lugares **y**
 `src/pages/Landing.jsx` compone, en este orden:
 
 ```
-Hero → AutomationsGrid → PortafolioPreview → Steps → Faq → FinalCta
+Hero → Problema → 3 categorías → Demostración → Casos → Proceso → Confianza → FAQ → CTA
 ```
 
-Cada sección termina en el mismo botón de WhatsApp. La garantía vive dentro de
-`FinalCta` y no en su propia sección: es lo último que hay que leer antes de
-apretar, no un tema aparte.
+Las promesas de alcance, propiedad, garantía y soporte se concentran en una sola
+sección. La portada no repite CTA ni beneficios después de cada bloque.
 
 ---
 
@@ -84,15 +82,14 @@ Estos archivos de la raíz **no son parte del bundle web** — son para levantar
 poblar el n8n self-hosted que recibe los leads y corre las automatizaciones:
 
 - `docker-compose.yml` — levanta n8n en local/VPS.
-- `n8n/lead-intake.json` y `calificador-whatsapp.workflow.json` — workflows para
-  importar en n8n (captación de leads y calificación por WhatsApp).
+- `n8n/lead-intake.json` — workflow para importar en n8n y recibir leads.
 
 Se usan a mano; no los invoca ningún build ni workflow de GitHub. Ver
 [`docs/`](docs/) para el resto del contexto operativo.
 
 ## Scripts de generación de contenido
 
-Los generadores de `scripts/` (portadas de blog, carruseles, logo, guía PDF)
+Los generadores de `scripts/` (portadas de blog, carruseles, logo SEO y guía PDF)
 están registrados en `package.json` con el prefijo `gen:`. Ej.:
 
 ```bash
@@ -109,9 +106,8 @@ Producen media para redes; no forman parte del build del sitio.
   `muted`). Los originales en 1080×1920 están en `_media-archivo/`.
 - `_media-archivo/` está **gitignoreado**. Ahí viven los reels y carruseles de
   Instagram, que no tienen por qué viajar en el bundle web.
-- Imágenes del home: van en `public/img/`. Los prompts para generarlas están en
-  [`docs/prompts-imagenes.md`](docs/prompts-imagenes.md). Mientras no existan, cada
-  `<img>` tiene `onError` que oculta el contenedor — el sitio no se rompe.
+- `public/img/auto/` contiene las imágenes de respaldo de las landings de
+  automatizaciones. Sus prompts están en [`docs/prompts-imagenes.md`](docs/prompts-imagenes.md).
 
 > ⚠️ No vuelvas a poner media pesada en `public/`. Todo lo que esté ahí se
 > despliega en cada build. Fue el motivo de que el repo llegara a 771 MB.

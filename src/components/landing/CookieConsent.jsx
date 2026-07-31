@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import { t } from "@/lib/i18n";
 import { getConsent, setConsent, initConsent, GRANTED, DENIED } from "@/lib/consent";
 
@@ -23,6 +22,7 @@ import { getConsent, setConsent, initConsent, GRANTED, DENIED } from "@/lib/cons
 
 export default function CookieConsent() {
   const [visible, setVisible] = useState(false);
+  const dialogRef = useRef(null);
 
   useEffect(() => {
     // Si ya había aceptado antes, carga los scripts sin volver a preguntar.
@@ -40,8 +40,28 @@ export default function CookieConsent() {
   useEffect(() => {
     if (!visible) return;
     const prev = document.body.style.overflow;
+    const previousFocus = document.activeElement;
+    const focusable = dialogRef.current?.querySelectorAll("button, a[href]") || [];
+    focusable[0]?.focus();
+    const trapFocus = (event) => {
+      if (event.key !== "Tab" || !focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
     document.body.style.overflow = "hidden";
-    return () => { document.body.style.overflow = prev; };
+    window.addEventListener("keydown", trapFocus);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", trapFocus);
+      previousFocus?.focus?.();
+    };
   }, [visible]);
 
   const decide = (value) => {
@@ -49,30 +69,24 @@ export default function CookieConsent() {
     setVisible(false);
   };
 
+  if (!visible) return null;
+
   return (
-    <AnimatePresence>
-      {visible && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.2, ease: "easeOut" }}
+        <div
           role="dialog"
           aria-modal="true"
-          aria-label={t("Aviso de cookies", "Cookie notice")}
+          aria-labelledby="cookie-title"
+          aria-describedby="cookie-description"
           className="print-hidden fixed inset-0 z-100 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
         >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96, y: 12 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.96, y: 12 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
+          <div
+            ref={dialogRef}
             className="w-full max-w-md rounded-2xl border border-border bg-background p-6 shadow-2xl shadow-black/40 sm:p-7"
           >
-            <h2 className="text-lg font-semibold text-foreground">
+            <h2 id="cookie-title" className="text-lg font-semibold text-foreground">
               {t("Antes de continuar", "Before you continue")}
             </h2>
-            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+            <p id="cookie-description" className="mt-3 text-sm leading-relaxed text-muted-foreground">
               {t(
                 "Usamos cookies para medir qué páginas funcionan y si un anuncio trajo un contacto. Si prefieres que no, el sitio funciona exactamente igual.",
                 "We use cookies to measure which pages work and whether an ad brought in a contact. If you'd rather not, the site works exactly the same."
@@ -103,9 +117,7 @@ export default function CookieConsent() {
                 {t("Rechazar", "Reject")}
               </button>
             </div>
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+          </div>
+        </div>
   );
 }

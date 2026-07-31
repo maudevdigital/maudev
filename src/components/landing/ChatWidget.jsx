@@ -1,8 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, X, Calendar, Calculator, Download } from "lucide-react";
-import { getWhatsAppUrl } from "./WhatsAppFloat";
+import { getWhatsAppUrl } from "@/lib/whatsapp";
 import { founder } from "@/data/site";
 import { t } from "@/lib/i18n";
 
@@ -80,25 +79,20 @@ export default function ChatWidget() {
       icon: Calculator,
       label: t("Ver automatizaciones", "See automations"),
       sub: t("Agenda, boletas, cobros y más", "Booking, invoicing, payments & more"),
-      onClick: () => { close(); navigate("/automatizaciones"); },
+      onClick: () => { close(); navigate("/automatizacion"); },
     },
     {
       icon: Download,
       label: t("Ver portafolio", "See portfolio"),
       sub: t("Proyectos reales en producción", "Real projects in production"),
-      onClick: () => { close(); navigate("/portafolio"); },
+      onClick: () => { close(); navigate("/casos"); },
     },
   ];
 
   return (
-    <div className="print-hidden fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3">
-      <AnimatePresence>
+    <div className="print-hidden fixed bottom-5 right-5 z-50 hidden flex-col items-end gap-3 sm:flex">
         {open && (
-          <motion.div
-            initial={{ opacity: 0, y: 16, scale: 0.96 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 16, scale: 0.96 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
+          <div
             className="w-[calc(100vw-2.5rem)] max-w-xs rounded-2xl border border-border bg-card shadow-2xl shadow-black/40 overflow-hidden"
           >
             {/* Header */}
@@ -161,24 +155,18 @@ export default function ChatWidget() {
                 </>
               )}
             </div>
-          </motion.div>
+          </div>
         )}
-      </AnimatePresence>
 
       {/* Burbuja */}
-      <motion.button
+      <button
         onClick={toggle}
         aria-label={t("Abrir chat", "Open chat")}
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 1.2, duration: 0.35, ease: "easeOut" }}
-        whileHover={{ scale: 1.06 }}
-        whileTap={{ scale: 0.94 }}
-        className="relative h-13 w-13 rounded-full bg-primary text-primary-foreground shadow-lg shadow-black/25 flex items-center justify-center"
+        className="relative flex h-13 w-13 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-black/25 transition-transform hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
       >
         {open ? <X className="h-5 w-5" /> : <MessageCircle className="h-5.5 w-5.5" />}
         {!open && !dismissed && <span className="absolute -top-0.5 -right-0.5 h-3 w-3 rounded-full bg-green-500 border-2 border-background" />}
-      </motion.button>
+      </button>
     </div>
   );
 }
