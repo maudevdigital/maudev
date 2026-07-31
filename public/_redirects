@@ -11,5 +11,10 @@
 /blog               /                     301
 /blog/*             /                     301
 
+# Un asset inexistente debe responder 404. Si cae en el fallback SPA,
+# Cloudflare puede cachear index.html bajo una URL de JavaScript y dejar la
+# aplicación en blanco durante un despliegue.
+/assets/*            /404.html             404
+
 # Fallback para React Router.
 /*                  /index.html           200

@@ -7,9 +7,14 @@
   Cross-Origin-Opener-Policy: same-origin-allow-popups
   Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=()
 
-# Assets con hash → caché larga (mejora "caché eficiente").
+# Revalidar los chunks evita fijar en caché una respuesta 404 durante la breve
+# propagación entre el HTML de un deploy y sus assets.
 /assets/*
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=0, must-revalidate
+
+/404.html
+  Cache-Control: no-store
+  X-Robots-Tag: noindex
 
 # Imágenes del sitio: cambian solo al desplegar una nueva versión.
 /img/*
