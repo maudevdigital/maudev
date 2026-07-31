@@ -20,7 +20,10 @@ export default defineConfig({
         // Vendors pesados en chunks cacheables aparte del código de la app.
         manualChunks(id) {
           if (!id.includes('node_modules')) return;
-          if (id.includes('/react-router') || id.includes('/react-dom') || id.includes('/react/') || id.includes('/scheduler/')) return 'react-vendor';
+          // `react-vendor` quedó cacheado como HTML en un edge de Cloudflare
+          // durante un deploy anterior. El nombre nuevo invalida esa URL sin
+          // sacrificar el cache largo de los assets con hash.
+          if (id.includes('/react-router') || id.includes('/react-dom') || id.includes('/react/') || id.includes('/scheduler/')) return 'react-core';
           if (id.includes('/moment')) return 'moment';
         },
       },
