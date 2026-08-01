@@ -18,8 +18,8 @@ import CtaButton from "@/components/landing/CtaButton";
 // "Proceso" y "Preguntas" se encuentran bajando y viven en el menú móvil:
 // en el header solo sumaban ancho y obligaban a leer más para elegir.
 const navigation = [
-  { label: "Soluciones", id: "soluciones", enHeader: true },
-  { label: "Proyectos", id: "casos", enHeader: true },
+  { label: "Servicios", id: "soluciones", enHeader: true },
+  { label: "Portafolio", id: "casos", enHeader: true },
   { label: "Proceso", id: "proceso", enHeader: false },
   { label: "Preguntas", id: "preguntas", enHeader: false },
 ];
@@ -149,7 +149,7 @@ export default function Navbar() {
         <div className="flex h-15 items-center justify-between gap-3 px-3 sm:h-16 sm:px-5">
           <Link to="/" aria-label="Maudev, ir al inicio" className="group flex shrink-0 items-center gap-2.5">
             <Logo size={28} className="text-primary transition-transform duration-200 group-hover:rotate-6" />
-            <span className="font-display text-[1.05rem] font-bold tracking-[-0.03em] text-foreground">
+            <span className="text-[1.05rem] font-extrabold tracking-[-0.04em] text-foreground">
               mau<span className="text-primary">dev</span>
             </span>
           </Link>
@@ -163,7 +163,7 @@ export default function Navbar() {
                   href={`/#${item.id}`}
                   onClick={(event) => goToSection(event, item.id)}
                   aria-current={isActive ? "true" : undefined}
-                  className={`group relative rounded-lg px-3 py-2 font-mono text-[11px] font-medium uppercase tracking-[0.14em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+                  className={`group relative rounded-lg px-3 py-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
                     isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
@@ -179,7 +179,7 @@ export default function Navbar() {
             })}
             <Link
               to="/contacto"
-              className="rounded-lg px-3 py-2 font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="rounded-lg px-3 py-2 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               Contacto
             </Link>
