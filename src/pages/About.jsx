@@ -7,14 +7,14 @@ import { useSeo } from "@/lib/useSeo";
 
 const principles = [
   { icon: MessagesSquare, title: "Hablar claro", text: "Explicamos decisiones, límites y costos sin pedirte que aprendas jerga técnica." },
-  { icon: Code2, title: "Construir para operar", text: "Priorizamos sistemas mantenibles, accesibles y fáciles de entregar." },
+  { icon: Code2, title: "Construir para operar", text: "Priorizamos sitios rápidos, accesibles y fáciles de mantener en el tiempo." },
   { icon: BadgeCheck, title: "Prometer lo comprobable", text: "No usamos cifras, plazos ni resultados que el proyecto no pueda respaldar." },
 ];
 
 export default function About() {
   useSeo({
     title: "Nosotros · Maudev",
-    description: "Conoce cómo trabaja Maudev: automatización y software con comunicación directa, alcance definido y propiedad para el cliente.",
+    description: "Cómo trabaja Maudev: desarrollo web con comunicación directa, precio cerrado por escrito y los accesos siempre a tu nombre.",
     path: "/nosotros",
     image: "/og-image.png",
     jsonLd: {

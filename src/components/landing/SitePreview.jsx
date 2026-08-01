@@ -39,7 +39,7 @@ export default function SitePreview() {
           <span className="flex gap-2" aria-hidden="true">
             <span className="h-2 w-8 rounded-full bg-white/12" />
             <span className="h-2 w-8 rounded-full bg-white/12" />
-            <span className="h-2 w-12 rounded-full bg-primary/70" />
+            <span className="h-2 w-12 rounded bg-primary/70" />
           </span>
         </div>
 
@@ -53,8 +53,8 @@ export default function SitePreview() {
         </div>
 
         <div className="mt-6 flex items-center gap-3" aria-hidden="true">
-          <span className="h-8 w-32 rounded-full bg-primary" />
-          <span className="h-8 w-20 rounded-full border border-white/15" />
+          <span className="h-8 w-32 rounded-lg bg-primary" />
+          <span className="h-8 w-20 rounded-lg border border-white/15" />
         </div>
 
         <div className="mt-7 grid grid-cols-3 gap-2.5" aria-hidden="true">

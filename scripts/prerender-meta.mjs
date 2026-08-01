@@ -16,18 +16,18 @@ const pages = [
   })),
   {
     route: "/casos",
-    title: "Casos de automatización, software y desarrollo web · Maudev",
-    description: "Proyectos reales de Maudev explicados por su problema, la solución construida y el beneficio operativo.",
+    title: "Proyectos de desarrollo web y automatización · Maudev",
+    description: "Sitios web y sistemas que construimos, explicados por el problema que resolvían y lo que cambió después.",
   },
   {
     route: "/nosotros",
     title: "Nosotros · Maudev",
-    description: "Conoce cómo trabaja Maudev: automatización y software con comunicación directa, alcance definido y propiedad para el cliente.",
+    description: "Cómo trabaja Maudev: desarrollo web con comunicación directa, precio cerrado por escrito y los accesos siempre a tu nombre.",
   },
   {
     route: "/contacto",
-    title: "Contacto · Cuéntanos qué quieres automatizar · Maudev",
-    description: "Describe el proceso que quieres automatizar. Te diremos si es viable, qué necesitaríamos y cómo podría implementarse.",
+    title: "Contacto · Cotiza tu sitio web · Maudev",
+    description: "Cuéntanos qué vendes y a quién. Te decimos qué tipo de sitio necesitas, cuánto costaría y en cuánto tiempo estaría publicado.",
   },
   ...projects.map((project) => ({
     route: `/casos/${project.id}`,

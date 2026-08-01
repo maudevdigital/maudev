@@ -77,7 +77,7 @@ export default function AutomatizacionDetail() {
               {auto.badges.map((b) => (
                 <span
                   key={b}
-                  className="text-[10px] font-mono px-2.5 py-1 rounded-full bg-primary/10 text-primary border border-primary/20 uppercase tracking-wider font-bold"
+                  className="text-[10px] font-mono px-2.5 py-1 rounded-xl bg-primary/10 text-primary border border-primary/20 uppercase tracking-wider font-bold"
                 >
                   {b}
                 </span>
@@ -189,7 +189,7 @@ export default function AutomatizacionDetail() {
           <div className="space-y-5">
             {auto.howItWorks.map((step, idx) => (
               <div key={step.title} className="flex gap-5 items-start">
-                <div className="shrink-0 h-10 w-10 rounded-full bg-primary text-primary-foreground font-black font-mono flex items-center justify-center">
+                <div className="shrink-0 h-10 w-10 rounded-xl bg-primary text-primary-foreground font-black font-mono flex items-center justify-center">
                   {idx + 1}
                 </div>
                 <div className="pt-1">

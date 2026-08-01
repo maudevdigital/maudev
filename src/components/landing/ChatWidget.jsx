@@ -97,7 +97,7 @@ export default function ChatWidget() {
             {/* Header */}
             <div className="flex items-center gap-3 px-4 py-3 bg-secondary/60 border-b border-border">
               <div className="relative">
-                <div className="h-9 w-9 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center text-sm font-black text-primary">
+                <div className="h-9 w-9 rounded-xl bg-primary/15 border border-primary/30 flex items-center justify-center text-sm font-black text-primary">
                   m
                 </div>
                 <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-green-500 border-2 border-card" />
@@ -161,7 +161,7 @@ export default function ChatWidget() {
       <button
         onClick={toggle}
         aria-label={"Abrir chat"}
-        className="relative flex h-13 w-13 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-black/25 transition-transform hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+        className="relative flex h-13 w-13 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-lg shadow-black/25 transition-transform hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
       >
         {open ? <X className="h-5 w-5" /> : <MessageCircle className="h-5.5 w-5.5" />}
         {!open && !dismissed && <span className="absolute -top-0.5 -right-0.5 h-3 w-3 rounded-full bg-green-500 border-2 border-background" />}

@@ -138,7 +138,7 @@ export default function Contacto() {
 
                     {error && <p className="mt-5 rounded-lg border border-error/25 bg-error/8 p-3 text-sm text-error" role="alert">{error}</p>}
 
-                    <button type="submit" disabled={loading} className="mt-6 inline-flex h-13 w-full items-center justify-center gap-2 rounded-full bg-primary px-6 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-wait disabled:opacity-65">
+                    <button type="submit" disabled={loading} className="mt-6 inline-flex h-13 w-full items-center justify-center gap-2 rounded-xl bg-primary px-6 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-wait disabled:opacity-65">
                       {loading ? "Enviando…" : "Enviar mi proceso"} <Send className="h-4 w-4" aria-hidden="true" />
                     </button>
                     <p className="mt-4 text-center text-[11px] leading-relaxed text-muted-foreground">Al enviar aceptas nuestra <a href="/privacidad" className="underline underline-offset-2 hover:text-primary">política de privacidad</a>.</p>

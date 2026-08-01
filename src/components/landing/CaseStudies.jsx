@@ -38,7 +38,7 @@ export default function CaseStudies() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={`Abrir ${project.title} en una pestaña nueva`}
-                    className="absolute right-3 top-3 grid h-10 w-10 place-items-center rounded-full border border-white/20 bg-black/55 text-white backdrop-blur-sm transition-colors hover:bg-black/75"
+                    className="absolute right-3 top-3 grid h-10 w-10 place-items-center rounded-xl border border-white/20 bg-black/55 text-white backdrop-blur-sm transition-colors hover:bg-black/75"
                   >
                     <ExternalLink className="h-4 w-4" aria-hidden="true" />
                   </a>

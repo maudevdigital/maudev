@@ -65,7 +65,7 @@ export default function ServicePage({ serviceKey }) {
                 <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl">{service.intro}</p>
                 <div className="mt-9"><CtaButton size="lg" context={`servicio-${serviceKey}`} /></div>
               </div>
-              <aside className="rounded-[1.35rem] bg-ink p-6 text-white sm:p-8" aria-label="Señales de que este servicio puede ayudarte">
+              <aside className="rounded-2xl bg-ink p-6 text-white sm:p-8" aria-label="Señales de que este servicio puede ayudarte">
                 <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-primary">Puede servirte si</p>
                 <ul className="mt-6 space-y-4">
                   {service.signals.map((signal) => (
@@ -140,7 +140,7 @@ export default function ServicePage({ serviceKey }) {
               <p className="mt-4 leading-relaxed text-muted-foreground">Se confirman según los accesos y capacidades técnicas de cada proveedor.</p>
             </div>
             <ul className="flex flex-wrap content-start gap-3">
-              {service.integrations.map((item) => <li key={item} className="rounded-full border border-border bg-card px-4 py-2 text-sm font-semibold">{item}</li>)}
+              {service.integrations.map((item) => <li key={item} className="rounded-xl border border-border bg-card px-4 py-2 text-sm font-semibold">{item}</li>)}
             </ul>
           </div>
         </section>

@@ -65,7 +65,7 @@ export default function CheckoutModal({ product, isOpen, onClose }) {
           type="button"
           onClick={onClose}
           aria-label="Cerrar solicitud"
-          className="absolute top-4 right-4 p-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+          className="absolute top-4 right-4 p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
         >
           <X className="h-5 w-5" />
         </button>
@@ -73,7 +73,7 @@ export default function CheckoutModal({ product, isOpen, onClose }) {
         {!submitted ? (
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 font-bold uppercase">
+              <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-xl bg-primary/10 text-primary border border-primary/20 font-bold uppercase">
                 {product.badge || "Checkout Seguro"}
               </span>
             </div>
@@ -200,7 +200,7 @@ export default function CheckoutModal({ product, isOpen, onClose }) {
           </div>
         ) : (
           <div className="py-8 text-center space-y-4">
-            <div className="h-16 w-16 mx-auto rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
+            <div className="h-16 w-16 mx-auto rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
               <CheckCircle className="h-8 w-8" />
             </div>
             <h3 className="text-2xl font-black">{"¡Solicitud de Compra Recibida!"}</h3>

@@ -11,8 +11,8 @@ export default function Cases() {
   const projects = getProjectsInDisplayOrder();
 
   useSeo({
-    title: "Casos de automatización, software y desarrollo web · Maudev",
-    description: "Proyectos reales de Maudev explicados por su problema, la solución construida y el beneficio operativo.",
+    title: "Proyectos de desarrollo web y automatización · Maudev",
+    description: "Sitios web y sistemas que construimos, explicados por el problema que resolvían y lo que cambió después.",
     path: "/casos",
     image: "/og-image.png",
     jsonLd: {
@@ -46,7 +46,7 @@ export default function Cases() {
                 <div className="case-media">
                   <img src={project.image} alt={`Vista del proyecto ${project.title}`} width="1280" height={project.id === "systempro" ? "720" : "2560"} loading={index < 2 ? "eager" : "lazy"} decoding="async" className="h-full w-full object-cover object-top" />
                   {project.url && (
-                    <a href={project.url} target="_blank" rel="noopener noreferrer" aria-label={`Abrir ${project.title}`} className="absolute right-4 top-4 grid h-11 w-11 place-items-center rounded-full bg-black/65 text-white backdrop-blur-sm">
+                    <a href={project.url} target="_blank" rel="noopener noreferrer" aria-label={`Abrir ${project.title}`} className="absolute right-4 top-4 grid h-11 w-11 place-items-center rounded-xl bg-black/65 text-white backdrop-blur-sm">
                       <ExternalLink className="h-4 w-4" aria-hidden="true" />
                     </a>
                   )}

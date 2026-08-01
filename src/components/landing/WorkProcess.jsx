@@ -1,7 +1,7 @@
 const stages = [
-  { number: "01", title: "Diagnóstico", text: "Entendemos el proceso, las excepciones y el resultado que necesitas." },
-  { number: "02", title: "Desarrollo", text: "Construimos por etapas y te mostramos avances que puedes probar." },
-  { number: "03", title: "Implementación", text: "Dejamos el sistema operando, documentado y listo para tu equipo." },
+  { number: "01", title: "Diagnóstico", text: "Revisamos a qué te dedicas, a quién le vendes y qué debe lograr el sitio." },
+  { number: "02", title: "Desarrollo", text: "Diseñamos y programamos por etapas, con avances que puedes ver y comentar." },
+  { number: "03", title: "Implementación", text: "Publicamos el sitio, te entregamos los accesos y queda con mantención si la quieres." },
 ];
 
 export default function WorkProcess() {

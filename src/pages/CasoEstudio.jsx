@@ -68,7 +68,7 @@ export default function CasoEstudio() {
             <div className="relative aspect-[16/9] overflow-hidden rounded-[1.35rem] border border-border bg-secondary shadow-[0_30px_80px_hsl(var(--ink)/0.12)]">
               <img src={project.image} alt={`Vista del proyecto ${project.title}`} width="1280" height={project.id === "systempro" ? "720" : "2560"} decoding="async" className="h-full w-full object-cover object-top" />
               {project.url && (
-                <a href={project.url} target="_blank" rel="noopener noreferrer" className="absolute bottom-4 right-4 inline-flex h-11 items-center gap-2 rounded-full bg-black/75 px-5 text-sm font-bold text-white backdrop-blur-sm hover:bg-black">
+                <a href={project.url} target="_blank" rel="noopener noreferrer" className="absolute bottom-4 right-4 inline-flex h-11 items-center gap-2 rounded-xl bg-black/75 px-5 text-sm font-bold text-white backdrop-blur-sm hover:bg-black">
                   Ver proyecto <ExternalLink className="h-4 w-4" aria-hidden="true" />
                 </a>
               )}
@@ -88,7 +88,7 @@ export default function CasoEstudio() {
               ))}
             </div>
             <div className="mt-10 flex flex-wrap gap-2" aria-label="Tecnologías utilizadas">
-              {project.stack.map((item) => <span key={item} className="rounded-full border border-border bg-background px-3 py-1.5 font-mono text-[10px] text-muted-foreground">{item}</span>)}
+              {project.stack.map((item) => <span key={item} className="rounded-xl border border-border bg-background px-3 py-1.5 font-mono text-[10px] text-muted-foreground">{item}</span>)}
             </div>
           </div>
         </section>

@@ -158,7 +158,7 @@ export default function Navbar() {
                   href={`/#${item.id}`}
                   onClick={(event) => goToSection(event, item.id)}
                   aria-current={isActive ? "true" : undefined}
-                  className={`group relative rounded-full px-3.5 py-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+                  className={`group relative rounded-xl px-3.5 py-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
                     isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
@@ -174,7 +174,7 @@ export default function Navbar() {
             })}
             <Link
               to="/contacto"
-              className="rounded-full px-3.5 py-2 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="rounded-xl px-3.5 py-2 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               Contacto
             </Link>
@@ -186,7 +186,7 @@ export default function Navbar() {
               type="button"
               onClick={toggleTheme}
               aria-label={dark ? "Usar tema claro" : "Usar tema oscuro"}
-              className="grid h-10 w-10 place-items-center rounded-full border border-border text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="grid h-10 w-10 place-items-center rounded-xl border border-border text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </button>
@@ -198,7 +198,7 @@ export default function Navbar() {
               type="button"
               onClick={toggleTheme}
               aria-label={dark ? "Usar tema claro" : "Usar tema oscuro"}
-              className="grid h-10 w-10 place-items-center rounded-full border border-border text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="grid h-10 w-10 place-items-center rounded-xl border border-border text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </button>
@@ -208,7 +208,7 @@ export default function Navbar() {
               aria-expanded={open}
               aria-controls="menu-movil"
               aria-label={open ? "Cerrar menú" : "Abrir menú"}
-              className="grid h-10 w-10 place-items-center rounded-full border border-border text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="grid h-10 w-10 place-items-center rounded-xl border border-border text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>

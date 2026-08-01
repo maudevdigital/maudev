@@ -51,7 +51,7 @@ function Cell({ value, highlight = false }) {
 export default function ComparisonSection() {
   return (
     <section className="relative py-24 lg:py-32 border-t border-border/30 overflow-hidden">
-      <div className="absolute right-0 top-1/3 w-125 h-125 bg-foreground/3 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute right-0 top-1/3 w-125 h-125 bg-foreground/3 rounded-xl blur-3xl pointer-events-none" />
 
       <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-14">
