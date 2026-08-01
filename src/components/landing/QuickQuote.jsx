@@ -1,0 +1,123 @@
+import { useState } from "react";
+import { ArrowRight } from "lucide-react";
+import { formatFrom } from "@/data/currencies";
+import { useCurrency } from "@/lib/useCurrency";
+import { trackAction } from "@/lib/MetaPixelTracker";
+
+// Cotizador de diez segundos.
+//
+// Reemplaza a un panel de precios estático. La diferencia no es visual: quien
+// toca dos botones ya declaró qué quiere, y llega a la conversación sabiendo el
+// orden de magnitud. Eso filtra al que iba a descartar por precio de todos
+// modos —que igual iba a descartar, solo que tres correos después— y le ahorra
+// la primera ronda de preguntas al que sí sigue.
+//
+// El monto sale de los mismos valores de pricing.js, así que no hay una segunda
+// tabla de precios que se pueda desincronizar. El resultado se rotula como
+// estimado y el CTA pide precio POR ESCRITO: la cifra orienta, no compromete.
+
+const tipos = [
+  { id: "landing", label: "Landing", base: 390000, semanas: "1 a 2" },
+  { id: "sitio", label: "Sitio web", base: 550000, semanas: "3 a 5" },
+  { id: "tienda", label: "Tienda online", base: 990000, semanas: "5 a 8" },
+];
+
+// Multiplicadores por tamaño. Son tramos gruesos a propósito: un estimado con
+// dos decimales aparentaría una precisión que no existe antes del diagnóstico.
+const tamanos = [
+  { id: "chico", label: "1 a 3", factor: 1 },
+  { id: "medio", label: "4 a 7", factor: 1.35 },
+  { id: "grande", label: "8 o más", factor: 1.8 },
+];
+
+const Opcion = ({ activo, onClick, children }) => (
+  <button
+    type="button"
+    onClick={onClick}
+    aria-pressed={activo}
+    className={`rounded-lg border px-3 py-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+      activo
+        ? "border-primary bg-primary/10 text-primary"
+        : "border-border text-muted-foreground hover:border-primary/40 hover:text-foreground"
+    }`}
+  >
+    {children}
+  </button>
+);
+
+export default function QuickQuote() {
+  const moneda = useCurrency();
+  const [tipo, setTipo] = useState(tipos[1]);
+  const [tamano, setTamano] = useState(tamanos[0]);
+
+  // Se redondea al múltiplo de 10.000 antes de convertir, para que el estimado
+  // se lea como una referencia y no como una cotización cerrada.
+  const estimado = Math.round((tipo.base * tamano.factor) / 10000) * 10000;
+
+  const elegir = (setter, valor, campo) => {
+    setter(valor);
+    trackAction("cotizador_rapido", { campo, valor: valor.id });
+  };
+
+  return (
+    <section className="panel panel-solid" aria-labelledby="cotizador-titulo">
+      <div className="flex items-center justify-between border-b border-border px-6 py-4">
+        <h2 id="cotizador-titulo" className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+          Cotiza en 10 segundos
+        </h2>
+        <span className="font-mono text-[10px] font-semibold text-primary">{moneda}</span>
+      </div>
+
+      <div className="space-y-5 px-6 py-5">
+        <fieldset>
+          <legend className="text-sm font-bold text-foreground">¿Qué necesitas?</legend>
+          <div className="mt-2.5 flex flex-wrap gap-2">
+            {tipos.map((opcion) => (
+              <Opcion key={opcion.id} activo={tipo.id === opcion.id} onClick={() => elegir(setTipo, opcion, "tipo")}>
+                {opcion.label}
+              </Opcion>
+            ))}
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend className="text-sm font-bold text-foreground">¿Cuántas secciones?</legend>
+          <div className="mt-2.5 flex flex-wrap gap-2">
+            {tamanos.map((opcion) => (
+              <Opcion key={opcion.id} activo={tamano.id === opcion.id} onClick={() => elegir(setTamano, opcion, "tamano")}>
+                {opcion.label}
+              </Opcion>
+            ))}
+          </div>
+        </fieldset>
+      </div>
+
+      <dl className="border-t border-border px-6 py-5" aria-live="polite">
+        <div className="flex items-baseline justify-between gap-4">
+          <dt className="text-sm font-semibold text-muted-foreground">Estimado desde</dt>
+          <dd className="font-display text-2xl font-bold tracking-[-0.03em] sm:text-3xl">
+            {formatFrom(estimado, moneda)}
+          </dd>
+        </div>
+        <div className="mt-2 flex items-baseline justify-between gap-4">
+          <dt className="text-sm font-semibold text-muted-foreground">Plazo aproximado</dt>
+          <dd className="font-mono text-sm font-semibold text-foreground">{tipo.semanas} semanas</dd>
+        </div>
+      </dl>
+
+      <div className="border-t border-border p-4">
+        <a
+          href={`/contacto?intencion=cotizar&tipo=${tipo.id}&tamano=${tamano.id}`}
+          onClick={() => trackAction("cotizador_enviar", { tipo: tipo.id, tamano: tamano.id })}
+          className="group flex items-center justify-between gap-3 rounded-lg bg-primary px-4 py-3 text-primary-foreground transition-opacity hover:opacity-90"
+        >
+          <span className="text-sm font-bold">Pedir precio por escrito</span>
+          <ArrowRight className="h-4 w-4 shrink-0 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+        </a>
+        <p className="mt-2.5 px-1 text-xs leading-relaxed text-muted-foreground">
+          Es una referencia, no una cotización. El precio final se fija por escrito después de revisar qué necesitas.
+        </p>
+      </div>
+    </section>
+  );
+}
