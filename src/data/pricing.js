@@ -9,6 +9,8 @@
 // precio final se fija por escrito después del diagnóstico, y eso debe decirse
 // en la misma pantalla donde aparece la cifra.
 
+import { BASE, formatFrom } from "@/data/currencies";
+
 const CLP = (value) => `$${value.toLocaleString("es-CL")}`;
 
 export const pricing = {
@@ -45,10 +47,20 @@ export const pricing = {
 /** "$390.000" — para mostrar junto a la palabra "desde". */
 export const priceFrom = (key) => CLP(pricing[key].from);
 
-/** "$35.000/mes" o "$390.000" según sea recurrente. */
-export const priceLabel = (key) => {
+/**
+ * Precio en la moneda pedida, con el sufijo "/mes" si es recurrente.
+ *
+ * El monto base siempre es CLP: es la moneda en que se define y se cobra. Las
+ * demás pasan por formatFrom, que antepone "≈" y redondea, porque son una
+ * referencia y no un precio cerrado en esa moneda.
+ */
+export const priceIn = (key, code = BASE) => {
   const item = pricing[key];
-  return item.unit === "mes" ? `${CLP(item.from)}/mes` : CLP(item.from);
+  const monto = formatFrom(item.from, code);
+  return item.unit === "mes" ? `${monto}/mes` : monto;
 };
+
+/** Atajo en pesos, para textos que no dependen del selector. */
+export const priceLabel = (key) => priceIn(key, BASE);
 
 export const webPlans = [pricing.landing, pricing.sitio, pricing.ecommerce];

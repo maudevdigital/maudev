@@ -1,4 +1,6 @@
-import { pricing, priceLabel } from "@/data/pricing";
+import { pricing, priceIn } from "@/data/pricing";
+import { BASE } from "@/data/currencies";
+import { useCurrency } from "@/lib/useCurrency";
 
 // Bloque "desde" de una página de servicio.
 //
@@ -7,6 +9,7 @@ import { pricing, priceLabel } from "@/data/pricing";
 // precio antes de escribir, y el que descarta por el monto iba a descartar
 // igual, solo que tres correos después.
 export default function PriceRange({ plans, note }) {
+  const moneda = useCurrency();
   if (!plans?.length) return null;
 
   return (
@@ -37,7 +40,7 @@ export default function PriceRange({ plans, note }) {
                   <span className="mr-1.5 text-xs font-normal uppercase tracking-wider text-muted-foreground">
                     desde
                   </span>
-                  {priceLabel(key)}
+                  {priceIn(key, moneda)}
                 </dd>
               </div>
             );
@@ -48,6 +51,12 @@ export default function PriceRange({ plans, note }) {
           {note ||
             "Es el piso de un alcance típico, no una tarifa cerrada. El precio final se fija por escrito después de revisar qué necesitas, y no cambia durante el proyecto salvo que tú pidas agregar algo."}
         </p>
+
+        {moneda !== BASE && (
+          <p className="mt-3 max-w-2xl font-mono text-xs leading-relaxed text-muted-foreground">
+            Los montos en otras monedas son una conversión de referencia al tipo de cambio del día. El proyecto se cotiza y se cobra en pesos chilenos.
+          </p>
+        )}
       </div>
     </section>
   );

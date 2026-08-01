@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import CtaButton from "@/components/landing/CtaButton";
 import ParticleField from "@/components/landing/ParticleField";
-import { priceLabel } from "@/data/pricing";
+import { priceIn } from "@/data/pricing";
+import { useCurrency } from "@/lib/useCurrency";
 import { trackAction } from "@/lib/MetaPixelTracker";
 
 // Hero: una frase, dos cifras, una acción.
@@ -11,6 +12,8 @@ import { trackAction } from "@/lib/MetaPixelTracker";
 // llega decide con el titular y el precio, no leyendo. El resto del peso lo
 // lleva el tratamiento —retícula, mono, panel de vidrio— y no más texto.
 export default function Hero() {
+  const moneda = useCurrency();
+
   return (
     <section className="hero-section">
       <div className="hero-grid" aria-hidden="true" />
@@ -36,8 +39,8 @@ export default function Hero() {
         {/* Las dos cifras que deciden, en panel de vidrio como el header */}
         <dl className="panel mt-14 inline-grid grid-cols-2 divide-x divide-border">
           {[
-            ["Landing desde", priceLabel("landing")],
-            ["Mantención desde", priceLabel("mantencion")],
+            ["Landing desde", priceIn("landing", moneda)],
+            ["Mantención desde", priceIn("mantencion", moneda)],
           ].map(([label, value]) => (
             <div key={label} className="px-6 py-5 sm:px-8">
               <dt className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground">

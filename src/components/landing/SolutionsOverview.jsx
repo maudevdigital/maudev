@@ -1,7 +1,8 @@
 import { ArrowRight, LifeBuoy, MonitorSmartphone, Workflow } from "lucide-react";
 import { Link } from "react-router-dom";
 import { trackAction } from "@/lib/MetaPixelTracker";
-import { priceLabel } from "@/data/pricing";
+import { priceIn } from "@/data/pricing";
+import { useCurrency } from "@/lib/useCurrency";
 
 // El orden es la estrategia: primero la web, que es lo que se vende; después lo
 // que la sostiene en el tiempo, y al final lo que la conecta con la operación.
@@ -14,7 +15,7 @@ const solutions = [
     title: "Tu sitio web",
     description: "La página que explica a qué te dedicas, muestra tu trabajo y convierte al que llega en una consulta concreta.",
     examples: ["Landing pages", "Sitios corporativos", "Tiendas online", "Sistemas de reserva"],
-    price: `desde ${priceLabel("landing")}`,
+    priceKey: "landing",
     href: "/desarrollo-web",
     link: "Ver desarrollo web",
   },
@@ -24,7 +25,7 @@ const solutions = [
     title: "Que siga funcionando",
     description: "Respaldos, actualizaciones y los cambios chicos de cada mes, para que el sitio no se degrade sin que nadie mire.",
     examples: ["Respaldos", "Seguridad", "Monitoreo", "Cambios de contenido"],
-    price: `desde ${priceLabel("mantencion")}`,
+    priceKey: "mantencion",
     href: "/mantencion",
     link: "Ver plan de mantención",
   },
@@ -34,13 +35,15 @@ const solutions = [
     title: "Conectado a tu operación",
     description: "Cuando el sitio ya trae consultas, automatizamos lo que viene después: responder, agendar, cobrar y hacer seguimiento.",
     examples: ["WhatsApp", "Reservas", "Pagos", "Facturación"],
-    price: null,
+    priceKey: null,
     href: "/automatizacion",
     link: "Ver automatización",
   },
 ];
 
 export default function SolutionsOverview() {
+  const moneda = useCurrency();
+
   return (
     <section id="soluciones" className="section-pad scroll-mt-20" aria-labelledby="soluciones-title">
       <div className="site-container">
@@ -53,7 +56,7 @@ export default function SolutionsOverview() {
         </div>
 
         <div className="grid gap-3">
-          {solutions.map(({ number, icon: Icon, title, description, examples, price, href, link }) => (
+          {solutions.map(({ number, icon: Icon, title, description, examples, priceKey, href, link }) => (
             <article key={title} className="solution-row panel panel-pad group">
               <div className="flex items-center gap-3 lg:block">
                 <span className="font-mono text-xs font-semibold text-primary">{number}</span>
@@ -62,8 +65,10 @@ export default function SolutionsOverview() {
               <div>
                 <h3 className="text-2xl font-extrabold tracking-[-0.035em] sm:text-3xl">{title}</h3>
                 <p className="mt-3 max-w-xl leading-relaxed text-muted-foreground">{description}</p>
-                {price && (
-                  <p className="mt-4 font-mono text-sm font-semibold text-foreground">{price}</p>
+                {priceKey && (
+                  <p className="mt-4 font-mono text-sm font-semibold text-foreground">
+                    desde {priceIn(priceKey, moneda)}
+                  </p>
                 )}
               </div>
               <ul className="grid grid-cols-2 gap-x-5 gap-y-2 text-sm text-muted-foreground">
