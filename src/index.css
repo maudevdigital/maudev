@@ -222,92 +222,15 @@
   right: -4rem;
 }
 
-/* Demo del hero: un proyecto real en escritorio y teléfono.
-   El teléfono se superpone a la ventana, así que el conjunto necesita espacio
-   propio abajo y a la izquierda; en móvil el teléfono se oculta porque el
-   visitante ya está mirando uno. */
-.site-preview-stage {
-  position: relative;
-  padding-bottom: 3.5rem;
-}
-
-.site-frame {
-  overflow: hidden;
-  border: 1px solid hsl(var(--border));
-  border-radius: 1rem;
-  background: hsl(var(--ink));
-  box-shadow: 0 34px 90px hsl(var(--ink) / 0.22);
-}
-
-.site-frame-chrome {
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
-  border-bottom: 1px solid rgb(255 255 255 / 0.08);
-  background: rgb(255 255 255 / 0.05);
-  padding: 0.65rem 1rem;
-}
-
-.site-frame-url {
-  flex: 1;
-  border-radius: 0.5rem;
-  background: rgb(255 255 255 / 0.07);
-  padding: 0.25rem 0.75rem;
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  color: rgb(255 255 255 / 0.55);
-}
-
-/* Se muestra la porción superior del sitio: es la que decide si el visitante
-   se queda, y es la que el cliente reconoce. */
-.site-frame-viewport {
-  aspect-ratio: 16 / 11;
-  overflow: hidden;
-}
-
-.site-frame-viewport img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-.site-phone {
-  position: absolute;
-  right: 1.5rem;
-  bottom: 0;
-  width: 8.5rem;
-  overflow: hidden;
-  border: 5px solid hsl(var(--ink));
-  border-radius: 1.25rem;
-  background: hsl(var(--ink));
-  box-shadow: 0 18px 45px hsl(var(--ink) / 0.3);
-}
-
-.site-phone-viewport {
-  aspect-ratio: 9 / 15;
-  overflow: hidden;
-  border-radius: 0.85rem;
-}
-
-.site-phone-viewport img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-.site-preview-caption {
-  position: absolute;
-  left: 0;
-  bottom: 0.75rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  font-size: 0.8rem;
-}
-
-@media (max-width: 480px) {
-  .site-phone { display: none; }
-  .site-preview-stage { padding-bottom: 2.5rem; }
+/* Titular del hero: ocupa el ancho completo, así que puede crecer más que el
+   `display-title` de 13ch que se usaba con una imagen al lado. */
+.hero-title {
+  max-width: 20ch;
+  font-size: clamp(2.9rem, 8.2vw, 7.5rem);
+  font-weight: 800;
+  line-height: 0.94;
+  letter-spacing: -0.06em;
+  text-wrap: balance;
 }
 
 /* Filas editoriales de soluciones */
