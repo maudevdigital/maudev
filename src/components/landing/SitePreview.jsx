@@ -1,80 +1,74 @@
-import { Gauge, Search, Smartphone } from "lucide-react";
+import { Link } from "react-router-dom";
+import { ArrowUpRight } from "lucide-react";
+import { getProjectById } from "@/data/projects";
 
 // La demo del hero.
 //
-// Cuando lo que vendes son sitios web, la demostración tiene que ser un sitio,
-// no un diagrama. Va construida en HTML y no como imagen: se ve nítida en
-// cualquier pantalla, se adapta al tema y pesa lo que pesa el marcado.
+// Antes eran barras grises simulando una página. Para un estudio que vende
+// sitios, un wireframe gris comunica "hacemos bocetos": la muestra tiene que
+// ser trabajo terminado. Así que va una captura real de un proyecto publicado,
+// dentro de su navegador.
 //
-// Las tres marcas de abajo son las que el cliente sí nota —que se encuentre,
-// que cargue rápido y que se vea bien en el celular—; no son métricas de un
-// proyecto real, así que se enuncian como criterios de construcción y no como
-// resultados medidos.
-const criterios = [
-  { icon: Search, label: "Encontrable", detail: "Estructura y metadatos listos para buscadores" },
-  { icon: Gauge, label: "Rápido", detail: "Sin plantillas cargadas de peso muerto" },
-  { icon: Smartphone, label: "Móvil primero", detail: "Diseñado desde la pantalla chica" },
-];
+// El teléfono es un recurso de composición, no una prueba: muestra la MISMA
+// captura de escritorio recortada, no el render móvil del sitio. Por eso va
+// aria-hidden y ningún texto afirma que demuestre que es responsive. Si algún
+// día se quiere esa prueba de verdad, scripts/capture-portfolio.mjs puede
+// generar una captura con viewport móvil.
+//
+// La imagen es la que ya usa el portafolio, así que no suma peso nuevo al
+// repositorio, y lleva fetchPriority alto porque compite con el H1 por ser el
+// LCP del hero.
+
+const PROYECTO = "scissorhands"; // negocio local: el visitante se reconoce ahí
 
 export default function SitePreview() {
+  const project = getProjectById(PROYECTO);
+  if (!project) return null;
+
   return (
-    <figure
-      className="site-preview"
-      aria-label="Representación de un sitio web publicado y los criterios con que se construye"
-    >
-      {/* Barra del navegador */}
-      <div className="site-preview-chrome">
-        <span className="flex gap-1.5" aria-hidden="true">
-          <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-          <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-          <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-        </span>
-        <span className="site-preview-url">tunegocio.cl</span>
-      </div>
-
-      {/* Maqueta del sitio: barras que sugieren la jerarquía sin fingir texto */}
-      <div className="px-5 pb-5 pt-6 sm:px-7 sm:pb-7">
-        <div className="flex items-center justify-between">
-          <span className="h-2.5 w-16 rounded-full bg-white/25" aria-hidden="true" />
-          <span className="flex gap-2" aria-hidden="true">
-            <span className="h-2 w-8 rounded-full bg-white/12" />
-            <span className="h-2 w-8 rounded-full bg-white/12" />
-            <span className="h-2 w-12 rounded bg-primary/70" />
+    <figure className="site-preview-stage">
+      {/* Ventana de escritorio */}
+      <div className="site-frame">
+        <div className="site-frame-chrome">
+          <span className="flex gap-1.5" aria-hidden="true">
+            <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
+            <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
+            <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
           </span>
+          <span className="site-frame-url">scissorhands.cl</span>
         </div>
-
-        <div className="mt-8 space-y-2.5" aria-hidden="true">
-          <span className="block h-4 w-4/5 rounded bg-white/80" />
-          <span className="block h-4 w-3/5 rounded bg-white/80" />
-        </div>
-        <div className="mt-4 space-y-2" aria-hidden="true">
-          <span className="block h-2 w-full rounded bg-white/14" />
-          <span className="block h-2 w-11/12 rounded bg-white/14" />
-        </div>
-
-        <div className="mt-6 flex items-center gap-3" aria-hidden="true">
-          <span className="h-8 w-32 rounded-lg bg-primary" />
-          <span className="h-8 w-20 rounded-lg border border-white/15" />
-        </div>
-
-        <div className="mt-7 grid grid-cols-3 gap-2.5" aria-hidden="true">
-          <span className="h-14 rounded-lg border border-white/10 bg-white/5" />
-          <span className="h-14 rounded-lg border border-white/10 bg-white/5" />
-          <span className="h-14 rounded-lg border border-white/10 bg-white/5" />
+        <div className="site-frame-viewport">
+          <img
+            src={project.image}
+            alt={`Sitio web de ${project.title} visto en un computador`}
+            width="1280"
+            height="2560"
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+          />
         </div>
       </div>
 
-      <figcaption className="grid grid-cols-3 border-t border-white/10">
-        {criterios.map(({ icon: Icon, label, detail }, index) => (
-          <div
-            key={label}
-            className={`px-3 py-4 text-center ${index ? "border-l border-white/10" : ""}`}
-          >
-            <Icon className="mx-auto h-4 w-4 text-primary" aria-hidden="true" />
-            <p className="mt-2 text-[11px] font-semibold text-white/85">{label}</p>
-            <p className="mt-1 hidden text-[10px] leading-tight text-white/45 sm:block">{detail}</p>
-          </div>
-        ))}
+      {/* El mismo sitio en el teléfono: la prueba de que es responsive */}
+      <div className="site-phone" aria-hidden="true">
+        <div className="site-phone-viewport">
+          <img src={project.image} alt="" width="1280" height="2560" loading="lazy" decoding="async" />
+        </div>
+      </div>
+
+      <figcaption className="site-preview-caption">
+        <span>
+          <strong className="font-semibold text-foreground">{project.title}</strong>
+          <span className="text-muted-foreground"> · {project.industry}</span>
+        </span>
+        <Link
+          to={`/casos/${project.id}`}
+          className="inline-flex items-center gap-1 font-semibold text-primary hover:underline"
+        >
+          Ver el caso
+          <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+        </Link>
       </figcaption>
     </figure>
   );
