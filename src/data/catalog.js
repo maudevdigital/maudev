@@ -64,10 +64,13 @@ export const catalog = [
 // Acciones del header que no son navegación: agendar una hora y pedir precio.
 //
 // Agendar sale del sitio hacia Cal.com, así que va con target y rel propios.
-// CONFIRMAR el usuario de Cal: si la cuenta no es "maudev", este enlace lleva a
-// una página inexistente. Es lo único de esta pantalla que no se pudo verificar
-// sin acceso a la cuenta.
-export const CAL_URL = "https://cal.com/maudev";
+//
+// Se enlaza el evento sin parámetros de fecha. El enlace que se compartió traía
+// `?month=2026-08&date=2026-08-03`, que son el estado de navegación de quien lo
+// copió: dejarlos fijos abriría el calendario anclado a ese día para siempre y,
+// pasada la fecha, el visitante caería en un mes vacío. Sin parámetros, Cal
+// abre en el primer día con disponibilidad real.
+export const CAL_URL = "https://cal.com/maudev/30min";
 
 export const headerActions = {
   agendar: { label: "Agendar", href: CAL_URL, externo: true, icon: CalendarClock },
