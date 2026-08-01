@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, Moon, Sun, X } from "lucide-react";
+import { CalendarClock, ChevronDown, Menu, Moon, Sun, X } from "lucide-react";
 import Logo from "@/components/landing/Logo";
 import CtaButton from "@/components/landing/CtaButton";
+import CurrencySwitcher from "@/components/landing/CurrencySwitcher";
+import { catalog, headerActions } from "@/data/catalog";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Navbar flotante: una píldora de vidrio despegada del borde.
@@ -24,13 +26,12 @@ const navigation = [
   { label: "Preguntas", id: "preguntas", enHeader: false },
 ];
 
-const enHeader = navigation.filter((item) => item.enHeader);
-
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [show, setShow] = useState(true);
   const [active, setActive] = useState(null);
+  const [mega, setMega] = useState(false);
   const [dark, setDark] = useState(() =>
     typeof document !== "undefined" && document.documentElement.classList.contains("dark")
   );
@@ -90,6 +91,7 @@ export default function Navbar() {
 
   useEffect(() => {
     setOpen(false);
+    setMega(false);
   }, [pathname]);
 
   useEffect(() => {
@@ -155,28 +157,32 @@ export default function Navbar() {
           </Link>
 
           <nav aria-label="Navegación principal" className="hidden items-center gap-1 lg:flex">
-            {enHeader.map((item) => {
-              const isActive = active === item.id;
-              return (
-                <a
-                  key={item.id}
-                  href={`/#${item.id}`}
-                  onClick={(event) => goToSection(event, item.id)}
-                  aria-current={isActive ? "true" : undefined}
-                  className={`group relative rounded-lg px-3 py-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
-                    isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  {item.label}
-                  <span
-                    aria-hidden="true"
-                    className={`absolute bottom-1 left-1/2 h-0.5 -translate-x-1/2 rounded-full bg-primary transition-all duration-300 ease-out ${
-                      isActive ? "w-5 opacity-100" : "w-0 opacity-0 group-hover:w-5 group-hover:opacity-100"
-                    }`}
-                  />
-                </a>
-              );
-            })}
+            <div>
+              <button
+                type="button"
+                onClick={() => setMega((v) => !v)}
+                aria-expanded={mega}
+                aria-controls="mega-servicios"
+                className={`flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+                  mega ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                Servicios
+                <ChevronDown className={`h-3.5 w-3.5 transition-transform ${mega ? "rotate-180" : ""}`} aria-hidden="true" />
+              </button>
+            </div>
+
+            <a
+              href="/#casos"
+              onClick={(event) => goToSection(event, "casos")}
+              aria-current={active === "casos" ? "true" : undefined}
+              className={`rounded-lg px-3 py-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+                active === "casos" ? "text-primary" : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              Portafolio
+            </a>
+
             <Link
               to="/contacto"
               className="rounded-lg px-3 py-2 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
@@ -195,7 +201,15 @@ export default function Navbar() {
             >
               {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </button>
-            <CtaButton size="md" context="header" className="h-10! px-5!" />
+            <CurrencySwitcher />
+            <Link
+              to={headerActions.agendar.href}
+              className="flex h-10 items-center gap-2 rounded-lg border border-border px-3.5 text-sm font-semibold text-foreground transition-colors hover:border-primary/40 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <CalendarClock className="h-4 w-4" aria-hidden="true" />
+              {headerActions.agendar.label}
+            </Link>
+            <CtaButton size="md" context="header" label={headerActions.cotizar.label} className="h-10! px-5!" />
           </div>
 
           <div className="flex items-center gap-2 lg:hidden">
@@ -220,11 +234,68 @@ export default function Navbar() {
           </div>
         </div>
 
+        {mega && (
+          <div
+            id="mega-servicios"
+            className="hidden border-t border-border lg:block"
+          >
+            <div className="grid gap-x-8 gap-y-8 p-6 xl:grid-cols-4">
+              {catalog.map((familia) => (
+                <div key={familia.id}>
+                  <p className="flex items-center gap-2 border-b border-border pb-2.5 font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                    <span className={`h-1.5 w-1.5 rounded-full bg-current ${familia.accent}`} aria-hidden="true" />
+                    {familia.label}
+                  </p>
+                  <ul className="mt-2">
+                    {familia.items.map(({ icon: Icon, title, text, href }) => (
+                      <li key={title}>
+                        <Link
+                          to={href}
+                          onClick={() => setMega(false)}
+                          className="group flex gap-3 rounded-lg p-2.5 transition-colors hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                        >
+                          <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-md border border-border text-primary transition-colors group-hover:border-primary/40">
+                            <Icon className="h-3.5 w-3.5" aria-hidden="true" />
+                          </span>
+                          <span className="min-w-0">
+                            <span className="block text-sm font-semibold text-foreground">{title}</span>
+                            <span className="mt-0.5 block text-xs leading-snug text-muted-foreground">{text}</span>
+                          </span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {open && (
           <nav id="menu-movil" aria-label="Navegación móvil" className="border-t border-border lg:hidden">
             {/* La altura descuenta la píldora y su separación del borde para que
                 el CTA quede siempre alcanzable sin scroll dentro del menú. */}
             <div className="flex max-h-[calc(100dvh-6.5rem)] flex-col overflow-y-auto px-4 py-4">
+              <div className="mb-2">
+                {catalog.map((familia) => (
+                  <details key={familia.id} className="border-b border-border">
+                    <summary className="flex cursor-pointer items-center justify-between py-3.5 text-lg font-bold tracking-tight text-foreground">
+                      {familia.label}
+                      <ChevronDown className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+                    </summary>
+                    <ul className="pb-3">
+                      {familia.items.map(({ title, href }) => (
+                        <li key={title}>
+                          <Link to={href} className="block py-2 pl-1 text-sm font-semibold text-muted-foreground">
+                            {title}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </details>
+                ))}
+              </div>
+
               <div className="flex flex-col">
                 {navigation.map((item) => (
                   <a
@@ -240,8 +311,16 @@ export default function Navbar() {
                   Contacto
                 </Link>
               </div>
-              <div className="mt-6">
-                <CtaButton size="lg" context="menu-movil" full />
+              <div className="mt-6 space-y-3">
+                <CtaButton size="lg" context="menu-movil" label={headerActions.cotizar.label} full />
+                <Link
+                  to={headerActions.agendar.href}
+                  className="flex h-12 w-full items-center justify-center gap-2 rounded-lg border border-border text-sm font-semibold text-foreground"
+                >
+                  <CalendarClock className="h-4 w-4" aria-hidden="true" />
+                  {headerActions.agendar.label}
+                </Link>
+                <CurrencySwitcher className="pt-1" />
               </div>
             </div>
           </nav>
