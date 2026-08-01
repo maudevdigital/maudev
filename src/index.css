@@ -189,7 +189,7 @@
    CPU durante el scroll. El recorrido de cada punto llega por --move-x /
    --move-y desde el estilo en línea. */
 .particle {
-  box-shadow: 0 0 6px 1px hsl(var(--primary) / 0.45);
+  box-shadow: 0 0 8px 2px hsl(var(--primary) / 0.55);
   will-change: transform, opacity;
   animation-name: particleFloat;
   animation-timing-function: ease-in-out;
@@ -197,8 +197,8 @@
 }
 
 @keyframes particleFloat {
-  0%, 100% { transform: translate3d(0, 0, 0); opacity: 0.25; }
-  50% { transform: translate3d(var(--move-x, 0), var(--move-y, 0), 0); opacity: 0.75; }
+  0%, 100% { transform: translate3d(0, 0, 0); opacity: 0.4; }
+  50% { transform: translate3d(var(--move-x, 0), var(--move-y, 0), 0); opacity: 1; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -225,6 +225,33 @@
   height: 24rem;
   top: -6rem;
   right: -4rem;
+}
+
+/* Foco de luz que sigue al puntero.
+   Las coordenadas llegan por --mx / --my desde Hero.jsx, actualizadas dentro de
+   un requestAnimationFrame: mousemove dispara decenas de veces por segundo y
+   escribir la variable en cada evento provoca repintados de más.
+   La transición de opacidad —y no de posición— evita que la luz "persiga" al
+   cursor con retraso, que se ve peor que no tener efecto. */
+.hero-spot {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  background: radial-gradient(
+    22rem 22rem at var(--mx, 50%) var(--my, 50%),
+    hsl(var(--primary) / 0.16),
+    hsl(var(--primary) / 0.05) 45%,
+    transparent 70%
+  );
+}
+
+.hero-section:hover .hero-spot { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-spot { display: none; }
 }
 
 /* Titular del hero: ocupa el ancho completo, así que puede crecer más que el

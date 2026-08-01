@@ -15,13 +15,13 @@ export default function ParticleField({ className = "" }) {
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    const count = window.innerWidth < 768 ? 26 : 64;
+    const count = window.innerWidth < 768 ? 44 : 120;
     setParticles(
       Array.from({ length: count }, (_, id) => ({
         id,
         x: Math.random() * 100,
         y: Math.random() * 100,
-        size: Math.random() * 2.5 + 1.8,
+        size: Math.random() * 3 + 1.6,
         duration: Math.random() * 14 + 12,
         delay: Math.random() * 6,
         moveX: (Math.random() - 0.5) * 120,

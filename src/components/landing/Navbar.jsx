@@ -36,6 +36,7 @@ export default function Navbar() {
     typeof document !== "undefined" && document.documentElement.classList.contains("dark")
   );
   const lastScrollY = useRef(0);
+  const headerRef = useRef(null);
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
@@ -94,6 +95,26 @@ export default function Navbar() {
     setMega(false);
   }, [pathname]);
 
+  // El mega se cierra al hacer clic fuera del header y con Escape. El cierre
+  // por puntero va en el propio <header> (onMouseLeave): así cubre el trayecto
+  // del botón al panel sin que el menú se cierre al pasar por el hueco entre
+  // ambos, que es lo que ocurre si el manejador vive solo en el panel.
+  useEffect(() => {
+    if (!mega) return;
+    const fuera = (evento) => {
+      if (!headerRef.current?.contains(evento.target)) setMega(false);
+    };
+    const esc = (evento) => {
+      if (evento.key === "Escape") setMega(false);
+    };
+    document.addEventListener("mousedown", fuera);
+    window.addEventListener("keydown", esc);
+    return () => {
+      document.removeEventListener("mousedown", fuera);
+      window.removeEventListener("keydown", esc);
+    };
+  }, [mega]);
+
   useEffect(() => {
     if (!open) return;
     const previous = document.body.style.overflow;
@@ -132,6 +153,8 @@ export default function Navbar() {
 
   return (
     <header
+      ref={headerRef}
+      onMouseLeave={() => setMega(false)}
       className="fixed inset-x-3 top-3 z-50 transition-transform duration-300 ease-out sm:inset-x-5 sm:top-5"
       style={{ transform: `translateY(${show ? 0 : -140}%)` }}
     >
