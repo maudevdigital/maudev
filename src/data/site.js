@@ -16,11 +16,11 @@ export const availability = {
   period: "",
 };
 
-export const CTA_LABEL = "Cuéntanos qué quieres automatizar";
+export const CTA_LABEL = "Cotiza tu sitio web";
 export const CTA_MESSAGE =
-  "Hola, vengo de maudev.cl y quiero conversar sobre un proceso de mi negocio.";
+  "Hola, vengo de maudev.cl y quiero cotizar un sitio web para mi negocio.";
 export const proofPoints = [
-  "Precio definido",
-  "Código a tu nombre",
-  "Garantía de funcionamiento",
+  "Precio cerrado por escrito",
+  "El sitio y los accesos quedan a tu nombre",
+  "Entrega con plazo definido",
 ];

@@ -25,49 +25,62 @@
 }
 
 @layer base {
-  /* Paleta editorial: marfil cálido, tinta verde profunda y acento jade. */
+  /* ───────────────────────────────────────────────────────────────────────
+     Dirección de arte: "papel y tinta".
+     Papel apenas cálido, tinta casi negra y un solo acento cobalto.
+
+     El verde anterior venía de la etapa en que el negocio se contaba desde la
+     automatización por WhatsApp, y ese verde es el de WhatsApp: leía a
+     "chatbot". Con la web al centro, el azul es la señal correcta —oficio
+     digital, confianza, nada de mensajería— y de paso despega la marca del
+     verde que usa media competencia de automatizaciones.
+
+     Un solo acento, a propósito: cuando el trabajo que vendes son sitios web,
+     la portada es la muestra. Un sitio con tres colores de acento no puede
+     argumentar que sabe jerarquizar.
+     ─────────────────────────────────────────────────────────────────────── */
   :root {
     --font-sans: 'Inter', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
 
-    --background: 45 38% 97%;
-    --foreground: 166 35% 10%;
+    --background: 40 24% 97%;
+    --foreground: 222 30% 9%;
     --card: 0 0% 100%;
-    --card-foreground: 166 35% 10%;
-    --primary: 164 74% 28%;
-    --primary-foreground: 45 40% 98%;
-    --secondary: 43 26% 92%;
-    --secondary-foreground: 166 35% 12%;
-    --muted: 43 22% 92%;
-    --muted-foreground: 165 10% 38%;
+    --card-foreground: 222 30% 9%;
+    --primary: 228 84% 52%;
+    --primary-foreground: 40 30% 99%;
+    --secondary: 40 16% 93%;
+    --secondary-foreground: 222 30% 12%;
+    --muted: 40 14% 93%;
+    --muted-foreground: 222 10% 40%;
     --destructive: 2 70% 45%;
-    --border: 164 13% 82%;
-    --input: 164 13% 78%;
-    --ring: 164 74% 28%;
-    --radius: 0.9rem;
-    --success: 151 57% 35%;
+    --border: 225 12% 85%;
+    --input: 225 12% 80%;
+    --ring: 228 84% 52%;
+    --radius: 0.75rem;
+    --success: 151 57% 33%;
     --error: 2 70% 45%;
-    --ink: 166 42% 8%;
+    --ink: 222 38% 7%;
   }
 
   .dark {
-    --background: 166 35% 7%;
-    --foreground: 45 34% 96%;
-    --card: 165 30% 10%;
-    --card-foreground: 45 34% 96%;
-    --primary: 157 58% 53%;
-    --primary-foreground: 166 42% 8%;
-    --secondary: 164 23% 14%;
-    --secondary-foreground: 45 34% 96%;
-    --muted: 164 23% 14%;
-    --muted-foreground: 160 8% 66%;
+    --background: 222 34% 7%;
+    --foreground: 40 26% 96%;
+    --card: 222 28% 10%;
+    --card-foreground: 40 26% 96%;
+    --primary: 224 96% 70%;
+    --primary-foreground: 222 38% 7%;
+    --secondary: 222 20% 15%;
+    --secondary-foreground: 40 26% 96%;
+    --muted: 222 20% 15%;
+    --muted-foreground: 220 10% 66%;
     --destructive: 0 62% 45%;
-    --border: 164 17% 20%;
-    --input: 164 17% 24%;
-    --ring: 157 58% 53%;
+    --border: 222 16% 21%;
+    --input: 222 16% 25%;
+    --ring: 224 96% 70%;
     --success: 151 57% 52%;
     --error: 2 70% 60%;
-    --ink: 166 42% 5%;
+    --ink: 222 40% 4%;
   }
 }
 
@@ -209,56 +222,33 @@
   right: -4rem;
 }
 
-.automation-canvas {
+/* Demo del hero: la maqueta de un sitio publicado. */
+.site-preview {
   overflow: hidden;
   border: 1px solid rgb(255 255 255 / 0.12);
-  border-radius: 1.35rem;
-  background:
-    linear-gradient(rgb(255 255 255 / 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(255 255 255 / 0.035) 1px, transparent 1px),
-    hsl(var(--ink));
-  background-size: 28px 28px;
-  box-shadow: 0 30px 80px rgb(5 28 24 / 0.24);
+  border-radius: 1.1rem;
+  background: hsl(var(--ink));
+  box-shadow: 0 32px 80px hsl(var(--ink) / 0.28);
   color: white;
 }
 
-.flow-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.65rem;
-}
-
-.flow-step {
+.site-preview-chrome {
   display: flex;
-  min-width: 0;
-  flex-direction: column;
   align-items: center;
-  gap: 0.55rem;
-  border: 1px solid rgb(255 255 255 / 0.1);
-  border-radius: 0.8rem;
-  background: rgb(255 255 255 / 0.045);
-  padding: 0.8rem 0.35rem;
-  text-align: center;
-  font-size: 0.65rem;
-  font-weight: 600;
-  color: rgb(255 255 255 / 0.62);
+  gap: 0.85rem;
+  border-bottom: 1px solid rgb(255 255 255 / 0.1);
+  background: rgb(255 255 255 / 0.04);
+  padding: 0.7rem 1.1rem;
 }
 
-.flow-step-icon {
-  display: grid;
-  width: 2rem;
-  height: 2rem;
-  place-items: center;
+.site-preview-url {
+  flex: 1;
   border-radius: 999px;
-  background: hsl(var(--primary) / 0.12);
-  color: hsl(var(--primary));
-  animation: flow-pulse 3.2s ease-in-out infinite;
-  animation-delay: var(--step-delay);
-}
-
-@keyframes flow-pulse {
-  0%, 62%, 100% { box-shadow: 0 0 0 0 hsl(var(--primary) / 0); }
-  12% { box-shadow: 0 0 0 6px hsl(var(--primary) / 0.12); }
+  background: rgb(255 255 255 / 0.07);
+  padding: 0.25rem 0.8rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: rgb(255 255 255 / 0.5);
 }
 
 /* Filas editoriales de soluciones */

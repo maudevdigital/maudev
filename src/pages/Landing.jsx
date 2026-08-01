@@ -14,8 +14,8 @@ import { founder } from "@/data/site";
 
 export default function Landing() {
   useSeo({
-    title: "Automatización y software para empresas en Chile · Maudev",
-    description: "Automatizamos respuestas, reservas, pagos, facturación, inventario y seguimiento para PYMEs. Alcance definido, código a tu nombre y soporte directo.",
+    title: "Diseño y desarrollo de páginas web en Chile · Maudev",
+    description: "Diseñamos y programamos sitios web rápidos y claros para empresas y emprendedores en Chile. Landing desde $390.000, con mantención mensual y automatizaciones opcionales.",
     path: "/",
     image: "/og-image.png",
     // Solo entidades que existen y son visibles en la página: la organización,
@@ -31,7 +31,7 @@ export default function Landing() {
           url: "https://maudev.cl",
           logo: "https://maudev.cl/logo-1024.png",
           image: "https://maudev.cl/og-image.png",
-          description: "Automatización de procesos y software a medida para empresas en Chile.",
+          description: "Diseño y desarrollo de páginas web para empresas en Chile, con mantención y automatización.",
           areaServed: { "@type": "Country", name: "Chile" },
           founder: { "@type": "Person", name: founder.name },
           contactPoint: {

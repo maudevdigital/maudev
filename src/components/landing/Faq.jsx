@@ -3,7 +3,7 @@ import { ChevronDown } from "lucide-react";
 export const faqs = [
   {
     q: "¿Cuánto demora un proyecto?",
-    a: "Depende del alcance. Una automatización acotada puede tomar desde una semana; un sistema a medida, varias. La propuesta deja etapas y fecha de entrega por escrito.",
+    a: "Depende del alcance. Una landing puede estar publicada en una a dos semanas; un sitio corporativo toma entre tres y cinco. La propuesta deja las etapas y la fecha de entrega por escrito antes de empezar.",
   },
   {
     q: "¿Cómo se calcula el precio?",

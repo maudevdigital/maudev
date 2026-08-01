@@ -1,34 +1,42 @@
-import { ArrowRight, Blocks, BriefcaseBusiness, MessagesSquare } from "lucide-react";
+import { ArrowRight, LifeBuoy, MonitorSmartphone, Workflow } from "lucide-react";
 import { Link } from "react-router-dom";
 import { trackAction } from "@/lib/MetaPixelTracker";
+import { priceLabel } from "@/data/pricing";
 
+// El orden es la estrategia: primero la web, que es lo que se vende; después lo
+// que la sostiene en el tiempo, y al final lo que la conecta con la operación.
+// El precio "desde" va en la primera y la tercera porque son compras que el
+// visitante ya está comparando; la automatización se cotiza por proceso.
 const solutions = [
   {
     number: "01",
-    icon: MessagesSquare,
-    title: "Atiende y vende",
-    description: "Responde, agenda, cobra y hace seguimiento sin convertir cada contacto en una tarea manual.",
-    examples: ["WhatsApp", "Reservas", "Pagos", "Ecommerce"],
-    href: "/automatizacion",
-    link: "Explorar automatización",
+    icon: MonitorSmartphone,
+    title: "Tu sitio web",
+    description: "La página que explica a qué te dedicas, muestra tu trabajo y convierte al que llega en una consulta concreta.",
+    examples: ["Landing pages", "Sitios corporativos", "Tiendas online", "Sistemas de reserva"],
+    price: `desde ${priceLabel("landing")}`,
+    href: "/desarrollo-web",
+    link: "Ver desarrollo web",
   },
   {
     number: "02",
-    icon: BriefcaseBusiness,
-    title: "Ordena tu operación",
-    description: "Conecta inventario, documentos, pedidos y facturación para trabajar con una sola fuente de información.",
-    examples: ["Inventario", "Facturación", "Pedidos", "Procesos internos"],
-    href: "/software-a-medida",
-    link: "Ver software a medida",
+    icon: LifeBuoy,
+    title: "Que siga funcionando",
+    description: "Respaldos, actualizaciones y los cambios chicos de cada mes, para que el sitio no se degrade sin que nadie mire.",
+    examples: ["Respaldos", "Seguridad", "Monitoreo", "Cambios de contenido"],
+    price: `desde ${priceLabel("mantencion")}`,
+    href: "/mantencion",
+    link: "Ver plan de mantención",
   },
   {
     number: "03",
-    icon: Blocks,
-    title: "Construye tu plataforma",
-    description: "Convierte una idea o proceso propio en una herramienta web clara, administrable y lista para operar.",
-    examples: ["Portales", "Dashboards", "Sistemas internos", "Sitios web"],
-    href: "/desarrollo-web",
-    link: "Revisar plataformas web",
+    icon: Workflow,
+    title: "Conectado a tu operación",
+    description: "Cuando el sitio ya trae consultas, automatizamos lo que viene después: responder, agendar, cobrar y hacer seguimiento.",
+    examples: ["WhatsApp", "Reservas", "Pagos", "Facturación"],
+    price: null,
+    href: "/automatizacion",
+    link: "Ver automatización",
   },
 ];
 
@@ -37,15 +45,15 @@ export default function SolutionsOverview() {
     <section id="soluciones" className="section-pad scroll-mt-20" aria-labelledby="soluciones-title">
       <div className="site-container">
         <div className="mb-12 max-w-3xl md:mb-16">
-          <span className="eyebrow">Tres formas de destrabar el trabajo</span>
-          <h2 id="soluciones-title" className="section-title mt-4">Partimos por el proceso, no por la tecnología.</h2>
+          <span className="eyebrow">Qué hacemos</span>
+          <h2 id="soluciones-title" className="section-title mt-4">Primero el sitio. Después, que trabaje solo.</h2>
           <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-            Definimos qué conviene automatizar, qué necesita software propio y qué puede resolverse con una web bien construida.
+            Casi todo parte por una web que explique bien el negocio. Desde ahí decidimos qué conviene mantener y qué vale la pena automatizar.
           </p>
         </div>
 
         <div className="border-t border-border">
-          {solutions.map(({ number, icon: Icon, title, description, examples, href, link }) => (
+          {solutions.map(({ number, icon: Icon, title, description, examples, price, href, link }) => (
             <article key={title} className="solution-row group">
               <div className="flex items-center gap-3 lg:block">
                 <span className="font-mono text-xs font-semibold text-primary">{number}</span>
@@ -54,6 +62,9 @@ export default function SolutionsOverview() {
               <div>
                 <h3 className="text-2xl font-extrabold tracking-[-0.035em] sm:text-3xl">{title}</h3>
                 <p className="mt-3 max-w-xl leading-relaxed text-muted-foreground">{description}</p>
+                {price && (
+                  <p className="mt-4 font-mono text-sm font-semibold text-foreground">{price}</p>
+                )}
               </div>
               <ul className="grid grid-cols-2 gap-x-5 gap-y-2 text-sm text-muted-foreground">
                 {examples.map((example) => (

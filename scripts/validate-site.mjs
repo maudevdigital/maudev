@@ -11,6 +11,7 @@ const routes = [
   "/software-a-medida",
   "/desarrollo-web",
   "/ecommerce",
+  "/mantencion",
   "/casos",
   "/casos/systempro",
   "/casos/scissorhands",
@@ -146,7 +147,7 @@ try {
   await formPage.close();
 
   const sitemap = await fs.readFile(path.join(root, "public", "sitemap.xml"), "utf8");
-  for (const route of routes.slice(0, 12)) {
+  for (const route of routes.slice(0, 13)) {
     const expected = route === "/" ? "https://maudev.cl/" : `https://maudev.cl${route}`;
     assert(sitemap.includes(`<loc>${expected}</loc>`), `Sitemap: falta ${expected}`);
   }
@@ -156,7 +157,7 @@ try {
   // `ruta/index.html`. Con la forma de directorio, Cloudflare Pages sirve la
   // URL con barra final y devuelve 308 a la que publica el sitemap: cada
   // página de servicio aparecería en Search Console como "URL con redirección".
-  for (const route of ["/automatizacion", "/software-a-medida", "/desarrollo-web", "/ecommerce", "/casos", "/nosotros", "/contacto"]) {
+  for (const route of ["/automatizacion", "/software-a-medida", "/desarrollo-web", "/ecommerce", "/mantencion", "/casos", "/nosotros", "/contacto"]) {
     const flat = path.join(root, "dist", `${route.slice(1)}.html`);
     const asDirectory = path.join(root, "dist", route.slice(1), "index.html");
     assert(

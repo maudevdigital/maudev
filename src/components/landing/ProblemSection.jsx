@@ -1,9 +1,9 @@
-import { ClipboardCopy, Clock3, MessagesSquare } from "lucide-react";
+import { Search, Smartphone, Timer } from "lucide-react";
 
 const examples = [
-  { icon: MessagesSquare, title: "Responder lo mismo", text: "Consultas, precios y disponibilidad una y otra vez." },
-  { icon: ClipboardCopy, title: "Copiar entre sistemas", text: "Datos que pasan de WhatsApp a planillas y correos." },
-  { icon: Clock3, title: "Coordinar a mano", text: "Reservas, pedidos y seguimientos que dependen de alguien." },
+  { icon: Search, title: "No te encuentran", text: "Te buscan por tu rubro y aparece la competencia, no tú." },
+  { icon: Smartphone, title: "Se ve mal en el celular", text: "Ahí llega la mayoría, y ahí es donde se pierde el contacto." },
+  { icon: Timer, title: "Carga lento", text: "Tres segundos de espera bastan para que vuelvan atrás." },
 ];
 
 export default function ProblemSection() {
@@ -12,12 +12,12 @@ export default function ProblemSection() {
       <div className="site-container">
         <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
           <div>
-            <span className="eyebrow">El costo de lo manual</span>
-            <h2 id="problema-title" className="section-title mt-4">Tu equipo no debería funcionar como puente entre sistemas.</h2>
+            <span className="eyebrow">Por qué importa</span>
+            <h2 id="problema-title" className="section-title mt-4">Si tu sitio no explica lo que haces, el cliente se va donde el que sí lo explica.</h2>
           </div>
           <div>
             <p className="max-w-2xl text-lg leading-relaxed text-muted-foreground">
-              Muchas empresas pierden horas respondiendo mensajes, actualizando planillas y coordinando tareas que siguen reglas claras. Ahí suele haber una oportunidad real de automatización.
+              La mayoría de las personas te va a buscar antes de escribirte. Si lo que encuentran carga lento, no se entiende en el celular o no dice con claridad a qué te dedicas, no te escriben: se van, y nunca te enteras de que estuvieron ahí.
             </p>
             <div className="mt-10 grid gap-7 sm:grid-cols-3 sm:gap-0">
               {examples.map(({ icon: Icon, title, text }, index) => (

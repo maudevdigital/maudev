@@ -42,6 +42,7 @@ function App() {
             <Route path="/software-a-medida" element={<ServicePage serviceKey="software-a-medida" />} />
             <Route path="/desarrollo-web" element={<ServicePage serviceKey="desarrollo-web" />} />
             <Route path="/ecommerce" element={<ServicePage serviceKey="ecommerce" />} />
+            <Route path="/mantencion" element={<ServicePage serviceKey="mantencion" />} />
             <Route path="/casos" element={<Cases />} />
             <Route path="/casos/:projectId" element={<CasoEstudio />} />
             <Route path="/nosotros" element={<About />} />

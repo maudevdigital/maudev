@@ -1,9 +1,10 @@
 import { ArrowDownRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import AutomationFlow from "@/components/landing/AutomationFlow";
+import SitePreview from "@/components/landing/SitePreview";
 import CtaButton from "@/components/landing/CtaButton";
 import ParticleField from "@/components/landing/ParticleField";
 import { proofPoints } from "@/data/site";
+import { priceLabel } from "@/data/pricing";
 import { trackAction } from "@/lib/MetaPixelTracker";
 
 export default function Hero() {
@@ -16,10 +17,15 @@ export default function Hero() {
       <ParticleField className="-z-10 mask-[radial-gradient(ellipse_at_center,black_55%,transparent_100%)]" />
       <div className="site-container relative grid w-full items-center gap-12 lg:grid-cols-[1.08fr_0.92fr] lg:gap-16">
         <div className="max-w-3xl">
-          <span className="eyebrow">Automatización y software para empresas</span>
-          <h1 className="display-title mt-5">Automatizamos las tareas que frenan tu negocio.</h1>
+          <span className="eyebrow">Diseño y desarrollo web en Chile</span>
+          <h1 className="display-title mt-5">Tu sitio web, hecho para que te contacten.</h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
-            Conectamos respuestas, reservas, pagos, facturación, inventario y seguimiento en sistemas que trabajan por ti.
+            Diseñamos y programamos páginas rápidas y claras. Después las mantenemos, y conectamos lo que se pueda automatizar.
+          </p>
+          <p className="mt-4 font-mono text-sm text-muted-foreground">
+            Landing desde <strong className="font-semibold text-foreground">{priceLabel("landing")}</strong>
+            {" · "}
+            mantención desde <strong className="font-semibold text-foreground">{priceLabel("mantencion")}</strong>
           </p>
 
           <div className="mt-9 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
@@ -45,7 +51,7 @@ export default function Hero() {
         </div>
 
         <div className="lg:pl-2">
-          <AutomationFlow />
+          <SitePreview />
         </div>
       </div>
     </section>

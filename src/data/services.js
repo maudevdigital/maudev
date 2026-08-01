@@ -74,6 +74,7 @@ export const services = {
     implementation: ["Aclaramos oferta, audiencia y acción", "Diseñamos arquitectura y contenido", "Desarrollamos responsive y accesible", "Validamos SEO, rendimiento y medición"],
     integrations: ["Formularios y CRM", "Analítica con consentimiento", "Calendarios", "WhatsApp", "Gestores de contenido", "Herramientas de pago"],
     relatedCase: "scissorhands",
+    plans: ["landing", "sitio"],
     faqs: [
       { q: "¿Incluye diseño y textos?", a: "Sí, cuando forman parte del alcance. Trabajamos la jerarquía, la interfaz y el copy necesario para explicar la oferta con claridad." },
       { q: "¿Puedo editar el contenido?", a: "Podemos incorporar una administración cuando el proyecto realmente la necesita o dejar contenido versionado para sitios con cambios poco frecuentes." },
@@ -101,12 +102,56 @@ export const services = {
     implementation: ["Definimos catálogo y operación", "Diseñamos compra y administración", "Integramos pagos y procesos", "Probamos pedidos completos antes de publicar"],
     integrations: ["Pasarelas de pago", "Inventario", "Facturación", "Operadores logísticos", "Correo y WhatsApp", "Analítica de comercio"],
     relatedCase: "partsmr",
+    plans: ["ecommerce"],
     faqs: [
       { q: "¿Trabajan con plataformas existentes?", a: "Sí, cuando una plataforma satisface el proceso. También podemos desarrollar una solución propia si las reglas, el catálogo o las integraciones lo justifican." },
       { q: "¿Qué costos externos existen?", a: "La pasarela, el hosting y algunas integraciones pueden cobrar comisiones o planes. Los identificamos por separado antes de aprobar el alcance." },
       { q: "¿Incluye carga de productos?", a: "Se define según cantidad y calidad de la información disponible. Podemos preparar una carga inicial o herramientas para que el equipo la realice." },
     ],
   },
+  mantencion: {
+    path: "/mantencion",
+    navLabel: "Mantención",
+    eyebrow: "Mantención de sitios web",
+    title: "Un sitio publicado también necesita quien lo cuide.",
+    intro: "Respaldos, actualizaciones, monitoreo y los cambios chicos de cada mes, para que tu sitio no se degrade solo.",
+    metaTitle: "Mantención de páginas web en Chile · Maudev",
+    metaDescription: "Plan mensual de mantención de sitios web en Chile: respaldos, actualizaciones de seguridad, monitoreo de caídas y cambios menores de contenido.",
+    problemTitle: "Una web sin mantención no falla de golpe: se degrada de a poco.",
+    problem: "Los plugins quedan desactualizados, el certificado vence un domingo, una imagen pesada arruina la velocidad y nadie lo nota hasta que un cliente avisa que la página no carga. Para entonces ya se perdieron consultas que nunca vas a poder contar.",
+    audience: ["Negocios sin equipo técnico interno", "Sitios que reciben consultas o reservas", "Empresas que dependen de su web para vender", "Quien heredó un sitio y no sabe quién lo mantiene"],
+    signals: ["Nadie sabe cuándo se respaldó por última vez", "El sitio se cayó y te enteraste por un cliente", "Cambiar un texto implica pedir un presupuesto"],
+    examples: [
+      { title: "Respaldo y restauración", text: "Copias automáticas y la certeza de poder volver atrás si algo se rompe." },
+      { title: "Actualizaciones de seguridad", text: "Dependencias y certificados al día, aplicados y verificados." },
+      { title: "Monitoreo de caídas", text: "Si el sitio deja de responder, lo sabemos antes que tu cliente." },
+      { title: "Cambios menores", text: "Textos, precios, horarios e imágenes del mes, sin cotizar cada uno." },
+    ],
+    implementation: ["Revisamos el estado actual del sitio", "Dejamos respaldo y monitoreo activos", "Aplicamos actualizaciones cada mes", "Te enviamos un reporte de lo hecho"],
+    integrations: ["Hosting y dominios", "Certificados SSL", "Analítica", "Formularios", "Gestores de contenido", "Copias externas"],
+    relatedCase: "scissorhands",
+    plans: ["mantencion"],
+    faqs: [
+      { q: "¿Sirve si mi sitio no lo hicieron ustedes?", a: "Sí. Primero revisamos cómo está construido y te decimos con qué nos encontramos. Si hay algo que conviene corregir antes de empezar el plan, lo presupuestamos aparte y tú decides." },
+      { q: "¿Qué entra en \"cambios menores\"?", a: "Textos, precios, horarios, fotos y ajustes de contenido que se resuelven dentro del mes. Una sección nueva o una funcionalidad se cotizan como proyecto." },
+      { q: "¿Hay permanencia mínima?", a: "No. El plan es mensual y se puede cortar avisando con un mes. Los accesos y el sitio siempre fueron tuyos." },
+      { q: "¿Qué pasa si el sitio se cae?", a: "El monitoreo nos avisa y revisamos el origen. Si es algo del sitio, lo resolvemos dentro del plan. Si el problema es del hosting o de un servicio externo, gestionamos el reporte y te contamos qué respondieron." },
+    ],
+  },
 };
+
+// Orden comercial de las páginas de servicio: la web es el negocio principal,
+// las automatizaciones y la mantención lo acompañan, y el software a medida
+// cierra como la capacidad más profunda. El objeto de arriba conserva su orden
+// histórico para no romper claves; el que manda para mostrar es este.
+export const serviceOrder = [
+  "desarrollo-web",
+  "ecommerce",
+  "automatizacion",
+  "mantencion",
+  "software-a-medida",
+];
+
+export const orderedServices = serviceOrder.map((key) => services[key]);
 
 export const getService = (key) => services[key];

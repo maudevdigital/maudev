@@ -6,6 +6,7 @@ import FinalCta from "@/components/landing/FinalCta";
 import PageShell from "@/components/landing/PageShell";
 import { getProjectById } from "@/data/projects";
 import { getService } from "@/data/services";
+import PriceRange from "@/components/landing/PriceRange";
 import { useSeo } from "@/lib/useSeo";
 import { trackAction } from "@/lib/MetaPixelTracker";
 
@@ -143,6 +144,8 @@ export default function ServicePage({ serviceKey }) {
             </ul>
           </div>
         </section>
+
+        <PriceRange plans={service.plans} />
 
         {project && (
           <section className="section-pad">
