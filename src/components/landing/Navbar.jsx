@@ -137,7 +137,7 @@ export default function Navbar() {
     >
       <div
         className={`mx-auto w-full max-w-[75rem] overflow-hidden rounded-2xl border transition-colors duration-200 ${
-          scrolled || open
+          scrolled || open || mega
             ? "border-border bg-background/90 shadow-lg shadow-[hsl(var(--ink)/0.08)] backdrop-blur-xl"
             : "border-border/60 bg-background/70 backdrop-blur-md"
         }`}
@@ -202,13 +202,15 @@ export default function Navbar() {
               {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </button>
             <CurrencySwitcher />
-            <Link
-              to={headerActions.agendar.href}
+            <a
+              href={headerActions.agendar.href}
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex h-10 items-center gap-2 rounded-lg border border-border px-3.5 text-sm font-semibold text-foreground transition-colors hover:border-primary/40 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               <CalendarClock className="h-4 w-4" aria-hidden="true" />
               {headerActions.agendar.label}
-            </Link>
+            </a>
             <CtaButton size="md" context="header" label={headerActions.cotizar.label} className="h-10! px-5!" />
           </div>
 
@@ -237,7 +239,7 @@ export default function Navbar() {
         {mega && (
           <div
             id="mega-servicios"
-            className="hidden border-t border-border lg:block"
+            className="hidden border-t border-border bg-background lg:block"
           >
             <div className="grid gap-x-8 gap-y-8 p-6 xl:grid-cols-4">
               {catalog.map((familia) => (
@@ -313,13 +315,15 @@ export default function Navbar() {
               </div>
               <div className="mt-6 space-y-3">
                 <CtaButton size="lg" context="menu-movil" label={headerActions.cotizar.label} full />
-                <Link
-                  to={headerActions.agendar.href}
+                <a
+                  href={headerActions.agendar.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="flex h-12 w-full items-center justify-center gap-2 rounded-lg border border-border text-sm font-semibold text-foreground"
                 >
                   <CalendarClock className="h-4 w-4" aria-hidden="true" />
                   {headerActions.agendar.label}
-                </Link>
+                </a>
                 <CurrencySwitcher className="pt-1" />
               </div>
             </div>

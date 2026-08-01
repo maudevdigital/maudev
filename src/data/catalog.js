@@ -62,7 +62,14 @@ export const catalog = [
 ];
 
 // Acciones del header que no son navegación: agendar una hora y pedir precio.
+//
+// Agendar sale del sitio hacia Cal.com, así que va con target y rel propios.
+// CONFIRMAR el usuario de Cal: si la cuenta no es "maudev", este enlace lleva a
+// una página inexistente. Es lo único de esta pantalla que no se pudo verificar
+// sin acceso a la cuenta.
+export const CAL_URL = "https://cal.com/maudev";
+
 export const headerActions = {
-  agendar: { label: "Agendar", href: "/contacto?intencion=agendar", icon: CalendarClock },
+  agendar: { label: "Agendar", href: CAL_URL, externo: true, icon: CalendarClock },
   cotizar: { label: "Cotizar proyecto", href: "/contacto?intencion=cotizar" },
 };

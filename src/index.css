@@ -269,6 +269,14 @@
 
 .panel-pad { padding: clamp(1.5rem, 3.5vw, 3rem); }
 
+/* Variante opaca: para menús y desplegables, donde el texto de atrás
+   atravesando la superficie no es un efecto, es un defecto de lectura. */
+.panel-solid {
+  background: hsl(var(--card));
+  backdrop-filter: none;
+  box-shadow: 0 24px 60px hsl(var(--ink) / 0.16);
+}
+
 /* Variante oscura, para los bloques sobre tinta. */
 .panel-dark {
   border-color: rgb(255 255 255 / 0.12);

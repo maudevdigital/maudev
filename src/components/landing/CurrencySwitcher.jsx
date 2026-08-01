@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { ChevronDown, Check } from "lucide-react";
-import { currencyList, getCurrency, setCurrency } from "@/data/currencies";
+import { BASE, currencyList, getCurrency, refreshRates, setCurrency } from "@/data/currencies";
+
+const avisarCambio = (code) =>
+  window.dispatchEvent(new CustomEvent("maudev:moneda", { detail: code }));
 
 // Selector de moneda. Cambia solo cómo se MUESTRAN los precios: el cobro sigue
 // siendo en pesos, y por eso las demás monedas se rotulan como referencia.
@@ -29,7 +32,15 @@ export default function CurrencySwitcher({ className = "" }) {
     if (r) setPos({ top: r.bottom + 8, right: window.innerWidth - r.right });
   }, []);
 
-  useEffect(() => setCode(getCurrency()), []);
+  useEffect(() => {
+    const guardada = getCurrency();
+    setCode(guardada);
+    // Si el visitante ya venía en otra moneda, se refrescan las tasas al
+    // cargar. En CLP no se pide nada: no hay conversión que hacer.
+    if (guardada !== BASE) {
+      refreshRates().then(() => avisarCambio(guardada));
+    }
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -55,7 +66,10 @@ export default function CurrencySwitcher({ className = "" }) {
     setCode(nuevo);
     setCurrency(nuevo);
     setOpen(false);
-    window.dispatchEvent(new CustomEvent("maudev:moneda", { detail: nuevo }));
+    // Se avisa de inmediato con las tasas que haya (respaldo o caché) y otra
+    // vez cuando llegan las frescas: el precio nunca queda en blanco esperando.
+    avisarCambio(nuevo);
+    if (nuevo !== BASE) refreshRates().then(() => avisarCambio(nuevo));
   };
 
   const actual = currencyList.find((c) => c.code === code) || currencyList[0];
@@ -82,7 +96,7 @@ export default function CurrencySwitcher({ className = "" }) {
           aria-label="Monedas disponibles"
           ref={ref}
           style={{ position: "fixed", top: pos.top, right: pos.right, zIndex: 60 }}
-          className="panel w-44 p-1.5"
+          className="panel panel-solid w-44 p-1.5"
         >
           {currencyList.map((c) => (
             <li key={c.code}>
