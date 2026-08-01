@@ -26,7 +26,7 @@ export default function ProblemSection() {
               {examples.map(({ icon: Icon, title, text }, index) => (
                 <li
                   key={title}
-                  className="group flex items-start gap-5 rounded-2xl border border-border bg-background p-5 transition-colors hover:border-primary/40 sm:p-6"
+                  className="panel group flex items-start gap-5 p-5 transition-colors hover:border-primary/40 sm:p-6"
                 >
                   <span
                     aria-hidden="true"

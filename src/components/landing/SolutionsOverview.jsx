@@ -52,9 +52,9 @@ export default function SolutionsOverview() {
           </p>
         </div>
 
-        <div className="border-t border-border">
+        <div className="grid gap-3">
           {solutions.map(({ number, icon: Icon, title, description, examples, price, href, link }) => (
-            <article key={title} className="solution-row group">
+            <article key={title} className="solution-row panel panel-pad group">
               <div className="flex items-center gap-3 lg:block">
                 <span className="font-mono text-xs font-semibold text-primary">{number}</span>
                 <Icon className="h-5 w-5 text-primary lg:mt-7" aria-hidden="true" />

@@ -43,9 +43,9 @@ export default function WorkProcess() {
           </h2>
         </div>
 
-        <ol className="mt-14 grid gap-px overflow-hidden rounded-2xl border border-border bg-border md:grid-cols-3">
+        <ol className="mt-14 grid gap-3 md:grid-cols-3">
           {stages.map((stage) => (
-            <li key={stage.number} className="flex flex-col bg-background p-7 lg:p-9">
+            <li key={stage.number} className="panel flex flex-col p-7 lg:p-9">
               <div className="flex items-baseline justify-between gap-4">
                 <span className="font-mono text-xs font-semibold text-primary">{stage.number}</span>
                 <span className="rounded-md border border-border px-2 py-1 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">

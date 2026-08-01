@@ -233,13 +233,48 @@
   text-wrap: balance;
 }
 
+
+/* ───────────────────────────────────────────────────────────────────────────
+   Panel: el mismo tratamiento de la píldora del navbar, disponible para
+   cualquier bloque. Es lo que le da al sitio la lectura "tech": superficies
+   flotantes de vidrio sobre el fondo, en vez de secciones a sangre.
+
+   Tres capas, siempre las mismas: borde de 1px, fondo translúcido con blur y
+   un hairline degradado arriba. La coherencia está en repetirlas sin variar.
+   ─────────────────────────────────────────────────────────────────────────── */
+.panel {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid hsl(var(--border));
+  border-radius: 1rem;
+  background: hsl(var(--card) / 0.72);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 18px 50px hsl(var(--ink) / 0.06);
+}
+
+.panel::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, hsl(var(--primary) / 0.4), transparent);
+}
+
+.panel-pad { padding: clamp(1.5rem, 3.5vw, 3rem); }
+
+/* Variante oscura, para los bloques sobre tinta. */
+.panel-dark {
+  border-color: rgb(255 255 255 / 0.12);
+  background: rgb(255 255 255 / 0.04);
+  box-shadow: 0 24px 60px rgb(0 0 0 / 0.28);
+}
+
 /* Filas editoriales de soluciones */
 .solution-row {
   display: grid;
   gap: 1.5rem;
   align-items: start;
-  border-bottom: 1px solid hsl(var(--border));
-  padding-block: 2rem;
 }
 
 @media (min-width: 1024px) {
@@ -247,7 +282,6 @@
     grid-template-columns: 0.55fr 2.1fr 1.5fr 1fr;
     gap: 2.5rem;
     align-items: center;
-    padding-block: 2.75rem;
   }
 }
 

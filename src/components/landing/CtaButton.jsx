@@ -1,4 +1,3 @@
-import { ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { CTA_LABEL } from "@/data/site";
 import { trackAction } from "@/lib/MetaPixelTracker";
@@ -41,7 +40,6 @@ export default function CtaButton({
         className,
       ].join(" ")}
     >
-      <ArrowUpRight className="h-4 w-4 shrink-0 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden="true" />
       {label}
     </Link>
   );
