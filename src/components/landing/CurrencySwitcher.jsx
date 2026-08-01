@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { ChevronDown, Check } from "lucide-react";
 import { currencyList, getCurrency, setCurrency } from "@/data/currencies";
 
@@ -12,21 +13,43 @@ import { currencyList, getCurrency, setCurrency } from "@/data/currencies";
 export default function CurrencySwitcher({ className = "" }) {
   const [open, setOpen] = useState(false);
   const [code, setCode] = useState("CLP");
+  const [pos, setPos] = useState(null);
   const ref = useRef(null);
+  const botonRef = useRef(null);
+
+  // El desplegable se monta en <body> con un portal, y no dentro del header.
+  // Dos motivos, y hacen falta los dos:
+  //   · la píldora usa overflow-hidden para que el mega-menú respete sus
+  //     esquinas, y eso recortaba la lista a dos monedas;
+  //   · el header lleva un `transform` para el auto-ocultado, y un ancestro
+  //     transformado convierte `position: fixed` en relativo a ÉL, no al
+  //     viewport, así que las coordenadas quedaban desplazadas.
+  const ubicar = useCallback(() => {
+    const r = botonRef.current?.getBoundingClientRect();
+    if (r) setPos({ top: r.bottom + 8, right: window.innerWidth - r.right });
+  }, []);
 
   useEffect(() => setCode(getCurrency()), []);
 
   useEffect(() => {
     if (!open) return;
-    const fuera = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    ubicar();
+    window.addEventListener("resize", ubicar);
+    window.addEventListener("scroll", ubicar, { passive: true });
+    const fuera = (e) => {
+      const dentro = ref.current?.contains(e.target) || botonRef.current?.contains(e.target);
+      if (!dentro) setOpen(false);
+    };
     const esc = (e) => { if (e.key === "Escape") setOpen(false); };
     document.addEventListener("mousedown", fuera);
     window.addEventListener("keydown", esc);
     return () => {
       document.removeEventListener("mousedown", fuera);
       window.removeEventListener("keydown", esc);
+      window.removeEventListener("resize", ubicar);
+      window.removeEventListener("scroll", ubicar);
     };
-  }, [open]);
+  }, [open, ubicar]);
 
   const elegir = (nuevo) => {
     setCode(nuevo);
@@ -40,6 +63,7 @@ export default function CurrencySwitcher({ className = "" }) {
   return (
     <div ref={ref} className={`relative ${className}`}>
       <button
+        ref={botonRef}
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
@@ -52,11 +76,13 @@ export default function CurrencySwitcher({ className = "" }) {
         <ChevronDown className={`h-3.5 w-3.5 transition-transform ${open ? "rotate-180" : ""}`} aria-hidden="true" />
       </button>
 
-      {open && (
+      {open && pos && createPortal(
         <ul
           role="listbox"
           aria-label="Monedas disponibles"
-          className="panel absolute right-0 z-50 mt-2 w-44 p-1.5"
+          ref={ref}
+          style={{ position: "fixed", top: pos.top, right: pos.right, zIndex: 60 }}
+          className="panel w-44 p-1.5"
         >
           {currencyList.map((c) => (
             <li key={c.code}>
@@ -75,7 +101,8 @@ export default function CurrencySwitcher({ className = "" }) {
               </button>
             </li>
           ))}
-        </ul>
+        </ul>,
+        document.body
       )}
       <p className="sr-only">Los precios se definen y se cobran en pesos chilenos. Las demás monedas son una referencia aproximada.</p>
     </div>
