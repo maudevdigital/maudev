@@ -2,6 +2,7 @@ import { ArrowDownRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import AutomationFlow from "@/components/landing/AutomationFlow";
 import CtaButton from "@/components/landing/CtaButton";
+import ParticleField from "@/components/landing/ParticleField";
 import { proofPoints } from "@/data/site";
 import { trackAction } from "@/lib/MetaPixelTracker";
 
@@ -10,7 +11,10 @@ export default function Hero() {
     <section className="hero-section">
       <div className="hero-orbit hero-orbit-one" aria-hidden="true" />
       <div className="hero-orbit hero-orbit-two" aria-hidden="true" />
-      <div className="site-container relative grid items-center gap-12 lg:grid-cols-[1.08fr_0.92fr] lg:gap-16">
+      {/* La máscara apaga las partículas en los bordes para que no compitan
+          con el texto ni se corten de golpe contra el límite de la sección. */}
+      <ParticleField className="-z-10 mask-[radial-gradient(ellipse_at_center,black_55%,transparent_100%)]" />
+      <div className="site-container relative grid w-full items-center gap-12 lg:grid-cols-[1.08fr_0.92fr] lg:gap-16">
         <div className="max-w-3xl">
           <span className="eyebrow">Automatización y software para empresas</span>
           <h1 className="display-title mt-5">Automatizamos las tareas que frenan tu negocio.</h1>
