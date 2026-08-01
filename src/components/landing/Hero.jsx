@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import CtaButton from "@/components/landing/CtaButton";
 import ParticleField from "@/components/landing/ParticleField";
 import QuickQuote from "@/components/landing/QuickQuote";
+import RotatingAudience from "@/components/landing/RotatingAudience";
 import { trackAction } from "@/lib/MetaPixelTracker";
 
 export default function Hero() {
@@ -40,7 +41,9 @@ export default function Hero() {
 
           <h1 className="hero-title mt-7">Tu sitio web, hecho para que te contacten.</h1>
 
-          <div className="mt-11 flex flex-col gap-6 sm:flex-row sm:items-center">
+          <RotatingAudience />
+
+          <div className="mt-10 flex flex-col gap-6 sm:flex-row sm:items-center">
             <CtaButton size="lg" context="hero" />
             <Link
               to="/#casos"
