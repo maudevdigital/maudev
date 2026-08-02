@@ -4,7 +4,7 @@
 @theme inline {
   --font-sans: 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
-  --font-display: 'Space Grotesk', 'Inter', sans-serif;
+  --font-display: 'Sora', 'Inter', sans-serif;
 
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
@@ -23,7 +23,7 @@
   --color-success: hsl(var(--success));
   --color-error: hsl(var(--error));
   --color-ink: hsl(var(--ink));
-  --font-display: 'Space Grotesk', 'Inter', sans-serif;
+  --font-display: 'Sora', 'Inter', sans-serif;
 }
 
 @layer base {
@@ -44,7 +44,7 @@
   :root {
     --font-sans: 'Inter', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
-    --font-display: 'Space Grotesk', 'Inter', sans-serif;
+    --font-display: 'Sora', 'Inter', sans-serif;
 
     --background: 40 24% 97%;
     --foreground: 222 30% 9%;

@@ -4,7 +4,6 @@ import CtaButton from "@/components/landing/CtaButton";
 import ParticleField from "@/components/landing/ParticleField";
 import QuickQuote from "@/components/landing/QuickQuote";
 import RotatingAudience from "@/components/landing/RotatingAudience";
-import { proofPoints } from "@/data/site";
 import { trackAction } from "@/lib/MetaPixelTracker";
 
 export default function Hero() {
@@ -55,18 +54,6 @@ export default function Hero() {
             </Link>
           </div>
 
-          {/* El diferenciador. Responde los tres miedos de quien encarga una
-              web —que el precio se infle, que el proveedor se quede con las
-              cuentas, que la entrega nunca llegue— y es lo único de este hero
-              que no podría firmar cualquier estudio. */}
-          <ul className="mt-9 flex flex-wrap gap-x-6 gap-y-2 border-t border-border pt-6 font-mono text-[11px] uppercase tracking-[0.12em] text-muted-foreground">
-            {proofPoints.map((punto) => (
-              <li key={punto} className="flex items-center gap-2">
-                <span className="h-1 w-1 rounded-full bg-primary" aria-hidden="true" />
-                {punto}
-              </li>
-            ))}
-          </ul>
         </div>
 
         {/* ── Derecha: cotizador ── */}

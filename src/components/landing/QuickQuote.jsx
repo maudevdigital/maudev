@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { formatFrom } from "@/data/currencies";
+import { proofPoints } from "@/data/site";
 import { useCurrency } from "@/lib/useCurrency";
 import { trackAction } from "@/lib/MetaPixelTracker";
 
@@ -118,6 +119,21 @@ export default function QuickQuote() {
           Es una referencia, no una cotización. El precio final se fija por escrito después de revisar qué necesitas.
         </p>
       </div>
+
+      {/* Las garantías cierran el panel, no la columna del titular: acá caen
+          justo donde el visitante acaba de ver una cifra, que es el momento en
+          que aparece la desconfianza. Bajo el CTA, en cambio, competían con el
+          botón por la misma mirada. */}
+      <ul className="grid grid-cols-3 gap-px border-t border-border bg-border">
+        {proofPoints.map((punto) => (
+          <li key={punto} className="bg-card px-3 py-3.5 text-center">
+            <span className="mx-auto mb-2 block h-1 w-1 rounded-full bg-primary" aria-hidden="true" />
+            <span className="block text-[11px] font-semibold leading-tight text-muted-foreground">
+              {punto}
+            </span>
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }
