@@ -1,6 +1,6 @@
 import { ArrowRight, Crown, Rocket, Sprout, Wand2 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { pricing } from "@/data/pricing";
+import { pricing, IVA_NOTA } from "@/data/pricing";
 import { formatFrom } from "@/data/currencies";
 import { useCurrency } from "@/lib/useCurrency";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
@@ -15,9 +15,9 @@ import { trackAction } from "@/lib/MetaPixelTracker";
 // el nivel marcado sea de verdad el que más se contrata.
 //
 // Los montos salen de pricing.js, la misma fuente que el cotizador del hero y
-// las páginas de servicio. No se agregan cuotas ni "+ IVA": ninguna de las dos
-// está definida en el negocio, y publicar una condición de pago que después no
-// se cumple es peor que no publicarla.
+// las páginas de servicio, y van rotulados como IVA incluido: se publica el
+// total y no el neto porque el visitante compara contra lo que va a pagar, y
+// sumar el impuesto al final es la sorpresa que hace abandonar una cotización.
 const niveles = [
   {
     id: "inicia",
@@ -106,6 +106,9 @@ export default function PlanTiers() {
                 <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">{ejemplo}</p>
                 <p className="mt-1 font-display text-xl font-bold tracking-[-0.03em]">
                   Desde {formatFrom(pricing[plan].from, moneda)}
+                </p>
+                <p className="mt-0.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                  {IVA_NOTA}
                 </p>
               </div>
 

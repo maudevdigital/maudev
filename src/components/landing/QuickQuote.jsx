@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { formatFrom } from "@/data/currencies";
 import { proofPoints } from "@/data/site";
+import { IVA_NOTA, pricing } from "@/data/pricing";
 import { useCurrency } from "@/lib/useCurrency";
 import { trackAction } from "@/lib/MetaPixelTracker";
 
@@ -17,10 +18,12 @@ import { trackAction } from "@/lib/MetaPixelTracker";
 // tabla de precios que se pueda desincronizar. El resultado se rotula como
 // estimado y el CTA pide precio POR ESCRITO: la cifra orienta, no compromete.
 
+// Los montos se leen de pricing.js y NO se copian acá: tenerlos duplicados ya
+// había dejado al cotizador mostrando precios viejos cuando cambió la tabla.
 const tipos = [
-  { id: "landing", label: "Landing", base: 390000, semanas: "1 a 2" },
-  { id: "sitio", label: "Sitio web", base: 550000, semanas: "3 a 5" },
-  { id: "tienda", label: "Tienda online", base: 990000, semanas: "5 a 8" },
+  { id: "landing", label: "Landing", plan: "landing", semanas: "1 a 2" },
+  { id: "sitio", label: "Sitio web", plan: "sitio", semanas: "3 a 5" },
+  { id: "tienda", label: "Tienda online", plan: "ecommerce", semanas: "5 a 8" },
 ];
 
 // Multiplicadores por tamaño. Son tramos gruesos a propósito: un estimado con
@@ -53,7 +56,7 @@ export default function QuickQuote() {
 
   // Se redondea al múltiplo de 10.000 antes de convertir, para que el estimado
   // se lea como una referencia y no como una cotización cerrada.
-  const estimado = Math.round((tipo.base * tamano.factor) / 10000) * 10000;
+  const estimado = Math.round((pricing[tipo.plan].from * tamano.factor) / 10000) * 10000;
 
   const elegir = (setter, valor, campo) => {
     setter(valor);
@@ -95,7 +98,10 @@ export default function QuickQuote() {
 
       <dl className="border-t border-border px-6 py-5" aria-live="polite">
         <div className="flex items-baseline justify-between gap-4">
-          <dt className="text-sm font-semibold text-muted-foreground">Estimado desde</dt>
+          <dt className="text-sm font-semibold text-muted-foreground">
+            Estimado desde
+            <span className="mt-0.5 block font-mono text-[10px] uppercase tracking-wider">{IVA_NOTA}</span>
+          </dt>
           <dd className="font-display text-2xl font-bold tracking-[-0.03em] sm:text-3xl">
             {formatFrom(estimado, moneda)}
           </dd>

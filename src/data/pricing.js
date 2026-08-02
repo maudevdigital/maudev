@@ -8,6 +8,10 @@
 // Son montos "desde": el piso de un alcance típico, no una tarifa cerrada. El
 // precio final se fija por escrito después del diagnóstico, y eso debe decirse
 // en la misma pantalla donde aparece la cifra.
+//
+// Los montos INCLUYEN el IVA de 19%. Se publica el total y no el neto porque el
+// visitante compara contra lo que va a pagar: mostrar el neto y sumar el
+// impuesto al final es la sorpresa que hace abandonar una cotización.
 
 import { BASE, formatFrom } from "@/data/currencies";
 
@@ -17,21 +21,21 @@ export const pricing = {
   landing: {
     id: "landing",
     label: "Landing page",
-    from: 390000,
+    from: 100000,
     unit: "proyecto",
     summary: "Una propuesta y una acción, para campañas o para validar una idea.",
   },
   sitio: {
     id: "sitio",
     label: "Sitio corporativo",
-    from: 550000,
+    from: 250000,
     unit: "proyecto",
     summary: "Varias páginas de servicio, con la arquitectura y el texto que las sostienen.",
   },
   ecommerce: {
     id: "ecommerce",
     label: "Tienda online",
-    from: 990000,
+    from: 1250000,
     unit: "proyecto",
     summary: "Catálogo, pagos, despacho e inventario funcionando de punta a punta.",
   },
@@ -62,5 +66,14 @@ export const priceIn = (key, code = BASE) => {
 
 /** Atajo en pesos, para textos que no dependen del selector. */
 export const priceLabel = (key) => priceIn(key, BASE);
+
+export const IVA_RATE = 0.19;
+export const IVA_NOTA = "IVA incluido";
+
+/** Neto y IVA de un monto que ya viene con impuesto incluido. */
+export const desglosarIva = (total) => {
+  const neto = Math.round(total / (1 + IVA_RATE));
+  return { neto, iva: total - neto };
+};
 
 export const webPlans = [pricing.landing, pricing.sitio, pricing.ecommerce];

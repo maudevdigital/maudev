@@ -1,4 +1,4 @@
-import { pricing, priceIn } from "@/data/pricing";
+import { pricing, priceIn, IVA_NOTA } from "@/data/pricing";
 import { BASE } from "@/data/currencies";
 import { useCurrency } from "@/lib/useCurrency";
 
@@ -41,6 +41,9 @@ export default function PriceRange({ plans, note }) {
                     desde
                   </span>
                   {priceIn(key, moneda)}
+                  <span className="mt-0.5 block text-[10px] font-normal uppercase tracking-wider text-muted-foreground">
+                    {IVA_NOTA}
+                  </span>
                 </dd>
               </div>
             );
