@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef } from "react";
 import { CalendarClock, MessageCircle } from "lucide-react";
 import { CAL_URL } from "@/data/catalog";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
+import { currencyList } from "@/data/currencies";
 import ParticleField from "@/components/landing/ParticleField";
 import QuickQuote from "@/components/landing/QuickQuote";
 import RotatingAudience from "@/components/landing/RotatingAudience";
@@ -69,6 +70,30 @@ export default function Hero() {
               <CalendarClock className="h-5 w-5 shrink-0" aria-hidden="true" />
               Agendar 30 min
             </a>
+          </div>
+
+          {/* Alcance, no prueba social.
+              Los círculos son los países cuya moneda cotizamos, que es un hecho
+              verificable del propio sitio: el selector del header los tiene. No
+              son clientes ni llevan estrellas, porque no hay clientes en esos
+              países ni calificaciones que respalden un puntaje. El día que
+              existan testimonios reales, este bloque se reemplaza por ellos. */}
+          <div className="mt-7 flex flex-wrap items-center gap-x-4 gap-y-3 border-t border-border pt-5">
+            <ul className="flex -space-x-2" aria-hidden="true">
+              {currencyList.map((moneda) => (
+                <li
+                  key={moneda.code}
+                  title={moneda.code}
+                  className="grid h-9 w-9 place-items-center rounded-full border-2 border-background bg-secondary font-mono text-[10px] font-bold text-muted-foreground"
+                >
+                  {moneda.country}
+                </li>
+              ))}
+            </ul>
+            <p className="text-sm leading-snug text-muted-foreground">
+              <strong className="font-semibold text-foreground">Cotizamos en tu moneda.</strong>{" "}
+              Trabajamos a distancia con toda Latinoamérica.
+            </p>
           </div>
 
         </div>

@@ -49,7 +49,7 @@ export default function RotatingAudience() {
   }, []);
 
   return (
-    <p className="mt-6 text-lg text-muted-foreground sm:text-xl">
+    <p className="mt-5 text-base text-muted-foreground sm:text-lg">
       <span aria-hidden="true">
         Para{" "}
         <span
