@@ -1,5 +1,6 @@
 import Navbar from "@/components/landing/Navbar";
 import Hero from "@/components/landing/Hero";
+import PlanTiers from "@/components/landing/PlanTiers";
 import ProblemSection from "@/components/landing/ProblemSection";
 import SolutionsOverview from "@/components/landing/SolutionsOverview";
 import ProcessDemo from "@/components/landing/ProcessDemo";
@@ -66,6 +67,7 @@ export default function Landing() {
       <Navbar />
       <main>
         <Hero />
+        <PlanTiers />
         <ProblemSection />
         <SolutionsOverview />
         <ProcessDemo />
