@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { ArrowRight, Crown, Rocket, Sprout, Wand2 } from "lucide-react";
-import { Link } from "react-router-dom";
+import TierModal from "@/components/landing/TierModal";
 import { pricing, IVA_NOTA } from "@/data/pricing";
 import { formatFrom } from "@/data/currencies";
 import { useCurrency } from "@/lib/useCurrency";
@@ -30,7 +31,7 @@ const niveles = [
     ejemplo: "Landing page profesional",
     incluye: ["Una página, una acción clara", "Formulario y WhatsApp conectados", "Base técnica de SEO"],
     para: "Emprendedores y negocios que hoy solo tienen redes sociales.",
-    href: "/desarrollo-web",
+    indice: 0,
   },
   {
     id: "escala",
@@ -43,7 +44,7 @@ const niveles = [
     ejemplo: "Sitio corporativo multipágina",
     incluye: ["Todo lo anterior", "Páginas por servicio y casos", "Reservas o cotización en línea"],
     para: "Negocios que ya venden y necesitan explicar más de una cosa.",
-    href: "/desarrollo-web",
+    indice: 1,
     destacado: true,
   },
   {
@@ -57,12 +58,13 @@ const niveles = [
     ejemplo: "Tienda online completa",
     incluye: ["Todo lo anterior", "Pagos e inventario conectados", "Gestión de pedidos"],
     para: "Marcas que quieren dejar de vender por mensaje directo.",
-    href: "/ecommerce",
+    indice: 2,
   },
 ];
 
 export default function PlanTiers() {
   const moneda = useCurrency();
+  const [abierto, setAbierto] = useState(null);
 
   return (
     <section id="planes" className="section-pad scroll-mt-20" aria-labelledby="planes-titulo">
@@ -78,7 +80,9 @@ export default function PlanTiers() {
         </div>
 
         <div className="mt-12 grid gap-3 lg:grid-cols-3">
-          {niveles.map(({ id, numero, icono: Icono, etiqueta, titulo, resumen, plan, ejemplo, incluye, para, href, destacado }) => (
+          {niveles.map((nivel) => {
+            const { id, numero, icono: Icono, etiqueta, titulo, resumen, plan, ejemplo, incluye, para, destacado } = nivel;
+            return (
             <article
               key={id}
               className={`panel relative flex flex-col p-7 lg:p-8 ${destacado ? "border-primary/45" : ""}`}
@@ -125,17 +129,23 @@ export default function PlanTiers() {
                 {para}
               </p>
 
-              <Link
-                to={href}
-                onClick={() => trackAction("plan_click", { plan: id })}
-                className="group mt-5 inline-flex items-center gap-2 text-sm font-bold text-foreground transition-colors hover:text-primary"
+              <button
+                type="button"
+                onClick={() => {
+                  setAbierto(nivel);
+                  trackAction("plan_subservicios", { plan: id });
+                }}
+                className="group mt-5 inline-flex items-center gap-2 text-sm font-bold text-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
-                Ver qué incluye
+                Ver subservicios
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
-              </Link>
+              </button>
             </article>
-          ))}
+            );
+          })}
         </div>
+
+        {abierto && <TierModal nivel={abierto} onClose={() => setAbierto(null)} />}
 
         {/* Cuarta salida: para quien no calza en ninguna de las tres. Sin esto,
             el que tiene un encargo raro asume que no es cliente y se va. */}
