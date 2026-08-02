@@ -1,6 +1,4 @@
-import { currencyList, getCurrency, refreshRates, setCurrency, BASE } from "@/data/currencies";
-import { useCurrency } from "@/lib/useCurrency";
-import { trackAction } from "@/lib/MetaPixelTracker";
+import { currencyList } from "@/data/currencies";
 
 // Banderas de los países cuya moneda cotizamos.
 //
@@ -10,9 +8,10 @@ import { trackAction } from "@/lib/MetaPixelTracker";
 // Tampoco son imágenes: siete PNG serían siete peticiones y un borrón al
 // escalar; así son vectores nítidos que además heredan el borde del tema.
 //
-// Y no son decoración: al pulsar una, el sitio cambia a esa moneda. Eso le da
-// una función al bloque y hace descubrible el selector del header, que pasa
-// desapercibido por estar entre los botones.
+// Son un elemento de lectura, no un control: el cambio de moneda ya vive en el
+// header y duplicarlo acá obligaba al visitante a preguntarse cuál de los dos
+// manda. Van en círculos superpuestos, que es la forma con la que el ojo ya
+// asocia "un grupo de gente o lugares" sin tener que leer nada.
 
 const banderas = {
   CL: (
@@ -74,57 +73,23 @@ const banderas = {
 };
 
 export default function CountryFlags() {
-  const activa = useCurrency();
-
-  const elegir = (code) => {
-    setCurrency(code);
-    trackAction("moneda_bandera", { moneda: code });
-    const avisar = () => window.dispatchEvent(new CustomEvent("maudev:moneda", { detail: code }));
-    avisar();
-    if (code !== BASE) refreshRates().then(avisar);
-  };
-
   return (
-    <div className="mt-7 border-t border-border pt-5">
-      <ul className="flex flex-wrap gap-1.5">
-        {currencyList.map(({ code, country }) => {
-          const seleccionada = code === (activa || getCurrency());
-          return (
-            <li key={code}>
-              <button
-                type="button"
-                onClick={() => elegir(code)}
-                aria-pressed={seleccionada}
-                aria-label={`Ver precios en ${code}`}
-                className={`group flex items-center gap-2 rounded-lg border py-1.5 pl-1.5 pr-2.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
-                  seleccionada
-                    ? "border-primary/50 bg-primary/10"
-                    : "border-border hover:border-primary/40 hover:bg-secondary"
-                }`}
-              >
-                <svg
-                  viewBox="0 0 24 16"
-                  width="22"
-                  height="15"
-                  aria-hidden="true"
-                  className="shrink-0 rounded-[3px] shadow-[0_0_0_1px_hsl(var(--ink)/0.12)]"
-                >
-                  {banderas[country] || banderas.CL}
-                </svg>
-                <span
-                  className={`font-mono text-[10px] font-bold tracking-wide ${
-                    seleccionada ? "text-primary" : "text-muted-foreground group-hover:text-foreground"
-                  }`}
-                >
-                  {code}
-                </span>
-              </button>
-            </li>
-          );
-        })}
+    <div className="mt-7 flex flex-wrap items-center gap-x-4 gap-y-3 border-t border-border pt-5">
+      <ul className="flex -space-x-2.5" aria-hidden="true">
+        {currencyList.map(({ code, country }) => (
+          <li
+            key={code}
+            title={code}
+            className="h-10 w-10 overflow-hidden rounded-full ring-2 ring-background transition-transform duration-200 hover:z-10 hover:-translate-y-0.5"
+          >
+            <svg viewBox="0 0 24 16" width="40" height="40" preserveAspectRatio="xMidYMid slice">
+              {banderas[country] || banderas.CL}
+            </svg>
+          </li>
+        ))}
       </ul>
 
-      <p className="mt-3 text-sm leading-snug text-muted-foreground">
+      <p className="text-sm leading-snug text-muted-foreground">
         <strong className="font-semibold text-foreground">Cotizamos en tu moneda.</strong>{" "}
         Trabajamos a distancia con toda Latinoamérica.
       </p>

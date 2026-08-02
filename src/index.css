@@ -177,7 +177,7 @@
   overflow: hidden;
   min-height: 100svh;
   min-height: 100dvh;
-  padding-block: clamp(5.5rem, 7vw, 6.4rem) clamp(1.75rem, 3.5vw, 3rem);
+  padding-block: clamp(5.5rem, 7vw, 6.2rem) clamp(1.5rem, 3vw, 2.5rem);
 }
 
 @supports not (min-height: 100dvh) {
