@@ -12,16 +12,21 @@ import { useEffect, useState } from "react";
 // Accesibilidad: la parte que rota va aria-hidden y se ofrece la lista completa
 // a lectores de pantalla en un texto estático. Si se dejara visible al lector,
 // anunciaría un cambio cada tres segundos y volvería la página inusable.
+// Cada línea nombra el rubro Y la situación que lo trae. Antes decía solo
+// "para barberías", que informaba a quién sin decir por qué: cualquiera de los
+// seis rubros podía leerla y seguir de largo. Nombrar el síntoma hace que el
+// que lo vive se detenga, y el que no, sepa en dos segundos que no es para él.
 const rubros = [
-  "barberías y salones",
-  "talleres y repuestos",
-  "servicios profesionales",
-  "restaurantes",
-  "tiendas online",
-  "consultoras",
+  { quien: "barberías", situacion: "que agendan hora por mensaje, una por una" },
+  { quien: "talleres", situacion: "a los que piden presupuesto por Instagram" },
+  { quien: "consultoras", situacion: "que explican lo mismo en cada reunión" },
+  { quien: "restaurantes", situacion: "que anotan los pedidos a mano" },
+  { quien: "tiendas", situacion: "que hoy solo venden por redes sociales" },
+  { quien: "profesionales", situacion: "que no aparecen al buscarlos en Google" },
 ];
 
-const INTERVALO = 2600;
+// Más lento que antes: ahora hay una frase que leer, no una palabra.
+const INTERVALO = 3800;
 
 export default function RotatingAudience() {
   const [indice, setIndice] = useState(0);
@@ -48,15 +53,14 @@ export default function RotatingAudience() {
       <span aria-hidden="true">
         Para{" "}
         <span
-          className={`font-semibold text-foreground transition-opacity duration-300 ${
-            visible ? "opacity-100" : "opacity-0"
-          }`}
+          className={`transition-opacity duration-300 ${visible ? "opacity-100" : "opacity-0"}`}
         >
-          {rubros[indice]}
+          <strong className="font-semibold text-foreground">{rubros[indice].quien}</strong>{" "}
+          {rubros[indice].situacion}
         </span>
       </span>
       <span className="sr-only">
-        Para {rubros.slice(0, -1).join(", ")} y {rubros.at(-1)}.
+        Para {rubros.map((r) => `${r.quien} ${r.situacion}`).join("; ")}.
       </span>
     </p>
   );

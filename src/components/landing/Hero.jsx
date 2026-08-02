@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
-import CtaButton from "@/components/landing/CtaButton";
+import { CalendarClock, MessageCircle } from "lucide-react";
+import { CAL_URL } from "@/data/catalog";
+import { getWhatsAppUrl } from "@/lib/whatsapp";
 import ParticleField from "@/components/landing/ParticleField";
 import QuickQuote from "@/components/landing/QuickQuote";
 import RotatingAudience from "@/components/landing/RotatingAudience";
@@ -43,15 +44,31 @@ export default function Hero() {
 
           <RotatingAudience />
 
-          <div className="mt-10 flex flex-col gap-6 sm:flex-row sm:items-center">
-            <CtaButton size="lg" context="hero" />
-            <Link
-              to="/#casos"
-              onClick={() => trackAction("proyectos_reales_click", { ubicacion: "hero" })}
-              className="font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground underline decoration-border underline-offset-[6px] transition-colors hover:text-primary"
+          {/* Las dos acciones del hero son las dos formas reales de empezar
+              una conversación: escribir ahora o reservar una hora. Ambas salen
+              del sitio, así que van como <a> y no como <Link>. El cotizador de
+              la derecha cubre a quien todavía no quiere hablar con nadie. */}
+          <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <a
+              href={getWhatsAppUrl("Hola, vengo de maudev.cl y quiero conversar sobre un sitio web para mi negocio.")}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackAction("whatsapp_click", { ubicacion: "hero" })}
+              className="inline-flex h-14 items-center justify-center gap-2.5 rounded-xl bg-primary px-7 font-semibold text-primary-foreground shadow-[0_14px_35px_hsl(var(--primary)/0.18)] transition-[transform,opacity] duration-200 hover:-translate-y-0.5 hover:opacity-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
-              Ver proyectos
-            </Link>
+              <MessageCircle className="h-5 w-5 shrink-0" aria-hidden="true" />
+              Hablar por WhatsApp
+            </a>
+            <a
+              href={CAL_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackAction("agendar_click", { ubicacion: "hero" })}
+              className="inline-flex h-14 items-center justify-center gap-2.5 rounded-xl border border-border px-6 font-semibold text-foreground transition-colors hover:border-primary/40 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <CalendarClock className="h-5 w-5 shrink-0" aria-hidden="true" />
+              Agendar 30 min
+            </a>
           </div>
 
         </div>
