@@ -70,7 +70,7 @@ export default function TierModal({ nivel, onClose }) {
         className="panel panel-solid flex max-h-[92dvh] w-full max-w-5xl flex-col rounded-b-none sm:rounded-2xl"
       >
         {/* Cabecera */}
-        <div className="flex items-start justify-between gap-4 border-b border-border p-6 sm:p-7">
+        <div className="flex shrink-0 items-start justify-between gap-4 border-b border-border p-6 sm:p-7">
           <div>
             <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-primary">
               Estás explorando · Nivel {nivel.numero}
@@ -92,7 +92,7 @@ export default function TierModal({ nivel, onClose }) {
         </div>
 
         {/* Filtros por familia */}
-        <div className="flex gap-2 overflow-x-auto border-b border-border px-6 py-3 sm:px-7">
+        <div className="flex shrink-0 gap-2 overflow-x-auto border-b border-border px-6 py-3.5 sm:px-7">
           {[{ id: "todos", label: "Todos" }, ...familias].map(({ id, label }) => (
             <button
               key={id}
@@ -111,7 +111,7 @@ export default function TierModal({ nivel, onClose }) {
         </div>
 
         {/* Carta */}
-        <div className="grid gap-3 overflow-y-auto p-6 sm:grid-cols-2 sm:p-7 lg:grid-cols-3">
+        <div className="grid min-h-0 flex-1 content-start gap-3 overflow-y-auto p-6 sm:grid-cols-2 sm:p-7 lg:grid-cols-3">
           {visibles.map((servicio) => {
             const precio = servicio.precios[nivel.indice];
             const bloqueado = precio === null;
@@ -159,7 +159,7 @@ export default function TierModal({ nivel, onClose }) {
         </div>
 
         {/* Pie */}
-        <div className="flex flex-col gap-4 border-t border-border p-6 sm:flex-row sm:items-center sm:justify-between sm:p-7">
+        <div className="flex shrink-0 flex-col gap-4 border-t border-border p-6 sm:flex-row sm:items-center sm:justify-between sm:p-7">
           <p className="max-w-md text-xs leading-relaxed text-muted-foreground">
             Los montos son el piso de un alcance típico y no incluyen IVA. El precio final se fija por escrito antes de empezar.
           </p>
