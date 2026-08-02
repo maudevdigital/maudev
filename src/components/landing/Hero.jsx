@@ -4,6 +4,7 @@ import CtaButton from "@/components/landing/CtaButton";
 import ParticleField from "@/components/landing/ParticleField";
 import QuickQuote from "@/components/landing/QuickQuote";
 import RotatingAudience from "@/components/landing/RotatingAudience";
+import { proofPoints } from "@/data/site";
 import { trackAction } from "@/lib/MetaPixelTracker";
 
 export default function Hero() {
@@ -34,7 +35,7 @@ export default function Hero() {
       <div className="hero-orbit hero-orbit-one" aria-hidden="true" />
       <ParticleField className="-z-10 mask-[radial-gradient(ellipse_at_center,black_60%,transparent_100%)]" />
 
-      <div className="site-container relative grid w-full items-center gap-14 lg:grid-cols-[1.15fr_0.85fr] lg:gap-20">
+      <div className="site-container relative grid w-full items-center gap-14 lg:grid-cols-[1.2fr_0.8fr] lg:gap-16">
         {/* ── Izquierda: mensaje y acción ── */}
         <div>
           <span className="eyebrow">Diseño y desarrollo web · Chile</span>
@@ -53,6 +54,19 @@ export default function Hero() {
               Ver proyectos
             </Link>
           </div>
+
+          {/* El diferenciador. Responde los tres miedos de quien encarga una
+              web —que el precio se infle, que el proveedor se quede con las
+              cuentas, que la entrega nunca llegue— y es lo único de este hero
+              que no podría firmar cualquier estudio. */}
+          <ul className="mt-9 flex flex-wrap gap-x-6 gap-y-2 border-t border-border pt-6 font-mono text-[11px] uppercase tracking-[0.12em] text-muted-foreground">
+            {proofPoints.map((punto) => (
+              <li key={punto} className="flex items-center gap-2">
+                <span className="h-1 w-1 rounded-full bg-primary" aria-hidden="true" />
+                {punto}
+              </li>
+            ))}
+          </ul>
         </div>
 
         {/* ── Derecha: cotizador ── */}
