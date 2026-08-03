@@ -12,6 +12,8 @@ const routes = [
   "/desarrollo-web",
   "/ecommerce",
   "/mantencion",
+  "/servicios/landing-page",
+  "/servicios/punto-de-venta",
   "/casos",
   "/casos/systempro",
   "/casos/scissorhands",
@@ -147,7 +149,7 @@ try {
   await formPage.close();
 
   const sitemap = await fs.readFile(path.join(root, "public", "sitemap.xml"), "utf8");
-  for (const route of routes.slice(0, 13)) {
+  for (const route of routes.slice(0, 15)) {
     const expected = route === "/" ? "https://maudev.cl/" : `https://maudev.cl${route}`;
     assert(sitemap.includes(`<loc>${expected}</loc>`), `Sitemap: falta ${expected}`);
   }

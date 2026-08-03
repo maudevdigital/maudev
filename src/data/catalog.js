@@ -1,3 +1,4 @@
+import { subservicios } from "@/data/subservices";
 import { Blocks, Boxes, CalendarClock, CreditCard, Layers, LayoutTemplate,
   MonitorSmartphone, Palette, PenTool, RefreshCw, Share2, ShoppingCart,
   Smartphone, Sparkles, Store, Tablet, Users, Wrench } from "lucide-react";
@@ -12,52 +13,61 @@ import { Blocks, Boxes, CalendarClock, CreditCard, Layers, LayoutTemplate,
 // Cada ítem apunta a una página que existe. Cuando un servicio todavía no tiene
 // página propia, cae en la de su familia con el ancla correspondiente: es
 // preferible a un enlace muerto o a una ruta vacía que responda 200.
+// Los destinos ya no se escriben acá: cada ítem se enlaza con su servicio del
+// catálogo por nombre, así el menú y el footer siempre llevan a la página que
+// existe. Antes trece de los diecinueve caían en la página de su familia.
+const conRuta = (items) =>
+  items.map((item) => ({
+    ...item,
+    href: subservicios.find((s) => s.nombre === item.title)?.path || "/contacto",
+  }));
+
 export const catalog = [
   {
     id: "sitios",
     label: "Sitios web",
     accent: "text-primary",
-    items: [
-      { icon: LayoutTemplate, title: "Landing page", text: "Una sola página, una sola acción: pensada para campañas.", href: "/desarrollo-web" },
-      { icon: MonitorSmartphone, title: "Sitio corporativo", text: "Varias páginas de servicio con la arquitectura que las ordena.", href: "/desarrollo-web" },
-      { icon: ShoppingCart, title: "Tienda online", text: "Catálogo, pagos y despacho conectados de punta a punta.", href: "/ecommerce" },
-      { icon: RefreshCw, title: "Rediseño", text: "Tu sitio actual, más rápido y más claro, sin partir de cero.", href: "/desarrollo-web" },
-      { icon: Wrench, title: "Mantención", text: "Respaldos, seguridad y cambios del mes, todos los meses.", href: "/mantencion" },
-    ],
+    items: conRuta([
+      { icon: LayoutTemplate, title: "Landing page", text: "Una sola página, una sola acción: pensada para campañas." },
+      { icon: MonitorSmartphone, title: "Sitio corporativo", text: "Varias páginas de servicio con la arquitectura que las ordena." },
+      { icon: ShoppingCart, title: "Tienda online", text: "Catálogo, pagos y despacho conectados de punta a punta." },
+      { icon: RefreshCw, title: "Rediseño", text: "Tu sitio actual, más rápido y más claro, sin partir de cero." },
+      { icon: Wrench, title: "Mantención", text: "Respaldos, seguridad y cambios del mes, todos los meses." },
+    ]),
   },
   {
     id: "software",
     label: "Software",
     accent: "text-primary",
-    items: [
-      { icon: Blocks, title: "Software a medida", text: "Cuando ninguna herramienta del mercado calza con tu operación.", href: "/software-a-medida" },
-      { icon: Boxes, title: "Inventario y pedidos", text: "Stock, órdenes y documentos en una sola fuente de verdad.", href: "/software-a-medida" },
-      { icon: Users, title: "Gestión de clientes", text: "Historial, seguimiento y estado de cada conversación.", href: "/software-a-medida" },
-      { icon: Layers, title: "Portales y dashboards", text: "Acceso propio para tu equipo o para tus clientes.", href: "/software-a-medida" },
-      { icon: CreditCard, title: "Facturación y cobros", text: "Documentos y pagos que dejan de depender de alguien.", href: "/automatizacion" },
-    ],
+    items: conRuta([
+      { icon: Blocks, title: "Software a medida", text: "Cuando ninguna herramienta del mercado calza con tu operación." },
+      { icon: Boxes, title: "Inventario y pedidos", text: "Stock, órdenes y documentos en una sola fuente de verdad." },
+      { icon: Users, title: "Gestión de clientes", text: "Historial, seguimiento y estado de cada conversación." },
+      { icon: Layers, title: "Portales y dashboards", text: "Acceso propio para tu equipo o para tus clientes." },
+      { icon: CreditCard, title: "Facturación y cobros", text: "Documentos y pagos que dejan de depender de alguien." },
+    ]),
   },
   {
     id: "apps",
     label: "Apps móviles",
     accent: "text-primary",
-    items: [
-      { icon: Smartphone, title: "App para Android", text: "Publicada en Google Play, con tu cuenta de desarrollador.", href: "/software-a-medida" },
-      { icon: Tablet, title: "App para iPhone", text: "Publicada en la App Store, a nombre de tu empresa.", href: "/software-a-medida" },
-      { icon: Layers, title: "App multiplataforma", text: "Un solo desarrollo que corre en ambos sistemas.", href: "/software-a-medida" },
-      { icon: Sparkles, title: "App web instalable", text: "Se instala desde el navegador y funciona sin señal.", href: "/software-a-medida" },
-    ],
+    items: conRuta([
+      { icon: Smartphone, title: "App para Android", text: "Publicada en Google Play, con tu cuenta de desarrollador." },
+      { icon: Tablet, title: "App para iPhone", text: "Publicada en la App Store, a nombre de tu empresa." },
+      { icon: Layers, title: "App multiplataforma", text: "Un solo desarrollo que corre en ambos sistemas." },
+      { icon: Sparkles, title: "App web instalable", text: "Se instala desde el navegador y funciona sin señal." },
+    ]),
   },
   {
     id: "diseno",
     label: "Diseño",
     accent: "text-primary",
-    items: [
-      { icon: PenTool, title: "Logo e identidad", text: "La marca resuelta, con sus versiones y sus reglas de uso.", href: "/contacto" },
-      { icon: Palette, title: "Manual de marca", text: "Colores, tipografías y ejemplos para que nadie improvise.", href: "/contacto" },
-      { icon: Share2, title: "Piezas para redes", text: "Plantillas editables para publicar sin pedir ayuda.", href: "/contacto" },
-      { icon: Store, title: "Material impreso", text: "Tarjetas, folletos y señalética con la misma línea.", href: "/contacto" },
-    ],
+    items: conRuta([
+      { icon: PenTool, title: "Logo e identidad", text: "La marca resuelta, con sus versiones y sus reglas de uso." },
+      { icon: Palette, title: "Manual de marca", text: "Colores, tipografías y ejemplos para que nadie improvise." },
+      { icon: Share2, title: "Piezas para redes", text: "Plantillas editables para publicar sin pedir ayuda." },
+      { icon: Store, title: "Material impreso", text: "Tarjetas, folletos y señalética con la misma línea." },
+    ]),
   },
 ];
 

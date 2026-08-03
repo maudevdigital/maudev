@@ -11,14 +11,17 @@
 // descuentan el impuesto.
 
 export const familias = [
-  { id: "web", label: "Web" },
-  { id: "software", label: "Software" },
-  { id: "apps", label: "Apps" },
-  { id: "branding", label: "Branding" },
+  { id: "web", label: "Web", pagina: "/desarrollo-web" },
+  { id: "software", label: "Software", pagina: "/software-a-medida" },
+  { id: "apps", label: "Apps", pagina: "/software-a-medida" },
+  { id: "branding", label: "Branding", pagina: "/contacto" },
 ];
 
+// Los tres niveles, para mostrar la escalera de precio en cada página.
+export const nivelesLabel = ["Presencia", "Operación", "Comercio"];
+
 // precios: [inicia, escala, domina]. null = no disponible en ese nivel.
-export const subservicios = [
+export const subserviciosBase = [
   {
     id: "landing",
     familia: "web",
@@ -172,3 +175,21 @@ export const subservicios = [
     precios: [null, 890000, 1690000],
   },
 ];
+
+// El slug sale del nombre: una segunda lista escrita a mano se desincroniza en
+// cuanto se renombra un servicio, y acá el slug ES la URL pública.
+const aSlug = (texto) =>
+  texto
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+
+export const subservicios = subserviciosBase.map((s) => ({
+  ...s,
+  slug: aSlug(s.nombre),
+  path: `/servicios/${aSlug(s.nombre)}`,
+}));
+
+export const getSubservicio = (slug) => subservicios.find((s) => s.slug === slug);

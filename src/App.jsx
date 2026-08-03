@@ -12,6 +12,7 @@ import Landing from './pages/Landing'; // eager: es la home (LCP) y la entrada m
 const AutomatizacionDetail = lazy(() => import('./pages/AutomatizacionDetail'));
 const CasoEstudio = lazy(() => import('./pages/CasoEstudio'));
 const ServicePage = lazy(() => import('./pages/ServicePage'));
+const SubservicePage = lazy(() => import('./pages/SubservicePage'));
 const Cases = lazy(() => import('./pages/Cases'));
 const About = lazy(() => import('./pages/About'));
 const Contacto = lazy(() => import('./pages/Contacto'));
@@ -43,6 +44,10 @@ function App() {
             <Route path="/desarrollo-web" element={<ServicePage serviceKey="desarrollo-web" />} />
             <Route path="/ecommerce" element={<ServicePage serviceKey="ecommerce" />} />
             <Route path="/mantencion" element={<ServicePage serviceKey="mantencion" />} />
+
+            {/* Una página por servicio del catálogo. Generadas desde datos:
+                ver src/data/subservices.js */}
+            <Route path="/servicios/:slug" element={<SubservicePage />} />
             <Route path="/casos" element={<Cases />} />
             <Route path="/casos/:projectId" element={<CasoEstudio />} />
             <Route path="/nosotros" element={<About />} />

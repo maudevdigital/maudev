@@ -2,6 +2,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { services } from "../src/data/services.js";
 import { projects } from "../src/data/projects.js";
+import { subservicios } from "../src/data/subservices.js";
 
 const root = path.resolve(import.meta.dirname, "..");
 const dist = path.join(root, "dist");
@@ -29,6 +30,11 @@ const pages = [
     title: "Contacto · Cotiza tu sitio web · Maudev",
     description: "Cuéntanos qué vendes y a quién. Te decimos qué tipo de sitio necesitas, cuánto costaría y en cuánto tiempo estaría publicado.",
   },
+  ...subservicios.map((servicio) => ({
+    route: servicio.path,
+    title: `${servicio.nombre} en Chile · Precio y qué incluye · Maudev`,
+    description: `${servicio.resumen} Precio por escrito antes de empezar y accesos a tu nombre.`,
+  })),
   ...projects.map((project) => ({
     route: `/casos/${project.id}`,
     title: `${project.title} · Caso de estudio · Maudev`,
