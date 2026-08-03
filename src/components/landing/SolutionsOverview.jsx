@@ -1,12 +1,22 @@
-import { ArrowRight, LifeBuoy, MonitorSmartphone, Workflow } from "lucide-react";
+import { ArrowRight, LifeBuoy, MonitorSmartphone, Search, Smartphone, Timer, Workflow } from "lucide-react";
 import { Link } from "react-router-dom";
 import { trackAction } from "@/lib/MetaPixelTracker";
 import { priceIn } from "@/data/pricing";
 import { useCurrency } from "@/lib/useCurrency";
 
+// Los tres síntomas que traen a la gente acá. Vivían en una sección propia
+// justo antes de esta, diciendo prácticamente lo mismo: primero el problema y
+// acto seguido la solución. Fundidos, el visitante lee el diagnóstico y el
+// remedio en una sola pantalla en vez de dos.
+const sintomas = [
+  { icon: Search, title: "No te encuentran", text: "Te buscan por tu rubro y aparece la competencia, no tú." },
+  { icon: Smartphone, title: "Se ve mal en el celular", text: "Ahí llega la mayoría, y ahí es donde se pierde el contacto." },
+  { icon: Timer, title: "Carga lento", text: "Tres segundos de espera bastan para que vuelvan atrás." },
+];
+
 // El orden es la estrategia: primero la web, que es lo que se vende; después lo
 // que la sostiene en el tiempo, y al final lo que la conecta con la operación.
-// El precio "desde" va en la primera y la tercera porque son compras que el
+// El precio "desde" va en la primera y la segunda porque son compras que el
 // visitante ya está comparando; la automatización se cotiza por proceso.
 const solutions = [
   {
@@ -51,9 +61,21 @@ export default function SolutionsOverview() {
           <span className="eyebrow">Qué hacemos</span>
           <h2 id="soluciones-title" className="section-title mt-4">Primero el sitio. Después, que trabaje solo.</h2>
           <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-            Casi todo parte por una web que explique bien el negocio. Desde ahí decidimos qué conviene mantener y qué vale la pena automatizar.
+            La mayoría te busca antes de escribirte. Si lo que encuentran no carga, no se entiende o no dice a qué te dedicas, no te escriben: se van, y nunca te enteras de que estuvieron ahí.
           </p>
         </div>
+
+        <ul className="mb-12 grid gap-3 sm:grid-cols-3">
+          {sintomas.map(({ icon: Icon, title, text }) => (
+            <li key={title} className="panel flex items-start gap-4 p-5">
+              <Icon className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+              <span>
+                <strong className="block text-sm font-bold">{title}</strong>
+                <span className="mt-1 block text-sm leading-relaxed text-muted-foreground">{text}</span>
+              </span>
+            </li>
+          ))}
+        </ul>
 
         <div className="grid gap-3">
           {solutions.map(({ number, icon: Icon, title, description, examples, priceKey, href, link }) => (

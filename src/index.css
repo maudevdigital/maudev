@@ -326,53 +326,6 @@
   }
 }
 
-/* Demostración oscura */
-.process-console {
-  overflow: hidden;
-  border: 1px solid rgb(255 255 255 / 0.12);
-  border-radius: 1rem;
-  background: rgb(255 255 255 / 0.035);
-  box-shadow: 0 35px 80px rgb(0 0 0 / 0.28);
-}
-
-.process-event {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  border-bottom: 1px solid rgb(255 255 255 / 0.08);
-  padding: 0.85rem 0.65rem;
-}
-
-.process-event:last-child { border-bottom: 0; }
-
-.process-event-index {
-  width: 1.5rem;
-  flex: 0 0 auto;
-  font-family: var(--font-mono);
-  font-size: 0.58rem;
-  color: rgb(255 255 255 / 0.28);
-}
-
-.process-event-icon {
-  display: grid;
-  width: 2.1rem;
-  height: 2.1rem;
-  flex: 0 0 auto;
-  place-items: center;
-  border: 1px solid hsl(var(--primary) / 0.25);
-  border-radius: 0.65rem;
-  background: hsl(var(--primary) / 0.09);
-  color: hsl(var(--primary));
-  animation: event-signal 3.4s ease-in-out infinite;
-  animation-delay: var(--event-delay);
-}
-
-@keyframes event-signal {
-  0%, 70%, 100% { background: hsl(var(--primary) / 0.09); }
-  12% { background: hsl(var(--primary) / 0.3); }
-}
-
 /* Casos de éxito: paneles amplios, no grilla de tarjetas. */
 .case-feature {
   display: grid;
