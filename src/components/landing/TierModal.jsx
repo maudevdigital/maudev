@@ -153,6 +153,30 @@ export default function TierModal({ nivel, onClose }) {
                     </ul>
                   </>
                 )}
+
+                {/* El CTA va en cada tarjeta y con el mensaje ya escrito: quien
+                    llega al chat con el servicio, el nivel y el precio no tiene
+                    que explicar de dónde viene, y tú no tienes que preguntarlo.
+                    mt-auto los deja alineados al pie aunque las tarjetas tengan
+                    distinto largo de texto. */}
+                <a
+                  href={getWhatsAppUrl(
+                    bloqueado
+                      ? `Hola, vengo de maudev.cl. Me interesa "${servicio.nombre}" y vi que no entra en el nivel ${nivel.titulo}. ¿Cómo lo vemos?`
+                      : `Hola, vengo de maudev.cl. Quiero cotizar "${servicio.nombre}" del nivel ${nivel.titulo} (${formatFrom(precio, moneda)} ${IVA_NOTA}).`
+                  )}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => trackAction("whatsapp_click", { ubicacion: "modal-subservicio", servicio: servicio.id, nivel: nivel.id })}
+                  className={`mt-5 inline-flex h-10 items-center justify-center gap-2 rounded-lg text-sm font-bold transition-colors ${
+                    bloqueado
+                      ? "border border-border text-foreground hover:border-primary/40 hover:text-primary"
+                      : "bg-primary text-primary-foreground hover:opacity-90"
+                  } mt-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring`}
+                >
+                  <MessageCircle className="h-3.5 w-3.5" aria-hidden="true" />
+                  {bloqueado ? "Consultar" : "Cotizar por WhatsApp"}
+                </a>
               </article>
             );
           })}

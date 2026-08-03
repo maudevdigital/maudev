@@ -16,9 +16,9 @@ import { trackAction } from "@/lib/MetaPixelTracker";
 // el nivel marcado sea de verdad el que más se contrata.
 //
 // Los montos salen de pricing.js, la misma fuente que el cotizador del hero y
-// las páginas de servicio, y van rotulados como IVA incluido: se publica el
-// total y no el neto porque el visitante compara contra lo que va a pagar, y
-// sumar el impuesto al final es la sorpresa que hace abandonar una cotización.
+// las páginas de servicio. Son montos NETOS y llevan el "+ IVA 19%" al lado en
+// cada lugar donde aparecen: mostrar el neto está bien mientras se diga, lo que
+// no se puede es dejar que el impuesto aparezca recién en la cotización.
 const niveles = [
   {
     id: "inicia",
