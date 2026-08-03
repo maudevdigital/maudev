@@ -68,10 +68,10 @@ export default function Landing() {
       <main>
         <Hero />
         <PlanTiers />
+        <CaseStudies />
         <ProblemSection />
         <SolutionsOverview />
         <ProcessDemo />
-        <CaseStudies />
         <WorkProcess />
         <TrustSection />
         <Faq />

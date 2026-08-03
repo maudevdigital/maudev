@@ -5,23 +5,37 @@ import { trackAction } from "@/lib/MetaPixelTracker";
 
 const featured = getFeaturedProjects();
 
+// Portafolio.
+//
+// Va tercero, justo después de los niveles: quien acaba de ver un precio quiere
+// saber qué recibe por él, y la respuesta honesta a eso es trabajo publicado, no
+// más texto. Cada tarjeta lleva el rubro arriba —el visitante busca su propio
+// rubro antes que la marca— y el resultado, no la tecnología usada.
+//
+// Las tarjetas usan el lenguaje de panel del resto del sitio: mismo borde, mismo
+// radio y el hairline superior. La imagen manda, así que el panel se limita a
+// enmarcarla.
+
 export default function CaseStudies() {
   return (
-    <section id="casos" className="scroll-mt-20 py-16 lg:py-24" aria-labelledby="casos-title">
+    <section id="casos" className="section-pad scroll-mt-20" aria-labelledby="casos-title">
       <div className="site-container">
         <div className="mb-10 flex flex-col justify-between gap-6 md:mb-12 md:flex-row md:items-end">
           <div className="max-w-3xl">
             <span className="eyebrow">Trabajo comprobable</span>
-            <h2 id="casos-title" className="section-title mt-4">Proyectos explicados por el problema que resuelven.</h2>
+            <h2 id="casos-title" className="section-title mt-4">Esto es lo que recibes por ese precio.</h2>
+            <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+              Proyectos publicados y funcionando hoy, explicados por el problema que resolvían y lo que cambió después.
+            </p>
           </div>
           <Link to="/casos" className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:underline">
             Ver todos los casos <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
         </div>
 
-        <div className="grid snap-x snap-mandatory grid-flow-col auto-cols-[82vw] gap-5 overflow-x-auto pb-4 sm:grid-flow-row sm:auto-cols-auto sm:grid-cols-2 sm:overflow-visible sm:pb-0 lg:grid-cols-4">
+        <div className="grid snap-x snap-mandatory grid-flow-col auto-cols-[82vw] gap-3 overflow-x-auto pb-4 sm:grid-flow-row sm:auto-cols-auto sm:grid-cols-2 sm:overflow-visible sm:pb-0 lg:grid-cols-4">
           {featured.map((project) => (
-            <article key={project.id} className="group flex snap-start flex-col overflow-hidden rounded-[1.25rem] border border-border bg-card shadow-[0_18px_50px_hsl(var(--ink)/0.06)]">
+            <article key={project.id} className="panel panel-solid group flex snap-start flex-col">
               <div className="relative aspect-[16/10] overflow-hidden border-b border-border bg-secondary">
                 <img
                   src={project.image}
@@ -60,7 +74,7 @@ export default function CaseStudies() {
             </article>
           ))}
         </div>
-        <p className="mt-3 text-xs text-muted-foreground sm:hidden">Desliza para ver los cuatro proyectos.</p>
+        <p className="mt-4 font-mono text-[11px] uppercase tracking-wider text-muted-foreground sm:hidden">Desliza para ver los cuatro proyectos.</p>
       </div>
     </section>
   );
