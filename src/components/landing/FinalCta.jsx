@@ -29,7 +29,8 @@ export default function FinalCta() {
             para volverse un fondo, y sobre los paneles con texto le compiten a
             la lectura. */}
         <div className="final-cta relative overflow-hidden">
-          <ParticleField className="mask-[radial-gradient(ellipse_at_center,black_50%,transparent_100%)]" />
+          <div className="grid-on-dark" aria-hidden="true" />
+          <ParticleField className="particles-on-dark mask-[radial-gradient(ellipse_at_center,black_60%,transparent_100%)]" />
 
           <div className="relative">
             <span className="eyebrow">Conversemos</span>
