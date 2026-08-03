@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { ArrowRight, Crown, Rocket, Sprout, Wand2 } from "lucide-react";
 import TierModal from "@/components/landing/TierModal";
-import { pricing, IVA_NOTA } from "@/data/pricing";
+import { IVA_NOTA } from "@/data/pricing";
+import { subservicios } from "@/data/subservices";
 import { formatFrom } from "@/data/currencies";
 import { useCurrency } from "@/lib/useCurrency";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
@@ -27,7 +28,7 @@ const niveles = [
     etiqueta: "Para partir",
     titulo: "Presencia",
     resumen: "Estar online, con una página que explique bien lo que haces y reciba consultas.",
-    plan: "landing",
+    ejemploId: "landing",
     ejemplo: "Landing page profesional",
     incluye: ["Una página, una acción clara", "Formulario y WhatsApp conectados", "Base técnica de SEO"],
     para: "Emprendedores y negocios que hoy solo tienen redes sociales.",
@@ -40,7 +41,7 @@ const niveles = [
     etiqueta: "Para crecer",
     titulo: "Operación",
     resumen: "El sitio completo: varias páginas de servicio, con la arquitectura que las ordena.",
-    plan: "sitio",
+    ejemploId: "sitio",
     ejemplo: "Sitio corporativo multipágina",
     incluye: ["Todo lo anterior", "Páginas por servicio y casos", "Reservas o cotización en línea"],
     para: "Negocios que ya venden y necesitan explicar más de una cosa.",
@@ -54,7 +55,7 @@ const niveles = [
     etiqueta: "Para vender",
     titulo: "Comercio",
     resumen: "Vender directo: catálogo, pagos, despacho e inventario funcionando juntos.",
-    plan: "ecommerce",
+    ejemploId: "ecommerce",
     ejemplo: "Tienda online completa",
     incluye: ["Todo lo anterior", "Pagos e inventario conectados", "Gestión de pedidos"],
     para: "Marcas que quieren dejar de vender por mensaje directo.",
@@ -81,7 +82,8 @@ export default function PlanTiers() {
 
         <div className="mt-12 grid gap-3 lg:grid-cols-3">
           {niveles.map((nivel) => {
-            const { id, numero, icono: Icono, etiqueta, titulo, resumen, plan, ejemplo, incluye, para, destacado } = nivel;
+            const { id, numero, icono: Icono, etiqueta, titulo, resumen, ejemploId, ejemplo, incluye, para, destacado, indice } = nivel;
+            const precioEjemplo = subservicios.find((s) => s.id === ejemploId).precios[indice];
             return (
             <article
               key={id}
@@ -109,7 +111,7 @@ export default function PlanTiers() {
               <div className="mt-6 rounded-lg border border-border bg-secondary/50 px-4 py-3.5">
                 <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">{ejemplo}</p>
                 <p className="mt-1 font-display text-xl font-bold tracking-[-0.03em]">
-                  Desde {formatFrom(pricing[plan].from, moneda)}
+                  Desde {formatFrom(precioEjemplo, moneda)}
                 </p>
                 <p className="mt-0.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
                   {IVA_NOTA}

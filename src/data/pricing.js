@@ -15,6 +15,12 @@
 // sin decirlo, porque ahí sí el total final se vuelve una sorpresa.
 
 import { BASE, formatFrom } from "@/data/currencies";
+import { subservicios } from "@/data/subservices";
+
+// El piso de cada plan NO se escribe a mano: se lee del catálogo, en su nivel
+// de entrada. Tenerlo duplicado ya provocó que un nivel anunciara $290.000
+// mientras su propia carta cobraba $490.000.
+const desdeCatalogo = (id) => subservicios.find((s) => s.id === id).precios[0];
 
 const CLP = (value) => `$${value.toLocaleString("es-CL")}`;
 
@@ -22,21 +28,21 @@ export const pricing = {
   landing: {
     id: "landing",
     label: "Landing page",
-    from: 100000,
+    from: desdeCatalogo("landing"),
     unit: "proyecto",
     summary: "Una propuesta y una acción, para campañas o para validar una idea.",
   },
   sitio: {
     id: "sitio",
     label: "Sitio corporativo",
-    from: 290000,
+    from: desdeCatalogo("sitio"),
     unit: "proyecto",
     summary: "Varias páginas de servicio, con la arquitectura y el texto que las sostienen.",
   },
   ecommerce: {
     id: "ecommerce",
     label: "Tienda online",
-    from: 1290000,
+    from: desdeCatalogo("ecommerce"),
     unit: "proyecto",
     summary: "Catálogo, pagos, despacho e inventario funcionando de punta a punta.",
   },
