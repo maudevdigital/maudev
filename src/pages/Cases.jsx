@@ -44,7 +44,7 @@ export default function Cases() {
             {projects.map((project, index) => (
               <article key={project.id} className={`case-feature ${index % 2 ? "lg:[&>.case-media]:order-2" : ""}`}>
                 <div className="case-media">
-                  <img src={project.image} alt={`Vista del proyecto ${project.title}`} width="1280" height={project.id === "systempro" ? "720" : "2560"} loading={index < 2 ? "eager" : "lazy"} decoding="async" className="h-full w-full object-cover object-top" />
+                  <img src={project.image} alt={`Vista del proyecto ${project.title}`} width="1280" height="2560" loading={index < 2 ? "eager" : "lazy"} decoding="async" className="h-full w-full object-cover object-top" />
                   {project.url && (
                     <a href={project.url} target="_blank" rel="noopener noreferrer" aria-label={`Abrir ${project.title}`} className="absolute right-4 top-4 grid h-11 w-11 place-items-center rounded-xl bg-black/65 text-white backdrop-blur-sm">
                       <ExternalLink className="h-4 w-4" aria-hidden="true" />

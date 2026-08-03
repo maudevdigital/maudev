@@ -153,7 +153,7 @@ export default function ServicePage({ serviceKey }) {
               <span className="eyebrow">Caso relacionado</span>
               <article className="case-feature mt-8">
                 <div className="case-media">
-                  <img src={project.image} alt={`Vista del proyecto ${project.title}`} width="1280" height={project.id === "systempro" ? "720" : "2560"} loading="lazy" className="h-full w-full object-cover object-top" />
+                  <img src={project.image} alt={`Vista del proyecto ${project.title}`} width="1280" height="2560" loading="lazy" className="h-full w-full object-cover object-top" />
                 </div>
                 <div className="flex flex-col justify-center p-7 sm:p-10">
                   <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-primary">{project.industry}</p>

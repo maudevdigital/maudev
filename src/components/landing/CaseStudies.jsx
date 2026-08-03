@@ -41,7 +41,7 @@ export default function CaseStudies() {
                   src={project.image}
                   alt={`Vista del proyecto ${project.title}`}
                   width="1280"
-                  height={project.id === "systempro" ? "720" : "2560"}
+                  height="2560"
                   loading="lazy"
                   decoding="async"
                   className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.025]"
