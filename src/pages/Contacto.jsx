@@ -92,7 +92,7 @@ export default function Contacto() {
             <div className="grid gap-12 lg:grid-cols-[0.82fr_1.18fr] lg:gap-20">
               <div>
                 <span className="eyebrow">Contacto</span>
-                <h1 className="mt-5 max-w-[12ch] text-5xl font-extrabold leading-[0.99] tracking-[-0.06em] sm:text-6xl">Cuéntanos qué proceso quieres dejar de hacer a mano.</h1>
+                <h1 className="mt-5 max-w-[12ch] text-5xl font-extrabold leading-[0.99] tracking-[-0.06em] sm:text-6xl">Cuéntame qué vendes y a quién.</h1>
                 <p className="mt-6 max-w-lg text-lg leading-relaxed text-muted-foreground">
                   No necesitas preparar un documento técnico. Describe qué ocurre hoy, qué se repite y dónde se traba.
                 </p>
@@ -111,7 +111,7 @@ export default function Contacto() {
                   <div className="flex min-h-[30rem] flex-col items-center justify-center text-center" aria-live="polite">
                     <CheckCircle2 className="h-12 w-12 text-success" aria-hidden="true" />
                     <h2 className="mt-6 text-2xl font-extrabold">Mensaje recibido</h2>
-                    <p className="mt-3 max-w-sm leading-relaxed text-muted-foreground">Revisaremos lo que nos contaste y responderemos por el medio que indicaste.</p>
+                    <p className="mt-3 max-w-sm leading-relaxed text-muted-foreground">Te respondo el mismo día por el medio que indicaste, con qué necesitas y cuánto costaría.</p>
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit} onFocus={markStarted} noValidate>
@@ -123,12 +123,12 @@ export default function Contacto() {
                       </div>
                       <div>
                         <label htmlFor="contact-business" className="form-label">Empresa o tipo de negocio</label>
-                        <Input id="contact-business" name="business" autoComplete="organization" value={form.business} onChange={update("business")} className="mt-2 h-12 bg-background" placeholder="Ej. centro médico" required />
+                        <Input id="contact-business" name="business" autoComplete="organization" value={form.business} onChange={update("business")} className="mt-2 h-12 bg-background" placeholder="Ej. barbería, taller, consultora" required />
                       </div>
                     </div>
                     <div className="mt-5">
-                      <label htmlFor="contact-process" className="form-label">Proceso que quieres automatizar</label>
-                      <Textarea id="contact-process" name="process" value={form.process} onChange={update("process")} className="mt-2 min-h-36 bg-background" placeholder="Hoy recibimos pedidos por WhatsApp y luego..." required />
+                      <label htmlFor="contact-process" className="form-label">Qué necesitas</label>
+                      <Textarea id="contact-process" name="process" value={form.process} onChange={update("process")} className="mt-2 min-h-36 bg-background" placeholder="Ej. vendo repuestos y hoy solo tengo Instagram..." required />
                     </div>
                     <div className="mt-5">
                       <label htmlFor="contact-method" className="form-label">Correo o WhatsApp</label>
