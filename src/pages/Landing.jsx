@@ -5,6 +5,7 @@ import ProblemSection from "@/components/landing/ProblemSection";
 import SolutionsOverview from "@/components/landing/SolutionsOverview";
 import ProcessDemo from "@/components/landing/ProcessDemo";
 import CaseStudies from "@/components/landing/CaseStudies";
+import Capabilities from "@/components/landing/Capabilities";
 import WorkProcess from "@/components/landing/WorkProcess";
 import TrustSection from "@/components/landing/TrustSection";
 import Faq, { faqs } from "@/components/landing/Faq";
@@ -69,6 +70,7 @@ export default function Landing() {
         <Hero />
         <PlanTiers />
         <CaseStudies />
+        <Capabilities />
         <ProblemSection />
         <SolutionsOverview />
         <ProcessDemo />
