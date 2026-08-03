@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { Lock, MessageCircle, X } from "lucide-react";
+import { MessageCircle, X } from "lucide-react";
 import { familias, subservicios } from "@/data/subservices";
 import { formatFrom } from "@/data/currencies";
 import { IVA_NOTA } from "@/data/pricing";
@@ -8,12 +8,11 @@ import { useCurrency } from "@/lib/useCurrency";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
 import { trackAction } from "@/lib/MetaPixelTracker";
 
-// Detalle de un nivel: la carta completa de subservicios con su precio.
+// Detalle de un nivel: solo los subservicios que ese nivel incluye.
 //
-// Los servicios que el nivel no alcanza se muestran BLOQUEADOS y no ocultos.
-// Ocultarlos haría parecer completo al nivel de entrada y dejaría sin
-// argumento a los de arriba; verlos con candado convierte la carta en la razón
-// para subir, sin que nadie tenga que decirlo.
+// Los que no alcanza no se listan. Mostrarlos con candado convertía la carta en
+// un muestrario de lo que NO se puede contratar: quien entra a Presencia venía
+// a ver qué le sirve, no a leer seis avisos de que necesita pagar más.
 //
 // Va en un portal a <body>: el modal nace dentro de una tarjeta con overflow
 // oculto, y desde ahí no puede cubrir la pantalla.
@@ -55,7 +54,11 @@ export default function TierModal({ nivel, onClose }) {
     };
   }, [onClose]);
 
-  const visibles = subservicios.filter((s) => familia === "todos" || s.familia === familia);
+  // Solo lo disponible en este nivel, y solo de la familia elegida.
+  const disponibles = subservicios.filter((s) => s.precios[nivel.indice] !== null);
+  const visibles = disponibles.filter((s) => familia === "todos" || s.familia === familia);
+  // Una pestaña vacía es un callejón: solo se ofrecen las familias con algo.
+  const familiasConStock = familias.filter((f) => disponibles.some((s) => s.familia === f.id));
 
   return createPortal(
     <div
@@ -93,7 +96,7 @@ export default function TierModal({ nivel, onClose }) {
 
         {/* Filtros por familia */}
         <div className="flex shrink-0 gap-2 overflow-x-auto border-b border-border px-6 py-3.5 sm:px-7">
-          {[{ id: "todos", label: "Todos" }, ...familias].map(({ id, label }) => (
+          {[{ id: "todos", label: "Todos" }, ...familiasConStock].map(({ id, label }) => (
             <button
               key={id}
               type="button"
@@ -112,74 +115,51 @@ export default function TierModal({ nivel, onClose }) {
 
         {/* Carta */}
         <div className="grid min-h-0 flex-1 content-start gap-3 overflow-y-auto p-6 sm:grid-cols-2 sm:p-7 lg:grid-cols-3">
-          {visibles.map((servicio) => {
-            const precio = servicio.precios[nivel.indice];
-            const bloqueado = precio === null;
-            return (
-              <article
-                key={servicio.id}
-                className={`flex flex-col rounded-xl border p-5 ${
-                  bloqueado ? "border-border/60 bg-secondary/40" : "border-border bg-card"
-                }`}
-              >
-                <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                  {familias.find((f) => f.id === servicio.familia)?.label}
-                </p>
-                <h3 className="mt-2 font-display text-lg font-bold tracking-[-0.02em]">{servicio.nombre}</h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{servicio.resumen}</p>
+          {visibles.map((servicio) => (
+            <article
+              key={servicio.id}
+              className="flex flex-col rounded-xl border border-border bg-card p-5"
+            >
+              <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+                {familias.find((f) => f.id === servicio.familia)?.label}
+              </p>
+              <h3 className="mt-2 font-display text-lg font-bold tracking-[-0.02em]">{servicio.nombre}</h3>
+              <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{servicio.resumen}</p>
 
-                {bloqueado ? (
-                  <div className="mt-4 flex items-start gap-2.5 rounded-lg border border-border px-3.5 py-3">
-                    <Lock className="mt-0.5 h-3.5 w-3.5 shrink-0 text-muted-foreground" aria-hidden="true" />
-                    <p className="text-xs leading-relaxed text-muted-foreground">
-                      Disponible desde el nivel {nivel.indice === 0 ? "Operación" : "Comercio"}.
-                    </p>
-                  </div>
-                ) : (
-                  <>
-                    <p className="mt-4 font-display text-xl font-bold tracking-[-0.03em]">
-                      {formatFrom(precio, moneda)}
-                      <span className="ml-1.5 font-sans text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
-                        {IVA_NOTA}
-                      </span>
-                    </p>
-                    <ul className="mt-4 space-y-2">
-                      {servicio.incluye.map((item) => (
-                        <li key={item} className="flex items-start gap-2 text-xs leading-relaxed text-muted-foreground">
-                          <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-primary" aria-hidden="true" />
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </>
+              <p className="mt-4 font-display text-xl font-bold tracking-[-0.03em]">
+                {formatFrom(servicio.precios[nivel.indice], moneda)}
+                <span className="ml-1.5 font-sans text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+                  {IVA_NOTA}
+                </span>
+              </p>
+
+              <ul className="mt-4 space-y-2">
+                {servicio.incluye.map((item) => (
+                  <li key={item} className="flex items-start gap-2 text-xs leading-relaxed text-muted-foreground">
+                    <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-primary" aria-hidden="true" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+
+              {/* Enlace, no botón sólido: con diecinueve tarjetas, diecinueve
+                  botones de color compiten entre sí y con el CTA del pie, y
+                  ninguno termina destacando. mt-auto los alinea al pie aunque
+                  las tarjetas midan distinto. */}
+              <a
+                href={getWhatsAppUrl(
+                  `Hola, vengo de maudev.cl. Quiero cotizar "${servicio.nombre}" del nivel ${nivel.titulo} (${formatFrom(servicio.precios[nivel.indice], moneda)} ${IVA_NOTA}).`
                 )}
-
-                {/* El CTA va en cada tarjeta y con el mensaje ya escrito: quien
-                    llega al chat con el servicio, el nivel y el precio no tiene
-                    que explicar de dónde viene, y tú no tienes que preguntarlo.
-                    mt-auto los deja alineados al pie aunque las tarjetas tengan
-                    distinto largo de texto. */}
-                <a
-                  href={getWhatsAppUrl(
-                    bloqueado
-                      ? `Hola, vengo de maudev.cl. Me interesa "${servicio.nombre}" y vi que no entra en el nivel ${nivel.titulo}. ¿Cómo lo vemos?`
-                      : `Hola, vengo de maudev.cl. Quiero cotizar "${servicio.nombre}" del nivel ${nivel.titulo} (${formatFrom(precio, moneda)} ${IVA_NOTA}).`
-                  )}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => trackAction("whatsapp_click", { ubicacion: "modal-subservicio", servicio: servicio.id, nivel: nivel.id })}
-                  className={`mt-5 inline-flex h-10 items-center justify-center gap-2 rounded-lg text-sm font-bold transition-colors ${
-                    bloqueado
-                      ? "border border-border text-foreground hover:border-primary/40 hover:text-primary"
-                      : "bg-primary text-primary-foreground hover:opacity-90"
-                  } mt-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring`}
-                >
-                  <MessageCircle className="h-3.5 w-3.5" aria-hidden="true" />
-                  {bloqueado ? "Consultar" : "Cotizar por WhatsApp"}
-                </a>
-              </article>
-            );
-          })}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => trackAction("whatsapp_click", { ubicacion: "modal-subservicio", servicio: servicio.id, nivel: nivel.id })}
+                className="mt-auto inline-flex items-center gap-1.5 pt-5 text-xs font-bold text-primary transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                <MessageCircle className="h-3.5 w-3.5" aria-hidden="true" />
+                Cotizar por WhatsApp
+              </a>
+            </article>
+          ))}
         </div>
 
         {/* Pie */}
