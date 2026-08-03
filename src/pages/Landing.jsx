@@ -5,7 +5,6 @@ import SolutionsOverview from "@/components/landing/SolutionsOverview";
 import CaseStudies from "@/components/landing/CaseStudies";
 import Capabilities from "@/components/landing/Capabilities";
 import WorkProcess from "@/components/landing/WorkProcess";
-import TrustSection from "@/components/landing/TrustSection";
 import Faq, { faqs } from "@/components/landing/Faq";
 import FinalCta from "@/components/landing/FinalCta";
 import Footer from "@/components/landing/Footer";
@@ -71,7 +70,6 @@ export default function Landing() {
         <Capabilities />
         <SolutionsOverview />
         <WorkProcess />
-        <TrustSection />
         <Faq />
         <FinalCta />
       </main>
