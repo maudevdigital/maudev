@@ -131,8 +131,64 @@ export const subserviciosBase = [
     resumen: "Tu marca completa: inicio, servicios, casos y contacto.",
     incluye: ["Cinco secciones esenciales", "Administrador para editar textos", "Base técnica de SEO", "Hosting y dominio el primer año"],
     precios: [290000, 490000, 790000],
+    metaTitle: "Sitio web corporativo en Chile desde $290.000 · Maudev",
+    metaDescription:
+      "Sitio corporativo multipágina para empresas: una página por servicio, casos, contacto y administrador para editar textos. Desde $290.000 + IVA, publicado en 3 a 5 semanas.",
+    intro:
+      "Un sitio corporativo es el que necesitas cuando tienes más de una cosa que explicar. Cada servicio con su propia página, tu trabajo mostrado y un lugar claro donde te contacten. A diferencia de una landing, aquí la arquitectura importa tanto como el diseño: cómo se ordenan las páginas define si el visitante encuentra lo que vino a buscar.",
+    secciones: [
+      {
+        titulo: "Cuándo dejas de necesitar una landing",
+        parrafos: [
+          "La señal es simple: si al describir tu negocio usas la palabra \"y\" más de dos veces, una sola página se te queda corta. Un taller que hace mantención, frenos y aire acondicionado no puede meter los tres en la misma página sin que ninguno quede bien explicado.",
+          "La otra señal es Google. Una landing compite por una búsqueda; un sitio con una página por servicio compite por tantas búsquedas como servicios tengas. Si alguien busca exactamente lo que ofreces y tú lo tienes escondido en un párrafo dentro de una página general, esa búsqueda se la lleva otro.",
+          "Si tu negocio hace una sola cosa muy clara, no subas de nivel: la landing te sirve y cuesta un tercio.",
+        ],
+      },
+      {
+        titulo: "Cómo se ordena el sitio",
+        parrafos: [
+          "Partimos por la arquitectura, antes de diseñar nada. Se define qué páginas existen, qué responde cada una y cómo se enlazan entre sí. Esa decisión es la que después hace que el sitio se entienda o no, y es la más barata de corregir en esta etapa.",
+          "El estándar son cinco secciones: inicio, una página por servicio, tu trabajo, quiénes son y contacto. Si tienes seis servicios, son seis páginas de servicio, no una lista con seis párrafos.",
+          "Cada página de servicio se escribe pensando en la búsqueda que la trae, con su propio título, su propia descripción y sus propias preguntas frecuentes.",
+        ],
+      },
+      {
+        titulo: "Qué recibes y qué puedes editar tú",
+        parrafos: [
+          "El sitio programado a medida, con administrador para que cambies textos, precios y fotos sin depender de nadie. No es un constructor: es un panel acotado a lo que de verdad vas a editar, para que no puedas romper el diseño por accidente.",
+          "Va con la base técnica de SEO en cada página —títulos, descripciones, datos estructurados, sitemap— más el formulario y WhatsApp conectados. Hosting y dominio del primer año incluidos, a tu nombre.",
+          "Si más adelante quieres agregar una página de servicio, se agrega sin rehacer el sitio: por eso importa la arquitectura del principio.",
+        ],
+      },
+      {
+        titulo: "Cuánto demora y por qué más que una landing",
+        parrafos: [
+          "Entre tres y cinco semanas. La diferencia con una landing no es programar más páginas: es que hay que decidir y escribir el contenido de cada una, y eso es lo que toma tiempo.",
+          "El proyecto avanza por etapas con un enlace que puedes revisar y comentar. No hay una entrega sorpresa al final.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "¿Puedo empezar con una landing y crecer a sitio después?",
+        a: "Sí, y a veces conviene: partes vendiendo con una página y creces cuando el negocio lo pida. Pero no se reutiliza el trabajo, así que si ya sabes que necesitas varias páginas, partir directo por el sitio sale más barato que hacer las dos cosas.",
+      },
+      {
+        q: "¿Cuántas páginas de servicio incluye?",
+        a: "El precio base cubre cinco secciones. Si tienes más servicios se agregan páginas y eso se cotiza aparte, con el valor por página dicho antes de empezar.",
+      },
+      {
+        q: "¿El administrador tiene costo mensual?",
+        a: "No. Va incluido y no tiene licencia. Lo único con costo recurrente son el hosting y el dominio a partir del segundo año, que pagas directo al proveedor.",
+      },
+      {
+        q: "¿Puedo tener blog?",
+        a: "Se puede incorporar, pero conviene decidirlo antes: un blog sin alguien que escriba con constancia termina con tres artículos de hace dos años, y eso resta más de lo que suma.",
+      },
+    ],
     prompt:
-      "Escritorio de oficina pequeña con un monitor mostrando una web de varias secciones y un teléfono al lado con la misma web adaptada. Plantas discretas, luz de ventana, paleta azul cobalto y crema, estilo editorial limpio sin texto legible, 3:2.",
+      "Plano técnico isométrico de la ARQUITECTURA de un sitio web multipágina, estilo lámina de arquitectura. Un plano rectangular grande arriba representa el inicio; debajo, en un nivel inferior, cuatro planos más pequeños del mismo grosor dispuestos en fila representan las páginas de servicio, y bajo ellos un plano angosto de contacto. Todos en isometría real de 30 grados vistos desde arriba a la izquierda, con canto visible y sombra suave proyectada. Líneas de conexión finas y continuas bajan desde el plano de inicio abriéndose hacia cada una de las cuatro páginas, como un organigrama, con un nodo circular pequeño en cada bifurcación. Una LÍNEA DE RECORRIDO punteada en azul cobalto entra por el inicio, recorre una de las páginas de servicio y termina en el plano de contacto, donde hay un botón sólido cobalto. Alrededor, anotaciones de plano: líneas de cota finas con topes midiendo los niveles, un par de líneas de llamada apuntando a la ramificación, y un cajetín técnico en la esquina inferior derecha. Fondo crema con retícula técnica muy tenue. Todo en escala de grises salvo el azul cobalto, reservado a la línea de recorrido y al botón. Sin ningún texto legible: las etiquetas son solo trazos. Trazo vectorial nítido, sin degradados ni brillos, aire de lámina de ingeniería impresa, 3:2.",
   },
   {
     id: "rediseno",
