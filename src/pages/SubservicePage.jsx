@@ -35,8 +35,10 @@ export default function SubservicePage() {
   useSeo(
     servicio
       ? {
-        title: `${servicio.nombre} en Chile · Precio y qué incluye · Maudev`,
-        description: `${servicio.resumen} Desde ${formatFrom(desde, "CLP")} ${IVA_NOTA}. Precio por escrito antes de empezar y accesos a tu nombre.`,
+        title: servicio.metaTitle || `${servicio.nombre} en Chile · Precio y qué incluye · Maudev`,
+        description:
+          servicio.metaDescription ||
+          `${servicio.resumen} Desde ${formatFrom(desde, "CLP")} ${IVA_NOTA}. Precio por escrito antes de empezar y accesos a tu nombre.`,
         path: servicio.path,
         jsonLd: {
       "@context": "https://schema.org",
@@ -49,6 +51,16 @@ export default function SubservicePage() {
           areaServed: { "@type": "Country", name: "Chile" },
           url: `https://maudev.cl${servicio.path}`,
         },
+        ...(servicio.faqs?.length
+          ? [{
+              "@type": "FAQPage",
+              mainEntity: servicio.faqs.map((f) => ({
+                "@type": "Question",
+                name: f.q,
+                acceptedAnswer: { "@type": "Answer", text: f.a },
+              })),
+            }]
+          : []),
         {
           "@type": "BreadcrumbList",
           itemListElement: [
@@ -84,7 +96,7 @@ export default function SubservicePage() {
                   {servicio.nombre}
                 </h1>
                 <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
-                  {servicio.resumen}
+                  {servicio.intro || servicio.resumen}
                 </p>
 
                 <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -209,6 +221,50 @@ export default function SubservicePage() {
             </Link>
           </div>
         </section>
+
+        {servicio.secciones?.length > 0 && (
+          <section className="section-pad" aria-labelledby="detalle-titulo">
+            <div className="site-container grid gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:gap-16">
+              <div>
+                <span className="eyebrow">En detalle</span>
+                <h2 id="detalle-titulo" className="section-title mt-4">
+                  Lo que conviene saber antes de encargarla.
+                </h2>
+              </div>
+              <div className="max-w-2xl">
+                {servicio.secciones.map(({ titulo, parrafos }) => (
+                  <article key={titulo} className="border-t border-border py-8 first:border-t-0 first:pt-0">
+                    <h3 className="font-display text-xl font-bold tracking-[-0.02em]">{titulo}</h3>
+                    {parrafos.map((texto) => (
+                      <p key={texto.slice(0, 40)} className="mt-4 leading-relaxed text-muted-foreground">
+                        {texto}
+                      </p>
+                    ))}
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {servicio.faqs?.length > 0 && (
+          <section className="section-pad border-t border-border bg-secondary/40" aria-labelledby="faq-titulo">
+            <div className="site-container">
+              <span className="eyebrow">Preguntas frecuentes</span>
+              <h2 id="faq-titulo" className="section-title mt-4">
+                Lo que preguntan antes de decidir.
+              </h2>
+              <div className="mt-10 max-w-3xl">
+                {servicio.faqs.map(({ q, a }) => (
+                  <details key={q} className="faq-item">
+                    <summary>{q}</summary>
+                    <p className="pb-6 leading-relaxed text-muted-foreground">{a}</p>
+                  </details>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
 
         <FinalCta />
       </main>

@@ -35,6 +35,69 @@ export const subserviciosBase = [
     resumen: "Una página, una promesa, una conversión.",
     incluye: ["Diseño de una sola página", "Formulario y WhatsApp conectados", "Hosting y dominio el primer año", "Entrega en 5 días hábiles"],
     precios: [100000, 190000, 290000],
+    // ── Contenido extendido ──────────────────────────────────────────────
+    // Se escribe servicio por servicio y no en tanda: diecinueve textos hechos
+    // de una sentada terminan diciendo lo mismo con distintas palabras, y eso
+    // es exactamente lo que Google clasifica como contenido delgado.
+    //
+    // Cada bloque responde una búsqueda real: qué es, cuánto cuesta, cuánto
+    // demora, qué necesito tener listo, en qué se diferencia de la alternativa
+    // barata.
+    metaTitle: "Landing page en Chile desde $100.000 · Diseño y desarrollo · Maudev",
+    metaDescription:
+      "Landing page profesional para campañas y anuncios: una página, una acción y formulario conectado a WhatsApp. Desde $100.000 + IVA, publicada en 5 días hábiles.",
+    intro:
+      "Una landing page es una sola página con un objetivo único: que quien llega haga una cosa concreta. Pedir una cotización, reservar una hora, dejar sus datos. A diferencia de un sitio completo, no tiene menú que distraiga ni secciones que inviten a irse a mirar otra cosa.",
+    secciones: [
+      {
+        titulo: "Cuándo conviene una landing y cuándo no",
+        parrafos: [
+          "Conviene cuando vas a invertir en publicidad. Si mandas tráfico pagado a tu inicio, el visitante llega y tiene que averiguar solo qué le ofreces: parte de ese presupuesto se pierde en gente que se va sin entender. Una landing recibe ese tráfico con la misma promesa del anuncio y una sola acción posible.",
+          "También conviene para validar una idea antes de construir algo más grande, o para un servicio puntual que no calza dentro de tu sitio actual.",
+          "No conviene si necesitas explicar varios servicios distintos, mostrar un catálogo o publicar contenido con frecuencia. Ahí se te va a quedar chica en el primer mes y vas a terminar pagando dos veces: ahí es un sitio corporativo lo que corresponde.",
+        ],
+      },
+      {
+        titulo: "Qué recibes exactamente",
+        parrafos: [
+          "Una página programada a la medida de tu negocio, no una plantilla con tu logo encima. Se diseña sobre tu propuesta: qué vendes, a quién y qué debe hacer el visitante.",
+          "Va con formulario conectado a tu correo y botón directo a WhatsApp, porque en Chile la mayoría prefiere escribir por ahí antes que llenar un formulario. Incluye la base técnica de SEO —títulos, descripción, datos estructurados y sitemap— para que Google pueda leerla desde el primer día.",
+          "El hosting y el dominio del primer año van incluidos, y quedan a tu nombre. Si mañana decides trabajar con otra persona, te llevas todo sin pedir permiso.",
+        ],
+      },
+      {
+        titulo: "Cuánto demora y qué necesitas tener listo",
+        parrafos: [
+          "Cinco días hábiles desde que están los contenidos aprobados. Lo que suele alargar un proyecto no es la programación: son los textos y las fotos.",
+          "Para partir necesitas tu logo en buena calidad, las fotos que quieras usar y una idea clara de qué ofreces. Si no tienes textos, los escribimos nosotros a partir de una conversación de treinta minutos.",
+        ],
+      },
+      {
+        titulo: "Por qué no usar un constructor por tu cuenta",
+        parrafos: [
+          "Puedes hacerlo, y para algunos casos es suficiente. La diferencia aparece en tres puntos: la velocidad de carga, que en los constructores arrastra código que tu página no usa; el pago mensual, que no termina nunca y sube cada año; y que el resultado se parece al de todos los demás que usaron la misma plantilla.",
+          "Acá pagas una vez, la página es tuya y está programada solo con lo que tu negocio necesita.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "¿Puedo editar los textos después?",
+        a: "Sí. Para cambios puntuales de texto, precios u horarios está el plan de mantención. Si necesitas editar todos los días conviene incorporar un administrador desde el principio, y eso se cotiza aparte porque cambia la forma de construirla.",
+      },
+      {
+        q: "¿Qué pasa después del primer año con el hosting y el dominio?",
+        a: "Se renuevan a tu nombre y el costo lo pagas tú directamente al proveedor, sin intermediarios ni recargo. Te decimos cuánto es antes de empezar para que no sea una sorpresa.",
+      },
+      {
+        q: "¿Aparece en Google?",
+        a: "Queda técnicamente preparada para que Google la lea e indexe. Aparecer primero en una búsqueda competida depende además del contenido y del tiempo, y eso no se puede prometer por escrito. Lo que sí garantizamos es que nada del lado técnico te esté frenando.",
+      },
+      {
+        q: "¿Sirve para pauta en Instagram o Google Ads?",
+        a: "Está pensada justamente para eso: una promesa, una acción y medición configurada para saber cuántos de los que llegan terminan escribiendo.",
+      },
+    ],
     prompt:
       "Fotografía cenital de un escritorio de madera clara con un notebook mostrando una sola página web de una promesa y un botón, un cuaderno con un boceto de esa misma página y un café. Luz natural lateral suave, paleta azul cobalto y crema, sin texto legible en pantalla, estilo editorial minimalista, 3:2.",
   },
