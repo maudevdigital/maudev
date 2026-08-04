@@ -27,6 +27,21 @@ export const nivelesLabel = ["Presencia", "Operación", "Comercio"];
 // se renombra o se reencuadra el servicio, el prompt tiene que cambiar con él.
 // Mientras no exista el archivo, la página muestra el prompt dentro del marco
 // de la imagen, así queda a la vista qué falta por producir.
+//
+// DIRECCIÓN: diagramas, no fotografías. Cada imagen representa la ESTRUCTURA de
+// lo que se entrega —los bloques de una landing, las pantallas de una app, los
+// módulos de un sistema— como un despiece vectorial plano. Dos razones: una
+// foto de escritorio con notebook es intercambiable entre los diecinueve
+// servicios y no explica nada, y un diagrama sí muestra qué compra el cliente.
+// Además el vector plano no cae en el "aire de imagen generada" que delata a
+// las fotos con IA, que es lo peor que puede pasarle a un sitio que vende
+// diseño.
+//
+// Reglas comunes: fondo crema, bloques en gris claro, UN solo acento cobalto
+// reservado a los elementos accionables, sin texto legible (solo barras que lo
+// sugieran), sin sombras realistas ni degradados, 3:2. Los prompts de los otros
+// dieciocho servicios siguen en el formato fotográfico anterior y hay que
+// reescribirlos con esta dirección, uno por uno.
 export const subserviciosBase = [
   {
     id: "landing",
@@ -99,7 +114,7 @@ export const subserviciosBase = [
       },
     ],
     prompt:
-      "Fotografía cenital de un escritorio de madera clara con un notebook mostrando una sola página web de una promesa y un botón, un cuaderno con un boceto de esa misma página y un café. Luz natural lateral suave, paleta azul cobalto y crema, sin texto legible en pantalla, estilo editorial minimalista, 3:2.",
+      "Ilustración vectorial plana de la ANATOMÍA de una landing page: un rectángulo vertical de página, visto de frente y ligeramente en perspectiva isométrica, dividido en bloques apilados claramente separados — una franja superior grande de titular con dos barras de texto y un botón sólido destacado, bajo ella una fila de tres bloques iguales de beneficios con un ícono circular cada uno, más abajo un bloque de formulario con tres campos y un botón, y al final una franja angosta de pie. Los bloques flotan levemente separados entre sí, como capas de un despiece, con líneas guía finas que los conectan. Fondo crema plano, bloques en gris muy claro, un único acento azul cobalto reservado para los dos botones. Sin texto legible: solo barras que sugieren texto. Estilo diagrama editorial, trazo limpio, sin sombras realistas ni degradados, 3:2.",
   },
   {
     id: "sitio",
