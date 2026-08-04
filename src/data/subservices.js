@@ -37,6 +37,11 @@ export const nivelesLabel = ["Presencia", "Operación", "Comercio"];
 // las fotos con IA, que es lo peor que puede pasarle a un sitio que vende
 // diseño.
 //
+// `caso` apunta a un proyecto REAL del portafolio que corresponde a ese
+// servicio. Solo se define donde de verdad calza: repetir el mismo caso en
+// servicios que no lo son sería inventar un ejemplo, justo lo que se evita al
+// no usar maquetas ficticias.
+//
 // Reglas comunes: fondo crema, bloques en gris claro, UN solo acento cobalto
 // reservado a los elementos accionables, sin texto legible (solo barras que lo
 // sugieran), sin sombras realistas ni degradados, 3:2. Los prompts de los otros
@@ -45,6 +50,7 @@ export const nivelesLabel = ["Presencia", "Operación", "Comercio"];
 export const subserviciosBase = [
   {
     id: "landing",
+    caso: "scissorhands",
     familia: "web",
     nombre: "Landing page",
     resumen: "Una página, una promesa, una conversión.",
@@ -118,6 +124,7 @@ export const subserviciosBase = [
   },
   {
     id: "sitio",
+    caso: "paraguayaccess",
     familia: "web",
     nombre: "Sitio corporativo",
     resumen: "Tu marca completa: inicio, servicios, casos y contacto.",
@@ -138,6 +145,7 @@ export const subserviciosBase = [
   },
   {
     id: "ecommerce",
+    caso: "partsmr",
     familia: "web",
     nombre: "Tienda online",
     resumen: "Vender 24/7 con carrito, pagos y panel de pedidos.",
@@ -148,6 +156,7 @@ export const subserviciosBase = [
   },
   {
     id: "plataforma",
+    caso: "systempro",
     familia: "web",
     nombre: "Plataforma web",
     resumen: "Tu propia herramienta en línea, con cuentas y suscripciones.",

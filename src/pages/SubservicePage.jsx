@@ -4,6 +4,7 @@ import Breadcrumbs from "@/components/landing/Breadcrumbs";
 import PageShell from "@/components/landing/PageShell";
 import FinalCta from "@/components/landing/FinalCta";
 import { familias, getSubservicio, nivelesLabel } from "@/data/subservices";
+import { getProjectById } from "@/data/projects";
 import { formatFrom } from "@/data/currencies";
 import { IVA_NOTA } from "@/data/pricing";
 import { useCurrency } from "@/lib/useCurrency";
@@ -28,6 +29,7 @@ export default function SubservicePage() {
   const moneda = useCurrency();
 
   const familia = familias.find((f) => f.id === servicio?.familia);
+  const caso = servicio?.caso ? getProjectById(servicio.caso) : null;
   const desde = servicio?.precios.find((p) => p !== null);
 
   // useSeo va ANTES del return temprano: un hook detrás de un return se salta
@@ -243,6 +245,46 @@ export default function SubservicePage() {
                   </article>
                 ))}
               </div>
+            </div>
+          </section>
+        )}
+
+        {/* Captura de un proyecto REAL, no una maqueta. El plano de arriba
+            explica qué recibes; esto muestra cómo se ve publicado. Una maqueta
+            inventada se vería mejor —no tuvo cliente ni presupuesto— y por eso
+            mismo le restaría valor a los cuatro proyectos que sí existen. */}
+        {caso && (
+          <section className="section-pad border-t border-border" aria-labelledby="caso-titulo">
+            <div className="site-container">
+              <span className="eyebrow">Así se ve publicado</span>
+              <h2 id="caso-titulo" className="section-title mt-4">
+                Un {servicio.nombre.toLowerCase()} que ya está funcionando.
+              </h2>
+
+              <figure className="panel mt-10 overflow-hidden">
+                <img
+                  src={caso.image}
+                  alt={`Sitio de ${caso.title}, ${caso.industry}`}
+                  width="1280"
+                  height="2560"
+                  loading="lazy"
+                  decoding="async"
+                  className="aspect-[16/10] w-full object-cover object-top"
+                />
+                <figcaption className="flex flex-col gap-3 border-t border-border p-5 sm:flex-row sm:items-center sm:justify-between">
+                  <span className="text-sm">
+                    <strong className="font-semibold text-foreground">{caso.title}</strong>
+                    <span className="text-muted-foreground"> · {caso.industry}</span>
+                  </span>
+                  <Link
+                    to={`/casos/${caso.id}`}
+                    className="inline-flex items-center gap-1.5 text-sm font-bold text-primary hover:underline"
+                  >
+                    Ver el caso completo
+                    <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                  </Link>
+                </figcaption>
+              </figure>
             </div>
           </section>
         )}
