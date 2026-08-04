@@ -21,6 +21,12 @@ export const familias = [
 export const nivelesLabel = ["Presencia", "Operación", "Comercio"];
 
 // precios: [inicia, escala, domina]. null = no disponible en ese nivel.
+//
+// `prompt` es la indicación para generar la imagen de la página. Se guarda acá
+// y no en un documento aparte porque la imagen pertenece al servicio: si mañana
+// se renombra o se reencuadra el servicio, el prompt tiene que cambiar con él.
+// Mientras no exista el archivo, la página muestra el prompt dentro del marco
+// de la imagen, así queda a la vista qué falta por producir.
 export const subserviciosBase = [
   {
     id: "landing",
@@ -29,6 +35,8 @@ export const subserviciosBase = [
     resumen: "Una página, una promesa, una conversión.",
     incluye: ["Diseño de una sola página", "Formulario y WhatsApp conectados", "Hosting y dominio el primer año", "Entrega en 5 días hábiles"],
     precios: [100000, 190000, 290000],
+    prompt:
+      "Fotografía cenital de un escritorio de madera clara con un notebook mostrando una sola página web de una promesa y un botón, un cuaderno con un boceto de esa misma página y un café. Luz natural lateral suave, paleta azul cobalto y crema, sin texto legible en pantalla, estilo editorial minimalista, 3:2.",
   },
   {
     id: "sitio",
@@ -37,6 +45,8 @@ export const subserviciosBase = [
     resumen: "Tu marca completa: inicio, servicios, casos y contacto.",
     incluye: ["Cinco secciones esenciales", "Administrador para editar textos", "Base técnica de SEO", "Hosting y dominio el primer año"],
     precios: [290000, 490000, 790000],
+    prompt:
+      "Escritorio de oficina pequeña con un monitor mostrando una web de varias secciones y un teléfono al lado con la misma web adaptada. Plantas discretas, luz de ventana, paleta azul cobalto y crema, estilo editorial limpio sin texto legible, 3:2.",
   },
   {
     id: "rediseno",
@@ -45,6 +55,8 @@ export const subserviciosBase = [
     resumen: "Tu sitio actual, más rápido y más claro, sin partir de cero.",
     incluye: ["Renovación visual conservando el contenido", "Migración a hosting moderno", "Optimización para celular"],
     precios: [190000, 350000, 590000],
+    prompt:
+      "Composición lado a lado sobre fondo crema: a la izquierda una pantalla anticuada y recargada, a la derecha la misma en versión limpia y espaciada. Transición visual clara, paleta azul cobalto, estilo editorial, sin texto legible, 3:2.",
   },
   {
     id: "ecommerce",
@@ -53,6 +65,8 @@ export const subserviciosBase = [
     resumen: "Vender 24/7 con carrito, pagos y panel de pedidos.",
     incluye: ["Hasta 50 productos", "Pasarela de pago y transferencia", "Panel de pedidos", "Hosting y dominio el primer año"],
     precios: [390000, 690000, 1290000],
+    prompt:
+      "Mesa de trabajo de una tienda pequeña: cajas de despacho etiquetadas, un notebook con una tienda online abierta y un teléfono mostrando una notificación de venta. Luz cálida de tarde, paleta azul cobalto y crema, estilo editorial, sin texto legible, 3:2.",
   },
   {
     id: "plataforma",
@@ -61,6 +75,8 @@ export const subserviciosBase = [
     resumen: "Tu propia herramienta en línea, con cuentas y suscripciones.",
     incluye: ["Registro y sesiones", "Panel de administración", "Cobro recurrente"],
     precios: [null, 990000, 1990000],
+    prompt:
+      "Pantalla de escritorio con un panel de administración de una plataforma web: barra lateral, tarjetas de datos y un formulario de acceso. Ángulo levemente en perspectiva, fondo crema, acento azul cobalto, estilo producto limpio, sin texto legible, 3:2.",
   },
   {
     id: "crm",
@@ -69,6 +85,8 @@ export const subserviciosBase = [
     resumen: "Contactos, oportunidades y seguimiento en un solo lugar.",
     incluye: ["Hasta 500 contactos", "Embudo visual", "Avisos por correo", "Hosting incluido"],
     precios: [390000, 690000, 1190000],
+    prompt:
+      "Escritorio con un monitor mostrando un embudo de ventas en columnas y fichas de contactos, junto a una libreta con anotaciones. Luz suave de oficina, paleta azul cobalto y crema, estilo editorial, sin texto legible, 3:2.",
   },
   {
     id: "pos",
@@ -77,6 +95,8 @@ export const subserviciosBase = [
     resumen: "Caja moderna para tu local, conectada al inventario.",
     incluye: ["Una caja y hasta 200 productos", "Boleta electrónica", "Inventario simple"],
     precios: [290000, 490000, 890000],
+    prompt:
+      "Mostrador de un local pequeño con una tablet montada como caja registradora, un lector de tarjetas y una impresora de boletas. Luz cálida de comercio, paleta azul cobalto y crema, estilo editorial, sin texto legible, 3:2.",
   },
   {
     id: "integracion",
@@ -85,6 +105,8 @@ export const subserviciosBase = [
     resumen: "Conectamos tus herramientas para que dejen de copiarse a mano.",
     incluye: ["Una integración punto a punto", "Documentación de lo conectado"],
     precios: [190000, 390000, 690000],
+    prompt:
+      "Bodegón conceptual de dos módulos físicos conectados por un cable limpio sobre superficie crema, sugiriendo dos sistemas hablándose. Iluminación de estudio, acento azul cobalto, estilo producto minimalista, sin texto, 3:2.",
   },
   {
     id: "automatizacion",
@@ -93,6 +115,8 @@ export const subserviciosBase = [
     resumen: "Las tareas repetitivas, hechas solas y a toda hora.",
     incluye: ["Un flujo automatizado", "Reglas verificables", "Hasta 1.000 ejecuciones al mes"],
     precios: [290000, 490000, 890000],
+    prompt:
+      "Escritorio con un monitor mostrando un diagrama de flujo de nodos conectados y, al lado, una bandeja de papeles vacía que sugiere trabajo ya resuelto. Luz de estudio, paleta azul cobalto y crema, estilo editorial, sin texto legible, 3:2.",
   },
   {
     id: "erp",
@@ -101,6 +125,8 @@ export const subserviciosBase = [
     resumen: "Inventario, compras, ventas y documentos en una sola herramienta.",
     incluye: ["Módulos según tu operación", "Usuarios y permisos", "Reportes"],
     precios: [null, 1290000, 2490000],
+    prompt:
+      "Oficina pequeña con un monitor mostrando módulos de inventario y pedidos, y al fondo estanterías con cajas ordenadas. Luz natural, paleta azul cobalto y crema, estilo editorial documental, sin texto legible, 3:2.",
   },
   {
     id: "pwa",
@@ -109,6 +135,8 @@ export const subserviciosBase = [
     resumen: "Se instala desde el navegador y funciona sin señal.",
     incluye: ["Instalable en celular y escritorio", "Funciona sin conexión", "Notificaciones"],
     precios: [290000, 490000, 790000],
+    prompt:
+      "Teléfono en la mano mostrando una app abierta con el ícono de instalación visible, sobre fondo crema desenfocado. Primer plano nítido, acento azul cobalto, estilo producto limpio, sin texto legible, 3:2.",
   },
   {
     id: "app-interna",
@@ -117,6 +145,8 @@ export const subserviciosBase = [
     resumen: "Una app para uso interno, no para el público.",
     incluye: ["Hasta 20 usuarios", "Un flujo principal", "Distribución interna"],
     precios: [590000, 890000, 1490000],
+    prompt:
+      "Persona con delantal de trabajo usando un teléfono con una app de tareas internas, en una bodega o taller ordenado. Luz natural, paleta azul cobalto y crema, estilo documental editorial, sin texto legible, 3:2.",
   },
   {
     id: "app-multi",
@@ -125,6 +155,8 @@ export const subserviciosBase = [
     resumen: "Un solo desarrollo que corre en Android y iPhone.",
     incluye: ["Sesión y tres pantallas", "Publicación en una tienda", "Base para crecer"],
     precios: [890000, 1290000, 2290000],
+    prompt:
+      "Un teléfono Android y un iPhone lado a lado sobre superficie crema, mostrando la misma app. Iluminación de estudio pareja, acento azul cobalto, estilo producto minimalista, sin texto legible, 3:2.",
   },
   {
     id: "app-nativa",
@@ -133,6 +165,8 @@ export const subserviciosBase = [
     resumen: "Desarrollo propio para Android o iPhone, máximo rendimiento.",
     incluye: ["Publicada a tu nombre", "Acceso completo al dispositivo", "Rendimiento nativo"],
     precios: [null, 1490000, 2790000],
+    prompt:
+      "Primer plano de un teléfono en soporte mostrando una app fluida, con reflejo suave sobre superficie oscura. Iluminación de estudio dramática pero limpia, acento azul cobalto, estilo producto premium, sin texto legible, 3:2.",
   },
   {
     id: "logo",
@@ -141,6 +175,8 @@ export const subserviciosBase = [
     resumen: "Tu marca visual: logo, paleta y tipografías.",
     incluye: ["Logo en tres versiones", "Paleta de color", "Archivos para imprenta y web"],
     precios: [90000, 190000, 390000],
+    prompt:
+      "Bodegón de identidad de marca sobre mesa crema: tarjetas impresas, muestras de color y una hoja con variantes de un logotipo abstracto. Luz cenital suave, acento azul cobalto, estilo editorial de diseño, sin texto legible, 3:2.",
   },
   {
     id: "redes",
@@ -149,6 +185,8 @@ export const subserviciosBase = [
     resumen: "Plantillas editables para publicar sin pedir ayuda.",
     incluye: ["Diez plantillas editables", "Historia, publicación y carrusel", "Con tu paleta de marca"],
     precios: [90000, 190000, 340000],
+    prompt:
+      "Vista cenital de un teléfono rodeado de plantillas impresas de publicaciones y carruseles, sobre fondo crema. Luz difusa, acento azul cobalto, estilo editorial de diseño, sin texto legible, 3:2.",
   },
   {
     id: "ux",
@@ -157,6 +195,8 @@ export const subserviciosBase = [
     resumen: "Diagnosticamos qué está frenando las conversiones y lo corregimos.",
     incluye: ["Revisión del sitio actual", "Diez mejoras priorizadas", "Informe con ejemplos"],
     precios: [190000, 340000, 590000],
+    prompt:
+      "Escritorio con una pantalla mostrando un mapa de calor de clics sobre una web y notas adhesivas al costado con anotaciones. Luz de oficina suave, paleta azul cobalto y crema, estilo editorial, sin texto legible, 3:2.",
   },
   {
     id: "branding",
@@ -165,6 +205,8 @@ export const subserviciosBase = [
     resumen: "Marca de punta a punta: estrategia, visual y tono.",
     incluye: ["Logo, paleta y tipografías", "Manual de marca", "Aplicaciones de ejemplo"],
     precios: [390000, 690000, 1290000],
+    prompt:
+      "Composición de manual de marca abierto sobre mesa crema, con paleta de colores, muestras tipográficas y aplicaciones impresas. Luz cenital de estudio, acento azul cobalto, estilo editorial de diseño, sin texto legible, 3:2.",
   },
   {
     id: "design-system",
@@ -173,6 +215,8 @@ export const subserviciosBase = [
     resumen: "Librería de componentes lista para todos tus productos.",
     incluye: ["Componentes documentados", "Tokens exportables", "Guía de uso"],
     precios: [null, 890000, 1690000],
+    prompt:
+      "Pantalla mostrando una librería de componentes de interfaz en cuadrícula ordenada, botones y tarjetas repetidos en variantes. Fondo crema, acento azul cobalto, estilo producto limpio, sin texto legible, 3:2.",
   },
 ];
 

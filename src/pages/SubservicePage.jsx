@@ -1,5 +1,5 @@
 import { Navigate, useParams, Link } from "react-router-dom";
-import { ArrowRight, Check, MessageCircle } from "lucide-react";
+import { ArrowRight, Check, Image as ImageIcon, MessageCircle } from "lucide-react";
 import Breadcrumbs from "@/components/landing/Breadcrumbs";
 import PageShell from "@/components/landing/PageShell";
 import FinalCta from "@/components/landing/FinalCta";
@@ -107,8 +107,37 @@ export default function SubservicePage() {
                 </div>
               </div>
 
-              {/* Qué incluye, arriba y a la derecha: es lo primero que se
-                  pregunta quien ya sabe que quiere este servicio. */}
+              <div className="flex flex-col gap-3">
+                {/* Imagen del servicio. Si aún no existe el archivo, el marco
+                    muestra el prompt con el que hay que generarla: el hueco
+                    queda como tarea a la vista y no como espacio olvidado. */}
+                {servicio.imagen ? (
+                  <figure className="panel overflow-hidden">
+                    <img
+                      src={servicio.imagen}
+                      alt={`${servicio.nombre}: ${servicio.resumen}`}
+                      width="1200"
+                      height="800"
+                      loading="eager"
+                      fetchPriority="high"
+                      decoding="async"
+                      className="aspect-[3/2] w-full object-cover"
+                    />
+                  </figure>
+                ) : (
+                  <div className="panel flex aspect-[3/2] flex-col justify-between gap-3 p-5">
+                    <p className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.16em] text-primary">
+                      <ImageIcon className="h-3.5 w-3.5" aria-hidden="true" />
+                      Imagen pendiente · prompt
+                    </p>
+                    <p className="overflow-y-auto text-[11px] leading-relaxed text-muted-foreground">
+                      {servicio.prompt}
+                    </p>
+                  </div>
+                )}
+
+              {/* Qué incluye: es lo primero que se pregunta quien ya sabe que
+                  quiere este servicio. */}
               <aside className="panel panel-solid p-7">
                 <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
                   Qué incluye
@@ -128,6 +157,7 @@ export default function SubservicePage() {
                   </span>
                 </p>
               </aside>
+              </div>
             </div>
           </div>
         </section>
