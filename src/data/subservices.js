@@ -198,12 +198,68 @@ export const subserviciosBase = [
     resumen: "Tu sitio actual, más rápido y más claro, sin partir de cero.",
     incluye: ["Renovación visual conservando el contenido", "Migración a hosting moderno", "Optimización para celular"],
     precios: [190000, 350000, 590000],
+    metaTitle: "Rediseño de página web en Chile desde $190.000 · Maudev",
+    metaDescription:
+      "Rediseño web conservando tu contenido: más rápido, claro en el celular y ordenado para convertir. Desde $190.000 + IVA, sin partir de cero.",
+    intro:
+      "Un rediseño no es hacer el sitio otra vez. Es tomar lo que ya tienes —tus textos, tus fotos, tu posicionamiento ganado en Google— y arreglar lo que está frenando las consultas: la velocidad, la lectura en el celular y el orden de la información.",
+    secciones: [
+      {
+        titulo: "Cuándo conviene rediseñar y cuándo rehacer",
+        parrafos: [
+          "Conviene rediseñar si el contenido sigue siendo válido y el problema es cómo se ve y cómo carga. Ahí se conserva lo que funciona, se corrige lo que estorba y el proyecto cuesta la mitad que empezar de nuevo.",
+          "Conviene rehacer si el sitio está montado sobre algo que ya no se puede mantener, si nadie tiene los accesos, o si lo que ofreces cambió tanto que el contenido ya no describe tu negocio. En esos casos el rediseño sale más caro que partir limpio, porque se va el tiempo peleando con lo viejo.",
+          "Antes de cotizar revisamos tu sitio y te decimos cuál de los dos es. Si corresponde rehacer, lo decimos aunque sea el servicio más caro.",
+        ],
+      },
+      {
+        titulo: "Lo que no se toca: tu posicionamiento",
+        parrafos: [
+          "Si tu sitio ya aparece en algunas búsquedas, eso tiene valor y es lo primero que se destruye en un rediseño mal hecho: se cambian las direcciones de las páginas, Google pierde el rastro y las visitas caen de un mes a otro.",
+          "Por eso el trabajo parte inventariando las URLs que ya existen. Las que se mantienen conservan su dirección; las que cambian quedan redirigidas a su equivalente. Nada se queda sin destino.",
+        ],
+      },
+      {
+        titulo: "Qué se corrige",
+        parrafos: [
+          "La velocidad, que en la mayoría de los sitios heredados se va en imágenes sin optimizar y en complementos que quedaron instalados y nadie usa.",
+          "La lectura en el celular, que es de donde llega la mayoría y donde más se pierde: botones demasiado chicos, texto que obliga a hacer zoom, formularios incómodos de llenar con el pulgar.",
+          "Y el orden: qué se ve primero, cuántas decisiones se le piden al visitante y dónde está el botón que quieres que toque.",
+        ],
+      },
+      {
+        titulo: "Qué necesitas entregar para partir",
+        parrafos: [
+          "Los accesos al sitio actual y a su hosting. Es el punto donde más proyectos se atrasan: mucha gente no tiene las claves porque las administró alguien que ya no está.",
+          "Si no aparecen, se puede reconstruir sobre un hosting nuevo y mover el dominio, pero hay que saberlo antes de empezar porque cambia el plazo.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "¿Pierdo mi posición en Google?",
+        a: "No si el rediseño se hace bien. Las URLs que se mantienen conservan su dirección y las que cambian se redirigen. Lo que sí ocurre las primeras semanas es un movimiento normal mientras Google vuelve a rastrear el sitio.",
+      },
+      {
+        q: "¿Se puede conservar el diseño y solo mejorar la velocidad?",
+        a: "Sí, y a veces es lo que corresponde. Si tu sitio se ve bien y el problema es que carga lento, se optimiza sin tocar el diseño y sale bastante menos.",
+      },
+      {
+        q: "¿Y si no tengo los accesos?",
+        a: "Pasa seguido. Se puede levantar el sitio nuevo en paralelo y apuntar el dominio cuando esté listo, siempre que controles el dominio. Si tampoco lo controlas, ese es el primer trámite y te acompañamos a recuperarlo.",
+      },
+      {
+        q: "¿Incluye textos nuevos?",
+        a: "El alcance base conserva tu contenido. Si quieres reescribirlo, se cotiza aparte según cuántas páginas y se dice antes de empezar.",
+      },
+    ],
     prompt:
-      "Composición lado a lado sobre fondo crema: a la izquierda una pantalla anticuada y recargada, a la derecha la misma en versión limpia y espaciada. Transición visual clara, paleta azul cobalto, estilo editorial, sin texto legible, 3:2.",
+      "Plano técnico isométrico de un REDISEÑO web, estilo lámina de arquitectura, con dos estados enfrentados. A la izquierda, un plano rectangular en isometría de 30 grados con su contenido apretado y desordenado: bloques de distinto tamaño amontonados, sin margen, con líneas irregulares. A la derecha, el mismo plano reconstruido: los mismos bloques pero alineados a una retícula, con aire entre ellos y jerarquía clara, y un botón sólido cobalto destacado. Entre ambos, una flecha gruesa de transformación en trazo fino con tres nodos circulares que indican el proceso. Bajo los dos planos, una banda horizontal con pequeños rectángulos que representan las direcciones de las páginas: los del lado izquierdo se conectan uno a uno con los del derecho mediante líneas punteadas cobalto, mostrando que ninguna se pierde. Ambos planos con canto visible y sombra suave. Anotaciones de plano alrededor: líneas de cota con topes, llamadas apuntando a la flecha de transformación y a la banda de direcciones, y cajetín técnico en la esquina inferior derecha. Fondo crema con retícula técnica muy tenue. Escala de grises salvo el azul cobalto, reservado a las líneas de correspondencia y al botón. Sin ningún texto legible. Trazo vectorial nítido, sin degradados, aire de lámina de ingeniería impresa, 3:2.",
   },
   {
     id: "ecommerce",
     caso: "partsmr",
+    imagen: "/servicios/tienda-online.webp",
     familia: "web",
     nombre: "Tienda online",
     resumen: "Vender 24/7 con carrito, pagos y panel de pedidos.",
