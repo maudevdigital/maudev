@@ -126,6 +126,7 @@ export const subserviciosBase = [
   {
     id: "sitio",
     caso: "paraguayaccess",
+    imagen: "/servicios/sitio-corporativo.webp",
     familia: "web",
     nombre: "Sitio corporativo",
     resumen: "Tu marca completa: inicio, servicios, casos y contacto.",
@@ -208,8 +209,62 @@ export const subserviciosBase = [
     resumen: "Vender 24/7 con carrito, pagos y panel de pedidos.",
     incluye: ["Hasta 50 productos", "Pasarela de pago y transferencia", "Panel de pedidos", "Hosting y dominio el primer año"],
     precios: [390000, 690000, 1290000],
+    metaTitle: "Tienda online en Chile desde $390.000 · Ecommerce a medida · Maudev",
+    metaDescription:
+      "Tienda online con catálogo, pasarela de pago, despacho y panel de pedidos. Desde $390.000 + IVA, con la operación conectada de punta a punta.",
+    intro:
+      "Una tienda online no termina cuando el cliente paga. Ahí recién empieza: hay que preparar el pedido, descontar el stock, emitir el documento, coordinar el despacho y avisar en qué va. Si esos pasos viven separados, terminas conciliando pedidos a mano y respondiendo \"¿dónde va mi compra?\" todo el día.",
+    secciones: [
+      {
+        titulo: "Lo que decide si una tienda funciona",
+        parrafos: [
+          "No es el diseño del catálogo: es qué pasa después del pago. Una tienda bonita con el stock desincronizado vende productos que no tiene, y esa es la forma más rápida de perder un cliente para siempre.",
+          "Por eso el proyecto parte por tu operación, no por las pantallas. Cuántos productos, si tienen variantes de talla o color, quién prepara los pedidos, cómo despachas y qué documento emites. De esas respuestas sale la tienda.",
+        ],
+      },
+      {
+        titulo: "Qué queda conectado",
+        parrafos: [
+          "Catálogo con hasta 50 productos y sus variantes, pasarela de pago y transferencia como alternativa —en Chile todavía pesa—, y panel de pedidos donde ves cada compra con su estado.",
+          "El stock se descuenta solo al confirmarse el pago, así que la tienda nunca ofrece lo que ya no tienes. El cliente recibe su confirmación sin que tengas que escribirla.",
+          "Si ya usas un sistema de inventario o de facturación, se puede conectar cuando el proveedor entrega accesos técnicos. Eso se confirma antes de cotizar, no después.",
+        ],
+      },
+      {
+        titulo: "Plataforma existente o tienda propia",
+        parrafos: [
+          "Si vendes productos simples y sin reglas particulares, una plataforma de las que ya existen te sirve y es más barata. Te lo vamos a decir si es tu caso.",
+          "La tienda propia se justifica cuando la plataforma te obliga a operar distinto de como opera tu negocio: combinaciones de productos, precios por volumen, despacho con reglas propias, o una comisión por venta que a tu volumen ya duele más que el desarrollo.",
+        ],
+      },
+      {
+        titulo: "Cuánto demora y qué necesitas tener listo",
+        parrafos: [
+          "Entre cinco y ocho semanas. Antes de publicar se prueban pedidos completos de punta a punta: compra, pago, documento y aviso.",
+          "Lo que más alarga el proyecto es la información de los productos. Necesitas fotos, descripciones, precios y stock inicial. Si el catálogo es grande, conviene preparar esa planilla mientras se construye la tienda.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "¿Qué comisiones voy a pagar?",
+        a: "La pasarela cobra un porcentaje por transacción que va directo a ella, no a nosotros. Te decimos cuánto es antes de empezar y qué alternativas hay, porque a distintos volúmenes conviene una distinta.",
+      },
+      {
+        q: "¿Puedo cargar los productos yo?",
+        a: "Sí, el panel permite cargar y editar. Para un catálogo inicial grande podemos hacer una carga masiva desde planilla, y eso se cotiza según cuántos productos y en qué estado esté la información.",
+      },
+      {
+        q: "¿Emite boleta o factura?",
+        a: "Se puede integrar con tu emisor de documentos electrónicos si entrega accesos. Si no, el panel deja el pedido listo para emitir desde donde ya lo haces hoy.",
+      },
+      {
+        q: "¿Qué pasa si vendo más de 50 productos?",
+        a: "El límite es del alcance base, no de la tienda. Se amplía y se cotiza aparte; el valor por tramo se dice antes de empezar.",
+      },
+    ],
     prompt:
-      "Mesa de trabajo de una tienda pequeña: cajas de despacho etiquetadas, un notebook con una tienda online abierta y un teléfono mostrando una notificación de venta. Luz cálida de tarde, paleta azul cobalto y crema, estilo editorial, sin texto legible, 3:2.",
+      "Plano técnico isométrico del FLUJO de una tienda online, estilo lámina de arquitectura. Cuatro planos rectangulares en isometría real de 30 grados vistos desde arriba a la izquierda, dispuestos en escalera descendente de izquierda a derecha: el primero muestra una cuadrícula de tarjetas de producto, el segundo un carrito con una lista de líneas, el tercero un módulo de pago con un botón sólido, y el cuarto un panel de pedidos con filas y un ícono de caja de despacho. Cada plano con canto visible y sombra suave. Una LÍNEA DE RECORRIDO punteada en azul cobalto recorre los cuatro planos de izquierda a derecha con un nodo circular en cada traspaso, y desde el tercero se desprende un ramal corto que vuelve hacia atrás al primero, indicando el descuento de stock. Alrededor, anotaciones de plano: líneas de cota con topes, un par de llamadas apuntando al botón de pago y al ramal de stock, y cajetín técnico en la esquina inferior derecha. Fondo crema con retícula técnica muy tenue. Todo en escala de grises salvo el azul cobalto, reservado a la línea de recorrido y al botón de pago. Sin ningún texto legible: solo trazos que lo sugieran. Trazo vectorial nítido, sin degradados ni brillos, aire de lámina de ingeniería impresa, 3:2.",
   },
   {
     id: "plataforma",
