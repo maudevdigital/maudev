@@ -51,6 +51,7 @@ export const subserviciosBase = [
   {
     id: "landing",
     caso: "scissorhands",
+    imagen: "/servicios/landing-page.webp",
     familia: "web",
     nombre: "Landing page",
     resumen: "Una página, una promesa, una conversión.",
