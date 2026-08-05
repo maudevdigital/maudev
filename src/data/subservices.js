@@ -440,6 +440,7 @@ export const subserviciosBase = [
     ],
     familia: "software",
     nombre: "Gestión de clientes",
+    imagen: "/servicios/gestion-de-clientes.webp",
     resumen: "Contactos, oportunidades y seguimiento en un solo lugar.",
     incluye: ["Hasta 500 contactos", "Embudo visual", "Avisos por correo", "Hosting incluido"],
     precios: [390000, 690000, 1190000],
@@ -504,13 +505,75 @@ export const subserviciosBase = [
   },
   {
     id: "pos",
+    tecnologias: [
+      { nombre: "React", para: "Pantalla de caja pensada para usarse rápido y sin errores" },
+      { nombre: "Node.js", para: "Registro de ventas, turnos y arqueo del lado del servidor" },
+      { nombre: "PostgreSQL", para: "Cada venta queda con transacción: no se pierde ni se duplica" },
+      { nombre: "Funcionamiento sin conexión", para: "Sigue vendiendo si se cae internet y sincroniza al volver" },
+      { nombre: "Boleta electrónica", para: "Integración con tu emisor autorizado ante el SII" },
+    ],
     familia: "software",
     nombre: "Punto de venta",
     resumen: "Caja moderna para tu local, conectada al inventario.",
     incluye: ["Una caja y hasta 200 productos", "Boleta electrónica", "Inventario simple"],
     precios: [290000, 490000, 890000],
+    metaTitle: "Sistema punto de venta (POS) a medida en Chile desde $290.000 · Maudev",
+    metaDescription:
+      "Punto de venta para tu local: caja rápida, inventario conectado y boleta electrónica. Funciona sin internet. Desde $290.000 + IVA, sin licencia mensual por caja.",
+    intro:
+      "Un punto de venta es la pantalla donde tu local cobra. Suena simple, y por eso mismo se subestima: es el único software del negocio que, si falla dos minutos, tienes una fila de gente esperando y mirándote.",
+    secciones: [
+      {
+        titulo: "Lo que se le exige a una caja y no a otro sistema",
+        parrafos: [
+          "Velocidad por sobre todo. Cobrar tiene que tomar segundos y poder hacerse sin mirar mucho la pantalla; si el flujo exige tres confirmaciones, en hora punta el local se atasca.",
+          "Y que no dependa de internet. Un sistema en la nube que se cae cuando falla la conexión deja al local sin poder vender, y eso no es aceptable en un negocio presencial. Por eso el punto de venta guarda en el equipo y sincroniza cuando vuelve la señal.",
+          "Esas dos exigencias son las que separan un POS de un panel de administración cualquiera, y las que definen cómo se construye.",
+        ],
+      },
+      {
+        titulo: "Qué queda conectado",
+        parrafos: [
+          "El inventario, que se descuenta en el momento de la venta. Sin eso, el stock del sistema y el de la bodega se separan en una semana y el sistema deja de servir para decidir compras.",
+          "La boleta electrónica, integrada con tu emisor autorizado ante el SII. Se confirma antes de cotizar cuál usas, porque no todos entregan accesos técnicos.",
+          "Y el cierre de caja: turnos, arqueo y diferencias. Es la función que menos se pide al principio y la que más se agradece al mes de uso.",
+        ],
+      },
+      {
+        titulo: "A medida o una solución de mercado",
+        parrafos: [
+          "Si vendes productos simples, con una caja y sin reglas particulares, hay soluciones de mercado que te sirven y salen más baratas. Te lo vamos a decir si es tu caso.",
+          "El desarrollo propio se justifica cuando tu forma de vender no calza: combinaciones de productos, precios por cliente, promociones con reglas tuyas, o cuando la mensualidad por caja, multiplicada por sucursales y por años, ya supera lo que cuesta construirlo una vez.",
+        ],
+      },
+      {
+        titulo: "Qué necesitas tener resuelto",
+        parrafos: [
+          "El hardware: qué equipo va a estar en el mostrador, si hay lector de códigos, impresora de boletas y cajón de dinero. El sistema se adapta a lo que tienes, pero hay que saberlo antes.",
+          "Y el catálogo con precios y stock inicial. Es lo que más demora, sobre todo si hoy los precios viven en la cabeza de alguien.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "¿Funciona si se cae internet?",
+        a: "Sí. Sigue vendiendo con los datos guardados en el equipo y sincroniza cuando vuelve la conexión. Lo que sí requiere internet es la emisión de boleta electrónica, porque depende del SII; esas quedan en cola y se emiten al reconectar.",
+      },
+      {
+        q: "¿Cuántas cajas incluye?",
+        a: "El alcance base cubre una caja y hasta 200 productos. Sumar cajas o sucursales se cotiza aparte, y el valor por tramo se dice antes de empezar.",
+      },
+      {
+        q: "¿Sirve con el hardware que ya tengo?",
+        a: "En la mayoría de los casos sí: lectores e impresoras estándar funcionan. Se revisa tu equipamiento antes de cotizar, porque algunos modelos antiguos tienen limitaciones y es mejor saberlo al principio.",
+      },
+      {
+        q: "¿Hay mensualidad?",
+        a: "No por el sistema, que es tuyo. Lo que sí tiene costo recurrente es el alojamiento —bajo, directo al proveedor— y tu emisor de boleta electrónica, si cobra por documento.",
+      },
+    ],
     prompt:
-      "Mostrador de un local pequeño con una tablet montada como caja registradora, un lector de tarjetas y una impresora de boletas. Luz cálida de comercio, paleta azul cobalto y crema, estilo editorial, sin texto legible, 3:2.",
+      "Plano técnico isométrico de un SISTEMA PUNTO DE VENTA, estilo lámina de arquitectura. Al centro, un plano rectangular en isometría real de 30 grados con canto visible que representa la pantalla de caja, dividido en dos zonas por una línea fina: a la izquierda una cuadrícula de botones de producto, a la derecha una columna con líneas de detalle y un total destacado, más un botón sólido cobalto de cobro abajo. A la izquierda del plano y conectados por líneas de llamada cortas, tres módulos pequeños dibujados en línea fina: un lector de códigos, una impresora con una tira de papel saliendo y un cajón de dinero. A la derecha y arriba, separado, un plano pequeño de inventario con filas apiladas, unido a la pantalla de caja por una línea punteada cobalto con una flecha que apunta hacia el inventario, indicando el descuento de stock en el momento de la venta. Bajo la pantalla de caja, un símbolo de nube tachado con equis fina y una pequeña placa de almacenamiento local conectada, indicando que sigue vendiendo sin internet. Anotaciones de plano alrededor: líneas de cota con topes, una llamada sobre el símbolo sin conexión, y cajetín técnico en la esquina inferior derecha. Fondo crema con retícula técnica muy tenue. Escala de grises salvo el azul cobalto, reservado al botón de cobro y a la línea de descuento de stock. Sin ningún texto legible. Trazo vectorial nítido, sin degradados, aire de lámina de ingeniería impresa, 3:2.",
   },
   {
     id: "integracion",
