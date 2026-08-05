@@ -328,6 +328,7 @@ export const subserviciosBase = [
     caso: "systempro",
     familia: "web",
     nombre: "Plataforma web",
+    imagen: "/servicios/plataforma-web.webp",
     resumen: "Tu propia herramienta en línea, con cuentas y suscripciones.",
     incluye: ["Registro y sesiones", "Panel de administración", "Cobro recurrente"],
     precios: [null, 990000, 1990000],
@@ -447,8 +448,64 @@ export const subserviciosBase = [
     resumen: "Se instala desde el navegador y funciona sin señal.",
     incluye: ["Instalable en celular y escritorio", "Funciona sin conexión", "Notificaciones"],
     precios: [290000, 490000, 790000],
+    metaTitle: "App web instalable (PWA) en Chile desde $290.000 · Maudev",
+    metaDescription:
+      "App que se instala desde el navegador, funciona sin señal y envía notificaciones. Sin tiendas de aplicaciones ni comisiones. Desde $290.000 + IVA.",
+    intro:
+      "Una app web instalable es una aplicación que vive en el navegador pero se comporta como una app: el usuario la agrega a su pantalla de inicio, se abre sin barra de direcciones y sigue funcionando aunque se caiga la señal. No pasa por App Store ni por Google Play.",
+    secciones: [
+      {
+        titulo: "Por qué evitar las tiendas cambia el proyecto",
+        parrafos: [
+          "Publicar en las tiendas tiene tres costos que casi nadie calcula al empezar: la cuenta de desarrollador se paga todos los años, cada actualización pasa por revisión y puede rechazarse, y si cobras suscripciones dentro de la app, Apple y Google se quedan con una comisión.",
+          "Una app instalable se salta los tres. Se actualiza sola cuando publicas —el usuario abre y ya tiene la versión nueva, sin descargar nada— y lo que cobres es tuyo.",
+          "El costo de esa libertad es visibilidad: nadie te va a encontrar buscando en la tienda. Tienes que llevar tú a la gente, con un enlace. Si tu app depende de que la descubran ahí, esta no es la opción.",
+        ],
+      },
+      {
+        titulo: "Qué puede y qué no puede hacer",
+        parrafos: [
+          "Puede funcionar sin conexión, guardar datos en el dispositivo, enviar notificaciones, usar la cámara y la ubicación. Para la mayoría de los usos de negocio, eso alcanza y sobra.",
+          "No llega al mismo nivel que una app nativa en acceso profundo al sistema, integración con el hardware o rendimiento gráfico exigente. Si tu app necesita algo de eso, corresponde una nativa y te lo vamos a decir.",
+          "En iPhone hay algunas limitaciones adicionales respecto de Android, sobre todo en notificaciones. Se revisa caso a caso antes de cotizar, porque puede cambiar la decisión.",
+        ],
+      },
+      {
+        titulo: "Para qué se usa normalmente",
+        parrafos: [
+          "Herramientas internas de equipos que trabajan en terreno y no siempre tienen señal: registro de visitas, checklists, levantamiento de datos.",
+          "Portales de cliente donde la persona entra seguido y agradece tenerlo a un toque en vez de buscar el enlace cada vez.",
+          "Y como primer paso antes de una app nativa: se valida que la gente la use antes de invertir en publicarla en las tiendas.",
+        ],
+      },
+      {
+        titulo: "Qué recibes",
+        parrafos: [
+          "La app funcionando y publicada en tu dominio, instalable desde el navegador en Android, iPhone y escritorio. Con funcionamiento sin conexión para lo esencial y notificaciones configuradas donde el sistema lo permita.",
+          "Queda alojada a tu nombre. Como no depende de ninguna tienda, no hay cuentas de desarrollador que renovar ni revisiones que esperar.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "¿Se instala igual en iPhone que en Android?",
+        a: "El resultado es parecido pero el camino es distinto: en Android el navegador ofrece instalarla solo; en iPhone hay que usar la opción de compartir y agregar a la pantalla de inicio. Se puede incluir una guía dentro de la app para que el usuario no se pierda.",
+      },
+      {
+        q: "¿Puedo llevarla después a las tiendas?",
+        a: "Sí, se puede empaquetar para publicarla, y ahí sí aplican las cuentas de desarrollador y las revisiones. Partir por la instalable y decidir después es más barato que al revés.",
+      },
+      {
+        q: "¿Funciona completamente sin internet?",
+        a: "Funciona sin conexión lo que se defina que debe funcionar: normalmente ver lo ya cargado y registrar datos que se sincronizan al volver la señal. Lo que necesite consultar información en vivo va a requerir conexión igual.",
+      },
+      {
+        q: "¿Ocupa espacio en el teléfono?",
+        a: "Muy poco comparado con una app de tienda, porque no se descarga un paquete completo: guarda solo lo necesario para abrir y funcionar sin señal.",
+      },
+    ],
     prompt:
-      "Teléfono en la mano mostrando una app abierta con el ícono de instalación visible, sobre fondo crema desenfocado. Primer plano nítido, acento azul cobalto, estilo producto limpio, sin texto legible, 3:2.",
+      "Plano técnico isométrico de una APP WEB INSTALABLE, estilo lámina de arquitectura. Al centro, un plano rectangular vertical con proporción de teléfono en isometría real de 30 grados, con canto visible y sombra suave, mostrando una cuadrícula de módulos de interfaz. Desde el borde izquierdo del teléfono sale una flecha curva fina hacia un marco de navegador simplificado situado atrás y arriba, indicando que la app viene del navegador y no de una tienda. A la derecha del teléfono, dos símbolos técnicos pequeños dibujados en línea: un ícono de nube tachado con una equis fina, que representa el funcionamiento sin conexión, y un ícono de campana, que representa las notificaciones; ambos conectados al teléfono por líneas de llamada. Un badge circular sólido en azul cobalto sobre la esquina del teléfono marca la acción de instalar. Anotaciones de plano alrededor: líneas de cota con topes midiendo el teléfono, y cajetín técnico en la esquina inferior derecha. Fondo crema con retícula técnica muy tenue. Escala de grises salvo el azul cobalto, reservado al badge de instalación y a la flecha de origen. Sin ningún texto legible. Trazo vectorial nítido, sin degradados, aire de lámina de ingeniería impresa, 3:2.",
   },
   {
     id: "app-interna",
