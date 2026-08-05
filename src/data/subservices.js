@@ -514,6 +514,7 @@ export const subserviciosBase = [
     ],
     familia: "software",
     nombre: "Punto de venta",
+    imagen: "/servicios/punto-de-venta.webp",
     resumen: "Caja moderna para tu local, conectada al inventario.",
     incluye: ["Una caja y hasta 200 productos", "Boleta electrónica", "Inventario simple"],
     precios: [290000, 490000, 890000],
@@ -582,8 +583,69 @@ export const subserviciosBase = [
     resumen: "Conectamos tus herramientas para que dejen de copiarse a mano.",
     incluye: ["Una integración punto a punto", "Documentación de lo conectado"],
     precios: [190000, 390000, 690000],
+    tecnologias: [
+      { nombre: "n8n", para: "Orquesta el flujo y deja el historial de cada ejecución" },
+      { nombre: "API REST y webhooks", para: "La forma en que un sistema le avisa al otro que algo cambió" },
+      { nombre: "Node.js", para: "Las transformaciones que ninguna herramienta resuelve sola" },
+      { nombre: "Cola con reintentos", para: "Si el otro sistema está caído, el dato espera en vez de perderse" },
+      { nombre: "Registro de sincronización", para: "Qué se envió, cuándo y con qué resultado, para poder auditarlo" },
+    ],
+    metaTitle: "Integración entre sistemas en Chile desde $190.000 · Maudev",
+    metaDescription:
+      "Conectamos tus sistemas para que dejen de copiarse a mano: ventas, clientes y stock sincronizados, con reintentos y registro. Desde $190.000 + IVA.",
+    intro:
+      "Casi siempre el problema no es que falte un sistema, sino que hay dos y alguien los mantiene iguales a mano. Ese alguien copia, se equivoca poco pero se equivoca, y cuando los números no calzan nadie sabe cuál de los dos tiene la razón.",
+    secciones: [
+      {
+        titulo: "Lo difícil no es el código",
+        parrafos: [
+          "Conectar dos sistemas técnicamente es rutinario. Lo que toma tiempo es decidir dos cosas que nadie tiene escritas: cuál de los dos manda cuando se contradicen, y qué pasa con lo que ya está mal en ambos.",
+          "Si esa decisión no se toma antes, la integración la toma sola y en silencio: empieza a pisar datos buenos con datos viejos, y eso se descubre semanas después.",
+          "Por eso la conversación parte definiendo la fuente de verdad de cada campo. Es la parte aburrida y es la que decide si esto funciona.",
+        ],
+      },
+      {
+        titulo: "Qué necesitan tener tus sistemas",
+        parrafos: [
+          "Una puerta de entrada y salida. Puede ser una API, un webhook o incluso un archivo que se deja en un lugar acordado. Lo revisamos antes de cotizar, porque hay software administrativo que en Chile todavía solo exporta planillas.",
+          "Cuando no hay API, la integración igual se puede hacer, pero cambia: pasa a ser por archivo y programada, no instantánea. Eso se dice antes, no después de firmar.",
+        ],
+      },
+      {
+        titulo: "Qué pasa cuando falla",
+        parrafos: [
+          "Va a fallar alguna vez: el otro sistema se cae, cambia un campo o rechaza un dato. La diferencia entre una integración útil y una peligrosa es qué ocurre en ese momento.",
+          "Acá lo que falla queda en cola y se reintenta; si igual no pasa, llega un aviso. Nunca se descarta en silencio, porque una integración que pierde datos sin avisar es peor que copiar a mano: uno confía en ella y deja de revisar.",
+        ],
+      },
+      {
+        titulo: "Cuándo no necesitas esto",
+        parrafos: [
+          "Si mueves pocos registros al día y tus dos herramientas son populares, es probable que ya exista una conexión hecha, o que armarla en una herramienta de automatización te salga bastante más barato. Te lo vamos a decir.",
+          "El trabajo a medida se justifica cuando el dato tiene que transformarse en el camino, cuando hay reglas tuyas de por medio, o cuando el volumen hace que un error manual salga caro.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "¿Y si uno de mis sistemas no tiene API?",
+        a: "Se puede igual, por archivo: uno exporta, la integración lo lee y lo carga en el otro. Deja de ser instantánea y pasa a correr cada cierto tiempo. Revisamos tus sistemas antes de cotizar para decirte cuál de los dos escenarios es el tuyo.",
+      },
+      {
+        q: "¿Sincroniza en los dos sentidos?",
+        a: "El valor de entrada cubre una integración en un sentido, que es lo que resuelve la mayoría de los casos. La sincronización en ambos sentidos cuesta más porque hay que definir qué gana cuando los dos cambian el mismo dato.",
+      },
+      {
+        q: "¿Cómo sé que está funcionando?",
+        a: "Queda un registro de cada sincronización: qué se envió, cuándo y con qué resultado. Los errores avisan en vez de acumularse callados.",
+      },
+      {
+        q: "¿Qué pasa si el otro sistema cambia?",
+        a: "Si cambian su API o sus campos, hay que ajustar. No es frecuente, pero pasa; por eso se entrega documentado, para que el arreglo sea corto y no una reconstrucción.",
+      },
+    ],
     prompt:
-      "Bodegón conceptual de dos módulos físicos conectados por un cable limpio sobre superficie crema, sugiriendo dos sistemas hablándose. Iluminación de estudio, acento azul cobalto, estilo producto minimalista, sin texto, 3:2.",
+      "Plano técnico isométrico de una INTEGRACIÓN ENTRE SISTEMAS, estilo lámina de arquitectura. A la izquierda y a la derecha, dos planos rectangulares en isometría real de 30 grados con canto visible, cada uno con filas de datos apiladas en línea fina, representando dos sistemas distintos. Al centro y algo más abajo, un módulo hexagonal pequeño de orquestación con tres puertos visibles. Del sistema izquierdo sale una línea cobalto continua con flecha hacia el módulo central, y del módulo otra línea cobalto con flecha hacia el sistema derecho, marcando un solo sentido. Bajo el módulo central, una pequeña bandeja de cola con tres fichas apiladas y una flecha curva de reintento que vuelve al módulo. A un costado, un plano diminuto de bitácora con filas y marcas de verificación. Anotaciones de plano alrededor: líneas de cota con topes, una llamada sobre la bandeja de cola y otra sobre el sistema de la izquierda señalándolo como origen. Cajetín técnico en la esquina inferior derecha. Fondo crema con retícula técnica muy tenue. Escala de grises salvo el azul cobalto, reservado a las líneas de flujo y a la flecha de reintento. Sin ningún texto legible. Trazo vectorial nítido, sin degradados, aire de lámina de ingeniería impresa, 3:2.",
   },
   {
     id: "automatizacion",
