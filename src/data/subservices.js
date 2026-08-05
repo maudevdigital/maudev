@@ -195,6 +195,7 @@ export const subserviciosBase = [
     id: "rediseno",
     familia: "web",
     nombre: "Rediseño web",
+    imagen: "/servicios/rediseno-web.webp",
     resumen: "Tu sitio actual, más rápido y más claro, sin partir de cero.",
     incluye: ["Renovación visual conservando el contenido", "Migración a hosting moderno", "Optimización para celular"],
     precios: [190000, 350000, 590000],
@@ -330,8 +331,64 @@ export const subserviciosBase = [
     resumen: "Tu propia herramienta en línea, con cuentas y suscripciones.",
     incluye: ["Registro y sesiones", "Panel de administración", "Cobro recurrente"],
     precios: [null, 990000, 1990000],
+    metaTitle: "Desarrollo de plataforma web en Chile desde $990.000 · Maudev",
+    metaDescription:
+      "Plataforma web propia con cuentas de usuario, panel de administración y cobro recurrente. Desde $990.000 + IVA, construida sobre tus reglas de negocio.",
+    intro:
+      "Una plataforma web es tu propia herramienta en línea: la gente entra con su cuenta, hace algo que solo tú ofreces y tú lo administras desde un panel. No es un sitio que informa, es un producto que se usa — y esa diferencia cambia todo el proyecto, desde cómo se cobra hasta qué pasa cuando algo falla un domingo.",
+    secciones: [
+      {
+        titulo: "Cuándo necesitas una plataforma y no un sitio",
+        parrafos: [
+          "La señal es que tus usuarios necesitan entrar. Si cada persona ve información distinta —su historial, sus documentos, su avance—, eso ya no es un sitio web: es una plataforma, porque hay cuentas, permisos y datos que proteger.",
+          "La segunda señal es que cobras por usarla. Suscripciones, planes o accesos con vencimiento significan cobro recurrente, y eso trae su propia complejidad: qué pasa cuando falla un pago, cómo se suspende una cuenta, cómo se reactiva.",
+          "Si tu negocio solo necesita mostrar servicios y recibir consultas, no subas hasta acá: un sitio corporativo cuesta la mitad y hace ese trabajo mejor.",
+        ],
+      },
+      {
+        titulo: "Lo que se define antes de programar",
+        parrafos: [
+          "Quién es cada tipo de usuario y qué puede hacer. Casi todas las plataformas tienen al menos dos roles —quien usa y quien administra— y muchas tienen tres o cuatro. Esa decisión define la estructura completa, y cambiarla después es caro.",
+          "Después, el flujo que justifica la plataforma: la acción principal que la persona viene a hacer. Todo lo demás se ordena alrededor de esa.",
+          "Y las reglas del cobro, si lo hay: qué incluye cada plan, qué pasa al vencer y si hay periodo de prueba.",
+        ],
+      },
+      {
+        titulo: "Qué recibes",
+        parrafos: [
+          "Registro e inicio de sesión con recuperación de clave, panel para administrar usuarios y contenido, y la integración de cobro recurrente con la pasarela que corresponda.",
+          "La infraestructura queda a tu nombre desde el primer día: el código, la base de datos y las cuentas de los servicios que la sostienen. Una plataforma es un activo del negocio, no algo que se arrienda.",
+          "Se entrega documentado, con las decisiones técnicas explicadas en castellano, para que otro desarrollador pueda continuarla sin tener que adivinar.",
+        ],
+      },
+      {
+        titulo: "Lo que hay que conversar antes: el después",
+        parrafos: [
+          "Una plataforma no se entrega y se olvida. Tiene usuarios que dependen de ella, así que necesita respaldos, monitoreo y alguien que responda si deja de funcionar.",
+          "Eso se acuerda antes de empezar, no después. Puede ser un plan de mantención con nosotros, tu propio equipo, o un tercero — pero tiene que existir, y conviene decidirlo mientras se construye para dejar todo preparado.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "¿Por qué no está disponible en el nivel de entrada?",
+        a: "Porque no se puede hacer bien con ese alcance. Una plataforma con cuentas y cobros necesita decisiones de seguridad y pruebas que no caben en un proyecto de entrada, y entregarla a medias es peor que no entregarla.",
+      },
+      {
+        q: "¿Cuántos usuarios soporta?",
+        a: "La arquitectura se dimensiona según lo que esperas el primer año, y crece después sin rehacerla. Lo que sí cambia con el volumen es el costo mensual de infraestructura, y te decimos el orden de magnitud antes de empezar.",
+      },
+      {
+        q: "¿Puedo empezar con lo mínimo y crecer?",
+        a: "Es lo recomendable. Se define el flujo principal, se publica funcionando y se agrega el resto con usuarios reales usándola. Construir todo antes de que alguien la use es la forma más común de gastar en funciones que nadie pide.",
+      },
+      {
+        q: "¿Quién responde si se cae?",
+        a: "Depende de lo que acordemos. Sin un plan de mantención vigente no hay respuesta garantizada fuera del periodo de garantía, y eso conviene tenerlo claro antes de que pase.",
+      },
+    ],
     prompt:
-      "Pantalla de escritorio con un panel de administración de una plataforma web: barra lateral, tarjetas de datos y un formulario de acceso. Ángulo levemente en perspectiva, fondo crema, acento azul cobalto, estilo producto limpio, sin texto legible, 3:2.",
+      "Plano técnico isométrico de la ARQUITECTURA de una plataforma web con cuentas, estilo lámina de arquitectura. Tres planos rectangulares apilados en isometría real de 30 grados vistos desde arriba a la izquierda, separados en el aire y con canto visible: el superior es la puerta de acceso, con un formulario de dos campos y un botón sólido cobalto; el intermedio se divide visiblemente en dos zonas por una línea, una zona de usuario con tarjetas y otra de administración con filas de tabla, indicando roles distintos; el inferior representa los datos, dibujado como una placa con tres franjas horizontales apiladas. A un costado, separado, un módulo pequeño de cobro recurrente conectado al plano intermedio por una línea con un símbolo de ciclo. Una LÍNEA DE RECORRIDO punteada en azul cobalto entra por el acceso, se bifurca en el plano intermedio hacia las dos zonas y baja a los datos, con nodos circulares en cada punto. Anotaciones de plano alrededor: líneas de cota con topes, llamadas apuntando a la división de roles y al módulo de cobro, y cajetín técnico en la esquina inferior derecha. Fondo crema con retícula técnica muy tenue. Escala de grises salvo el azul cobalto, reservado a la línea de recorrido y al botón. Sin ningún texto legible. Trazo vectorial nítido, sin degradados, aire de lámina de ingeniería impresa, 3:2.",
   },
   {
     id: "crm",
