@@ -445,6 +445,7 @@ export const subserviciosBase = [
     id: "pwa",
     familia: "apps",
     nombre: "App web instalable",
+    imagen: "/servicios/app-web-instalable.webp",
     resumen: "Se instala desde el navegador y funciona sin señal.",
     incluye: ["Instalable en celular y escritorio", "Funciona sin conexión", "Notificaciones"],
     precios: [290000, 490000, 790000],
@@ -514,8 +515,63 @@ export const subserviciosBase = [
     resumen: "Una app para uso interno, no para el público.",
     incluye: ["Hasta 20 usuarios", "Un flujo principal", "Distribución interna"],
     precios: [590000, 890000, 1490000],
+    metaTitle: "App interna para empresas en Chile desde $590.000 · Maudev",
+    metaDescription:
+      "App para uso interno de tu equipo: un flujo de trabajo resuelto en el teléfono, con distribución privada. Desde $590.000 + IVA, sin publicar en tiendas.",
+    intro:
+      "Una app interna la usa tu equipo, no tus clientes. Reemplaza el cuaderno, la planilla compartida o el grupo de WhatsApp donde hoy se registran las cosas en terreno — y con eso deja de perderse información entre lo que pasa y lo que alguien alcanza a anotar después.",
+    secciones: [
+      {
+        titulo: "El problema que resuelve",
+        parrafos: [
+          "En casi todos los equipos que trabajan fuera de la oficina hay un desfase: la persona hace el trabajo, lo anota en un papel o lo manda por mensaje, y alguien más lo pasa a un sistema horas o días después. En ese traspaso se pierde información, se cometen errores de tipeo y nadie sabe el estado real hasta que alguien consolida.",
+          "Una app interna elimina el traspaso. Se registra donde ocurre, con la foto o la firma si corresponde, y queda disponible al instante para el resto.",
+          "Si tu equipo trabaja siempre frente a un computador, probablemente no necesitas una app: un panel web hace lo mismo y cuesta menos. Esto se justifica cuando el trabajo ocurre de pie y en movimiento.",
+        ],
+      },
+      {
+        titulo: "Un flujo, no un sistema completo",
+        parrafos: [
+          "El alcance base resuelve un flujo principal: la tarea que tu equipo repite todos los días. Registrar una visita, completar una revisión, levantar un pedido, reportar un incidente.",
+          "Concentrarse en uno no es una limitación, es la forma de que se use. Las apps internas que intentan cubrir todo desde el primer día terminan siendo tan pesadas que el equipo vuelve al cuaderno.",
+          "Una vez que ese flujo está funcionando y la gente lo adoptó, se agregan los siguientes con datos reales de por medio.",
+        ],
+      },
+      {
+        titulo: "Cómo llega al teléfono de tu equipo",
+        parrafos: [
+          "Con distribución interna: se instala directamente en los dispositivos del equipo sin pasar por App Store ni Google Play. No hay revisión que esperar ni cuenta de desarrollador que renovar, y la app no queda visible para nadie fuera de tu empresa.",
+          "El alcance base cubre hasta veinte usuarios. Sobre eso se amplía y se cotiza, con el valor por tramo dicho antes de empezar.",
+        ],
+      },
+      {
+        titulo: "Lo que hay que resolver antes de programar",
+        parrafos: [
+          "Quién la va a usar y en qué condiciones. Un equipo que trabaja con guantes, bajo el sol o con una mano ocupada necesita botones grandes y pocos pasos; eso cambia el diseño completo, no es un detalle de estilo.",
+          "Y qué pasa sin señal. Si trabajan en lugares sin cobertura, la app tiene que guardar y sincronizar después, y eso hay que decidirlo desde el principio porque cambia cómo se construye.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "¿Los datos quedan en el teléfono o en un servidor?",
+        a: "En un servidor a tu nombre, con copia local para que la app funcione sin señal. Si un teléfono se pierde, la información no se va con él y el acceso de esa persona se revoca desde el panel.",
+      },
+      {
+        q: "¿Qué pasa cuando alguien deja la empresa?",
+        a: "Se le quita el acceso desde el panel y la app deja de funcionar en su dispositivo. Por eso importa que sea con cuentas y no con un archivo instalado suelto.",
+      },
+      {
+        q: "¿Puede conectarse con lo que ya usamos?",
+        a: "Si tu sistema actual entrega accesos técnicos, sí. Se confirma antes de cotizar, porque no todos los proveedores los abren y eso cambia el alcance.",
+      },
+      {
+        q: "¿Sirve en teléfonos antiguos?",
+        a: "Se define el mínimo según los equipos que tenga tu gente hoy. Conviene revisarlo al principio: diseñar para dispositivos que nadie del equipo tiene es gastar de más.",
+      },
+    ],
     prompt:
-      "Persona con delantal de trabajo usando un teléfono con una app de tareas internas, en una bodega o taller ordenado. Luz natural, paleta azul cobalto y crema, estilo documental editorial, sin texto legible, 3:2.",
+      "Plano técnico isométrico de una APP INTERNA de equipo, estilo lámina de arquitectura. A la izquierda, tres planos verticales con proporción de teléfono en isometría real de 30 grados, escalonados y ligeramente superpuestos, todos mostrando la misma pantalla de formulario con campos y un botón sólido cobalto: representan varios dispositivos del mismo equipo. A la derecha, separado, un plano horizontal más grande que representa el panel de administración, con filas de tabla y una columna de estados. Entre los teléfonos y el panel, tres líneas de sincronización punteadas en azul cobalto con nodos circulares, todas convergiendo desde los dispositivos hacia el panel en una sola dirección. Sobre una de las líneas, un pequeño símbolo de nube tachado con equis fina indica que el registro sigue funcionando sin señal y se sincroniza después. Todos los planos con canto visible y sombra suave. Anotaciones de plano alrededor: líneas de cota con topes, una llamada apuntando al símbolo de sin señal, y cajetín técnico en la esquina inferior derecha. Fondo crema con retícula técnica muy tenue. Escala de grises salvo el azul cobalto, reservado a las líneas de sincronización y al botón. Sin ningún texto legible. Trazo vectorial nítido, sin degradados, aire de lámina de ingeniería impresa, 3:2.",
   },
   {
     id: "app-multi",
