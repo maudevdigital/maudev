@@ -637,6 +637,7 @@ export const subserviciosBase = [
     ],
     familia: "apps",
     nombre: "App multiplataforma",
+    imagen: "/servicios/app-multiplataforma.webp",
     resumen: "Un solo desarrollo que corre en Android y iPhone.",
     incluye: ["Sesión y tres pantallas", "Publicación en una tienda", "Base para crecer"],
     precios: [890000, 1290000, 2290000],
@@ -700,13 +701,77 @@ export const subserviciosBase = [
   },
   {
     id: "app-nativa",
+    tecnologias: [
+      { nombre: "Swift", para: "Lenguaje propio de Apple para la versión de iPhone" },
+      { nombre: "Kotlin", para: "Lenguaje propio de Android para esa versión" },
+      { nombre: "SDK del sistema", para: "Acceso completo a cámara, sensores, biometría y widgets" },
+      { nombre: "Node.js", para: "Servidor compartido por ambas versiones" },
+      { nombre: "PostgreSQL", para: "Base central, con respaldo automático" },
+    ],
     familia: "apps",
     nombre: "App nativa",
     resumen: "Desarrollo propio para Android o iPhone, máximo rendimiento.",
     incluye: ["Publicada a tu nombre", "Acceso completo al dispositivo", "Rendimiento nativo"],
     precios: [null, 1490000, 2790000],
+    metaTitle: "Desarrollo de app nativa iOS y Android en Chile desde $1.490.000 · Maudev",
+    metaDescription:
+      "App nativa en Swift o Kotlin, con acceso completo al dispositivo y máximo rendimiento. Publicada a tu nombre. Desde $1.490.000 + IVA.",
+    intro:
+      "Una app nativa se programa en el lenguaje propio de cada sistema: Swift para iPhone, Kotlin para Android. Es el camino más caro y el que más rinde cuando la app depende de verdad del dispositivo — la cámara, los sensores, la biometría o la fluidez de la interfaz.",
+    secciones: [
+      {
+        titulo: "Cuándo se justifica pagar el doble",
+        parrafos: [
+          "Cuando la app usa el dispositivo a fondo: cámara con procesamiento en vivo, sensores, mapas con seguimiento continuo, biometría, widgets o funciones que Apple y Google acaban de publicar.",
+          "Cuando el rendimiento es el producto: animaciones exigentes, listas enormes que tienen que ir fluidas, video o gráficos.",
+          "Y cuando la app es el negocio, no una herramienta de apoyo. Si tu empresa vive de esa app, tiene sentido invertir en la mejor versión posible de cada plataforma.",
+          "Si ninguna de las tres aplica, una multiplataforma hace el mismo trabajo por bastante menos, y te lo vamos a decir aunque sea el servicio más caro del catálogo.",
+        ],
+      },
+      {
+        titulo: "Qué significa \"nativa\" en el presupuesto",
+        parrafos: [
+          "Significa dos desarrollos. La lógica del servidor y la base de datos se comparten, pero la interfaz y el comportamiento se construyen dos veces, en dos lenguajes distintos.",
+          "También significa dos mantenciones. Cada versión nueva de iOS o de Android puede exigir ajustes, y esos ajustes se hacen por separado.",
+          "Por eso el precio del alcance base cubre una plataforma. La segunda se cotiza aparte y se dice antes de empezar, para que el presupuesto real esté sobre la mesa desde el principio.",
+        ],
+      },
+      {
+        titulo: "Qué recibes",
+        parrafos: [
+          "La app publicada en la tienda que corresponda, con la cuenta de desarrollador a tu nombre, más el código fuente y la documentación técnica.",
+          "El servidor y la base de datos quedan bajo tu control, para que la app no dependa de infraestructura nuestra.",
+          "Y las decisiones técnicas explicadas en castellano, para que otro desarrollador pueda tomar el proyecto sin partir de cero leyendo código.",
+        ],
+      },
+      {
+        titulo: "Antes de empezar: el ciclo de vida",
+        parrafos: [
+          "Una app nativa no se entrega y se olvida. Apple y Google exigen actualizarla periódicamente o la retiran de la tienda, y cada sistema operativo nuevo puede romper algo.",
+          "Eso se acuerda antes de empezar: quién la mantiene, con qué frecuencia y con qué presupuesto anual. Una app publicada y abandonada desaparece de la tienda en un par de años.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "¿Puedo empezar con una plataforma y agregar la otra después?",
+        a: "Sí, y suele ser lo sensato: se publica en la que concentra a tus usuarios, se aprende con gente real usándola y después se construye la segunda. El servidor ya está hecho, así que la segunda cuesta menos que la primera.",
+      },
+      {
+        q: "¿Cuál conviene primero, iPhone o Android?",
+        a: "Depende de tu público, no de preferencias. En Chile Android tiene mucha más participación, pero si tu segmento es de mayor poder adquisitivo la proporción cambia. Se revisa con tus datos antes de decidir.",
+      },
+      {
+        q: "¿Por qué no está disponible en el nivel de entrada?",
+        a: "Porque no cabe. Dos desarrollos con publicación en tienda exigen un alcance que ese nivel no cubre, y entregar una versión recortada de algo así crea más problemas de los que resuelve.",
+      },
+      {
+        q: "¿Cuánto cuesta mantenerla al año?",
+        a: "Las cuentas de desarrollador se pagan anualmente y van a tu nombre. Sobre eso, el mantenimiento depende de cuánto cambie la app; se puede dejar un plan mensual o cotizar por ajuste. Lo que no recomendamos es no presupuestar nada.",
+      },
+    ],
     prompt:
-      "Primer plano de un teléfono en soporte mostrando una app fluida, con reflejo suave sobre superficie oscura. Iluminación de estudio dramática pero limpia, acento azul cobalto, estilo producto premium, sin texto legible, 3:2.",
+      "Plano técnico isométrico de una APP NATIVA, estilo lámina de arquitectura. Dos planos verticales con proporción de teléfono en isometría real de 30 grados, uno a la izquierda y otro a la derecha, claramente separados por una línea vertical divisoria de trazo fino que atraviesa la lámina: son dos desarrollos distintos, no uno compartido. Cada teléfono tiene su propia placa de código debajo, dibujada como una base con canto visible y retícula interna, y las dos placas son visiblemente distintas entre sí en el patrón de sus módulos. En la parte inferior, un único plano horizontal ancho que representa el servidor compartido, conectado hacia arriba a las DOS placas mediante líneas continuas, mostrando que solo esa capa se comparte. Alrededor de cada teléfono, tres símbolos técnicos pequeños en línea fina —una cámara, una huella dactilar y un sensor— conectados por líneas de llamada cortas, indicando el acceso profundo al dispositivo. Un botón sólido cobalto en cada pantalla, en posiciones distintas, reforzando que cada plataforma respeta sus propias convenciones. Anotaciones de plano: líneas de cota con topes, una llamada sobre la línea divisoria y otra sobre el servidor compartido, y cajetín técnico en la esquina inferior derecha. Fondo crema con retícula técnica muy tenue. Escala de grises salvo el azul cobalto, reservado a los botones y a las líneas que bajan al servidor. Sin ningún texto legible. Trazo vectorial nítido, sin degradados, aire de lámina de ingeniería impresa, 3:2.",
   },
   {
     id: "logo",
