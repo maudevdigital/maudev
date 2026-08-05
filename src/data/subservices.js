@@ -652,6 +652,7 @@ export const subserviciosBase = [
     id: "automatizacion",
     familia: "software",
     nombre: "Automatización de procesos",
+    imagen: "/servicios/automatizacion-de-procesos.webp",
     resumen: "Las tareas repetitivas, hechas solas y a toda hora.",
     incluye: ["Un flujo automatizado", "Reglas verificables", "Hasta 1.000 ejecuciones al mes"],
     precios: [290000, 490000, 890000],
@@ -731,8 +732,75 @@ export const subserviciosBase = [
     resumen: "Inventario, compras, ventas y documentos en una sola herramienta.",
     incluye: ["Módulos según tu operación", "Usuarios y permisos", "Reportes"],
     precios: [null, 1290000, 2490000],
+    tecnologias: [
+      { nombre: "React", para: "Interfaz de los módulos y del panel de administración" },
+      { nombre: "Node.js", para: "Reglas de negocio y validaciones del lado del servidor" },
+      { nombre: "PostgreSQL", para: "Transacciones: el stock y los saldos no quedan a medias" },
+      { nombre: "Roles y permisos", para: "Quién ve costos, quién aprueba y quién solo registra" },
+      { nombre: "Reportes exportables", para: "Salida a planilla para lo que tu contador o tu banco pidan" },
+      { nombre: "Respaldo automático", para: "Copias diarias, porque acá vive la operación completa" },
+    ],
+    metaTitle: "Sistema de gestión a medida en Chile desde $1.290.000 · Maudev",
+    metaDescription:
+      "Inventario, compras, ventas y documentos en una sola herramienta, hecha a la medida de tu operación. Por módulos y en producción desde el primero. Desde $1.290.000 + IVA.",
+    intro:
+      "Este es el proyecto más grande del catálogo y el que más seguido sale mal en manos de cualquiera. No por lo técnico: porque se aborda entero, de una vez, y termina siendo un sistema que lleva un año en desarrollo y todavía nadie usa.",
+    secciones: [
+      {
+        titulo: "Por módulos, y en producción desde el primero",
+        parrafos: [
+          "Se parte por el módulo que más duele hoy, se pone a funcionar de verdad con tu gente usándolo, y recién entonces se suma el siguiente. Cada etapa entrega algo que ya sirve.",
+          "Esto tiene una ventaja que no es solo de plazos: el segundo módulo se diseña sabiendo cómo usaron el primero, y casi siempre resulta distinto de lo que se había planificado en el papel.",
+          "El riesgo del camino contrario es concreto. Un sistema que se especifica completo al principio se construye contra suposiciones, y las suposiciones sobre la operación propia son las que peor envejecen.",
+        ],
+      },
+      {
+        titulo: "Por qué no tiene valor de entrada",
+        parrafos: [
+          "Bajo cierto tamaño, esto no conviene y no vamos a fingir que sí. Si tu operación cabe en un par de planillas ordenadas y una herramienta de mercado, esa es la respuesta correcta y sale una fracción.",
+          "En Chile hay opciones conocidas —Defontana, Bsale, Nubox, un Odoo bien configurado— que resuelven la operación estándar. Vale la pena mirarlas antes.",
+          "El desarrollo propio empieza a tener sentido cuando tu forma de operar no calza con ninguna, cuando pagas licencias por usuario que ya pesan en el presupuesto, o cuando estás sosteniendo el sistema de mercado con planillas paralelas para lo que no cubre.",
+        ],
+      },
+      {
+        titulo: "Los datos que ya tienes",
+        parrafos: [
+          "Migrar lo existente es la parte menos vistosa y la que más determina si el sistema se usa. Un sistema nuevo que arranca con datos incompletos pierde la confianza de la gente en la primera semana, y de ahí vuelven todos al Excel.",
+          "Se revisa qué hay, qué se limpia y qué se deja fuera a propósito. A veces la decisión correcta es no arrastrar años de historia y empezar con lo vigente, dejando lo antiguo en consulta.",
+        ],
+      },
+      {
+        titulo: "Se usa o no sirve",
+        parrafos: [
+          "Un sistema de gestión compite todos los días contra la planilla que tu equipo ya domina. Si registrar algo toma más pasos que antes, pierde, por bueno que sea por dentro.",
+          "Por eso los módulos se diseñan mirando a quien va a cargar los datos, no solo a quien va a ver los reportes. Y la puesta en marcha incluye acompañar esas primeras semanas, que es cuando se decide si quedó instalado o quedó abandonado.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "¿Por qué no hay un plan de entrada?",
+        a: "Porque bajo cierto tamaño no se justifica construirlo. Si tu caso es ese, te lo decimos y te orientamos hacia una herramienta de mercado, aunque no nos compres nada.",
+      },
+      {
+        q: "¿Cuánto demora?",
+        a: "El primer módulo en producción se mide en semanas, no en meses. El sistema completo depende de cuántos módulos sean, y por eso se avanza de a uno con algo utilizable en cada etapa.",
+      },
+      {
+        q: "¿Emite documentos tributarios?",
+        a: "Se integra con tu emisor autorizado ante el SII, no lo reemplaza. Se confirma cuál usas antes de cotizar, porque no todos entregan accesos técnicos.",
+      },
+      {
+        q: "¿Qué pasa con lo que tengo hoy en planillas?",
+        a: "Se migra lo que valga la pena. Parte del trabajo es decidir qué se limpia y qué se deja fuera: arrastrar datos malos a un sistema nuevo es la forma más rápida de que nadie lo use.",
+      },
+      {
+        q: "¿El sistema es mío?",
+        a: "Sí, incluido el código. No hay licencia por usuario ni mensualidad por usarlo; lo recurrente es el alojamiento, que se paga directo al proveedor.",
+      },
+    ],
     prompt:
-      "Oficina pequeña con un monitor mostrando módulos de inventario y pedidos, y al fondo estanterías con cajas ordenadas. Luz natural, paleta azul cobalto y crema, estilo editorial documental, sin texto legible, 3:2.",
+      "Plano técnico isométrico de un SISTEMA DE GESTIÓN, estilo lámina de arquitectura. Al centro y abajo, un plano rectangular amplio en isometría real de 30 grados con canto grueso visible, que actúa de base común y muestra filas de datos en línea fina. Sobre esa base, cuatro planos más pequeños del mismo grosor, dispuestos en cuadrícula isométrica y separados entre sí, cada uno con un contenido distinto dibujado en línea fina: cajas apiladas para inventario, un documento con líneas para compras, una curva ascendente simple para ventas y una hoja con sello para documentos. Cada módulo baja a la base por una línea corta cobalto con punto de conexión, mostrando que comparten los mismos datos. Uno de los cuatro módulos está dibujado con línea continua y relleno tenue cobalto, y los otros tres en línea punteada, indicando que se construyen por etapas. A un costado, una columna vertical delgada de control de acceso con tres niveles marcados por candados diminutos. Anotaciones de plano alrededor: líneas de cota con topes, una llamada sobre el módulo activo y otra sobre la base compartida. Cajetín técnico en la esquina inferior derecha. Fondo crema con retícula técnica muy tenue. Escala de grises salvo el azul cobalto, reservado al módulo activo y a las conexiones con la base. Sin ningún texto legible. Trazo vectorial nítido, sin degradados, aire de lámina de ingeniería impresa, 3:2.",
   },
   {
     id: "pwa",
