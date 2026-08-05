@@ -37,6 +37,11 @@ export const nivelesLabel = ["Presencia", "Operación", "Comercio"];
 // las fotos con IA, que es lo peor que puede pasarle a un sitio que vende
 // diseño.
 //
+// `tecnologias` lista cada herramienta CON su para qué. Una lista de nombres
+// sueltos es un adorno que cualquiera copia en su sitio; decir qué resuelve
+// cada una demuestra criterio y educa al cliente que va a comparar
+// cotizaciones, que es exactamente a quien conviene tener mejor informado.
+//
 // `caso` apunta a un proyecto REAL del portafolio que corresponde a ese
 // servicio. Solo se define donde de verdad calza: repetir el mismo caso en
 // servicios que no lo son sería inventar un ejemplo, justo lo que se evita al
@@ -50,6 +55,12 @@ export const nivelesLabel = ["Presencia", "Operación", "Comercio"];
 export const subserviciosBase = [
   {
     id: "landing",
+    tecnologias: [
+      { nombre: "React", para: "Interfaz construida por piezas, para que un cambio no rompa el resto" },
+      { nombre: "Vite", para: "Compila el sitio a archivos estáticos: nada que ejecutar en el servidor" },
+      { nombre: "Tailwind", para: "Sistema de estilos acotado, que evita que el diseño se desordene con el tiempo" },
+      { nombre: "Cloudflare Pages", para: "Servido desde la red más cercana al visitante, con certificado incluido" },
+    ],
     caso: "scissorhands",
     imagen: "/servicios/landing-page.webp",
     familia: "web",
@@ -125,6 +136,13 @@ export const subserviciosBase = [
   },
   {
     id: "sitio",
+    tecnologias: [
+      { nombre: "React", para: "Interfaz por componentes reutilizables entre las páginas de servicio" },
+      { nombre: "Vite", para: "Genera cada página como archivo estático, que es lo que la hace rápida" },
+      { nombre: "Tailwind", para: "Un solo sistema de estilos para todo el sitio" },
+      { nombre: "Cloudflare Pages", para: "Alojamiento distribuido con despliegue automático al publicar" },
+      { nombre: "Administrador propio", para: "Panel acotado a lo que vas a editar, sin licencia mensual" },
+    ],
     caso: "paraguayaccess",
     imagen: "/servicios/sitio-corporativo.webp",
     familia: "web",
@@ -193,6 +211,12 @@ export const subserviciosBase = [
   },
   {
     id: "rediseno",
+    tecnologias: [
+      { nombre: "React", para: "Reconstruye la interfaz sin depender del sistema anterior" },
+      { nombre: "Vite", para: "Reemplaza el peso muerto que arrastraba el sitio viejo" },
+      { nombre: "Cloudflare Pages", para: "Migración de alojamiento con certificado y caché al día" },
+      { nombre: "Redirecciones 301", para: "Cada dirección antigua apunta a su equivalente y no se pierde posicionamiento" },
+    ],
     familia: "web",
     nombre: "Rediseño web",
     imagen: "/servicios/rediseno-web.webp",
@@ -259,6 +283,13 @@ export const subserviciosBase = [
   },
   {
     id: "ecommerce",
+    tecnologias: [
+      { nombre: "React", para: "Catálogo y carrito construidos a medida de tu operación" },
+      { nombre: "Node.js", para: "Procesa pedidos, stock y estados del lado del servidor" },
+      { nombre: "PostgreSQL", para: "Base de datos con transacciones: el stock no se descuenta dos veces" },
+      { nombre: "Pasarela de pago", para: "Transbank, Flow o Mercado Pago según lo que convenga a tu volumen" },
+      { nombre: "Cloudflare", para: "Alojamiento y protección ante tráfico anómalo" },
+    ],
     caso: "partsmr",
     imagen: "/servicios/tienda-online.webp",
     familia: "web",
@@ -325,6 +356,13 @@ export const subserviciosBase = [
   },
   {
     id: "plataforma",
+    tecnologias: [
+      { nombre: "React", para: "Interfaz de usuario y panel de administración" },
+      { nombre: "Node.js", para: "Lógica de negocio, permisos y reglas de cada plan" },
+      { nombre: "PostgreSQL", para: "Datos de usuarios y suscripciones, con respaldo automático" },
+      { nombre: "Autenticación con sesión", para: "Inicio de sesión, recuperación de clave y roles separados" },
+      { nombre: "Cobro recurrente", para: "Integración con la pasarela para suscripciones y vencimientos" },
+    ],
     caso: "systempro",
     familia: "web",
     nombre: "Plataforma web",
@@ -443,6 +481,13 @@ export const subserviciosBase = [
   },
   {
     id: "pwa",
+    tecnologias: [
+      { nombre: "React", para: "Interfaz que se comporta como app, no como sitio" },
+      { nombre: "Service Worker", para: "Guarda la app en el dispositivo y la hace funcionar sin señal" },
+      { nombre: "IndexedDB", para: "Almacena los datos locales mientras no hay conexión" },
+      { nombre: "Web Push", para: "Notificaciones donde el sistema operativo las permite" },
+      { nombre: "Cloudflare", para: "Alojamiento en tu dominio, sin tiendas de aplicaciones de por medio" },
+    ],
     familia: "apps",
     nombre: "App web instalable",
     imagen: "/servicios/app-web-instalable.webp",
@@ -510,8 +555,16 @@ export const subserviciosBase = [
   },
   {
     id: "app-interna",
+    tecnologias: [
+      { nombre: "React Native", para: "Una base de código para Android y iPhone" },
+      { nombre: "Expo", para: "Distribución interna a los equipos, sin publicar en tiendas" },
+      { nombre: "SQLite local", para: "Registro en terreno aunque no haya señal" },
+      { nombre: "Sincronización diferida", para: "Sube lo registrado cuando vuelve la conexión, sin perder nada" },
+      { nombre: "PostgreSQL", para: "Base central donde el panel ve todo consolidado" },
+    ],
     familia: "apps",
     nombre: "App para tu equipo",
+    imagen: "/servicios/app-para-tu-equipo.webp",
     resumen: "Una app para uso interno, no para el público.",
     incluye: ["Hasta 20 usuarios", "Un flujo principal", "Distribución interna"],
     precios: [590000, 890000, 1490000],

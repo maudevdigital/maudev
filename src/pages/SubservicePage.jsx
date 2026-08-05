@@ -253,6 +253,37 @@ export default function SubservicePage() {
             explica qué recibes; esto muestra cómo se ve publicado. Una maqueta
             inventada se vería mejor —no tuvo cliente ni presupuesto— y por eso
             mismo le restaría valor a los cuatro proyectos que sí existen. */}
+        {/* Con qué está construido. Cada herramienta va con su para qué: una
+            lista de nombres sueltos la copia cualquiera, y no le sirve al
+            cliente que está comparando dos cotizaciones y no sabe qué
+            preguntar. */}
+        {servicio.tecnologias?.length > 0 && (
+          <section className="section-pad" aria-labelledby="stack-titulo">
+            <div className="site-container grid gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:gap-16">
+              <div>
+                <span className="eyebrow">Tecnologías</span>
+                <h2 id="stack-titulo" className="section-title mt-4">
+                  Con qué está construido.
+                </h2>
+                <p className="mt-5 max-w-lg leading-relaxed text-muted-foreground">
+                  Sin constructores ni plantillas: cada pieza está elegida por lo que resuelve, y queda documentada para que otro desarrollador pueda continuar el proyecto.
+                </p>
+              </div>
+
+              <dl className="grid gap-3 sm:grid-cols-2">
+                {servicio.tecnologias.map(({ nombre, para }) => (
+                  <div key={nombre} className="panel p-5">
+                    <dt className="font-mono text-xs font-bold uppercase tracking-wider text-primary">
+                      {nombre}
+                    </dt>
+                    <dd className="mt-2 text-sm leading-relaxed text-muted-foreground">{para}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          </section>
+        )}
+
         {caso && (
           <section className="section-pad border-t border-border" aria-labelledby="caso-titulo">
             <div className="site-container">
