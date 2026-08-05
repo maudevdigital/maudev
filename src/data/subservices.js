@@ -580,6 +580,7 @@ export const subserviciosBase = [
     id: "integracion",
     familia: "software",
     nombre: "Integración entre sistemas",
+    imagen: "/servicios/integracion-entre-sistemas.webp",
     resumen: "Conectamos tus herramientas para que dejen de copiarse a mano.",
     incluye: ["Una integración punto a punto", "Documentación de lo conectado"],
     precios: [190000, 390000, 690000],
@@ -654,8 +655,74 @@ export const subserviciosBase = [
     resumen: "Las tareas repetitivas, hechas solas y a toda hora.",
     incluye: ["Un flujo automatizado", "Reglas verificables", "Hasta 1.000 ejecuciones al mes"],
     precios: [290000, 490000, 890000],
+    tecnologias: [
+      { nombre: "n8n", para: "Motor del flujo, con historial visible de cada ejecución" },
+      { nombre: "Node.js", para: "Los pasos que ninguna herramienta resuelve tal cual" },
+      { nombre: "Webhooks y tareas programadas", para: "Dispara al ocurrir algo o a una hora fija, según convenga" },
+      { nombre: "PostgreSQL", para: "Deja registro de lo procesado para no repetir ni saltarse nada" },
+      { nombre: "Avisos por correo o WhatsApp", para: "Si algo se cae, te enteras el mismo día" },
+    ],
+    metaTitle: "Automatización de procesos en Chile desde $290.000 · Maudev",
+    metaDescription:
+      "Automatizamos la tarea repetitiva que hoy hace una persona a mano: reglas claras, registro de cada ejecución y aviso si algo falla. Desde $290.000 + IVA.",
+    intro:
+      "Hay trabajos que alguien de tu equipo hace todos los días, siempre igual, y que no requieren criterio: bajar datos de un lado, ordenarlos, enviarlos, avisar. Esa parte se puede dejar corriendo sola. La que sí requiere criterio, no.",
+    secciones: [
+      {
+        titulo: "Qué se puede automatizar de verdad",
+        parrafos: [
+          "Una tarea es automatizable cuando puedes escribir sus reglas sin usar la palabra depende. Si al explicarla aparecen excepciones que se resuelven mirando el caso, esa parte se queda con la persona y se automatiza el resto.",
+          "Y suele valer la pena igual: en la mayoría de los procesos, lo repetitivo es el ochenta por ciento del tiempo y las excepciones son un puñado al mes.",
+          "El diagnóstico parte por ahí, mirando cómo lo haces hoy. No por elegir una herramienta.",
+        ],
+      },
+      {
+        titulo: "Automatizar un proceso malo lo empeora",
+        parrafos: [
+          "Si el proceso actual tiene pasos que ya no sirven, o corrige a mano errores de más atrás, automatizarlo tal cual multiplica el problema: ahora se hace mal más rápido y sin que nadie lo mire.",
+          "Por eso primero se ordena y recién después se automatiza. A veces ese solo ejercicio elimina la mitad de los pasos y el trabajo que queda es mucho más chico de lo que parecía.",
+        ],
+      },
+      {
+        titulo: "Tiene que poder mirarse",
+        parrafos: [
+          "Un proceso automático que corre sin dejar rastro es un problema esperando: nadie sabe si funcionó hasta que alguien nota que falta algo.",
+          "Acá cada ejecución queda registrada con lo que entró, lo que salió y el resultado. Si falla, avisa el mismo día en vez de acumular silencio.",
+          "También se define qué hacer con lo que falló: reintentar, dejarlo en espera para revisión manual, o detener el flujo. No todos los procesos toleran lo mismo.",
+        ],
+      },
+      {
+        titulo: "Qué pedimos de tu lado",
+        parrafos: [
+          "Que la persona que hoy hace la tarea nos la muestre haciéndola. Media hora mirando vale más que un documento, porque en la práctica siempre hay pasos que nadie escribió.",
+          "Y los accesos a los sistemas involucrados. Es lo que más demora en estos proyectos, sobre todo cuando dependen de un proveedor externo.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "¿Con qué se construye?",
+        a: "Con n8n cuando alcanza, que es la mayoría de las veces y sale más barato, y con código propio en los pasos donde ninguna herramienta calza. Se elige después de ver el proceso, no antes.",
+      },
+      {
+        q: "¿Qué pasa si el flujo se cae?",
+        a: "Se reintenta y, si no resulta, llega un aviso con el detalle. Lo que quedó a medias se puede retomar desde donde iba, porque queda registro de lo ya procesado.",
+      },
+      {
+        q: "¿Cuántas ejecuciones incluye?",
+        a: "El alcance base cubre un flujo y hasta 1.000 ejecuciones al mes. Si tu volumen es mayor, se dimensiona antes y el costo de alojamiento se dice por separado.",
+      },
+      {
+        q: "¿Reemplaza a una persona?",
+        a: "Reemplaza una tarea, no a alguien. En general la persona sigue, pero deja de copiar datos y pasa a revisar excepciones, que es donde su criterio sí sirve.",
+      },
+      {
+        q: "¿Puedo cambiar las reglas después?",
+        a: "Sí. Se entrega documentado y con acceso, para que ajustar una regla sea un cambio corto y no una reconstrucción.",
+      },
+    ],
     prompt:
-      "Escritorio con un monitor mostrando un diagrama de flujo de nodos conectados y, al lado, una bandeja de papeles vacía que sugiere trabajo ya resuelto. Luz de estudio, paleta azul cobalto y crema, estilo editorial, sin texto legible, 3:2.",
+      "Plano técnico isométrico de una AUTOMATIZACIÓN DE PROCESOS, estilo lámina de arquitectura. Al centro, una secuencia de cuatro módulos hexagonales pequeños en isometría real de 30 grados con canto visible, alineados en diagonal y unidos por líneas cobalto continuas con flechas, representando los pasos de un flujo. El primer módulo recibe una flecha de entrada desde una bandeja de documentos apilados dibujada en línea fina a la izquierda. El último entrega hacia un plano de resultado a la derecha, con filas ordenadas y marcas de verificación. Desde el tercer módulo sale una bifurcación punteada hacia abajo que termina en una bandeja pequeña de excepciones con una sola ficha, indicando lo que queda para revisión humana. Bajo la secuencia, un plano alargado y bajo de bitácora con filas de registro. En un costado, un símbolo pequeño de reloj de tarea programada conectado por línea corta al primer módulo. Anotaciones de plano alrededor: líneas de cota con topes, una llamada sobre la bandeja de excepciones y otra sobre la bitácora. Cajetín técnico en la esquina inferior derecha. Fondo crema con retícula técnica muy tenue. Escala de grises salvo el azul cobalto, reservado a la línea principal del flujo y a la bifurcación de excepciones. Sin ningún texto legible. Trazo vectorial nítido, sin degradados, aire de lámina de ingeniería impresa, 3:2.",
   },
   {
     id: "erp",
