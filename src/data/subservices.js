@@ -431,13 +431,76 @@ export const subserviciosBase = [
   },
   {
     id: "crm",
+    tecnologias: [
+      { nombre: "React", para: "Interfaz del embudo y de las fichas de contacto" },
+      { nombre: "Node.js", para: "Reglas de asignación, etapas y avisos automáticos" },
+      { nombre: "PostgreSQL", para: "Historial completo de cada contacto, sin límite de registros" },
+      { nombre: "Integración con WhatsApp", para: "Registra la conversación donde de verdad ocurre la venta" },
+      { nombre: "Cloudflare", para: "Alojamiento y respaldo automático diario" },
+    ],
     familia: "software",
     nombre: "Gestión de clientes",
     resumen: "Contactos, oportunidades y seguimiento en un solo lugar.",
     incluye: ["Hasta 500 contactos", "Embudo visual", "Avisos por correo", "Hosting incluido"],
     precios: [390000, 690000, 1190000],
+    metaTitle: "Sistema de gestión de clientes (CRM) a medida en Chile desde $390.000 · Maudev",
+    metaDescription:
+      "CRM a medida: contactos, embudo de ventas y seguimiento en un solo lugar, conectado a WhatsApp. Desde $390.000 + IVA, sin licencia por usuario.",
+    intro:
+      "Un sistema de gestión de clientes guarda con quién hablaste, qué le ofreciste y qué quedó pendiente. Suena obvio, pero en la mayoría de las PYMEs esa información vive repartida entre el teléfono de una persona, una planilla y la memoria de alguien — y se pierde completa el día que esa persona no está.",
+    secciones: [
+      {
+        titulo: "El costo de no tenerlo",
+        parrafos: [
+          "No es no saber quiénes son tus clientes: es no saber a quién le quedaste debiendo una respuesta. Las ventas que se caen sin ruido son las que nadie volvió a llamar, y por definición no aparecen en ningún reporte.",
+          "El segundo costo aparece cuando alguien del equipo se va. Si el seguimiento vivía en su WhatsApp, se fue con él. No es deslealtad, es que nunca hubo otro lugar donde ponerlo.",
+          "Si vendes a pocos clientes y cierras rápido, probablemente una planilla ordenada te alcanza y no necesitas esto. Se justifica cuando hay varias conversaciones abiertas a la vez y cada una tiene un siguiente paso distinto.",
+        ],
+      },
+      {
+        titulo: "Por qué a medida y no una herramienta de mercado",
+        parrafos: [
+          "Las herramientas conocidas funcionan bien y son baratas al principio. El problema aparece después: se cobra por usuario y por mes, así que crecer sale caro justo cuando estás creciendo, y traen un embudo pensado para un negocio que no es el tuyo.",
+          "Un sistema propio se arma sobre tus etapas reales, no sobre las siete que trae una plantilla, y no cobra por persona agregada.",
+          "Ahora bien: si recién estás partiendo, una herramienta de mercado te sirve y cuesta menos que este desarrollo. Conviene hacerlo propio cuando ya sabes cómo vendes y la licencia mensual empieza a pesar.",
+        ],
+      },
+      {
+        titulo: "Qué incluye el alcance base",
+        parrafos: [
+          "Hasta 500 contactos con su ficha e historial, embudo visual con tus etapas, y avisos automáticos por correo cuando algo lleva demasiado tiempo sin moverse — que es la función que de verdad recupera ventas.",
+          "Se puede conectar con WhatsApp para que la conversación quede registrada donde ocurre, sin copiar y pegar. Esa integración se confirma antes de cotizar, porque depende de qué tipo de cuenta tengas.",
+          "El panel es para tu equipo completo, sin costo por usuario: agregar a alguien no cambia lo que pagas.",
+        ],
+      },
+      {
+        titulo: "Lo que decide si se usa o se abandona",
+        parrafos: [
+          "Que registrar sea más rápido que no registrar. Si anotar un contacto toma seis campos obligatorios, el equipo va a dejar de hacerlo en dos semanas y vas a tener un sistema vacío.",
+          "Por eso el diseño parte por definir el mínimo indispensable para que una ficha sirva, y todo lo demás queda opcional. Un sistema con datos incompletos pero vivo vale infinitamente más que uno perfecto que nadie llena.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "¿Puedo migrar lo que tengo en planillas?",
+        a: "Sí. Se hace una carga inicial desde tu archivo y se cotiza según cuántos contactos y en qué estado esté la información. Ordenar los datos antes de migrar suele ser la parte más lenta, y conviene saberlo.",
+      },
+      {
+        q: "¿Cobra por usuario como las herramientas conocidas?",
+        a: "No. Es tuyo, así que agregar personas no cambia lo que pagas. Lo único con costo recurrente es el alojamiento, que es bajo y va directo al proveedor.",
+      },
+      {
+        q: "¿Qué pasa si supero los 500 contactos?",
+        a: "El límite es del alcance base, no del sistema. Se amplía sin rehacerlo y el valor por tramo se dice antes de empezar.",
+      },
+      {
+        q: "¿Se puede ver desde el teléfono?",
+        a: "Sí, el panel funciona en el navegador del celular. Si tu equipo necesita registrar en terreno y sin señal, ahí ya corresponde una app interna y se cotiza como tal.",
+      },
+    ],
     prompt:
-      "Escritorio con un monitor mostrando un embudo de ventas en columnas y fichas de contactos, junto a una libreta con anotaciones. Luz suave de oficina, paleta azul cobalto y crema, estilo editorial, sin texto legible, 3:2.",
+      "Plano técnico isométrico de un SISTEMA DE GESTIÓN DE CLIENTES, estilo lámina de arquitectura. Al centro, un plano horizontal grande en isometría real de 30 grados con canto visible, dividido verticalmente en cinco columnas iguales por líneas finas: es un embudo por etapas. Sobre las columnas, pequeñas tarjetas rectangulares apiladas en distinta cantidad por columna, disminuyendo de izquierda a derecha. Encima y a la izquierda, flotando y conectado por una línea, un plano más pequeño que representa la ficha de un contacto, con una franja de encabezado y varias líneas de historial. A la derecha, otro plano pequeño con un símbolo de campana en línea fina, conectado a la tercera columna del embudo por una línea de llamada: es el aviso automático cuando algo se detiene. Una LÍNEA DE RECORRIDO punteada en azul cobalto avanza de columna en columna sobre el embudo, con un nodo circular en cada traspaso, y se detiene con un nodo más grueso en la columna donde está el aviso. Anotaciones de plano alrededor: líneas de cota con topes, una llamada sobre la campana, y cajetín técnico en la esquina inferior derecha. Fondo crema con retícula técnica muy tenue. Escala de grises salvo el azul cobalto, reservado a la línea de recorrido y al nodo detenido. Sin ningún texto legible. Trazo vectorial nítido, sin degradados, aire de lámina de ingeniería impresa, 3:2.",
   },
   {
     id: "pos",
@@ -710,6 +773,7 @@ export const subserviciosBase = [
     ],
     familia: "apps",
     nombre: "App nativa",
+    imagen: "/servicios/app-nativa.webp",
     resumen: "Desarrollo propio para Android o iPhone, máximo rendimiento.",
     incluye: ["Publicada a tu nombre", "Acceso completo al dispositivo", "Rendimiento nativo"],
     precios: [null, 1490000, 2790000],
