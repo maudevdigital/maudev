@@ -628,13 +628,75 @@ export const subserviciosBase = [
   },
   {
     id: "app-multi",
+    tecnologias: [
+      { nombre: "React Native", para: "Una sola base de código que corre en Android y en iPhone" },
+      { nombre: "Expo", para: "Compila y publica en ambas tiendas desde el mismo proyecto" },
+      { nombre: "Actualizaciones al aire", para: "Correcciones que llegan sin pasar por revisión de la tienda" },
+      { nombre: "Node.js", para: "Servidor propio para la lógica y los datos de la app" },
+      { nombre: "PostgreSQL", para: "Base central, con respaldo automático" },
+    ],
     familia: "apps",
     nombre: "App multiplataforma",
     resumen: "Un solo desarrollo que corre en Android y iPhone.",
     incluye: ["Sesión y tres pantallas", "Publicación en una tienda", "Base para crecer"],
     precios: [890000, 1290000, 2290000],
+    metaTitle: "Desarrollo de app multiplataforma en Chile desde $890.000 · Maudev",
+    metaDescription:
+      "App para Android y iPhone desde un solo desarrollo, publicada a tu nombre en ambas tiendas. Desde $890.000 + IVA, con actualizaciones sin esperar revisión.",
+    intro:
+      "Una app multiplataforma se programa una vez y corre en Android y en iPhone. Es la diferencia entre pagar un desarrollo o dos, y entre mantener un código o dos cada vez que quieras cambiar algo — que es donde el costo real aparece, no en el primer proyecto sino en el tercer año.",
+    secciones: [
+      {
+        titulo: "Una base o dos: lo que se gana y lo que se cede",
+        parrafos: [
+          "Con una sola base, cada corrección y cada función nueva llega a los dos sistemas al mismo tiempo. Con desarrollos separados, todo se hace dos veces y las versiones se desincronizan: la de Android tiene algo que la de iPhone todavía no.",
+          "Lo que se cede es acceso a lo último de cada sistema. Cuando Apple o Google publican una función nueva, pasa un tiempo antes de que se pueda usar desde acá. Para la enorme mayoría de las apps de negocio eso no importa; si tu app depende de una capacidad recién salida, corresponde nativa.",
+          "También se cede algo de rendimiento en casos extremos: animaciones muy exigentes, procesamiento de video o juegos. Fuera de eso, el usuario no nota la diferencia.",
+        ],
+      },
+      {
+        titulo: "Publicar en las tiendas: lo que nadie te cuenta antes",
+        parrafos: [
+          "Ambas tiendas cobran por la cuenta de desarrollador y ambas revisan cada versión antes de publicarla. Apple es más estricta y puede rechazar por motivos de diseño o de política, no solo técnicos; eso agrega tiempo que no depende de nosotros.",
+          "Las cuentas se crean a tu nombre, no al nuestro. Es la diferencia entre ser dueño de tu app y depender de que un proveedor te la ceda algún día.",
+          "El alcance base cubre la publicación en una tienda a elección. La segunda se agrega y se cotiza, porque implica su propio proceso de revisión.",
+        ],
+      },
+      {
+        titulo: "Qué incluye el alcance base",
+        parrafos: [
+          "Sesión de usuario y tres pantallas: el flujo principal que justifica que exista la app. Con eso se publica una primera versión real y se empieza a aprender de gente usándola.",
+          "Construida para crecer: agregar pantallas después no obliga a rehacer lo anterior, siempre que la estructura se haya definido bien al principio.",
+        ],
+      },
+      {
+        titulo: "Antes de decidir una app",
+        parrafos: [
+          "Vale la pena preguntarse si de verdad necesitas una. Instalar una app es una barrera: si tu usuario la va a abrir una vez al mes, probablemente no la instale y una web bien hecha te sirva más.",
+          "Una app se justifica cuando la persona vuelve seguido, cuando necesitas notificarla, o cuando el trabajo ocurre sin señal. Si ninguna de las tres aplica, te lo vamos a decir aunque sea el servicio más caro.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "¿Cuánto cuesta mantener la app publicada?",
+        a: "La cuenta de desarrollador de cada tienda se paga todos los años y va a tu nombre. Además, ambos sistemas exigen actualizar la app cada cierto tiempo para que no la retiren; eso se cubre con un plan de mantención o se cotiza cuando toque.",
+      },
+      {
+        q: "¿Puedo actualizar sin esperar la revisión?",
+        a: "Buena parte de los cambios sí, porque se pueden enviar al aire sin pasar por la tienda. Lo que toca funcionalidad nativa o permisos sí requiere una versión nueva y su revisión.",
+      },
+      {
+        q: "¿Se ve igual en Android que en iPhone?",
+        a: "Se ve consistente pero no idéntica: cada sistema tiene sus convenciones y forzar que sean iguales hace que la app se sienta ajena en ambos. Se respeta lo propio de cada uno donde importa.",
+      },
+      {
+        q: "¿Y si después quiero una nativa?",
+        a: "El servidor, la base de datos y la lógica se reutilizan completos; lo que se rehace es la interfaz. Partir multiplataforma para validar y migrar después es una ruta razonable y bastante común.",
+      },
+    ],
     prompt:
-      "Un teléfono Android y un iPhone lado a lado sobre superficie crema, mostrando la misma app. Iluminación de estudio pareja, acento azul cobalto, estilo producto minimalista, sin texto legible, 3:2.",
+      "Plano técnico isométrico de una APP MULTIPLATAFORMA, estilo lámina de arquitectura. En el centro y abajo, un plano horizontal que representa la base de código única, dibujado como una placa con canto visible y una retícula interna de módulos. Desde esa placa suben dos líneas guía que se abren en V hacia arriba, sosteniendo dos planos verticales con proporción de teléfono en isometría real de 30 grados, uno a cada lado: son el mismo diseño con detalles de interfaz levemente distintos, indicando dos sistemas operativos. Sobre cada teléfono, un pequeño marco de tienda de aplicaciones dibujado en línea fina, conectado por una flecha corta. Una LÍNEA DE RECORRIDO punteada en azul cobalto sale de la placa base y se bifurca simétricamente hacia los dos teléfonos, con nodos circulares en la bifurcación. Un botón sólido cobalto aparece en la pantalla de ambos teléfonos, en la misma posición, reforzando que es el mismo desarrollo. Anotaciones de plano alrededor: líneas de cota con topes, una llamada apuntando a la placa base y otra a la bifurcación, y cajetín técnico en la esquina inferior derecha. Fondo crema con retícula técnica muy tenue. Escala de grises salvo el azul cobalto, reservado a la línea de recorrido y a los botones. Sin ningún texto legible. Trazo vectorial nítido, sin degradados, aire de lámina de ingeniería impresa, 3:2.",
   },
   {
     id: "app-nativa",
