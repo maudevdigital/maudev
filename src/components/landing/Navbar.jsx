@@ -332,9 +332,22 @@ export default function Navbar() {
 
         {open && (
           <nav id="menu-movil" aria-label="Navegación móvil" className="border-t border-border lg:hidden">
-            {/* La altura descuenta la píldora y su separación del borde para que
-                el CTA quede siempre alcanzable sin scroll dentro del menú. */}
-            <div className="flex max-h-[calc(100dvh-6.5rem)] flex-col overflow-y-auto overscroll-contain px-4 py-4">
+            {/* Dos zonas: la lista se desplaza y las acciones quedan fijas
+                abajo.
+
+                Antes era un solo bloque con scroll: el contenido cabía casi
+                justo, así que el menú terminaba al ras del borde inferior de la
+                pantalla, "Cotizar proyecto" quedaba cortado por unos píxeles y
+                nada indicaba que hubiera más abajo. Se podía deslizar, pero no
+                se veía que se pudiera, que para el visitante es lo mismo que no
+                poder.
+
+                Ahora la altura deja aire bajo la píldora, la lista lleva
+                sombras de scroll que aparecen solo cuando queda contenido hacia
+                ese lado, y el botón principal no depende de que alguien baje
+                para encontrarlo. */}
+            <div className="flex max-h-[calc(100dvh-9.5rem)] flex-col">
+              <div className="scroll-shadows min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-4">
               <div className="mb-2">
                 {catalog.map((familia) => (
                   <details key={familia.id} className="border-b border-border">
@@ -369,8 +382,11 @@ export default function Navbar() {
                 <Link to="/contacto" className="border-b border-border py-3.5 text-lg font-bold tracking-tight text-foreground">
                   Contacto
                 </Link>
+                <CurrencySwitcher className="pt-5" />
               </div>
-              <div className="mt-6 space-y-3">
+              </div>
+
+              <div className="shrink-0 space-y-2.5 border-t border-border px-4 py-4">
                 <CtaButton size="lg" context="menu-movil" label={headerActions.cotizar.label} full />
                 <a
                   href={headerActions.agendar.href}
@@ -381,7 +397,6 @@ export default function Navbar() {
                   <CalendarClock className="h-4 w-4" aria-hidden="true" />
                   {headerActions.agendar.label}
                 </a>
-                <CurrencySwitcher className="pt-1" />
               </div>
             </div>
           </nav>

@@ -530,6 +530,24 @@
   .btn-primary:hover::after { transform: translateX(-115%); }
 }
 
+/* Sombras de scroll.
+   Una lista recortada al ras no comunica nada: el visitante ve el último
+   elemento cortado y asume que eso es todo. Acá la sombra aparece únicamente
+   por el lado que todavía tiene contenido y desaparece sola al llegar al
+   extremo, sin JavaScript.
+
+   El truco está en las capas: las dos primeras son del color del fondo y viajan
+   con el contenido (`local`), así que al estar arriba del todo tapan la sombra
+   superior, y al llegar abajo tapan la inferior. Las dos radiales quedan fijas
+   al marco (`scroll`) y son las que se ven cuando hay más para recorrer. */
+.scroll-shadows {
+  background:
+    linear-gradient(hsl(var(--secondary)) 30%, hsl(var(--secondary) / 0)) top / 100% 1.75rem no-repeat local,
+    linear-gradient(hsl(var(--secondary) / 0), hsl(var(--secondary)) 70%) bottom / 100% 1.75rem no-repeat local,
+    radial-gradient(farthest-side at 50% 0, hsl(var(--ink) / 0.16), hsl(var(--ink) / 0)) top / 100% 0.6rem no-repeat scroll,
+    radial-gradient(farthest-side at 50% 100%, hsl(var(--ink) / 0.16), hsl(var(--ink) / 0)) bottom / 100% 0.6rem no-repeat scroll;
+}
+
 .faq-item { border-bottom: 1px solid hsl(var(--border)); }
 .faq-item summary {
   display: flex;

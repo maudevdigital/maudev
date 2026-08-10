@@ -1456,6 +1456,7 @@ export const subserviciosBase = [
     id: "design-system",
     familia: "branding",
     nombre: "Sistema de diseño",
+    imagen: "/servicios/sistema-de-diseno.webp",
     resumen: "Librería de componentes lista para todos tus productos.",
     incluye: ["Componentes documentados", "Tokens exportables", "Guía de uso"],
     precios: [null, 890000, 1690000],
