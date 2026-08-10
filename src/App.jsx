@@ -75,7 +75,7 @@ function App() {
             {/* Rutas fusionadas en la home. Se mantienen como redirect en cliente
                 por si alguien llega desde un link viejo; el 301 real lo hace
                 Cloudflare vía public/_redirects (eso es lo que lee Google). */}
-            <Route path="/servicios" element={<Navigate to="/automatizacion" replace />} />
+            <Route path="/servicios" element={<Navigate to="/desarrollo-web" replace />} />
             <Route path="/automatizaciones" element={<Navigate to="/automatizacion" replace />} />
             <Route path="/portafolio" element={<Navigate to="/casos" replace />} />
             <Route path="/sobre-nosotros" element={<Navigate to="/nosotros" replace />} />

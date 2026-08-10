@@ -1,5 +1,5 @@
 # Redirecciones permanentes de la arquitectura anterior.
-/servicios          /automatizacion      301
+/servicios          /desarrollo-web      301
 /automatizaciones   /automatizacion      301
 /portafolio         /casos               301
 /portafolio/*       /casos/:splat        301

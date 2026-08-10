@@ -6,6 +6,12 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Cross-Origin-Opener-Policy: same-origin-allow-popups
   Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=()
+  # CSP mínima y sin riesgo: bloquea que otro sitio te incruste, que inyecten
+  # una etiqueta <base>, que se envíe un formulario a otro dominio y que corra
+  # cualquier plugin. Falta la parte de script-src y connect-src, que necesita
+  # el dominio del worker de leads (vive en una variable de entorno) y no se
+  # puede adivinar: una lista incompleta ahí deja el formulario mudo.
+  Content-Security-Policy: frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'
 
 # Revalidar los chunks evita fijar en caché una respuesta 404 durante la breve
 # propagación entre el HTML de un deploy y sus assets.
@@ -26,10 +32,10 @@
 /social/*
   Cache-Control: public, max-age=2592000
 
-# Utilidades y catálogo técnico fuera de la arquitectura comercial.
-/precios
-  X-Robots-Tag: noindex, follow
-
+# Utilidades fuera de la arquitectura comercial. /precios ya NO va acá: la
+# página se reconstruyó para posicionar ("cuánto cuesta una página web en
+# Chile") y está en el sitemap. Una URL del sitemap con noindex es un error
+# reportado en Search Console, además de trabajo tirado.
 /ig
   X-Robots-Tag: noindex, follow
 
