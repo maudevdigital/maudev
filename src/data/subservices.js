@@ -729,6 +729,7 @@ export const subserviciosBase = [
     id: "erp",
     familia: "software",
     nombre: "Sistema de gestión",
+    imagen: "/servicios/sistema-de-gestion.webp",
     resumen: "Inventario, compras, ventas y documentos en una sola herramienta.",
     incluye: ["Módulos según tu operación", "Usuarios y permisos", "Reportes"],
     precios: [null, 1290000, 2490000],
@@ -1104,8 +1105,80 @@ export const subserviciosBase = [
     resumen: "Tu marca visual: logo, paleta y tipografías.",
     incluye: ["Logo en tres versiones", "Paleta de color", "Archivos para imprenta y web"],
     precios: [90000, 190000, 390000],
+    tecnologias: [
+      { nombre: "Diseño vectorial", para: "El logo se dibuja con curvas: escala a una tarjeta o a una fachada sin perder nitidez" },
+      { nombre: "SVG, PDF y EPS", para: "Los formatos que te va a pedir cualquier imprenta o desarrollador" },
+      { nombre: "Paleta con códigos", para: "HEX para pantalla y CMYK para impresión, para que el color no cambie según quién lo use" },
+      { nombre: "Tipografías con licencia", para: "Fuentes que puedes usar comercialmente sin heredar un problema legal" },
+      { nombre: "Manual de uso breve", para: "Tamaño mínimo, márgenes y qué no hacer con el logo" },
+    ],
+    metaTitle: "Diseño de logo e identidad visual en Chile desde $90.000 · Maudev",
+    metaDescription:
+      "Logo en tres versiones, paleta de color y tipografías, con archivos para imprenta y web. Probado en tamaño chico y en una sola tinta. Desde $90.000 + IVA.",
+    intro:
+      "Un logo no es la marca: es la parte de la marca que tiene que seguir funcionando cuando mide dieciséis píxeles en la pestaña del navegador, o cuando alguien lo manda a bordar en una sola tinta.",
+    secciones: [
+      {
+        titulo: "El tamaño chico es la prueba",
+        parrafos: [
+          "Casi todos los logos se ven bien en la pantalla del diseñador, a media pantalla y en color. El problema aparece después, cuando hay que ponerlo de favicon, en la foto de perfil redonda de una red social o en un timbre.",
+          "Por eso acá se prueba al revés: primero chico y en una sola tinta, y recién después en grande. Si sobrevive a eso, sobrevive a todo lo demás.",
+          "Lo mismo con las versiones. Un solo dibujo no sirve para todos los espacios, así que se entregan tres: la principal, una horizontal para lugares anchos y el símbolo suelto para los cuadrados.",
+        ],
+      },
+      {
+        titulo: "La pregunta más útil no es qué te gusta",
+        parrafos: [
+          "Es qué no quieres parecer. Esa respuesta descarta la mitad de los caminos en cinco minutos y evita tres rondas de propuestas que iban en la dirección equivocada.",
+          "Después vienen las de siempre: a qué te dedicas, a quién le hablas, dónde va a aparecer esto. Si va a estar sobre todo en una vitrina, se diseña distinto que si vive en una app.",
+        ],
+      },
+      {
+        titulo: "Cuántas rondas, dicho antes",
+        parrafos: [
+          "Los proyectos de diseño no mueren por falta de talento, mueren por rondas infinitas. Acá el número de propuestas y de ajustes se fija al empezar y queda escrito en la cotización.",
+          "No es rigidez: es lo que permite que el trabajo termine. Si después quieres explorar otro camino, se cotiza aparte y se sabe cuánto cuesta.",
+        ],
+      },
+      {
+        titulo: "Sobre generar un logo con inteligencia artificial",
+        parrafos: [
+          "Puedes tener algo en minutos y a veces se ve bien. Lo que no sale de ahí es el archivo vectorial limpio, las versiones para cada espacio, la revisión de que funcione en tamaño chico y alguien que responda cuando la imprenta pida otro formato.",
+          "Si tu presupuesto hoy da para eso y no para más, úsalo y sigue adelante; es preferible a no tener nada. Cuando el negocio crezca, esto se puede tomar como punto de partida y ordenar.",
+        ],
+      },
+      {
+        titulo: "Antes de enamorarte del nombre",
+        parrafos: [
+          "Conviene revisar en INAPI si ya está registrado en tu rubro. Es gratis, toma unos minutos y evita el peor escenario posible: descubrirlo después de imprimir señalética.",
+          "El registro legal de la marca no lo hacemos nosotros, eso lo ve un abogado o lo tramitas directo. Lo que sí entregamos son los archivos en la forma que ese trámite pide.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "¿Cuántas propuestas y cuántos ajustes incluye?",
+        a: "Depende del alcance, y se dice antes de empezar, no después. Lo importante es que sea un número: los proyectos de diseño se hunden cuando las rondas no tienen límite.",
+      },
+      {
+        q: "¿Qué archivos recibo?",
+        a: "El logo en vectorial —SVG, PDF y EPS— más versiones en PNG para uso diario, la paleta con códigos para pantalla e impresión, y las tipografías indicadas con su licencia. Es lo que te va a pedir cualquier imprenta o desarrollador.",
+      },
+      {
+        q: "¿El logo es mío?",
+        a: "Sí, con los archivos originales editables. No queda amarrado a que nos sigas contratando para poder modificarlo.",
+      },
+      {
+        q: "¿Registran la marca?",
+        a: "No, ese trámite lo ve un abogado o lo haces directo en INAPI. Sí te entregamos los archivos como el registro los pide, y te recomendamos revisar disponibilidad antes de imprimir nada.",
+      },
+      {
+        q: "¿En qué se diferencia de identidad completa?",
+        a: "Acá recibes el logo, la paleta y las tipografías. Identidad completa suma las aplicaciones —papelería, señalética, plantillas— y el manual que define cómo se usa todo eso.",
+      },
+    ],
     prompt:
-      "Bodegón de identidad de marca sobre mesa crema: tarjetas impresas, muestras de color y una hoja con variantes de un logotipo abstracto. Luz cenital suave, acento azul cobalto, estilo editorial de diseño, sin texto legible, 3:2.",
+      "Lámina técnica de CONSTRUCCIÓN DE LOGOTIPO, estilo hoja de normas de marca, en vista frontal plana y no isométrica. Al centro, una marca abstracta y geométrica sencilla —formas puras, sin letras ni caracteres— dibujada sobre una retícula de construcción fina, con líneas guía de circunferencias y ejes que se prolongan más allá del contorno y un recuadro de área de resguardo punteado alrededor. A la izquierda, una columna con la misma marca repetida en tres tamaños decrecientes, del mayor al muy pequeño, cada uno con su línea de cota al costado. A la derecha, una columna con tres variantes de la misma marca en recuadros de igual altura: una compuesta en horizontal, una compacta y el símbolo suelto, todas sin texto. Abajo, una fila de cuatro cuadrados de muestra de color con una etiqueta vacía bajo cada uno, y a su lado la marca resuelta en una sola tinta plana dentro de un círculo, como prueba de una sola tinta. Anotaciones de plano alrededor: líneas de cota con topes y llamadas cortas hacia el área de resguardo y hacia el tamaño más pequeño. Cajetín técnico en la esquina inferior derecha. Fondo crema con retícula técnica muy tenue. Escala de grises salvo el azul cobalto, reservado a uno de los cuadrados de color y a la versión de una sola tinta. Sin ningún texto legible ni letras reconocibles en ninguna parte. Trazo vectorial nítido, sin degradados, aire de lámina de diseño impresa, 3:2.",
   },
   {
     id: "redes",
