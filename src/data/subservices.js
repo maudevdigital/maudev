@@ -1185,6 +1185,7 @@ export const subserviciosBase = [
     id: "redes",
     familia: "branding",
     nombre: "Kit para redes",
+    imagen: "/servicios/kit-para-redes.webp",
     resumen: "Plantillas editables para publicar sin pedir ayuda.",
     incluye: ["Diez plantillas editables", "Historia, publicación y carrusel", "Con tu paleta de marca"],
     precios: [90000, 190000, 340000],
@@ -1264,8 +1265,94 @@ export const subserviciosBase = [
     resumen: "Diagnosticamos qué está frenando las conversiones y lo corregimos.",
     incluye: ["Revisión del sitio actual", "Diez mejoras priorizadas", "Informe con ejemplos"],
     precios: [190000, 340000, 590000],
+    tecnologias: [
+      { nombre: "Lighthouse y Core Web Vitals", para: "Mide la carga real de cada página, que es de lo que depende buena parte del posicionamiento" },
+      { nombre: "Google Search Console", para: "Qué busca la gente que llega y en qué páginas entra sin convertir" },
+      { nombre: "Google Analytics", para: "En qué paso exacto se cae la visita antes de escribir" },
+      { nombre: "Mapas de calor", para: "Hasta dónde baja la gente y dónde hace clic esperando que pase algo" },
+      { nombre: "Prueba en equipo real", para: "El sitio abierto en un teléfono con datos móviles, no solo en un emulador" },
+      { nombre: "Revisión de accesibilidad", para: "Contraste, tamaño de toque y navegación por teclado según los criterios WCAG" },
+    ],
+    metaTitle: "Revisión de usabilidad y auditoría UX de sitios web en Chile desde $190.000 · Maudev",
+    metaDescription:
+      "Revisamos por qué tu sitio recibe visitas y casi nadie escribe. Diez mejoras priorizadas, con captura, ubicación y explicación, listas para aplicar. Desde $190.000 + IVA.",
+    intro:
+      "Tu sitio recibe visitas y casi nadie escribe. Antes de gastar más en publicidad conviene saber dónde se pierden los que ya están llegando: llevar tráfico pagado a un sitio que no convierte es la forma más cara de descubrir que el problema nunca fue el tráfico.",
+    secciones: [
+      {
+        titulo: "Qué se revisa, en concreto",
+        parrafos: [
+          "El camino completo, desde que alguien aterriza hasta que decide escribirte. No una opinión sobre el diseño: los puntos donde la gente se detiene y se va.",
+          "Qué se entiende en los primeros segundos —a qué te dedicas, dónde operas y para quién es esto—, si aparece el precio o al menos un rango, y si hay una sola acción clara o cinco compitiendo entre sí.",
+          "Después el detalle operativo: cuántos campos tiene el formulario y cuáles sobran, si el sitio se puede usar con un pulgar en un teléfono, cuánto demora en cargar con datos móviles y no con fibra, si los textos se leen con contraste suficiente y si se puede navegar con teclado.",
+          "Y lo que rodea a la conversión: qué pasa después de enviar el formulario, si el número de WhatsApp funciona de verdad, si la página de contacto responde en el horario que promete.",
+        ],
+      },
+      {
+        titulo: "El informe es una lista de tareas, no un ensayo",
+        parrafos: [
+          "Recibes diez mejoras priorizadas. Cada una con la captura de dónde está, qué hay que cambiar y por qué ese cambio importa, en un idioma que puedas reenviar sin traducir.",
+          "Está escrito para que lo pueda aplicar cualquiera: tu equipo, el proveedor que ya tienes o nosotros. No queda amarrado a que nos contrates la implementación, y esa independencia es justamente lo que hace que el informe sirva.",
+          "Van ordenadas por impacto contra esfuerzo, así que las primeras suelen ser cambios de una tarde que se notan de inmediato.",
+        ],
+      },
+      {
+        titulo: "Diez y no sesenta, a propósito",
+        parrafos: [
+          "Una auditoría con sesenta hallazgos impresiona en la entrega y no se aplica nunca: es demasiado para empezar y termina archivada.",
+          "Diez se pueden hacer. Y cuando estén hechas, si quieres, se revisa de nuevo con la foto ya cambiada, que es más útil que haber recibido todo junto al principio.",
+        ],
+      },
+      {
+        titulo: "No te vamos a prometer un porcentaje",
+        parrafos: [
+          "Nadie puede decirte con seriedad cuánto va a subir tu conversión antes de conocer tu tráfico, tu rubro y tu oferta. Quien te da una cifra en la primera reunión está vendiendo, no diagnosticando.",
+          "Lo que sí se puede afirmar con evidencia es qué está mal, en qué punto exacto se pierde la gente y qué principio de usabilidad se está rompiendo ahí. Eso es lo que entregamos, y es lo que después se puede medir de verdad.",
+        ],
+      },
+      {
+        titulo: "Con datos si los tienes, con oficio si no",
+        parrafos: [
+          "Si ya tienes Analytics, Search Console o algún mapa de calor instalado, la revisión parte por ahí: los datos muestran dónde se cae la gente sin necesidad de suponer.",
+          "Si no hay nada instalado, la revisión igual se hace, apoyada en criterios de usabilidad conocidos y en probar el sitio en equipos reales. Y se puede dejar la medición andando, para que la próxima conversación ya sea con números tuyos.",
+        ],
+      },
+      {
+        titulo: "Conviene antes de rediseñar, no después",
+        parrafos: [
+          "Si estás pensando en rehacer el sitio, revisarlo primero es lo más barato que puedes hacer. Un rediseño que no sabe qué estaba fallando repite los mismos errores con mejor tipografía.",
+          "Muchas veces además cambia la conclusión: aparecen tres arreglos que resuelven el problema real y el rediseño completo puede esperar un año.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "¿Sirve para cualquier tipo de sitio?",
+        a: "Sí: sitios institucionales, tiendas online y landings. Da lo mismo si está hecho en WordPress, Shopify, Wix, Squarespace o a medida, porque la revisión se hace sobre el sitio publicado y no sobre el código.",
+      },
+      {
+        q: "¿Tengo que darles acceso a algo?",
+        a: "Para revisar, no: basta con la dirección del sitio. Si nos das acceso de lectura a Analytics o Search Console el diagnóstico mejora bastante, porque deja de ser criterio y pasa a ser dato.",
+      },
+      {
+        q: "¿Ustedes aplican los cambios?",
+        a: "El alcance de entrada entrega el informe para que lo aplique quien tú quieras. La implementación va en los niveles superiores o se cotiza aparte, con el precio por escrito antes de empezar.",
+      },
+      {
+        q: "¿Cuánto demora?",
+        a: "El informe se entrega en días, no en meses. El plazo exacto depende del tamaño del sitio y se dice al cotizar.",
+      },
+      {
+        q: "¿Van a decirme cuánto van a subir mis ventas?",
+        a: "No, y desconfía de quien lo haga sin haber visto tus números. Lo que recibes es dónde se está perdiendo la gente y qué corregir; el efecto se mide después, con tus propios datos.",
+      },
+      {
+        q: "¿En qué se diferencia de un rediseño?",
+        a: "El rediseño reconstruye el sitio. Esto lo diagnostica y te dice qué corregir, que suele ser mucho menos y más barato. Si igual conviene rehacerlo, te lo decimos con los argumentos a la vista.",
+      },
+    ],
     prompt:
-      "Escritorio con una pantalla mostrando un mapa de calor de clics sobre una web y notas adhesivas al costado con anotaciones. Luz de oficina suave, paleta azul cobalto y crema, estilo editorial, sin texto legible, 3:2.",
+      "Lámina técnica de una REVISIÓN DE USABILIDAD, estilo hoja de anotación de plano, en vista frontal plana y no isométrica. Ocupando la mitad izquierda, el esquema alámbrico de una página web dibujado en línea fina: barra superior, bloque principal con un rectángulo grande de imagen marcado por una equis diagonal, un botón destacado, y bajo él tres bloques de contenido y un bloque de formulario con cuatro campos apilados. Sobre ese esquema, seis marcadores circulares numerados dibujados en trazo cobalto, unidos por líneas de llamada finas a etiquetas rectangulares vacías situadas en el margen. Tres de los marcadores están sobre el botón, el formulario y la barra superior. A la derecha y arriba, un diagrama de embudo formado por cuatro barras horizontales de ancho decreciente, con una flecha corta de fuga saliendo lateralmente entre la segunda y la tercera. A la derecha y abajo, una matriz de priorización de dos ejes con cuadrícula tenue y cinco puntos distribuidos, uno de ellos relleno en cobalto en el cuadrante superior izquierdo. Anotaciones de plano alrededor: líneas de cota con topes, y una llamada corta hacia el punto destacado de la matriz. Cajetín técnico en la esquina inferior derecha. Fondo crema con retícula técnica muy tenue. Escala de grises salvo el azul cobalto, reservado a los marcadores numerados, a la flecha de fuga del embudo y al punto destacado de la matriz. Sin ningún texto legible ni letras reconocibles en ninguna parte; los números de los marcadores pueden ser dígitos simples. Trazo vectorial nítido, sin degradados, aire de lámina de ingeniería impresa, 3:2.",
   },
   {
     id: "branding",
