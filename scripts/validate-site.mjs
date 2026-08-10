@@ -161,7 +161,11 @@ try {
   // `ruta/index.html`. Con la forma de directorio, Cloudflare Pages sirve la
   // URL con barra final y devuelve 308 a la que publica el sitemap: cada
   // página de servicio aparecería en Search Console como "URL con redirección".
-  for (const route of ["/automatizacion", "/software-a-medida", "/desarrollo-web", "/ecommerce", "/mantencion", "/casos", "/nosotros", "/contacto"]) {
+  // TODA ruta que se prueba acá tiene que existir como archivo en dist. La
+  // lista fija anterior dejaba fuera /terminos y /privacidad, y ambas llegaron
+  // a producción devolviendo 404 pese a pasar la validación: `vite preview`
+  // resuelve cualquier ruta con index.html y Cloudflare Pages no.
+  for (const route of routes.filter((r) => r !== "/")) {
     const flat = path.join(root, "dist", `${route.slice(1)}.html`);
     const asDirectory = path.join(root, "dist", route.slice(1), "index.html");
     assert(

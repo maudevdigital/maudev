@@ -3,6 +3,7 @@ import path from "node:path";
 import { services } from "../src/data/services.js";
 import { projects } from "../src/data/projects.js";
 import { subservicios } from "../src/data/subservices.js";
+import { AUTOMATIONS } from "../src/data/automations.js";
 
 const root = path.resolve(import.meta.dirname, "..");
 const dist = path.join(root, "dist");
@@ -45,6 +46,33 @@ const pages = [
     description:
       servicio.metaDescription ||
       `${servicio.resumen} Precio por escrito antes de empezar y accesos a tu nombre.`,
+  })),
+  // Estas vivían solo del lado del cliente y en producción devolvían 404: sin
+  // archivo generado, Cloudflare Pages no tiene qué servir, y no hay regla de
+  // respaldo hacia index.html a propósito —esa regla convierte cualquier URL
+  // inventada en un 200 con la aplicación vacía, que es un soft 404—. El pie de
+  // página enlaza términos y privacidad, así que estaban rotas a la vista.
+  {
+    route: "/terminos",
+    title: "Términos y condiciones · Maudev",
+    description: "Cómo se cotiza, cómo se paga, qué pasa si te arrepientes y de quién queda el código.",
+  },
+  {
+    route: "/privacidad",
+    title: "Política de privacidad · Maudev",
+    description: "Qué datos pedimos, para qué los usamos, con quién se comparten y cómo pedir que los eliminemos.",
+  },
+  {
+    route: "/eliminacion-datos",
+    title: "Eliminación de datos · Maudev",
+    description: "Cómo solicitar la eliminación de tus datos personales.",
+  },
+  { route: "/ig", title: "Maudev · Enlaces", description: "Todo lo de Maudev en un solo lugar." },
+  { route: "/links", title: "Maudev · Enlaces", description: "Todo lo de Maudev en un solo lugar." },
+  ...AUTOMATIONS.map((auto) => ({
+    route: `/automatizaciones/${auto.slug}`,
+    title: `${auto.title || auto.name} · Automatización · Maudev`,
+    description: auto.summary || auto.tagline || "Automatización lista para implementar en tu negocio.",
   })),
   ...projects.map((project) => ({
     route: `/casos/${project.id}`,

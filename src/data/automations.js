@@ -19,7 +19,7 @@ import {
 // `video` (reel vertical en la landing). Si la imagen no existe todavía, la
 // tarjeta cae al ícono — no se rompe nada. Prompts: docs/prompts-imagenes.md §7
 
-const AUTOMATIONS = [
+export const AUTOMATIONS = [
   {
     slug: "agenda-automatica",
     priceCLP: "$149.000", priceUSD: "$159 USD", period: "Instalación única",
