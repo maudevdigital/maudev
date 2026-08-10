@@ -48,18 +48,9 @@ const iconoFamilia = {
   branding: Palette,
 };
 
-// Etiqueta comercial de cada familia. En el menú se lee mejor "Sitios web" que
-// "Web", que es el nombre corto que usan los filtros del modal.
-const etiquetas = {
-  web: "Sitios web",
-  software: "Software",
-  apps: "Apps móviles",
-  branding: "Diseño",
-};
-
 export const catalog = familias.map((familia) => ({
   id: familia.id,
-  label: etiquetas[familia.id] || familia.label,
+  label: familia.label,
   accent: "text-primary",
   items: subservicios
     .filter((servicio) => servicio.familia === familia.id)

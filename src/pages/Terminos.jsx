@@ -55,12 +55,17 @@ const sections = [
     content: (
       <>
         <ul className="space-y-1.5 list-disc pl-5">
+          {/* El orden refleja el negocio: primero la web, después el software y
+              al final lo recurrente. Esta lista se quedó describiendo la etapa
+              en que todo se contaba desde n8n, y unos términos que no coinciden
+              con lo que ofrece el sitio son un problema legal, no de redacción. */}
           {[
-            "Automatización de procesos con n8n e inteligencia artificial",
-            "Desarrollo de sitios web y software a medida",
-            "Integraciones entre sistemas (WhatsApp, calendarios, pasarelas de pago, planillas, CRM)",
-            "Workflows de n8n listos para importar, entregados como archivo .json",
-            "Instalación y configuración de n8n en tu propio servidor",
+            "Diseño y desarrollo de sitios web, tiendas online y plataformas",
+            "Software a medida: sistemas de gestión, punto de venta e integraciones",
+            "Aplicaciones móviles para Android y iPhone",
+            "Diseño de marca, identidad visual y revisión de usabilidad",
+            "Automatización de procesos e integraciones entre sistemas",
+            "Mantención, alojamiento y soporte de sitios y sistemas ya publicados",
           ].map((x, i) => <li key={i}>{x}</li>)}
         </ul>
         <p className="mt-3">

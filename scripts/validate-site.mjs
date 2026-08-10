@@ -12,6 +12,8 @@ const routes = [
   "/desarrollo-web",
   "/ecommerce",
   "/mantencion",
+  "/apps-moviles",
+  "/diseno",
   "/servicios/landing-page",
   "/servicios/punto-de-venta",
   "/casos",

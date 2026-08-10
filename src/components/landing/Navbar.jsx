@@ -103,10 +103,11 @@ export default function Navbar() {
     setMega(false);
   }, [pathname]);
 
-  // El mega se cierra al hacer clic fuera del header y con Escape. El cierre
-  // por puntero va en el propio <header> (onMouseLeave): así cubre el trayecto
-  // del botón al panel sin que el menú se cierre al pasar por el hueco entre
-  // ambos, que es lo que ocurre si el manejador vive solo en el panel.
+  // El mega se cierra al hacer clic fuera del header, con Escape o volviendo a
+  // pulsar Servicios. NO se cierra al salir el puntero: ese cierre automático
+  // hacía desaparecer la lista mientras se leía, apenas el cursor se iba un
+  // momento del panel, y obligaba a volver a abrirla. Un menú que el visitante
+  // abrió a propósito se cierra cuando él decide.
   useEffect(() => {
     if (!mega) return;
     const fuera = (evento) => {
@@ -123,24 +124,29 @@ export default function Navbar() {
     };
   }, [mega]);
 
-  // Bloqueo de scroll del fondo mientras el menú está abierto.
+  // Con cualquiera de los dos menús desplegado, la página de atrás se queda
+  // quieta: el único que se desplaza es la lista.
   //
-  // `overflow: hidden` en el body no alcanza: Safari en iPhone lo ignora y la
-  // página sigue moviéndose detrás del menú, que es justo lo que se siente
-  // roto al desplegar Servicios y bajar por la lista. La forma que sí funciona
-  // en todos lados es fijar el body y compensar con `top` la posición en la
-  // que estaba, para que al cerrar el visitante vuelva exactamente donde iba y
-  // no al comienzo de la página.
+  // `overflow: hidden` en el body no alcanza —Safari en iPhone lo ignora— así
+  // que el cuerpo se fija y se compensa con `top` la posición en la que estaba,
+  // para que al cerrar el visitante vuelva exactamente donde iba.
+  //
+  // Al fijar el cuerpo desaparece la barra de desplazamiento, y en escritorio
+  // eso ensancha la página de golpe: el contenido salta unos pixeles hacia el
+  // costado justo al abrir el menú. Se rellena ese ancho con padding para que
+  // el fondo quede realmente inmóvil y no solo sin scroll.
   useEffect(() => {
-    if (!open) return;
+    if (!open && !mega) return;
     const { body } = document;
     const y = window.scrollY;
+    const barra = window.innerWidth - document.documentElement.clientWidth;
     const previo = {
       position: body.style.position,
       top: body.style.top,
       left: body.style.left,
       right: body.style.right,
       overflow: body.style.overflow,
+      paddingRight: body.style.paddingRight,
     };
 
     body.style.position = "fixed";
@@ -148,6 +154,7 @@ export default function Navbar() {
     body.style.left = "0";
     body.style.right = "0";
     body.style.overflow = "hidden";
+    if (barra > 0) body.style.paddingRight = `${barra}px`;
 
     const onKey = (event) => {
       if (event.key === "Escape") setOpen(false);
@@ -159,7 +166,7 @@ export default function Navbar() {
       window.scrollTo(0, y);
       window.removeEventListener("keydown", onKey);
     };
-  }, [open]);
+  }, [open, mega]);
 
   const goToSection = (event, id) => {
     event.preventDefault();
@@ -186,7 +193,6 @@ export default function Navbar() {
   return (
     <header
       ref={headerRef}
-      onMouseLeave={() => setMega(false)}
       className="fixed inset-x-3 top-3 z-50 transition-transform duration-300 ease-out sm:inset-x-5 sm:top-5"
       style={{ transform: `translateY(${show || open ? 0 : -140}%)` }}
     >
@@ -296,9 +302,9 @@ export default function Navbar() {
         {mega && (
           <div
             id="mega-servicios"
-            className="hidden border-t border-border bg-secondary lg:block"
+            className="scroll-shadows hidden max-h-[calc(100dvh-9rem)] overflow-y-auto overscroll-contain border-t border-border bg-secondary lg:block"
           >
-            <div className="grid gap-x-8 gap-y-8 p-6 xl:grid-cols-4">
+            <div className="grid gap-x-8 gap-y-8 p-6 sm:grid-cols-2 xl:grid-cols-4">
               {catalog.map((familia) => (
                 <div key={familia.id}>
                   <p className="flex items-center gap-2 border-b border-border pb-2.5 font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">

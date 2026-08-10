@@ -6,13 +6,23 @@ import FinalCta from "@/components/landing/FinalCta";
 import PageShell from "@/components/landing/PageShell";
 import { getProjectById } from "@/data/projects";
 import { getService } from "@/data/services";
-import PriceRange from "@/components/landing/PriceRange";
+import { subservicios } from "@/data/subservices";
+import { formatFrom } from "@/data/currencies";
+import { IVA_NOTA } from "@/data/pricing";
+import { useCurrency } from "@/lib/useCurrency";
 import { useSeo } from "@/lib/useSeo";
 import { trackAction } from "@/lib/MetaPixelTracker";
 
 export default function ServicePage({ serviceKey }) {
   const service = getService(serviceKey);
   const project = getProjectById(service.relatedCase);
+  const moneda = useCurrency();
+
+  // El orden lo manda la página, no el catálogo: cada familia decide con qué
+  // servicio conviene que el visitante empiece a mirar.
+  const agrupados = (service.subservicios || [])
+    .map((id) => subservicios.find((sub) => sub.id === id))
+    .filter(Boolean);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -145,7 +155,56 @@ export default function ServicePage({ serviceKey }) {
           </div>
         </section>
 
-        <PriceRange plans={service.plans} />
+        {/* Los servicios de la familia, con su precio de entrada.
+            Esta página es la que la miga de pan promete como categoría, y hasta
+            ahora no enlazaba ninguno de los servicios que agrupa: el visitante
+            llegaba a la categoría y quedaba sin salida hacia lo concreto, y las
+            diecinueve páginas de servicio recibían enlaces solo desde el menú y
+            el pie. Sale de subservices.js, así que no puede quedar desfasado. */}
+        {agrupados.length > 0 && (
+          <section className="section-pad border-t border-border" aria-labelledby="familia-titulo">
+            <div className="site-container">
+              <span className="eyebrow">Lo que incluye esta categoría</span>
+              <h2 id="familia-titulo" className="section-title mt-4">
+                Elige por dónde empezar.
+              </h2>
+              <p className="mt-5 max-w-2xl leading-relaxed text-muted-foreground">
+                Cada uno tiene su página con el detalle, lo que incluye y sus tres alcances. Los
+                montos son netos y son el piso de un alcance típico.
+              </p>
+
+              <ul className="mt-10 grid gap-3 sm:grid-cols-2">
+                {agrupados.map((sub) => (
+                  <li key={sub.id}>
+                    <Link
+                      to={sub.path}
+                      className="panel panel-hover group flex h-full flex-col p-6 transition-colors"
+                    >
+                      <span className="flex items-start justify-between gap-3">
+                        <span className="font-display text-lg font-bold tracking-[-0.02em]">
+                          {sub.nombre}
+                        </span>
+                        <ArrowRight
+                          className="mt-1 h-4 w-4 shrink-0 text-primary transition-transform group-hover:translate-x-1"
+                          aria-hidden="true"
+                        />
+                      </span>
+                      <span className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                        {sub.resumen}
+                      </span>
+                      <span className="mt-5 font-mono text-xs font-bold uppercase tracking-wider text-primary">
+                        Desde {formatFrom(sub.precios.find((precio) => precio !== null), moneda)}
+                        <span className="ml-1.5 font-sans font-medium text-muted-foreground">
+                          {IVA_NOTA}
+                        </span>
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+        )}
 
         {project && (
           <section className="section-pad">
@@ -174,7 +233,7 @@ export default function ServicePage({ serviceKey }) {
             <div className="border-t border-border">
               {service.faqs.map((faq, index) => (
                 <details key={faq.q} className="faq-item group" open={index === 0}>
-                  <summary><span>{faq.q}</span><span className="text-primary" aria-hidden="true">+</span></summary>
+                  <summary>{faq.q}</summary>
                   <p>{faq.a}</p>
                 </details>
               ))}

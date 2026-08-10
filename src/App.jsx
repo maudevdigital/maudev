@@ -44,6 +44,8 @@ function App() {
             <Route path="/desarrollo-web" element={<ServicePage serviceKey="desarrollo-web" />} />
             <Route path="/ecommerce" element={<ServicePage serviceKey="ecommerce" />} />
             <Route path="/mantencion" element={<ServicePage serviceKey="mantencion" />} />
+            <Route path="/apps-moviles" element={<ServicePage serviceKey="apps-moviles" />} />
+            <Route path="/diseno" element={<ServicePage serviceKey="diseno" />} />
 
             {/* Una página por servicio del catálogo. Generadas desde datos:
                 ver src/data/subservices.js */}

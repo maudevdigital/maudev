@@ -10,11 +10,16 @@
 // interfaz. Es la convención del rubro en Chile para venta a empresas, que
 // descuentan el impuesto.
 
+// Cada familia con su página propia. Apps apuntaba a la de software y Branding
+// derechamente al formulario de contacto: la miga de pan de nueve servicios
+// prometía una categoría que no existía, y el enlace "ver todo" dejaba al
+// visitante en un formulario que no había pedido. La etiqueta es una sola y
+// vive acá, para que el menú, la miga de pan y los filtros no puedan discrepar.
 export const familias = [
-  { id: "web", label: "Web", pagina: "/desarrollo-web" },
+  { id: "web", label: "Sitios web", pagina: "/desarrollo-web" },
   { id: "software", label: "Software", pagina: "/software-a-medida" },
-  { id: "apps", label: "Apps", pagina: "/software-a-medida" },
-  { id: "branding", label: "Branding", pagina: "/contacto" },
+  { id: "apps", label: "Apps móviles", pagina: "/apps-moviles" },
+  { id: "branding", label: "Diseño", pagina: "/diseno" },
 ];
 
 // Los tres niveles, para mostrar la escalera de precio en cada página.

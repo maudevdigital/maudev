@@ -1,6 +1,7 @@
 export const services = {
   automatizacion: {
     path: "/automatizacion",
+    subservicios: ["automatizacion", "integracion", "crm"],
     navLabel: "Automatización",
     eyebrow: "Automatización de procesos para PYMEs",
     title: "Menos tareas manuales. Más continuidad en tu operación.",
@@ -28,6 +29,7 @@ export const services = {
   },
   "software-a-medida": {
     path: "/software-a-medida",
+    subservicios: ["crm", "pos", "integracion", "automatizacion", "erp"],
     navLabel: "Software a medida",
     eyebrow: "Desarrollo de sistemas para empresas",
     title: "Software diseñado alrededor de tu forma de operar.",
@@ -55,6 +57,7 @@ export const services = {
   },
   "desarrollo-web": {
     path: "/desarrollo-web",
+    subservicios: ["landing", "sitio", "rediseno", "ecommerce", "plataforma"],
     navLabel: "Desarrollo web",
     eyebrow: "Desarrollo web para empresas",
     title: "Una web clara para explicar, demostrar y convertir.",
@@ -83,6 +86,7 @@ export const services = {
   },
   ecommerce: {
     path: "/ecommerce",
+    subservicios: ["ecommerce", "pos", "integracion"],
     navLabel: "Ecommerce",
     eyebrow: "Desarrollo ecommerce en Chile",
     title: "Una tienda conectada con lo que ocurre después de la compra.",
@@ -111,6 +115,7 @@ export const services = {
   },
   mantencion: {
     path: "/mantencion",
+    subservicios: ["rediseno", "sitio", "landing"],
     navLabel: "Mantención",
     eyebrow: "Mantención de sitios web",
     title: "Un sitio publicado también necesita quien lo cuide.",
@@ -138,6 +143,64 @@ export const services = {
       { q: "¿Qué pasa si el sitio se cae?", a: "El monitoreo nos avisa y revisamos el origen. Si es algo del sitio, lo resolvemos dentro del plan. Si el problema es del hosting o de un servicio externo, gestionamos el reporte y te contamos qué respondieron." },
     ],
   },
+  "apps-moviles": {
+    path: "/apps-moviles",
+    subservicios: ["pwa", "app-interna", "app-multi", "app-nativa"],
+    navLabel: "Apps móviles",
+    eyebrow: "Desarrollo de apps móviles en Chile",
+    title: "Una app se justifica cuando el teléfono aporta algo que la web no.",
+    intro: "Desarrollamos apps para Android y iPhone cuando hay una razón concreta: trabajo en terreno sin señal, uso diario de un equipo o funciones del teléfono que un sitio no alcanza.",
+    metaTitle: "Desarrollo de apps móviles en Chile para Android y iPhone · Maudev",
+    metaDescription: "Apps a medida para Android y iPhone: uso interno, terreno sin señal o publicación en tiendas. Te decimos antes si tu caso se resuelve mejor con una web.",
+    problemTitle: "Buena parte de las apps que se encargan no necesitaban ser una app.",
+    problem: "Publicar en las tiendas, sostener dos plataformas y pedirle a alguien que instale algo son costos reales que se pagan todos los meses. Cuando lo que se necesita es mostrar, informar o recibir un pedido, un sitio bien hecho llega antes y a más gente. La app se justifica cuando hay uso repetido, cuando tiene que funcionar sin señal o cuando usa cámara, ubicación o notificaciones.",
+    audience: ["Equipos que trabajan fuera de la oficina", "Servicios con visitas, rutas o inspecciones", "Negocios con clientes que vuelven seguido", "Empresas que hoy registran en papel y transcriben después"],
+    signals: ["Tu equipo anota en papel y digita al volver", "Necesitas registrar donde no hay señal", "Usas cámara, ubicación o firma en terreno"],
+    examples: [
+      { title: "App para uso interno", text: "Para tu equipo, distribuida directamente y sin pasar por las tiendas ni por una revisión externa." },
+      { title: "App que funciona sin señal", text: "Registra en terreno y sincroniza sola cuando vuelve la conexión, sin perder lo cargado." },
+      { title: "App instalable desde el navegador", text: "Se agrega a la pantalla de inicio sin tienda de aplicaciones, cuando eso alcanza." },
+      { title: "App publicada en las tiendas", text: "Para clientes finales, con el proceso de publicación y las cuentas a tu nombre." },
+    ],
+    implementation: ["Revisamos si el caso necesita app o basta una web", "Definimos qué funciona sin conexión", "Desarrollamos una base para Android e iPhone", "Distribuimos o publicamos con tus cuentas"],
+    integrations: ["Cámara y códigos", "Ubicación", "Notificaciones", "Firma en pantalla", "Sincronización diferida", "Tu sistema actual"],
+    relatedCase: null,
+    plans: [],
+    faqs: [
+      { q: "¿Necesito publicar en las tiendas?", a: "Solo si la app es para clientes finales. Si es para tu equipo se distribuye internamente, que es más rápido y evita la revisión de Apple y Google." },
+      { q: "¿Hay que desarrollar dos veces, para Android y para iPhone?", a: "No en la mayoría de los casos: se construye una sola base que corre en ambos. El desarrollo nativo separado se justifica cuando la app exige el máximo rendimiento del equipo." },
+      { q: "¿Cómo sé si mi caso necesita una app?", a: "Te lo decimos en la primera conversación, incluso si la respuesta es que no. Si con un sitio se resuelve, conviene el sitio: llega a más gente y no depende de que alguien instale nada." },
+    ],
+  },
+  diseno: {
+    path: "/diseno",
+    subservicios: ["logo", "redes", "ux", "branding", "design-system"],
+    navLabel: "Diseño",
+    eyebrow: "Diseño de marca en Chile",
+    title: "Que tu negocio se vea igual de serio en todas partes.",
+    intro: "Logo, colores, tipografías y las reglas para que todo eso siga en pie cuando lo aplique otra persona, en otra pieza, seis meses después.",
+    metaTitle: "Diseño de marca e identidad visual en Chile · Maudev",
+    metaDescription: "Diseño de logo, identidad corporativa, plantillas para redes y revisión de usabilidad. Con manual de uso y archivos originales a tu nombre.",
+    problemTitle: "Una marca que cambia en cada punto de contacto se lee como descuido.",
+    problem: "Cuando no hay reglas escritas, cada persona que toca la marca inventa su versión: otro azul, otra tipografía, el logo estirado para que calce. Ninguna de esas decisiones se toma con mala intención y todas juntas hacen que la empresa se vea distinta en la boleta, en la camioneta y en el correo que manda tu vendedora.",
+    audience: ["Negocios que están saliendo a competir en serio", "Empresas con más de una persona produciendo material", "Marcas armadas por partes que ya no se parecen al negocio", "Equipos que van a entrar a un canal más exigente"],
+    signals: ["Cada proveedor te entrega algo que no calza", "El logo no funciona en tamaño chico", "Tu web recibe visitas y casi nadie escribe"],
+    examples: [
+      { title: "Logo e identidad", text: "La marca visual: logo en sus versiones, paleta y tipografías, probado en tamaño chico y en una sola tinta." },
+      { title: "Identidad completa", text: "El sistema entero con tono de voz, aplicaciones y el manual que permite que otros lo apliquen bien." },
+      { title: "Plantillas para redes", text: "Piezas editables por ti, para publicar sin depender de que alguien te las arme." },
+      { title: "Revisión de usabilidad", text: "Diagnóstico de dónde se pierde la gente en tu sitio, con las diez correcciones priorizadas." },
+    ],
+    implementation: ["Definimos qué vendes y qué no quieres parecer", "Proponemos territorio, marca y sistema", "Ajustamos con un número de rondas acordado", "Entregamos archivos originales y manual de uso"],
+    integrations: ["Archivos para imprenta", "Formatos para web", "Plantillas en Canva", "Tipografías con licencia", "Paleta con códigos", "Manual en PDF"],
+    relatedCase: "scissorhands",
+    plans: [],
+    faqs: [
+      { q: "¿Los archivos quedan a mi nombre?", a: "Sí, incluidos los originales editables. No queda nada guardado de un lado que te obligue a volver con nosotros para cambiar una fecha." },
+      { q: "¿Registran la marca en INAPI?", a: "El trámite lo ve un abogado o lo haces directo. Nosotros entregamos los archivos como el registro los pide, y conviene revisar disponibilidad antes de imprimir nada." },
+      { q: "¿Puedo empezar solo por el logo?", a: "Sí, y muchas veces es lo correcto. Si el negocio todavía está probando qué vende, construir un sistema completo sobre algo que va a cambiar es gastar dos veces." },
+    ],
+  },
 };
 
 // Orden comercial de las páginas de servicio: la web es el negocio principal,
@@ -147,9 +210,11 @@ export const services = {
 export const serviceOrder = [
   "desarrollo-web",
   "ecommerce",
+  "apps-moviles",
+  "software-a-medida",
+  "diseno",
   "automatizacion",
   "mantencion",
-  "software-a-medida",
 ];
 
 export const orderedServices = serviceOrder.map((key) => services[key]);
