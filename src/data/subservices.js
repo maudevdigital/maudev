@@ -1262,6 +1262,7 @@ export const subserviciosBase = [
     id: "ux",
     familia: "branding",
     nombre: "Revisión de usabilidad",
+    imagen: "/servicios/revision-de-usabilidad.webp",
     resumen: "Diagnosticamos qué está frenando las conversiones y lo corregimos.",
     incluye: ["Revisión del sitio actual", "Diez mejoras priorizadas", "Informe con ejemplos"],
     precios: [190000, 340000, 590000],
@@ -1361,8 +1362,94 @@ export const subserviciosBase = [
     resumen: "Marca de punta a punta: estrategia, visual y tono.",
     incluye: ["Logo, paleta y tipografías", "Manual de marca", "Aplicaciones de ejemplo"],
     precios: [390000, 690000, 1290000],
+    tecnologias: [
+      { nombre: "Diseño vectorial", para: "Todo el sistema se dibuja en curvas: sirve para una tarjeta y para una fachada" },
+      { nombre: "Manual de marca en PDF", para: "Un solo documento que puedes reenviar a cualquier proveedor" },
+      { nombre: "Paleta con códigos completos", para: "HEX para pantalla, CMYK para imprenta y equivalencia Pantone cuando el material lo exige" },
+      { nombre: "Tipografías con licencia", para: "Fuentes que tu equipo puede instalar y usar comercialmente sin heredar un problema legal" },
+      { nombre: "Plantillas editables", para: "Presentación, documento y piezas de redes con la marca ya aplicada" },
+      { nombre: "Archivos originales", para: "Los editables quedan contigo, no en el computador del diseñador" },
+    ],
+    metaTitle: "Identidad corporativa y manual de marca en Chile desde $390.000 · Maudev",
+    metaDescription:
+      "Identidad de marca completa: logo, paleta, tipografías, tono de voz, aplicaciones y manual de uso. Para que tu marca se vea igual la haga quien la haga. Desde $390.000 + IVA.",
+    intro:
+      "Un logo resuelve cómo te ves en un lugar. Una identidad completa resuelve cómo te ves en todos: la boleta, la camioneta, el correo que manda tu vendedora, la publicación que subió alguien un domingo. Es lo que se contrata cuando la marca ya dejó de depender de una sola persona.",
+    secciones: [
+      {
+        titulo: "El problema que resuelve no es estético",
+        parrafos: [
+          "Es de coordinación. Cuando no hay reglas escritas, cada persona que toca la marca inventa su versión: otro azul, otra tipografía, el logo estirado para que calce. Ninguna de esas decisiones se toma con mala intención, y todas juntas hacen que la empresa se vea distinta en cada punto de contacto.",
+          "Una marca que se ve igual en todas partes proyecta orden, y el cliente traduce ese orden a confianza antes de leer una sola palabra. Es de las pocas señales que un negocio chico puede dar sin tener trayectoria todavía.",
+          "Por eso lo que se entrega no es solo un diseño, sino un criterio que otros pueden seguir sin llamarte a preguntar.",
+        ],
+      },
+      {
+        titulo: "Antes del color viene la definición",
+        parrafos: [
+          "Se parte por lo que no se dibuja: qué vendes exactamente, a quién, qué te diferencia de los tres que compiten contigo y qué no quieres parecer nunca. Esa conversación es corta y ordena todo lo que viene después.",
+          "De ahí sale el territorio de la marca —serio o cercano, técnico o simple, tradicional o nuevo— y recién ahí tiene sentido elegir tipografías y colores. Al revés se llega a algo bonito que no dice nada de tu negocio.",
+        ],
+      },
+      {
+        titulo: "Qué recibes",
+        parrafos: [
+          "El sistema visual: logo en sus versiones, paleta principal y de apoyo con códigos para pantalla e imprenta, tipografías con su licencia y reglas de jerarquía, y un criterio gráfico propio —el estilo de los íconos, el tratamiento de las fotos, las formas que se repiten— que es lo que hace reconocible una marca incluso cuando el logo no está a la vista.",
+          "El tono de voz: cómo escribe la marca, si trata de tú o de usted, qué palabras usa y cuáles evita. Suena secundario y es lo que más se nota en WhatsApp, que es donde la mayoría de tus clientes te habla de verdad.",
+          "Las aplicaciones: papelería, firma de correo, presentación, plantillas para redes y lo que tu rubro pida —señalética, vehículo, uniforme, empaque—. Sirven de ejemplo y de plantilla, así que el proveedor que venga después tiene de dónde copiar.",
+          "Y el manual que amarra todo: tamaño mínimo, área de resguardo, qué no hacer con el logo, combinaciones de color permitidas. Un PDF que puedes reenviar y que evita la conversación de cada vez.",
+        ],
+      },
+      {
+        titulo: "Cuándo conviene esto y cuándo no",
+        parrafos: [
+          "Si recién partes y todavía estás probando qué vendes, no. Lo correcto ahí es resolver el logo y los colores, salir a operar y volver a esto cuando el negocio esté definido; construir un sistema completo sobre algo que va a cambiar es gastar dos veces.",
+          "Conviene cuando ya hay más de una persona produciendo material, cuando cada proveedor te entrega algo que no calza con lo anterior, cuando vas a entrar a un canal más exigente —retail, licitaciones, distribuidores— o cuando la marca actual se armó por partes y hoy no se parece a lo que el negocio llegó a ser.",
+        ],
+      },
+      {
+        titulo: "El manual sirve si se puede leer",
+        parrafos: [
+          "Hay manuales de cien páginas que nadie abre. El que entregamos está escrito para que lo entienda quien va a usarlo: la imprenta, la persona que arma las publicaciones, el desarrollador del sitio.",
+          "Reglas concretas y ejemplos de lo correcto y lo incorrecto, no un tratado sobre la esencia de la marca. Si hay que explicarlo por teléfono, está mal hecho.",
+        ],
+      },
+      {
+        titulo: "Después de la entrega",
+        parrafos: [
+          "La identidad se aplica a lo que ya existe: el sitio, las redes, los documentos que usas todos los días. Esa transición se puede tomar en el mismo proyecto y es donde una identidad se gana o se pierde.",
+          "Los archivos originales quedan contigo, incluidos los editables. Puedes seguir con nosotros, con tu equipo o con quien quieras, y nada del sistema queda amarrado a que sigamos trabajando juntos.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "¿En qué se diferencia de contratar solo el logo?",
+        a: "El logo resuelve la marca en un lugar. Esto resuelve el sistema completo —color, tipografía, tono, aplicaciones— y agrega el manual que permite que otros lo apliquen bien sin preguntarte. Si tu negocio todavía es chico, empezar por el logo es una decisión razonable.",
+      },
+      {
+        q: "¿Incluye el sitio web?",
+        a: "No, el desarrollo va aparte. Lo que sí incluye es la definición visual que el sitio va a usar, así que llegar con esto resuelto hace el proyecto web más corto y más barato.",
+      },
+      {
+        q: "¿Cuánto demora?",
+        a: "Se mide en semanas y depende de cuántas aplicaciones entren. La parte que más se alarga no es el diseño: son las respuestas y aprobaciones de tu lado, así que conviene definir desde el inicio quién decide.",
+      },
+      {
+        q: "¿Y si ya tengo un logo que me gusta?",
+        a: "Se conserva y se construye el sistema alrededor. A veces solo necesita ajustes técnicos para que funcione en tamaño chico o en una tinta, y eso se te dice con el argumento a la vista, no como excusa para rehacerlo.",
+      },
+      {
+        q: "¿Registran la marca en INAPI?",
+        a: "El trámite lo ve un abogado o lo haces directo. Nosotros entregamos los archivos en la forma que el registro pide, y conviene revisar disponibilidad antes de imprimir nada.",
+      },
+      {
+        q: "¿Los archivos quedan a mi nombre?",
+        a: "Sí, incluidos los originales editables. No queda nada guardado de un lado que te obligue a volver.",
+      },
+    ],
     prompt:
-      "Composición de manual de marca abierto sobre mesa crema, con paleta de colores, muestras tipográficas y aplicaciones impresas. Luz cenital de estudio, acento azul cobalto, estilo editorial de diseño, sin texto legible, 3:2.",
+      "Lámina técnica de un SISTEMA DE IDENTIDAD DE MARCA, estilo hoja de normas, en vista frontal plana y no isométrica, organizada en cuatro cuadrantes separados por líneas guía muy finas. En el cuadrante superior izquierdo, una marca abstracta y geométrica sencilla sobre retícula de construcción, con ejes y circunferencias guía que se prolongan más allá del contorno y un recuadro punteado de área de resguardo. En el cuadrante superior derecho, una escala tipográfica representada por cinco barras horizontales sólidas de grosor y largo decrecientes, y bajo ellas una fila de seis cuadrados de muestra de color con una etiqueta rectangular vacía bajo cada uno. En el cuadrante inferior izquierdo, cinco aplicaciones dibujadas en línea fina y a escala pequeña: una tarjeta rectangular, una hoja vertical, un sobre, la silueta lateral de una camioneta y un cartel de señalética sobre un poste, todas mostrando la misma marca reducida. En el cuadrante inferior derecho, cuatro recuadros de uso correcto e incorrecto: dos con la marca centrada y correcta marcados con un visto bueno fino, y dos con la marca deformada o rotada marcados con una equis fina. Anotaciones de plano alrededor: líneas de cota con topes, y llamadas cortas hacia el área de resguardo y hacia uno de los recuadros incorrectos. Cajetín técnico en la esquina inferior derecha. Fondo crema con retícula técnica muy tenue. Escala de grises salvo el azul cobalto, reservado a dos de los cuadrados de color, a la marca del cuadrante superior izquierdo y a los vistos buenos. Sin ningún texto legible ni letras reconocibles en ninguna parte. Trazo vectorial nítido, sin degradados, aire de lámina de diseño impresa, 3:2.",
   },
   {
     id: "design-system",
