@@ -11,9 +11,17 @@ import { catalog, headerActions } from "@/data/catalog";
 //
 // Comportamiento:
 //   · al salir del top gana fondo, borde y sombra para separarse del contenido,
-//   · en móvil se esconde al bajar y reaparece al subir (gana pantalla),
+//   · con un menú desplegado se vuelve opaco: leer una lista con el texto de la
+//     página cruzándose por detrás no es un efecto, es un defecto,
+//   · en móvil se esconde al bajar y reaparece al subir (gana pantalla), salvo
+//     con el menú abierto, donde esconderlo se llevaría el menú con él,
 //   · marca la sección visible en la home (scrollspy con IntersectionObserver),
-//   · el menú móvil cierra con Escape y bloquea el scroll del cuerpo.
+//   · el menú móvil cierra con Escape y fija el cuerpo para que el fondo no se
+//     mueva mientras se recorre la lista.
+//
+// La superficie es `secondary`, la misma del footer: el header abre la página y
+// el footer la cierra, y cuando cada uno usaba su propio tono el salto se veía
+// al llegar abajo.
 // ─────────────────────────────────────────────────────────────────────────────
 
 // El navbar de escritorio muestra solo los destinos que son una decisión.
@@ -115,16 +123,40 @@ export default function Navbar() {
     };
   }, [mega]);
 
+  // Bloqueo de scroll del fondo mientras el menú está abierto.
+  //
+  // `overflow: hidden` en el body no alcanza: Safari en iPhone lo ignora y la
+  // página sigue moviéndose detrás del menú, que es justo lo que se siente
+  // roto al desplegar Servicios y bajar por la lista. La forma que sí funciona
+  // en todos lados es fijar el body y compensar con `top` la posición en la
+  // que estaba, para que al cerrar el visitante vuelva exactamente donde iba y
+  // no al comienzo de la página.
   useEffect(() => {
     if (!open) return;
-    const previous = document.body.style.overflow;
+    const { body } = document;
+    const y = window.scrollY;
+    const previo = {
+      position: body.style.position,
+      top: body.style.top,
+      left: body.style.left,
+      right: body.style.right,
+      overflow: body.style.overflow,
+    };
+
+    body.style.position = "fixed";
+    body.style.top = `-${y}px`;
+    body.style.left = "0";
+    body.style.right = "0";
+    body.style.overflow = "hidden";
+
     const onKey = (event) => {
       if (event.key === "Escape") setOpen(false);
     };
-    document.body.style.overflow = "hidden";
     window.addEventListener("keydown", onKey);
+
     return () => {
-      document.body.style.overflow = previous;
+      Object.assign(body.style, previo);
+      window.scrollTo(0, y);
       window.removeEventListener("keydown", onKey);
     };
   }, [open]);
@@ -156,13 +188,15 @@ export default function Navbar() {
       ref={headerRef}
       onMouseLeave={() => setMega(false)}
       className="fixed inset-x-3 top-3 z-50 transition-transform duration-300 ease-out sm:inset-x-5 sm:top-5"
-      style={{ transform: `translateY(${show ? 0 : -140}%)` }}
+      style={{ transform: `translateY(${show || open ? 0 : -140}%)` }}
     >
       <div
-        className={`mx-auto w-full max-w-[75rem] overflow-hidden rounded-2xl border transition-colors duration-200 ${
-          scrolled || open || mega
-            ? "border-border bg-background/90 shadow-lg shadow-[hsl(var(--ink)/0.08)] backdrop-blur-xl"
-            : "border-border/60 bg-background/70 backdrop-blur-md"
+        className={`mx-auto w-full max-w-300 overflow-hidden rounded-2xl border transition-colors duration-200 ${
+          open || mega
+            ? "border-border bg-secondary shadow-xl shadow-[hsl(var(--ink)/0.12)]"
+            : scrolled
+              ? "border-border bg-secondary/92 shadow-lg shadow-[hsl(var(--ink)/0.08)] backdrop-blur-xl"
+              : "border-border/60 bg-secondary/70 backdrop-blur-md"
         }`}
       >
         {/* Hairline superior: el detalle que da la lectura de panel */}
@@ -262,7 +296,7 @@ export default function Navbar() {
         {mega && (
           <div
             id="mega-servicios"
-            className="hidden border-t border-border bg-background lg:block"
+            className="hidden border-t border-border bg-secondary lg:block"
           >
             <div className="grid gap-x-8 gap-y-8 p-6 xl:grid-cols-4">
               {catalog.map((familia) => (
@@ -300,7 +334,7 @@ export default function Navbar() {
           <nav id="menu-movil" aria-label="Navegación móvil" className="border-t border-border lg:hidden">
             {/* La altura descuenta la píldora y su separación del borde para que
                 el CTA quede siempre alcanzable sin scroll dentro del menú. */}
-            <div className="flex max-h-[calc(100dvh-6.5rem)] flex-col overflow-y-auto px-4 py-4">
+            <div className="flex max-h-[calc(100dvh-6.5rem)] flex-col overflow-y-auto overscroll-contain px-4 py-4">
               <div className="mb-2">
                 {catalog.map((familia) => (
                   <details key={familia.id} className="border-b border-border">

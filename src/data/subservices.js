@@ -1359,6 +1359,7 @@ export const subserviciosBase = [
     id: "branding",
     familia: "branding",
     nombre: "Identidad completa",
+    imagen: "/servicios/identidad-completa.webp",
     resumen: "Marca de punta a punta: estrategia, visual y tono.",
     incluye: ["Logo, paleta y tipografías", "Manual de marca", "Aplicaciones de ejemplo"],
     precios: [390000, 690000, 1290000],
@@ -1458,8 +1459,94 @@ export const subserviciosBase = [
     resumen: "Librería de componentes lista para todos tus productos.",
     incluye: ["Componentes documentados", "Tokens exportables", "Guía de uso"],
     precios: [null, 890000, 1690000],
+    tecnologias: [
+      { nombre: "Tokens de diseño", para: "Color, espaciado y tipografía definidos una vez y consumidos por el diseño y por el código" },
+      { nombre: "Figma", para: "Librería con componentes y variantes, conectada a los mismos tokens" },
+      { nombre: "React", para: "Los componentes reales que se usan en producción, no una maqueta aparte" },
+      { nombre: "Tailwind CSS", para: "Los tokens se aplican como utilidades acotadas, para que el estilo no se desordene" },
+      { nombre: "Storybook", para: "Cada componente con sus estados a la vista, para revisarlo sin abrir el producto" },
+      { nombre: "Guía de accesibilidad", para: "Contraste, foco visible y tamaños de toque resueltos en el componente y no en cada pantalla" },
+    ],
+    metaTitle: "Sistema de diseño y librería de componentes en Chile desde $890.000 · Maudev",
+    metaDescription:
+      "Componentes documentados, tokens exportables y guía de uso, compartidos entre diseño y código. Para equipos con más de un producto que mantener. Desde $890.000 + IVA.",
+    intro:
+      "Esto no es para empresas que tienen un sitio. Es para las que tienen un sitio, una app, un panel interno y dos personas construyendo al mismo tiempo, y ya llevan tres versiones distintas del mismo botón sin que nadie lo haya decidido.",
+    secciones: [
+      {
+        titulo: "El costo que se paga sin verlo",
+        parrafos: [
+          "Cuando cada pantalla se resuelve por su cuenta, el equipo vuelve a decidir cosas que ya estaban decididas: qué azul, cuánto espacio, cómo se ve un campo con error. Esa decisión repetida no aparece en ningún presupuesto y se paga igual, en horas.",
+          "Después aparece el segundo costo: un cambio simple deja de ser simple. Ajustar el color de acento pasa a ser una búsqueda por todo el proyecto, con la certeza de que algo va a quedar fuera.",
+          "Y el tercero, el más caro: el producto se siente distinto según en qué parte estés, y esa inconsistencia el usuario la lee como descuido aunque no sepa nombrarla.",
+        ],
+      },
+      {
+        titulo: "Una sola definición para diseño y código",
+        parrafos: [
+          "El centro del sistema son los tokens: color, espaciado, tipografía, radios y sombras definidos una vez, con nombre propio. La librería de diseño y el código consumen esos mismos valores.",
+          "Esa es la diferencia con un manual de marca. El manual describe cómo debería verse; el sistema hace que se vea así, porque el componente ya viene resuelto y usarlo bien es más fácil que improvisar.",
+          "Cuando cambia un token, cambia en todas partes a la vez. Eso convierte un rediseño parcial en un ajuste de horas en vez de un proyecto.",
+        ],
+      },
+      {
+        titulo: "Qué entra en la librería",
+        parrafos: [
+          "Los componentes que sostienen cualquier producto: botones, campos, formularios, tablas, avisos, modales, navegación, tarjetas. Cada uno con sus estados —normal, sobre, presionado, con foco, deshabilitado, cargando y con error— que es justamente lo que se olvida cuando cada pantalla se hace por separado.",
+          "También los patrones: cómo se muestra una lista vacía, cómo se pide una confirmación, cómo se informa un error del servidor. Son decisiones que un equipo toma diez veces al año y que conviene tomar una sola.",
+          "La accesibilidad se resuelve dentro del componente: contraste, foco visible por teclado y área de toque suficiente. Así deja de depender de que cada persona se acuerde en cada pantalla.",
+        ],
+      },
+      {
+        titulo: "Se construye desde lo que ya tienes",
+        parrafos: [
+          "No se parte de una hoja en blanco. Primero se inventaría lo que existe —cuántos botones distintos hay realmente, cuántos azules, cuántos tamaños de texto— y ese recuento suele ser el argumento más convincente de todo el proyecto.",
+          "Después se consolida: se elige qué versión queda, se documenta y se reemplaza por etapas. El producto sigue funcionando mientras tanto; nada de esto exige congelar el desarrollo.",
+        ],
+      },
+      {
+        titulo: "Sirve solo si el equipo lo adopta",
+        parrafos: [
+          "Un sistema de diseño que nadie usa es una carpeta bonita. La adopción no se logra con una presentación, se logra haciendo que tomar el componente sea más rápido que hacerlo a mano.",
+          "Por eso se entrega documentado, con los componentes a la vista y sus estados, y con ejemplos de uso correcto e incorrecto. Y se acompaña la primera etapa de reemplazo, que es cuando el equipo decide si lo adopta o lo esquiva.",
+        ],
+      },
+      {
+        titulo: "Cuándo no lo necesitas",
+        parrafos: [
+          "Si tienes un solo producto, una persona construyéndolo y no está creciendo, esto es sobreingeniería y te lo vamos a decir. Un buen conjunto de estilos ordenados alcanza y cuesta una fracción.",
+          "El sistema se justifica cuando hay varios productos o varias personas, cuando entra gente nueva seguido, o cuando ya estás perdiendo tiempo discutiendo decisiones visuales que deberían estar zanjadas.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "¿En qué se diferencia de un manual de marca?",
+        a: "El manual describe cómo debería verse la marca. El sistema entrega los componentes ya construidos y los tokens que los alimentan, en diseño y en código, así que la consistencia deja de depender de que alguien recuerde la regla.",
+      },
+      {
+        q: "¿Funciona con la tecnología que ya usamos?",
+        a: "Los tokens se exportan a formatos estándar y sirven para cualquier stack. La librería de componentes se entrega en React, y si tu equipo trabaja en otra tecnología se conversa antes de cotizar qué parte se adapta.",
+      },
+      {
+        q: "¿Hay que detener el desarrollo mientras tanto?",
+        a: "No. Se parte por los componentes más usados y se reemplaza por etapas, conviviendo con lo que ya existe. Detener el producto para migrar es la forma más segura de que la migración no termine.",
+      },
+      {
+        q: "¿Por qué no tiene plan de entrada?",
+        a: "Porque bajo cierto tamaño no se justifica. Si tienes un solo producto y una persona construyéndolo, ordenar los estilos alcanza y cuesta mucho menos; preferimos decírtelo antes de venderte algo que no vas a usar.",
+      },
+      {
+        q: "¿Quién lo mantiene después?",
+        a: "Puede quedar con tu equipo, que recibe todo documentado y con los archivos originales, o podemos mantenerlo nosotros por período acordado. Ninguna de las dos opciones deja el sistema amarrado a nuestro nombre.",
+      },
+      {
+        q: "¿Cuánto demora?",
+        a: "La primera entrega utilizable se mide en semanas y cubre los componentes de mayor uso. El resto crece por etapas, con algo aplicable en cada una.",
+      },
+    ],
     prompt:
-      "Pantalla mostrando una librería de componentes de interfaz en cuadrícula ordenada, botones y tarjetas repetidos en variantes. Fondo crema, acento azul cobalto, estilo producto limpio, sin texto legible, 3:2.",
+      "Lámina técnica de un SISTEMA DE DISEÑO, estilo hoja de catálogo de piezas normalizadas, en vista frontal plana y no isométrica. Ocupando la mayor parte de la lámina, una cuadrícula regular de doce celdas rectangulares de igual tamaño separadas por líneas guía muy finas; dentro de cada celda, una pieza de interfaz dibujada en línea fina y sin texto: un botón sólido, un botón de contorno, un campo de formulario vacío, un campo con un aspa de error, una casilla marcada, un interruptor, una tarjeta con un rectángulo de imagen tachado por una equis, una tabla de tres filas, una barra de navegación, un aviso rectangular con un círculo de icono, un modal con un recuadro superpuesto y un indicador de carga circular. Tres celdas contiguas muestran la misma pieza en tres estados distintos, marcadas por un corchete fino que las agrupa. A la izquierda, una columna vertical estrecha separada por una línea continua, con ocho cuadrados de muestra de color apilados, cuatro barras de escala tipográfica de grosor decreciente y tres líneas de cota cortas de distinta longitud que representan escalones de espaciado; de esa columna salen líneas finas cobalto hacia varias celdas de la cuadrícula, indicando que todas se alimentan de la misma definición. Anotaciones de plano alrededor: líneas de cota con topes y una llamada corta hacia el grupo de tres estados. Cajetín técnico en la esquina inferior derecha. Fondo crema con retícula técnica muy tenue. Escala de grises salvo el azul cobalto, reservado al botón sólido, a dos cuadrados de color y a las líneas que salen de la columna. Sin ningún texto legible ni letras reconocibles en ninguna parte. Trazo vectorial nítido, sin degradados, aire de lámina de ingeniería impresa, 3:2.",
   },
 ];
 

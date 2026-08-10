@@ -30,10 +30,21 @@ const pages = [
     title: "Contacto · Cotiza tu sitio web · Maudev",
     description: "Cuéntanos qué vendes y a quién. Te decimos qué tipo de sitio necesitas, cuánto costaría y en cuánto tiempo estaría publicado.",
   },
+  {
+    route: "/precios",
+    title: "Precios de páginas web, software y diseño en Chile · Maudev",
+    description: "Los precios de los diecinueve servicios, publicados. Página web desde $290.000, tienda online, apps, sistemas y marca, cada uno en tres alcances.",
+  },
+  // El título y la descripción propios de cada servicio mandan sobre el genérico:
+  // se escribieron uno por uno para su búsqueda, y sin esto el HTML estático
+  // —que es lo que ve un rastreador antes de ejecutar JavaScript y lo único que
+  // leen las vistas previas de WhatsApp o LinkedIn— seguía mostrando la fórmula.
   ...subservicios.map((servicio) => ({
     route: servicio.path,
-    title: `${servicio.nombre} en Chile · Precio y qué incluye · Maudev`,
-    description: `${servicio.resumen} Precio por escrito antes de empezar y accesos a tu nombre.`,
+    title: servicio.metaTitle || `${servicio.nombre} en Chile · Precio y qué incluye · Maudev`,
+    description:
+      servicio.metaDescription ||
+      `${servicio.resumen} Precio por escrito antes de empezar y accesos a tu nombre.`,
   })),
   ...projects.map((project) => ({
     route: `/casos/${project.id}`,
