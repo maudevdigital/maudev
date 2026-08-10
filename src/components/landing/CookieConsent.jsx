@@ -101,7 +101,7 @@ export default function CookieConsent() {
               <button
                 type="button"
                 onClick={() => decide(GRANTED)}
-                className="h-11 flex-1 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+                className="btn btn-primary h-11 flex-1 px-5 text-sm"
               >
                 Aceptar
               </button>

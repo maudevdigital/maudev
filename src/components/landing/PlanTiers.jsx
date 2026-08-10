@@ -172,7 +172,7 @@ export default function PlanTiers() {
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => trackAction("whatsapp_click", { ubicacion: "planes" })}
-            className="inline-flex h-12 shrink-0 items-center justify-center gap-2.5 rounded-xl bg-primary px-6 font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+            className="btn btn-primary h-12 shrink-0 px-6"
           >
             Cuéntanos tu caso
             <ArrowRight className="h-4 w-4" aria-hidden="true" />

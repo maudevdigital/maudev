@@ -393,6 +393,143 @@
   border-radius: 999px;
 }
 
+/* ─────────────────────────────────────────────────────────────────────────
+   Lo que el cliente toca.
+
+   Un botón que solo baja la opacidad al pasar el mouse se siente a plantilla,
+   y este sitio vende precisamente lo contrario. La idea acá es que la
+   superficie responda como un instrumento: un milímetro de elevación, una
+   luz que recorre el borde, un clic que hunde la pieza. Nada de rebotes ni
+   animaciones largas —lo caro se nota en el control, no en el movimiento.
+
+   Va en un solo lugar para que los diecinueve servicios, el hero y el
+   formulario se comporten igual: si cada pantalla inventa su propio hover,
+   el sitio deja de sentirse como un producto y pasa a sentirse como páginas
+   sueltas.
+   ───────────────────────────────────────────────────────────────────────── */
+.btn {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  /* La curva es la misma de los desplegables: entra rápido y frena suave, que
+     es como se mueve algo que tiene masa. */
+  transition:
+    transform 180ms cubic-bezier(0.2, 0.7, 0.3, 1),
+    box-shadow 240ms cubic-bezier(0.2, 0.7, 0.3, 1),
+    border-color 240ms ease,
+    background-color 240ms ease,
+    color 240ms ease;
+}
+
+.btn:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 3px;
+}
+
+.btn-primary {
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  /* La línea clara de arriba es lo que separa un botón de un rectángulo de
+     color: simula que la pieza recibe luz desde arriba. */
+  box-shadow:
+    inset 0 1px 0 hsl(0 0% 100% / 0.2),
+    0 10px 26px hsl(var(--primary) / 0.26);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 hsl(0 0% 100% / 0.26),
+    0 16px 36px hsl(var(--primary) / 0.36);
+}
+
+/* Al presionar vuelve al plano y la sombra se mete hacia adentro: es la única
+   forma de que un botón plano confirme el clic sin esperar a la página. */
+.btn-primary:active {
+  transform: translateY(0);
+  box-shadow: inset 0 2px 6px hsl(var(--ink) / 0.32);
+}
+
+/* Reflejo que cruza la pieza una sola vez al entrar el puntero. Va en un
+   pseudo-elemento con z-index negativo dentro del propio aislamiento del
+   botón, así queda sobre el fondo y bajo el texto sin tocar el resto. */
+.btn-primary::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 32%,
+    hsl(0 0% 100% / 0.22) 46%,
+    transparent 62%
+  );
+  transform: translateX(-115%);
+  transition: transform 700ms cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+.btn-primary:hover::after { transform: translateX(115%); }
+
+.btn-ghost {
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--card) / 0.5);
+  color: hsl(var(--foreground));
+  backdrop-filter: blur(10px);
+}
+
+.btn-ghost:hover {
+  transform: translateY(-1px);
+  border-color: hsl(var(--primary) / 0.45);
+  background: hsl(var(--primary) / 0.07);
+  color: hsl(var(--primary));
+  box-shadow: 0 12px 28px hsl(var(--ink) / 0.09);
+}
+
+.btn-ghost:active {
+  transform: translateY(0);
+  background: hsl(var(--primary) / 0.12);
+}
+
+/* Superficies informativas: no son botones, así que no se levantan ni invitan
+   al clic. Solo se enciende la línea superior, lo justo para que la página no
+   se sienta impresa. */
+.panel-hover {
+  transition:
+    border-color 260ms ease,
+    box-shadow 260ms ease;
+}
+
+.panel-hover:hover {
+  border-color: hsl(var(--primary) / 0.28);
+  box-shadow: 0 22px 56px hsl(var(--ink) / 0.10);
+}
+
+.panel-hover::before {
+  transition: background 320ms ease, opacity 320ms ease;
+  opacity: 0.55;
+}
+
+.panel-hover:hover::before {
+  opacity: 1;
+  background: linear-gradient(90deg, transparent, hsl(var(--primary) / 0.85), transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .btn::after,
+  .panel-hover,
+  .panel-hover::before { transition: none; }
+  .btn:hover { transform: none; }
+  .btn-primary:hover::after { transform: translateX(-115%); }
+}
+
 .faq-item { border-bottom: 1px solid hsl(var(--border)); }
 .faq-item summary {
   display: flex;
@@ -403,14 +540,48 @@
   justify-content: space-between;
   gap: 1.5rem;
   font-weight: 700;
+  transition: color 200ms ease;
 }
 .faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary:hover { color: hsl(var(--primary)); }
+.faq-item[open] summary { color: hsl(var(--primary)); }
 .faq-item summary:focus-visible { outline: 2px solid hsl(var(--ring)); outline-offset: 4px; }
+
+/* La cruz se dibuja con dos degradados de una sola parada en vez de un icono:
+   hereda el color del texto, gira a equis al abrir y no agrega una petición
+   más. Antes no había ninguna marca y la pregunta no se leía como algo que se
+   puede abrir. */
+.faq-item summary::after {
+  content: "";
+  flex: none;
+  width: 0.875rem;
+  height: 0.875rem;
+  background:
+    linear-gradient(currentColor 0 0) center / 100% 1.5px no-repeat,
+    linear-gradient(currentColor 0 0) center / 1.5px 100% no-repeat;
+  transition: transform 280ms cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+.faq-item[open] summary::after { transform: rotate(45deg); }
+
 .faq-item p {
   max-width: 46rem;
   padding: 0 2.5rem 1.5rem 0;
   line-height: 1.75;
   color: hsl(var(--muted-foreground));
+}
+
+/* `details` no anima su apertura, pero sí se puede animar lo que aparece: sin
+   esto la respuesta salta de golpe y el desplegable se siente brusco. */
+.faq-item[open] p { animation: faq-reveal 300ms cubic-bezier(0.2, 0.7, 0.3, 1) both; }
+
+@keyframes faq-reveal {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .faq-item summary::after { transition: none; }
+  .faq-item[open] p { animation: none; }
 }
 
 .footer-title {

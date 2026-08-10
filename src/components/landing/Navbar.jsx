@@ -229,7 +229,7 @@ export default function Navbar() {
               href={headerActions.agendar.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex h-10 items-center gap-2 rounded-lg border border-border px-3.5 text-sm font-semibold text-foreground transition-colors hover:border-primary/40 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="btn btn-ghost h-10 rounded-lg! px-3.5 text-sm"
             >
               <CalendarClock className="h-4 w-4" aria-hidden="true" />
               {headerActions.agendar.label}
@@ -342,7 +342,7 @@ export default function Navbar() {
                   href={headerActions.agendar.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex h-12 w-full items-center justify-center gap-2 rounded-lg border border-border text-sm font-semibold text-foreground"
+                  className="btn btn-ghost h-12 w-full rounded-lg! text-sm"
                 >
                   <CalendarClock className="h-4 w-4" aria-hidden="true" />
                   {headerActions.agendar.label}

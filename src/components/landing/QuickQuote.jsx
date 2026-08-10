@@ -116,7 +116,7 @@ export default function QuickQuote() {
         <a
           href={`/contacto?intencion=cotizar&tipo=${tipo.id}&tamano=${tamano.id}`}
           onClick={() => trackAction("cotizador_enviar", { tipo: tipo.id, tamano: tamano.id })}
-          className="group flex items-center justify-between gap-3 rounded-lg bg-primary px-4 py-3 text-primary-foreground transition-opacity hover:opacity-90"
+          className="group btn btn-primary w-full justify-between px-4 py-3"
         >
           <span className="text-sm font-bold">Pedir precio por escrito</span>
           <ArrowRight className="h-4 w-4 shrink-0 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />

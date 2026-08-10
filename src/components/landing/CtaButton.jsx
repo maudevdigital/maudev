@@ -30,11 +30,7 @@ export default function CtaButton({
       data-cta={context || "generic"}
       onClick={() => trackAction("cta_principal_click", { ubicacion: context || "generico" })}
       className={[
-        "group inline-flex items-center justify-center gap-2 rounded-xl font-semibold",
-        "bg-primary text-primary-foreground hover:bg-primary/90",
-        "shadow-[0_14px_35px_hsl(var(--primary)/0.18)]",
-        "transition-[transform,background-color,box-shadow] duration-200 hover:-translate-y-0.5",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+        "group btn btn-primary",
         sizes[size],
         full ? "w-full" : "",
         className,

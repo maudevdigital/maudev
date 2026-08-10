@@ -107,14 +107,14 @@ export default function SubservicePage() {
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => trackAction("whatsapp_click", { ubicacion: `servicio-${servicio.id}` })}
-                    className="inline-flex h-14 items-center justify-center gap-2.5 rounded-xl bg-primary px-7 font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+                    className="btn btn-primary h-14 px-7"
                   >
                     <MessageCircle className="h-5 w-5 shrink-0" aria-hidden="true" />
                     Cotizar por WhatsApp
                   </a>
                   <Link
                     to="/contacto"
-                    className="inline-flex h-14 items-center justify-center rounded-xl border border-border px-6 font-semibold text-foreground transition-colors hover:border-primary/40 hover:text-primary"
+                    className="btn btn-ghost h-14 px-6"
                   >
                     Escribir por el formulario
                   </Link>
@@ -188,7 +188,7 @@ export default function SubservicePage() {
 
             <dl className="mt-10 grid gap-3 sm:grid-cols-3">
               {servicio.precios.map((precio, i) => (
-                <div key={nivelesLabel[i]} className="panel p-6">
+                <div key={nivelesLabel[i]} className="panel panel-hover p-6">
                   <dt className="font-mono text-[10px] uppercase tracking-[0.16em] text-primary">
                     {nivelesLabel[i]}
                   </dt>
@@ -272,7 +272,7 @@ export default function SubservicePage() {
 
               <dl className="grid gap-3 sm:grid-cols-2">
                 {servicio.tecnologias.map(({ nombre, para }) => (
-                  <div key={nombre} className="panel p-5">
+                  <div key={nombre} className="panel panel-hover p-5">
                     <dt className="font-mono text-xs font-bold uppercase tracking-wider text-primary">
                       {nombre}
                     </dt>

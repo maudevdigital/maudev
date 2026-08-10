@@ -55,7 +55,7 @@ export default function Hero() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => trackAction("whatsapp_click", { ubicacion: "hero" })}
-              className="inline-flex h-14 items-center justify-center gap-2.5 rounded-xl bg-primary px-7 font-semibold text-primary-foreground shadow-[0_14px_35px_hsl(var(--primary)/0.18)] transition-[transform,opacity] duration-200 hover:-translate-y-0.5 hover:opacity-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              className="btn btn-primary h-14 px-7"
             >
               <MessageCircle className="h-5 w-5 shrink-0" aria-hidden="true" />
               Hablar por WhatsApp
@@ -65,7 +65,7 @@ export default function Hero() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => trackAction("agendar_click", { ubicacion: "hero" })}
-              className="inline-flex h-14 items-center justify-center gap-2.5 rounded-xl border border-border px-6 font-semibold text-foreground transition-colors hover:border-primary/40 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="btn btn-ghost h-14 px-6"
             >
               <CalendarClock className="h-5 w-5 shrink-0" aria-hidden="true" />
               Agendar 30 min

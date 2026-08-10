@@ -1102,6 +1102,7 @@ export const subserviciosBase = [
     id: "logo",
     familia: "branding",
     nombre: "Logo e identidad",
+    imagen: "/servicios/logo-e-identidad.webp",
     resumen: "Tu marca visual: logo, paleta y tipografías.",
     incluye: ["Logo en tres versiones", "Paleta de color", "Archivos para imprenta y web"],
     precios: [90000, 190000, 390000],
@@ -1187,8 +1188,74 @@ export const subserviciosBase = [
     resumen: "Plantillas editables para publicar sin pedir ayuda.",
     incluye: ["Diez plantillas editables", "Historia, publicación y carrusel", "Con tu paleta de marca"],
     precios: [90000, 190000, 340000],
+    tecnologias: [
+      { nombre: "Canva", para: "Editable por ti desde el navegador, sin comprar ni aprender un programa de diseño" },
+      { nombre: "Medidas nativas por red", para: "Publicación vertical, historia y carrusel en el tamaño que cada una espera" },
+      { nombre: "Marca bloqueada", para: "Colores y tipografías fijos: cambias el texto y la marca no se desarma" },
+      { nombre: "Texto en capas separadas", para: "Se reemplaza sin tocar el diseño ni mover lo que está detrás" },
+      { nombre: "Espacio para foto", para: "Marcos donde tu imagen entra recortada como corresponde, no estirada" },
+    ],
+    metaTitle: "Kit de plantillas para redes sociales en Chile desde $90.000 · Maudev",
+    metaDescription:
+      "Plantillas editables en Canva con tu marca aplicada: publicación, historia y carrusel. Cambias texto y foto y publicas el mismo día. Desde $90.000 + IVA.",
+    intro:
+      "Esto no se trata de tener publicaciones bonitas. Se trata de que puedas publicar un martes a las ocho de la noche sin escribirle a nadie ni esperar a que te respondan.",
+    secciones: [
+      {
+        titulo: "Se entrega donde vas a poder editarlo",
+        parrafos: [
+          "Las plantillas van en Canva, con tu marca ya aplicada. No es la herramienta más sofisticada y esa es exactamente la razón: es la que vas a poder abrir tú.",
+          "Un archivo de diseño profesional se ve mejor en la entrega y te deja dependiendo de alguien cada vez que quieras cambiar una fecha. Eso no es un kit, es una suscripción encubierta.",
+          "Los colores y las tipografías quedan fijos, así que puedes cambiar el texto y la foto sin que la marca se desarme por el camino.",
+        ],
+      },
+      {
+        titulo: "Diez plantillas distintas, no una repetida diez veces",
+        parrafos: [
+          "El error típico es entregar diez piezas que son la misma con otro color. Sirven para un día y después no calzan con nada de lo que necesitas publicar.",
+          "Antes de diseñar revisamos qué publicas de verdad: promoción, dato útil, antes y después, aviso de horario, producto nuevo, respuesta a una pregunta frecuente. Cada tipo de publicación tiene su plantilla.",
+          "También se diseñan para texto real. Una plantilla que solo se ve bien con un título de cuatro palabras se rompe la primera vez que necesitas seis.",
+        ],
+      },
+      {
+        titulo: "Lo que esto no resuelve",
+        parrafos: [
+          "No decide qué publicar ni con qué frecuencia. Si el problema es que no sabes qué decir, el kit no lo arregla: te va a dejar con diez plantillas vacías y la misma duda.",
+          "Lo que sí elimina es la fricción del diseño, que en la práctica es la excusa más común para no publicar. Cuando armar una pieza toma tres minutos, se publica; cuando toma una hora, no.",
+        ],
+      },
+      {
+        titulo: "Si todavía no tienes marca definida",
+        parrafos: [
+          "Conviene resolver primero el logo, los colores y las tipografías. Si no, las plantillas se construyen sobre algo que va a cambiar y hay que rehacerlas.",
+          "Se puede tomar en el mismo proyecto, y sale más barato que hacerlo en dos etapas separadas.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "¿Necesito pagar Canva Pro?",
+        a: "Las plantillas se arman para funcionar con la versión gratuita siempre que se pueda. Si alguna función concreta requiere la versión de pago, se te dice antes y no después de la entrega.",
+      },
+      {
+        q: "¿Puedo cambiar textos y fotos yo mismo?",
+        a: "Esa es la idea. El texto va en capas separadas y las fotos tienen su marco, así que reemplazas y publicas sin mover el diseño.",
+      },
+      {
+        q: "¿Incluye qué publicar?",
+        a: "No. Esto entrega las piezas editables, no el contenido ni el calendario. Lo decimos claro porque es la confusión más común al contratar un kit.",
+      },
+      {
+        q: "¿Sirve para Instagram y también para el resto?",
+        a: "Las medidas cubren publicación vertical, historia y carrusel, que son las que usan Instagram, Facebook y TikTok. Si necesitas otra red con formatos propios, se agrega.",
+      },
+      {
+        q: "¿Y si no tengo logo todavía?",
+        a: "Conviene definir marca primero, si no las plantillas se hacen sobre algo que va a cambiar. Se puede tomar todo junto y sale más barato que en dos etapas.",
+      },
+    ],
     prompt:
-      "Vista cenital de un teléfono rodeado de plantillas impresas de publicaciones y carruseles, sobre fondo crema. Luz difusa, acento azul cobalto, estilo editorial de diseño, sin texto legible, 3:2.",
+      "Lámina técnica de un KIT DE PLANTILLAS PARA REDES, estilo hoja de retículas editoriales, en vista frontal plana y no isométrica. Distribuidos en la lámina, seis marcos rectangulares vacíos de proporciones distintas: dos verticales altos, dos verticales medios y dos cuadrados, cada uno con su retícula interna de columnas y líneas base dibujadas en trazo muy fino, márgenes de seguridad punteados y bloques grises sólidos que ocupan el lugar del texto sin formar letras. Uno de los marcos verticales está en primer plano, algo más grande, con un rectángulo de imagen marcado por una equis diagonal fina y una banda de color plano cobalto en su borde inferior. A la derecha, tres marcos pequeños ligeramente superpuestos en abanico, sugiriendo las piezas de un carrusel, unidos por una línea cobalto continua con puntos de conexión. A la izquierda, una columna vertical delgada con cuatro cuadrados de muestra de color apilados y, bajo ellos, tres barras horizontales de distinto grosor que representan jerarquías tipográficas. Anotaciones de plano alrededor: líneas de cota con topes indicando proporciones de cada marco, y una llamada corta hacia el margen de seguridad. Cajetín técnico en la esquina inferior derecha. Fondo crema con retícula técnica muy tenue. Escala de grises salvo el azul cobalto, reservado a la banda del marco principal, a la línea del carrusel y a uno de los cuadrados de color. Sin ningún texto legible ni letras reconocibles en ninguna parte. Trazo vectorial nítido, sin degradados, aire de lámina de diseño impresa, 3:2.",
   },
   {
     id: "ux",
