@@ -6,7 +6,38 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Cross-Origin-Opener-Policy: same-origin-allow-popups
   Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=()
+  # CSP mínima y sin riesgo: bloquea que otro sitio te incruste, que inyecten
+  # una etiqueta <base>, que se envíe un formulario a otro dominio y que corra
+  # cualquier plugin. Falta la parte de script-src y connect-src, que necesita
+  # el dominio del worker de leads (vive en una variable de entorno) y no se
+  # puede adivinar: una lista incompleta ahí deja el formulario mudo.
+  Content-Security-Policy: frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'
 
-# Assets con hash → caché larga (mejora "caché eficiente").
+# Revalidar los chunks evita fijar en caché una respuesta 404 durante la breve
+# propagación entre el HTML de un deploy y sus assets.
 /assets/*
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=0, must-revalidate
+
+/404.html
+  Cache-Control: no-store
+  X-Robots-Tag: noindex
+
+# Imágenes del sitio: cambian solo al desplegar una nueva versión.
+/img/*
+  Cache-Control: public, max-age=2592000
+
+/portfolio/*
+  Cache-Control: public, max-age=2592000
+
+/social/*
+  Cache-Control: public, max-age=2592000
+
+# Utilidades fuera de la arquitectura comercial. /precios ya NO va acá: la
+# página se reconstruyó para posicionar ("cuánto cuesta una página web en
+# Chile") y está en el sitemap. Una URL del sitemap con noindex es un error
+# reportado en Search Console, además de trabajo tirado.
+/ig
+  X-Robots-Tag: noindex, follow
+
+/links
+  X-Robots-Tag: noindex, follow

@@ -2,10 +2,8 @@ import { useState } from "react";
 import { Check, ArrowRight, ShieldCheck, Zap, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { priceFor } from "@/lib/region";
-import { motion } from "framer-motion";
 import { N8N_PRODUCTS } from "@/data/n8nProducts";
 import CheckoutModal from "./CheckoutModal";
-import { t } from "@/lib/i18n";
 
 export default function N8nProductsSection() {
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -23,31 +21,24 @@ export default function N8nProductsSection() {
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
           <span className="inline-flex items-center gap-1.5 text-xs font-mono px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20 font-bold uppercase tracking-wider mb-3">
             <Zap className="h-3.5 w-3.5" />
-            {t("Productized Workflows · Compra Directa", "Productized Workflows · Direct Purchase")}
+            Productized Workflows · Compra Directa
           </span>
           <h2 className="text-3xl sm:text-4xl font-black tracking-tight mt-2 mb-4">
-            {t("Workflows de n8n listos para", "Ready-to-use n8n workflows for")}{" "}
-            <span className="text-primary">{t("desplegar y vender", "deploy and scale")}</span>
+            {"Workflows de n8n listos para"}{" "}
+            <span className="text-primary">{"desplegar y vender"}</span>
           </h2>
           <p className="text-base text-muted-foreground leading-relaxed">
-            {t(
-              "Sin contratar meses de desarrollo. Automatizaciones paquetizadas diseñadas para convertir leads de Meta Ads, conectar WhatsApp API y facturar automáticamente.",
-              "No long dev contracts. Packaged automations designed to convert Meta Ads leads, connect WhatsApp API, and auto-invoice."
-            )}
+            Sin contratar meses de desarrollo. Automatizaciones paquetizadas diseñadas para convertir leads de Meta Ads, conectar WhatsApp API y facturar automáticamente.
           </p>
         </div>
 
         {/* Grid de Productos */}
         <div className="grid md:grid-cols-3 gap-6 items-stretch">
-          {N8N_PRODUCTS.map((prod, idx) => {
+          {N8N_PRODUCTS.map((prod) => {
             const Icon = prod.icon;
             return (
-              <motion.div
+              <div
                 key={prod.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1, duration: 0.4 }}
                 className={`flex flex-col bg-card border rounded-2xl p-7 relative transition-all duration-300 ${
                   prod.featured
                     ? "border-primary/50 shadow-lg shadow-primary/5 ring-1 ring-primary/30"
@@ -56,7 +47,7 @@ export default function N8nProductsSection() {
               >
                 {prod.featured && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-[11px] font-bold font-mono px-3 py-0.5 rounded-full uppercase tracking-wider shadow-sm">
-                    {t("Recomendado Meta Ads", "Meta Ads Recommended")}
+                    Recomendado Meta Ads
                   </div>
                 )}
 
@@ -85,7 +76,7 @@ export default function N8nProductsSection() {
                 <div className="mt-auto space-y-4">
                   <div className="border-t border-border/50 pt-4">
                     <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider mb-3">
-                      {t("¿Qué incluye este paquete?", "What's included in this pack?")}
+                      ¿Qué incluye este paquete?
                     </p>
                     <ul className="space-y-2 mb-6">
                       {prod.features.map((feat, fIdx) => (
@@ -106,11 +97,11 @@ export default function N8nProductsSection() {
                     }`}
                   >
                     <Download className="h-4 w-4" />
-                    {t("Adquirir Workflow Ahora", "Get Workflow Now")}
+                    Adquirir Workflow Ahora
                     <ArrowRight className="h-4 w-4" />
                   </Button>
                 </div>
-              </motion.div>
+              </div>
             );
           })}
         </div>
@@ -122,12 +113,9 @@ export default function N8nProductsSection() {
               <ShieldCheck className="h-6 w-6" />
             </div>
             <div>
-              <h4 className="text-base font-bold">{t("Garantía de Despliegue & Boleta SII", "Deployment Guarantee & SII Tax Receipt")}</h4>
+              <h4 className="text-base font-bold">{"Garantía de Despliegue & Boleta SII"}</h4>
               <p className="text-xs text-muted-foreground mt-0.5">
-                {t(
-                  "Pagos seguros procesados por Mercado Pago o Stripe. Emitimos boleta/factura electrónica autorizada por el SII conforme a la ley chilena.",
-                  "Secure payments via Mercado Pago or Stripe. Chilean SII authorized electronic receipts/invoices issued."
-                )}
+                Pagos seguros procesados por Mercado Pago o Stripe. Emitimos boleta/factura electrónica autorizada por el SII conforme a la ley chilena.
               </p>
             </div>
           </div>

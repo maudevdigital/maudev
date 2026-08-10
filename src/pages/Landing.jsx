@@ -1,39 +1,63 @@
 import Navbar from "@/components/landing/Navbar";
 import Hero from "@/components/landing/Hero";
-import AutomationsGrid from "@/components/landing/AutomationsGrid";
-import PortafolioPreview from "@/components/landing/PortafolioPreview";
-import Steps from "@/components/landing/Steps";
-import Faq from "@/components/landing/Faq";
+import PlanTiers from "@/components/landing/PlanTiers";
+import SolutionsOverview from "@/components/landing/SolutionsOverview";
+import CaseStudies from "@/components/landing/CaseStudies";
+import Capabilities from "@/components/landing/Capabilities";
+import WorkProcess from "@/components/landing/WorkProcess";
+import Faq, { faqs } from "@/components/landing/Faq";
 import FinalCta from "@/components/landing/FinalCta";
 import Footer from "@/components/landing/Footer";
 import { useSeo } from "@/lib/useSeo";
-import { t } from "@/lib/i18n";
-
-// ─────────────────────────────────────────────────────────────────────────────
-// HOME ÚNICA
-//
-// Absorbe lo que antes eran 4 páginas separadas (/servicios, /precios,
-// /automatizaciones y /portafolio). Esas rutas ahora redirigen acá con 301
-// desde public/_redirects, así no se pierde el SEO ya indexado.
-//
-// Secuencia pensada para no hacer dudar:
-//   gancho → qué resuelve y cuánto cuesta → prueba de que existe →
-//   cómo funciona → objeciones → un solo botón.
-//
-// Una sola acción en toda la página: escribir por WhatsApp.
-// ─────────────────────────────────────────────────────────────────────────────
+import { founder } from "@/data/site";
 
 export default function Landing() {
   useSeo({
-    title: t(
-      "Maudev · Automatización con IA para PYMEs en Chile",
-      "Maudev · AI automation for small businesses in Chile"
-    ),
-    description: t(
-      "Automatizo respuestas, agenda, cobros y seguimiento de tu PYME. Precio fijo por escrito, 30 días de garantía y el código queda tuyo. Escríbeme por WhatsApp.",
-      "I automate replies, booking, payments and follow-ups for your business. Fixed price in writing, 30-day warranty, you own the code."
-    ),
+    title: "Diseño y desarrollo de páginas web en Chile · Maudev",
+    description: "Diseñamos y programamos sitios web rápidos y claros para empresas y emprendedores en Chile. Landing desde $390.000, con mantención mensual y automatizaciones opcionales.",
     path: "/",
+    image: "/og-image.png",
+    // Solo entidades que existen y son visibles en la página: la organización,
+    // el sitio y el FAQ que el visitante puede leer más abajo. Sin reviews,
+    // ratings, premios ni dirección: nada de eso está verificado.
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://maudev.cl/#organizacion",
+          name: "Maudev",
+          url: "https://maudev.cl",
+          logo: "https://maudev.cl/logo-1024.png",
+          image: "https://maudev.cl/og-image.png",
+          description: "Diseño y desarrollo de páginas web para empresas en Chile, con mantención y automatización.",
+          areaServed: { "@type": "Country", name: "Chile" },
+          founder: { "@type": "Person", name: founder.name },
+          contactPoint: {
+            "@type": "ContactPoint",
+            contactType: "customer support",
+            email: "contacto@maudev.cl",
+            availableLanguage: ["es-CL"],
+          },
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://maudev.cl/#sitio",
+          url: "https://maudev.cl",
+          name: "Maudev",
+          inLanguage: "es-CL",
+          publisher: { "@id": "https://maudev.cl/#organizacion" },
+        },
+        {
+          "@type": "FAQPage",
+          mainEntity: faqs.map((faq) => ({
+            "@type": "Question",
+            name: faq.q,
+            acceptedAnswer: { "@type": "Answer", text: faq.a },
+          })),
+        },
+      ],
+    },
   });
 
   return (
@@ -41,9 +65,11 @@ export default function Landing() {
       <Navbar />
       <main>
         <Hero />
-        <AutomationsGrid />
-        <PortafolioPreview />
-        <Steps />
+        <PlanTiers />
+        <CaseStudies />
+        <Capabilities />
+        <SolutionsOverview />
+        <WorkProcess />
         <Faq />
         <FinalCta />
       </main>

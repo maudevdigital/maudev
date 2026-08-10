@@ -1,97 +1,72 @@
-import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import { Mail, MessageCircle, CheckCircle, Send, ShieldCheck, ExternalLink, Calendar } from "lucide-react";
-import { getWhatsAppUrl, whatsappEnabled } from "@/components/landing/WhatsAppFloat";
-import Navbar from "@/components/landing/Navbar";
-import Footer from "@/components/landing/Footer";
-import { Button } from "@/components/ui/button";
+import { useRef, useState } from "react";
+import { CheckCircle2, Mail, MessageCircle, Send } from "lucide-react";
+import Breadcrumbs from "@/components/landing/Breadcrumbs";
+import PageShell from "@/components/landing/PageShell";
+import { getWhatsAppUrl } from "@/lib/whatsapp";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { CTA_MESSAGE } from "@/data/site";
 import { getLeadAttribution } from "@/lib/lead-tracking";
+import { trackAction } from "@/lib/MetaPixelTracker";
 import { useLeadSubmit } from "@/lib/useLeadSubmit";
 import { useSeo } from "@/lib/useSeo";
-import { toast } from "sonner";
-import { t } from "@/lib/i18n";
 
-const CONTACT_EMAIL = "contacto@maudev.cl";
-
-const COUNTRIES = [
-  { code: "CL", flag: "🇨🇱", label: "Chile", dial: "+56", placeholder: "9 1234 5678", min: 8, max: 9 },
-  { code: "US", flag: "🇺🇸", label: t("Estados Unidos", "United States"), dial: "+1", placeholder: "(555) 123-4567", min: 10, max: 10 },
-  { code: "MX", flag: "🇲🇽", label: t("México", "Mexico"), dial: "+52", placeholder: "55 1234 5678", min: 10, max: 10 },
-  { code: "CO", flag: "🇨🇴", label: "Colombia", dial: "+57", placeholder: "300 123 4567", min: 10, max: 10 },
-  { code: "PE", flag: "🇵🇪", label: t("Perú", "Peru"), dial: "+51", placeholder: "987 654 321", min: 9, max: 9 },
-  { code: "AR", flag: "🇦🇷", label: "Argentina", dial: "+54", placeholder: "11 1234 5678", min: 10, max: 11 },
-];
-
-const INTERESTS = [
-  { value: "web_dev", label: t("Sitio o landing web", "Website or landing page") },
-  { value: "web_app", label: t("Software a medida", "Custom software") },
-  { value: "automation", label: t("Automatización", "Automation") },
-  { value: "payments", label: t("Integración de pagos / APIs", "Payments / APIs integration") },
-  { value: "support", label: t("Mantención y soporte", "Maintenance & support") },
-  { value: "general", label: t("Consulta general", "General inquiry") },
-];
-const VALID_INTERESTS = INTERESTS.map((i) => i.value);
-
-const inputClass =
-  "w-full h-11 rounded-md border border-input bg-background px-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors";
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 export default function Contacto() {
-  const [searchParams] = useSearchParams();
-  const preselected = searchParams.get("servicio");
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    country: "CL",
-    phone: "",
-    interest: VALID_INTERESTS.includes(preselected) ? preselected : "",
-    message: "",
-  });
+  const [form, setForm] = useState({ name: "", business: "", process: "", contact: "" });
+  const [honeypot, setHoneypot] = useState("");
+  const [error, setError] = useState("");
+  const started = useRef(false);
   const { submit, loading, sent } = useLeadSubmit();
 
   useSeo({
-    title: t("Contacto · Maudev", "Contact · Maudev"),
-    description: t(
-      "Cuéntanos tu proyecto y te respondemos en 24h. Diagnóstico gratis: web, software y automatización para PYMEs en Chile.",
-      "Tell us about your project and we'll reply within 24h. Free assessment: web, software and automation for SMBs in Chile."
-    ),
+    title: "Contacto · Cuéntanos qué quieres automatizar · Maudev",
+    description: "Describe el proceso que quieres automatizar. Te diremos si es viable, qué necesitaríamos y cómo podría implementarse.",
     path: "/contacto",
+    image: "/og-image.png",
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Inicio", item: "https://maudev.cl/" },
+        { "@type": "ListItem", position: 2, name: "Contacto", item: "https://maudev.cl/contacto" },
+      ],
+    },
   });
 
-  // Si el usuario llega con ?servicio=... preselecciona el objetivo.
-  useEffect(() => {
-    if (preselected && VALID_INTERESTS.includes(preselected)) {
-      setForm((f) => ({ ...f, interest: preselected }));
-    }
-  }, [preselected]);
+  const update = (key) => (event) => setForm((current) => ({ ...current, [key]: event.target.value }));
+  const markStarted = () => {
+    if (started.current) return;
+    started.current = true;
+    trackAction("contacto_inicio", { origen: "formulario" });
+  };
 
-  const country = COUNTRIES.find((c) => c.code === form.country) || COUNTRIES[0];
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setError("");
+    const contact = form.contact.trim();
+    const email = emailPattern.test(contact) ? contact : "";
+    const digits = contact.replace(/\D/g, "");
+    const whatsapp = !email && digits.length >= 8 ? contact : "";
 
-  // Campo trampa contra bots: invisible para una persona, irresistible para un
-  // script que rellena todo lo que encuentra. Si llega con algo, el worker
-  // descarta el envío (y responde 200 para que el bot no aprenda que lo pillaron).
-  const [honeypot, setHoneypot] = useState("");
-  const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!form.name.trim() || !form.email.trim() || !form.phone.trim() || !form.interest || !form.message.trim()) {
-      toast.error(t("Completa todos los campos para enviar tu mensaje.", "Please fill in all fields to send your message."));
+    if (!form.name.trim() || !form.business.trim() || !form.process.trim() || !contact) {
+      setError("Completa los cuatro campos para que podamos evaluar tu proceso.");
       return;
     }
-    const digits = form.phone.replace(/\D/g, "");
-    if (digits.length < country.min || digits.length > country.max) {
-      toast.error(t(`El teléfono de ${country.label} no parece válido. Revisa el número.`, `The phone number for ${country.label} doesn't look valid. Please check it.`));
+    if (!email && !whatsapp) {
+      setError("Escribe un correo válido o un número de WhatsApp con código de país.");
       return;
     }
-    await submit({
+
+    trackAction("formulario_envio", { formulario: "contacto" });
+    const ok = await submit({
       lead: {
         name: form.name.trim(),
-        email: form.email.trim(),
-        whatsapp: `${country.dial} ${form.phone.trim()}`,
-        interest: form.interest,
-        message: form.message.trim(),
+        email: email || undefined,
+        whatsapp: whatsapp || undefined,
+        interest: form.business.trim(),
+        message: form.process.trim(),
         source: "contact_page",
         empresa_web: honeypot,
         status: "new",
@@ -99,211 +74,81 @@ export default function Contacto() {
         ...getLeadAttribution(),
       },
       track: {
-        email: form.email.trim(),
-        phone: `${country.dial}${form.phone.trim()}`,
-        params: { content_name: "Formulario contacto", content_category: form.interest, name: form.name.trim(), source: "contact_page" },
+        email: email || undefined,
+        phone: whatsapp || undefined,
+        params: { content_name: "Proceso a automatizar", content_category: form.business.trim(), source: "contact_page" },
       },
-      successMessage: t("Mensaje recibido. Te respondemos pronto.", "Message received. We'll reply soon."),
+      successMessage: "Mensaje recibido. Revisaremos tu proceso y te responderemos pronto.",
     });
+    if (ok) trackAction("contacto_completado", { origen: "formulario" });
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Navbar />
-
-      <section className="pt-32 pb-16 lg:pt-40 lg:pb-12">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <span className="kicker">{t("contacto", "contact")}</span>
-          <h1 className="text-4xl sm:text-5xl font-black tracking-tight mt-3 mb-6">
-            {t("Hablemos de tu", "Let's talk about your")} <span className="text-primary">{t("proyecto", "project")}</span>
-          </h1>
-          <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-            {t(
-              "Cuéntanos qué necesitas y te respondemos en menos de 24h con una propuesta concreta.",
-              "Tell us what you need and we'll reply within 24h with a concrete proposal."
-            )}
-          </p>
-        </div>
-      </section>
-
-      <section className="pb-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 mb-12">
-            <a
-              href="https://cal.com/maudev/30min"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-card border border-primary/40 rounded-2xl p-6 hover:border-primary transition-colors group sm:col-span-2 lg:col-span-1"
-            >
-              <div className="h-10 w-10 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center mb-4">
-                <Calendar className="h-5 w-5 text-primary" />
-              </div>
-              <h3 className="font-bold mb-1 flex items-center gap-2">
-                {t("Agenda tu diagnóstico gratis", "Book your free assessment")}
-                <ExternalLink className="h-3.5 w-3.5 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
-              </h3>
-              <p className="text-sm text-primary font-medium">{t("Elige día y hora → 30 min, sin compromiso", "Pick a slot → 30 min, no strings")}</p>
-            </a>
-
-            <a
-              href={`mailto:${CONTACT_EMAIL}`}
-              className="bg-card border border-border rounded-2xl p-6 hover:border-foreground/30 transition-colors group"
-            >
-              <div className="h-10 w-10 rounded-lg bg-secondary border border-border flex items-center justify-center mb-4">
-                <Mail className="h-5 w-5 text-foreground" />
-              </div>
-              <h3 className="font-bold mb-1">{t("Correo", "Email")}</h3>
-              <p className="text-sm text-muted-foreground break-all">{CONTACT_EMAIL}</p>
-            </a>
-
-            {whatsappEnabled ? (
-              <a
-                href={getWhatsAppUrl(t(
-                  "Hola, me gustaría saber más sobre tus servicios de desarrollo web.",
-                  "Hi, I'd like to know more about your web development services."
-                ))}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-card border border-border rounded-2xl p-6 hover:border-[#25D366]/60 transition-colors group"
-              >
-                <div className="h-10 w-10 rounded-lg bg-[#25D366]/10 border border-[#25D366]/20 flex items-center justify-center mb-4">
-                  <MessageCircle className="h-5 w-5 text-[#25D366]" />
+    <PageShell>
+      <main>
+        <section className="pb-20 pt-30 sm:pt-36 lg:pb-28 lg:pt-42">
+          <div className="site-container">
+            <Breadcrumbs items={[{ label: "Contacto" }]} />
+            <div className="grid gap-12 lg:grid-cols-[0.82fr_1.18fr] lg:gap-20">
+              <div>
+                <span className="eyebrow">Contacto</span>
+                <h1 className="mt-5 max-w-[12ch] text-5xl font-extrabold leading-[0.99] tracking-[-0.06em] sm:text-6xl">Cuéntame qué vendes y a quién.</h1>
+                <p className="mt-6 max-w-lg text-lg leading-relaxed text-muted-foreground">
+                  No necesitas preparar un documento técnico. Describe qué ocurre hoy, qué se repite y dónde se traba.
+                </p>
+                <div className="mt-10 space-y-4 border-t border-border pt-6">
+                  <a href="mailto:contacto@maudev.cl" className="flex items-center gap-3 text-sm font-semibold hover:text-primary">
+                    <Mail className="h-4 w-4 text-primary" aria-hidden="true" /> contacto@maudev.cl
+                  </a>
+                  <a href={getWhatsAppUrl(CTA_MESSAGE)} target="_blank" rel="noopener noreferrer" onClick={() => trackAction("whatsapp_click", { ubicacion: "contacto" })} className="flex items-center gap-3 text-sm font-semibold hover:text-primary">
+                    <MessageCircle className="h-4 w-4 text-primary" aria-hidden="true" /> Escribir por WhatsApp
+                  </a>
                 </div>
-                <h3 className="font-bold mb-1 flex items-center gap-2">
-                  WhatsApp
-                  <ExternalLink className="h-3.5 w-3.5 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
-                </h3>
-                <p className="text-sm text-[#25D366] font-medium">{t("Escribir ahora →", "Message now →")}</p>
-              </a>
-            ) : (
-              <div className="bg-card border border-border rounded-2xl p-6">
-                <div className="h-10 w-10 rounded-lg bg-secondary border border-border flex items-center justify-center mb-4">
-                  <MessageCircle className="h-5 w-5 text-foreground" />
-                </div>
-                <h3 className="font-bold mb-1">WhatsApp</h3>
-                <p className="text-sm text-muted-foreground">{t("Déjanos tu número en el formulario y te escribimos.", "Leave your number in the form and we'll message you.")}</p>
               </div>
-            )}
-          </div>
-        </div>
-      </section>
 
-      <section className="pb-24">
-        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-card border border-border rounded-2xl p-6 sm:p-8">
-              <h2 className="text-2xl font-bold mb-2">{t("Envíanos un mensaje", "Send us a message")}</h2>
-              <p className="text-sm text-muted-foreground mb-6">
-                {t("Te respondemos por correo y, con tu número, también por WhatsApp.", "We reply by email and, with your number, also via WhatsApp.")}
-              </p>
-
-              {sent ? (
-                <div className="flex flex-col items-center justify-center py-12 text-center">
-                  <div className="h-16 w-16 rounded-full bg-secondary border border-border flex items-center justify-center mb-4">
-                    <CheckCircle className="h-8 w-8 text-foreground" />
+              <div className="rounded-[1.35rem] border border-border bg-card p-6 shadow-[0_24px_70px_hsl(var(--ink)/0.08)] sm:p-9">
+                {sent ? (
+                  <div className="flex min-h-[30rem] flex-col items-center justify-center text-center" aria-live="polite">
+                    <CheckCircle2 className="h-12 w-12 text-success" aria-hidden="true" />
+                    <h2 className="mt-6 text-2xl font-extrabold">Mensaje recibido</h2>
+                    <p className="mt-3 max-w-sm leading-relaxed text-muted-foreground">Te respondo el mismo día por el medio que indicaste, con qué necesitas y cuánto costaría.</p>
                   </div>
-                  <h3 className="text-lg font-semibold mb-2">{t("Mensaje recibido", "Message received")}</h3>
-                  <p className="text-sm text-muted-foreground">{t("Te respondemos en menos de 24h hábiles.", "We'll reply within 24 business hours.")}</p>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-5" noValidate>
-                  {/* Honeypot. aria-hidden + tabIndex -1 para que ningún lector
-                      de pantalla ni tabulación lo alcance. */}
-                  <input
-                    type="text"
-                    name="empresa_web"
-                    value={honeypot}
-                    onChange={(e) => setHoneypot(e.target.value)}
-                    tabIndex={-1}
-                    autoComplete="off"
-                    aria-hidden="true"
-                    className="absolute left-[-9999px] h-0 w-0 opacity-0"
-                  />
-                  <div>
-                    <label className="text-xs font-mono text-muted-foreground mb-1.5 block">{t("nombre", "name")} *</label>
-                    <Input value={form.name} onChange={set("name")} placeholder={t("Tu nombre", "Your name")} className="bg-background border-border h-11" required />
-                  </div>
-                  <div>
-                    <label className="text-xs font-mono text-muted-foreground mb-1.5 block">email *</label>
-                    <Input type="email" value={form.email} onChange={set("email")} placeholder="tu@email.com" className="bg-background border-border h-11" required />
-                  </div>
-                  <div>
-                    <label className="text-xs font-mono text-muted-foreground mb-1.5 block">{t("teléfono / whatsapp", "phone / whatsapp")} *</label>
-                    <div className="flex gap-2">
-                      <select
-                        value={form.country}
-                        onChange={set("country")}
-                        className="h-11 rounded-md border border-input bg-background px-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring shrink-0"
-                        aria-label={t("País", "Country")}
-                      >
-                        {COUNTRIES.map((c) => (
-                          <option key={c.code} value={c.code}>
-                            {c.flag} {c.dial}
-                          </option>
-                        ))}
-                      </select>
-                      <Input
-                        type="tel"
-                        value={form.phone}
-                        onChange={set("phone")}
-                        placeholder={country.placeholder}
-                        className="bg-background border-border h-11 flex-1"
-                        required
-                      />
+                ) : (
+                  <form onSubmit={handleSubmit} onFocus={markStarted} noValidate>
+                    <input type="text" name="empresa_web" value={honeypot} onChange={(event) => setHoneypot(event.target.value)} tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute left-[-9999px] h-0 w-0 opacity-0" />
+                    <div className="grid gap-5 sm:grid-cols-2">
+                      <div>
+                        <label htmlFor="contact-name" className="form-label">Nombre</label>
+                        <Input id="contact-name" name="name" autoComplete="name" value={form.name} onChange={update("name")} className="mt-2 h-12 bg-background" placeholder="Tu nombre" required />
+                      </div>
+                      <div>
+                        <label htmlFor="contact-business" className="form-label">Empresa o tipo de negocio</label>
+                        <Input id="contact-business" name="business" autoComplete="organization" value={form.business} onChange={update("business")} className="mt-2 h-12 bg-background" placeholder="Ej. barbería, taller, consultora" required />
+                      </div>
                     </div>
-                  </div>
-                  <div>
-                    <label className="text-xs font-mono text-muted-foreground mb-1.5 block">{t("qué necesitas", "what you need")} *</label>
-                    <select value={form.interest} onChange={set("interest")} className={inputClass} required>
-                      <option value="" disabled>
-                        {t("Selecciona una opción", "Select an option")}
-                      </option>
-                      {INTERESTS.map((o) => (
-                        <option key={o.value} value={o.value}>
-                          {o.label}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div>
-                    <label className="text-xs font-mono text-muted-foreground mb-1.5 block">{t("mensaje", "message")} *</label>
-                    <Textarea
-                      value={form.message}
-                      onChange={set("message")}
-                      placeholder={t("Cuéntanos brevemente sobre tu proyecto...", "Tell us briefly about your project...")}
-                      className="bg-background border-border min-h-[120px]"
-                      required
-                    />
-                  </div>
+                    <div className="mt-5">
+                      <label htmlFor="contact-process" className="form-label">Qué necesitas</label>
+                      <Textarea id="contact-process" name="process" value={form.process} onChange={update("process")} className="mt-2 min-h-36 bg-background" placeholder="Ej. vendo repuestos y hoy solo tengo Instagram..." required />
+                    </div>
+                    <div className="mt-5">
+                      <label htmlFor="contact-method" className="form-label">Correo o WhatsApp</label>
+                      <Input id="contact-method" name="contact" autoComplete="email" value={form.contact} onChange={update("contact")} className="mt-2 h-12 bg-background" placeholder="correo@empresa.cl o +56 9..." aria-describedby="contact-help" required />
+                      <p id="contact-help" className="mt-2 text-xs text-muted-foreground">Usaremos este dato solo para responder tu consulta.</p>
+                    </div>
 
-                  <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                    <ShieldCheck className="h-4 w-4 shrink-0" />
-                    <span>
-                      {t("Aceptamos pagos en", "We accept payments in")}{" "}
-                      <strong className="text-foreground font-semibold">CLP</strong>,{" "}
-                      <strong className="text-foreground font-semibold">USD</strong> {t("y", "and")}{" "}
-                      <strong className="text-foreground font-semibold">USDT</strong> {t("según tu país.", "depending on your country.")}
-                    </span>
-                  </div>
+                    {error && <p className="mt-5 rounded-lg border border-error/25 bg-error/8 p-3 text-sm text-error" role="alert">{error}</p>}
 
-                  <p className="text-[11px] text-muted-foreground">
-                    {t("Todos los campos son obligatorios. Al enviar aceptas nuestra", "All fields are required. By submitting you accept our")}{" "}
-                    <a href="/privacidad" className="text-primary hover:underline">{t("política de privacidad", "privacy policy")}</a>.
-                  </p>
-                  <Button
-                    type="submit"
-                    disabled={loading}
-                    className="w-full h-12 bg-primary text-primary-foreground hover:bg-primary/90 font-semibold"
-                  >
-                    {loading ? t("Enviando...", "Sending...") : t("Enviar mensaje", "Send message")}
-                    <Send className="ml-2 h-4 w-4" />
-                  </Button>
-                </form>
-              )}
+                    <button type="submit" disabled={loading} className="btn btn-primary mt-6 h-13 w-full px-6 text-sm font-bold disabled:cursor-wait disabled:opacity-65">
+                      {loading ? "Enviando…" : "Enviar mi proceso"} <Send className="h-4 w-4" aria-hidden="true" />
+                    </button>
+                    <p className="mt-4 text-center text-[11px] leading-relaxed text-muted-foreground">Al enviar aceptas nuestra <a href="/privacidad" className="underline underline-offset-2 hover:text-primary">política de privacidad</a>.</p>
+                  </form>
+                )}
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
-
-      <Footer />
-    </div>
+        </section>
+      </main>
+    </PageShell>
   );
 }

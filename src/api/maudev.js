@@ -1,7 +1,7 @@
-// Capa de datos del sitio (sin backend). Blog y portafolio se sirven desde los
-// archivos locales del repo (versionados en git); los leads salen por el webhook
-// de n8n (ver lib/leads.js). Se conserva la MISMA forma `api.entities.X.method`
-// para no tocar los componentes que ya la consumen.
+// Capa de datos del sitio (sin backend). Los casos se sirven desde los archivos
+// locales del repo (versionados en git); los leads salen por el webhook de n8n
+// (ver lib/leads.js). Se conserva la MISMA forma `api.entities.X.method` para no
+// tocar los componentes que ya la consumen.
 
 import { projects, getProjectById } from "@/data/projects";
 import { submitLead } from "@/lib/leads";

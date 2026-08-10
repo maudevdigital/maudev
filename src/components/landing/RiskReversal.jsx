@@ -1,5 +1,4 @@
 import { ShieldCheck, FileSignature, KeyRound } from "lucide-react";
-import { t } from "@/lib/i18n";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // REVERSIÓN DE RIESGO
@@ -20,27 +19,18 @@ import { t } from "@/lib/i18n";
 const items = [
   {
     icon: ShieldCheck,
-    title: t("30 días de garantía", "30-day warranty"),
-    body: t(
-      "Si no hace lo acordado, lo arreglo sin costo. Si no tiene arreglo, te devuelvo lo pagado.",
-      "If it doesn't do what we agreed, I fix it at no cost. If it can't be fixed, you get your money back."
-    ),
+    title: "30 días de garantía",
+    body: "Si no hace lo acordado, lo arreglo sin costo. Si no tiene arreglo, te devuelvo lo pagado.",
   },
   {
     icon: FileSignature,
-    title: t("Precio fijo por escrito", "Fixed price in writing"),
-    body: t(
-      "El valor de arriba es el final. Nada de costos que aparecen a mitad de camino.",
-      "The price above is final. No costs appearing halfway through."
-    ),
+    title: "Precio fijo por escrito",
+    body: "El valor de arriba es el final. Nada de costos que aparecen a mitad de camino.",
   },
   {
     icon: KeyRound,
-    title: t("El código queda tuyo", "You own the code"),
-    body: t(
-      "Credenciales y repositorio a tu nombre. Si mañana no me quieres, te lo llevas.",
-      "Credentials and repository in your name. If you don't want me tomorrow, you keep it."
-    ),
+    title: "El código queda tuyo",
+    body: "Credenciales y repositorio a tu nombre. Si mañana no me quieres, te lo llevas.",
   },
 ];
 

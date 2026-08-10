@@ -1,0 +1,83 @@
+// Precios en un solo lugar.
+//
+// Antes vivían repetidos en la FAQ de la portada, en la página de precios y en
+// el cotizador: cambiar uno y olvidar los otros deja al sitio contradiciéndose
+// justo en el dato que decide la compra. Todo lo que muestre un precio importa
+// desde acá.
+//
+// Son montos "desde": el piso de un alcance típico, no una tarifa cerrada. El
+// precio final se fija por escrito después del diagnóstico, y eso debe decirse
+// en la misma pantalla donde aparece la cifra.
+//
+// Los montos son NETOS: el IVA de 19% se suma aparte y así va rotulado en cada
+// lugar donde aparece una cifra. Es la convención del rubro en Chile para venta
+// a empresas, que descuentan el impuesto; lo que no se puede es mostrar el neto
+// sin decirlo, porque ahí sí el total final se vuelve una sorpresa.
+
+import { BASE, formatFrom } from "@/data/currencies";
+import { subservicios } from "@/data/subservices";
+
+// El piso de cada plan NO se escribe a mano: se lee del catálogo, en su nivel
+// de entrada. Tenerlo duplicado ya provocó que un nivel anunciara $290.000
+// mientras su propia carta cobraba $490.000.
+const desdeCatalogo = (id) => subservicios.find((s) => s.id === id).precios[0];
+
+const CLP = (value) => `$${value.toLocaleString("es-CL")}`;
+
+export const pricing = {
+  landing: {
+    id: "landing",
+    label: "Landing page",
+    from: desdeCatalogo("landing"),
+    unit: "proyecto",
+    summary: "Una propuesta y una acción, para campañas o para validar una idea.",
+  },
+  sitio: {
+    id: "sitio",
+    label: "Sitio corporativo",
+    from: desdeCatalogo("sitio"),
+    unit: "proyecto",
+    summary: "Varias páginas de servicio, con la arquitectura y el texto que las sostienen.",
+  },
+  ecommerce: {
+    id: "ecommerce",
+    label: "Tienda online",
+    from: desdeCatalogo("ecommerce"),
+    unit: "proyecto",
+    summary: "Catálogo, pagos, despacho e inventario funcionando de punta a punta.",
+  },
+  mantencion: {
+    id: "mantencion",
+    label: "Plan de mantención",
+    from: 35000,
+    unit: "mes",
+    summary: "Respaldos, actualizaciones, monitoreo y cambios menores todos los meses.",
+  },
+};
+
+/** "$390.000" — para mostrar junto a la palabra "desde". */
+export const priceFrom = (key) => CLP(pricing[key].from);
+
+/**
+ * Precio en la moneda pedida, con el sufijo "/mes" si es recurrente.
+ *
+ * El monto base siempre es CLP: es la moneda en que se define y se cobra. Las
+ * demás pasan por formatFrom, que antepone "≈" y redondea, porque son una
+ * referencia y no un precio cerrado en esa moneda.
+ */
+export const priceIn = (key, code = BASE) => {
+  const item = pricing[key];
+  const monto = formatFrom(item.from, code);
+  return item.unit === "mes" ? `${monto}/mes` : monto;
+};
+
+/** Atajo en pesos, para textos que no dependen del selector. */
+export const priceLabel = (key) => priceIn(key, BASE);
+
+export const IVA_RATE = 0.19;
+export const IVA_NOTA = "+ IVA 19%";
+
+/** Total con IVA de un monto neto. */
+export const conIva = (neto) => Math.round(neto * (1 + IVA_RATE));
+
+export const webPlans = [pricing.landing, pricing.sitio, pricing.ecommerce];

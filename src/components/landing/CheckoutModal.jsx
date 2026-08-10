@@ -3,7 +3,6 @@ import { X, CheckCircle, CreditCard, ShieldCheck, ArrowRight, Loader2, Lock } fr
 import { Button } from "@/components/ui/button";
 import { useLeadSubmit } from "@/lib/useLeadSubmit";
 import { toast } from "sonner";
-import { t } from "@/lib/i18n";
 import { defaultPaymentMethod, priceFor, getRegion } from "@/lib/region";
 import RiskReversal from "@/components/landing/RiskReversal";
 
@@ -21,7 +20,7 @@ export default function CheckoutModal({ product, isOpen, onClose }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!name || !email) {
-      toast.error(t("Por favor completa nombre y correo", "Please enter your name and email"));
+      toast.error("Por favor completa nombre y correo");
       return;
     }
 
@@ -29,12 +28,12 @@ export default function CheckoutModal({ product, isOpen, onClose }) {
     // los maneja este componente (successMessage: null suprime el toast por defecto).
     const ok = await submit({
       lead: {
-        nombre: name,
+        name,
         email: email,
-        telefono: phone,
-        servicio: `Compra n8n: ${product.name}`,
-        mensaje: `Intención de compra: ${product.name} - Método: ${paymentMethod}`,
-        creado_en: new Date().toISOString(),
+        whatsapp: phone || undefined,
+        interest: `Implementación: ${product.name}`,
+        message: `Solicitud de implementación: ${product.name}. Medio preferido: ${paymentMethod}.`,
+        source: "automation_detail",
       },
       successMessage: null,
     });
@@ -49,22 +48,24 @@ export default function CheckoutModal({ product, isOpen, onClose }) {
     }
 
     if (checkoutLink) {
-      toast.success(t("Redirigiendo a la pasarela de pago...", "Redirecting to payment gateway..."));
+      toast.success("Redirigiendo a la pasarela de pago...");
       setTimeout(() => {
         window.location.href = checkoutLink;
       }, 1200);
     } else {
-      toast.success(t("¡Solicitud recibida! Te enviaremos el link de pago por email/WhatsApp.", "Request received! We'll send your payment link via email/WhatsApp."));
+      toast.success("¡Solicitud recibida! Te enviaremos el link de pago por email/WhatsApp.");
     }
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+    <div role="dialog" aria-modal="true" aria-labelledby="checkout-title" className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-in fade-in duration-200">
       <div className="relative w-full max-w-lg bg-card border border-border rounded-2xl p-6 sm:p-8 shadow-2xl overflow-hidden">
         {/* Botón cerrar */}
         <button
+          type="button"
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+          aria-label="Cerrar solicitud"
+          className="absolute top-4 right-4 p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
         >
           <X className="h-5 w-5" />
         </button>
@@ -72,12 +73,12 @@ export default function CheckoutModal({ product, isOpen, onClose }) {
         {!submitted ? (
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 font-bold uppercase">
-                {product.badge || t("Checkout Seguro", "Secure Checkout")}
+              <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-xl bg-primary/10 text-primary border border-primary/20 font-bold uppercase">
+                {product.badge || "Checkout Seguro"}
               </span>
             </div>
 
-            <h3 className="text-2xl font-black tracking-tight mb-1">{product.name}</h3>
+            <h3 id="checkout-title" className="text-2xl font-black tracking-tight mb-1">{product.name}</h3>
             <div className="flex items-baseline gap-2 mb-4">
               <span className="text-2xl font-bold font-mono text-primary">{priceFor(product, getRegion()).main}</span>
               {priceFor(product, getRegion()).secondary && (
@@ -87,23 +88,21 @@ export default function CheckoutModal({ product, isOpen, onClose }) {
             </div>
 
             <p className="text-xs text-muted-foreground mb-6 leading-relaxed">
-              {t(
-                "Completa tus datos de facturación para recibir tu paquete de automatización n8n y tu boleta/factura electrónica SII.",
-                "Enter your billing details to receive your n8n automation package and your SII electronic tax receipt."
-              )}
+              Completa tus datos para confirmar compatibilidad y recibir los pasos de implementación.
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-xs font-mono text-muted-foreground mb-1">
-                  {t("Nombre completo o Razón Social *", "Full name or Business Name *")}
+                <label htmlFor="checkout-name" className="block text-xs font-mono text-muted-foreground mb-1">
+                  Nombre completo o Razón Social *
                 </label>
                 <input
+                  id="checkout-name"
                   type="text"
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder={t("Ej: María González", "E.g. Maria Gonzalez")}
+                  placeholder={"Ej: María González"}
                   className="w-full h-11 px-3.5 rounded-xl bg-background border border-border text-sm text-foreground focus:outline-none focus:border-primary transition-colors"
                 />
               </div>
@@ -112,10 +111,11 @@ export default function CheckoutModal({ product, isOpen, onClose }) {
             <RiskReversal className="mt-4" />
 
               <div>
-                <label className="block text-xs font-mono text-muted-foreground mb-1">
-                  {t("Correo electrónico (para envío de entrega y boleta) *", "Email address (for delivery and receipt) *")}
+                <label htmlFor="checkout-email" className="block text-xs font-mono text-muted-foreground mb-1">
+                  Correo electrónico (para envío de entrega y boleta) *
                 </label>
                 <input
+                  id="checkout-email"
                   type="email"
                   required
                   value={email}
@@ -126,10 +126,11 @@ export default function CheckoutModal({ product, isOpen, onClose }) {
               </div>
 
               <div>
-                <label className="block text-xs font-mono text-muted-foreground mb-1">
-                  {t("WhatsApp / Teléfono (opcional para soporte)", "WhatsApp / Phone (optional for support)")}
+                <label htmlFor="checkout-phone" className="block text-xs font-mono text-muted-foreground mb-1">
+                  WhatsApp / Teléfono (opcional para soporte)
                 </label>
                 <input
+                  id="checkout-phone"
                   type="tel"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
@@ -141,7 +142,7 @@ export default function CheckoutModal({ product, isOpen, onClose }) {
               {/* Selección de Método de Pago */}
               <div>
                 <label className="block text-xs font-mono text-muted-foreground mb-2">
-                  {t("Medio de pago preferido", "Preferred payment method")}
+                  Medio de pago preferido
                 </label>
                 <div className="grid grid-cols-2 gap-2 text-xs">
                   {[
@@ -174,12 +175,12 @@ export default function CheckoutModal({ product, isOpen, onClose }) {
                 {loading ? (
                   <>
                     <Loader2 className="h-4 w-4 animate-spin" />
-                    {t("Procesando...", "Processing...")}
+                    Procesando...
                   </>
                 ) : (
                   <>
                     <CreditCard className="h-4 w-4" />
-                    {t("Continuar al Pago Seguro", "Proceed to Secure Payment")}
+                    Solicitar implementación
                     <ArrowRight className="h-4 w-4" />
                   </>
                 )}
@@ -189,28 +190,25 @@ export default function CheckoutModal({ product, isOpen, onClose }) {
             <div className="mt-4 pt-3 border-t border-border/40 flex items-center justify-between text-[11px] text-muted-foreground">
               <span className="flex items-center gap-1">
                 <Lock className="h-3 w-3 text-primary" />
-                {t("Pago encriptado SSL", "SSL encrypted payment")}
+                Datos protegidos con SSL
               </span>
               <span className="flex items-center gap-1">
                 <ShieldCheck className="h-3 w-3 text-primary" />
-                {t("Boleta/Factura SII incluida", "SII Tax Receipt included")}
+                Boleta/Factura SII incluida
               </span>
             </div>
           </div>
         ) : (
           <div className="py-8 text-center space-y-4">
-            <div className="h-16 w-16 mx-auto rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
+            <div className="h-16 w-16 mx-auto rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
               <CheckCircle className="h-8 w-8" />
             </div>
-            <h3 className="text-2xl font-black">{t("¡Solicitud de Compra Recibida!", "Purchase Request Received!")}</h3>
+            <h3 className="text-2xl font-black">{"¡Solicitud de Compra Recibida!"}</h3>
             <p className="text-sm text-muted-foreground leading-relaxed max-w-sm mx-auto">
-              {t(
-                `Gracias ${name}. Hemos generado la orden para "${product.name}". Te enviamos los detalles de pago y entrega a ${email} y por WhatsApp.`,
-                `Thank you ${name}. We generated your order for "${product.name}". Payment & delivery details were sent to ${email} and via WhatsApp.`
-              )}
+              {`Gracias ${name}. Hemos generado la orden para "${product.name}". Te enviamos los detalles de pago y entrega a ${email} y por WhatsApp.`}
             </p>
             <Button onClick={onClose} className="w-full h-11 bg-secondary text-foreground hover:bg-secondary/80 font-bold rounded-xl mt-4">
-              {t("Cerrar ventana", "Close window")}
+              Cerrar ventana
             </Button>
           </div>
         )}

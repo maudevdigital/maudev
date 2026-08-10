@@ -1,91 +1,84 @@
-import { motion } from "framer-motion";
-import { t } from "@/lib/i18n";
-import { availability, proofPoints } from "@/data/site";
-import CtaButton from "@/components/landing/CtaButton";
+import { useCallback, useEffect, useRef } from "react";
+import { CalendarClock, MessageCircle } from "lucide-react";
+import { CAL_URL } from "@/data/catalog";
+import { getWhatsAppUrl } from "@/lib/whatsapp";
+import CountryFlags from "@/components/landing/CountryFlags";
 import ParticleField from "@/components/landing/ParticleField";
-import HeroChat from "@/components/landing/HeroChat";
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Hero. Una promesa, una prueba, un botón.
-//
-// El H1 va estático (sin animación) porque es el LCP: se pinta de inmediato
-// sin esperar a que cargue el JS. Todo lo demás entra con fade.
-//
-// La prueba de la derecha es HTML (HeroChat), no una imagen: el texto de la
-// conversación queda indexable y el bloque se adapta al tema. Por eso la
-// bajada puede ser corta — lo que antes explicaba el párrafo, ahora se ve.
-// ─────────────────────────────────────────────────────────────────────────────
+import QuickQuote from "@/components/landing/QuickQuote";
+import RotatingAudience from "@/components/landing/RotatingAudience";
+import { trackAction } from "@/lib/MetaPixelTracker";
 
 export default function Hero() {
+  const seccionRef = useRef(null);
+  const frameRef = useRef(0);
+
+  // El foco de luz se actualiza dentro de un rAF: mousemove dispara decenas de
+  // veces por segundo y escribir la variable CSS en cada evento provoca
+  // repintados de más sin que el ojo note la diferencia.
+  const seguirPuntero = useCallback((evento) => {
+    const nodo = seccionRef.current;
+    if (!nodo) return;
+    const { clientX, clientY } = evento;
+    cancelAnimationFrame(frameRef.current);
+    frameRef.current = requestAnimationFrame(() => {
+      const caja = nodo.getBoundingClientRect();
+      nodo.style.setProperty("--mx", `${clientX - caja.left}px`);
+      nodo.style.setProperty("--my", `${clientY - caja.top}px`);
+    });
+  }, []);
+
+  useEffect(() => () => cancelAnimationFrame(frameRef.current), []);
+
   return (
-    <section className="relative overflow-hidden pt-28 pb-16 lg:pt-36 lg:pb-24">
-      <div className="absolute inset-0 grid-pattern opacity-40" aria-hidden="true" />
-      <ParticleField className="mask-[radial-gradient(ellipse_at_center,black_60%,transparent_100%)]" />
-      <div className="absolute -top-32 left-1/3 h-96 w-96 rounded-full bg-primary/5 blur-3xl pointer-events-none" aria-hidden="true" />
-      <div className="absolute -bottom-24 right-1/4 h-80 w-80 rounded-full bg-primary/5 blur-3xl pointer-events-none" aria-hidden="true" />
+    <section ref={seccionRef} onMouseMove={seguirPuntero} className="hero-section">
+      <div className="hero-grid" aria-hidden="true" />
+      <div className="hero-spot" aria-hidden="true" />
+      <div className="hero-orbit hero-orbit-one" aria-hidden="true" />
+      <ParticleField className="-z-10 mask-[radial-gradient(ellipse_at_center,black_60%,transparent_100%)]" />
 
-      <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-[1.05fr_1fr] lg:gap-16 lg:px-8">
-        {/* ── Columna texto ── */}
+      <div className="site-container relative grid w-full items-center gap-14 lg:grid-cols-[1.2fr_0.8fr] lg:gap-16">
+        {/* ── Izquierda: mensaje y acción ── */}
         <div>
-          {availability.open && (
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3 py-1.5"
+          <span className="eyebrow">Diseño y desarrollo web · Chile</span>
+
+          <h1 className="hero-title mt-7">Tu sitio web, hecho para que te contacten.</h1>
+
+          <RotatingAudience />
+
+          {/* Las dos acciones del hero son las dos formas reales de empezar
+              una conversación: escribir ahora o reservar una hora. Ambas salen
+              del sitio, así que van como <a> y no como <Link>. El cotizador de
+              la derecha cubre a quien todavía no quiere hablar con nadie. */}
+          <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <a
+              href={getWhatsAppUrl("Hola, vengo de maudev.cl y quiero conversar sobre un sitio web para mi negocio.")}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackAction("whatsapp_click", { ubicacion: "hero" })}
+              className="btn btn-primary h-14 px-7"
             >
-              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" />
-              <span className="font-mono text-xs uppercase tracking-wider text-primary">
-                {availability.label} · {availability.period}
-              </span>
-            </motion.div>
-          )}
-
-          <h1 className="mb-5 text-[2.15rem] font-black leading-[1.1] tracking-tight sm:text-5xl lg:text-[3.4rem]">
-            {t("Tu negocio responde ", "Your business replies ")}
-            <span className="text-primary glow-text">{t("solo.", "on its own.")}</span>
-            <br />
-            {t("Incluso a las 3 AM.", "Even at 3 AM.")}
-          </h1>
-
-          <p className="mb-8 max-w-md text-lg leading-relaxed text-muted-foreground">
-            {t(
-              "Automatizo responder, agendar y cobrar en tu PYME. En días, no en meses.",
-              "I automate replying, booking and invoicing for your business. In days, not months."
-            )}
-          </p>
-
-          <div className="mb-8 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
-            <CtaButton size="lg" context="hero" />
-            <span className="font-mono text-xs text-muted-foreground">
-              {t("Respuesta el mismo día", "Same-day reply")}
-            </span>
+              <MessageCircle className="h-5 w-5 shrink-0" aria-hidden="true" />
+              Hablar por WhatsApp
+            </a>
+            <a
+              href={CAL_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackAction("agendar_click", { ubicacion: "hero" })}
+              className="btn btn-ghost h-14 px-6"
+            >
+              <CalendarClock className="h-5 w-5 shrink-0" aria-hidden="true" />
+              Agendar 30 min
+            </a>
           </div>
 
-          {/* Credenciales en una sola línea mono: pesan como dato, no como lista */}
-          <ul className="flex flex-wrap items-center gap-x-2.5 gap-y-1.5 font-mono text-xs text-muted-foreground">
-            {proofPoints.map((p) => (
-              // El separador va DESPUÉS del texto: si la lista se parte en dos
-              // líneas, el punto cierra la de arriba en vez de abrir la de abajo.
-              <li
-                key={p}
-                className="after:ml-2.5 after:text-primary/40 after:content-['·'] last:after:content-none"
-              >
-                {p}
-              </li>
-            ))}
-          </ul>
+          <CountryFlags />
+
         </div>
 
-        {/* ── Columna prueba ── */}
-        <motion.div
-          initial={{ opacity: 0, x: 24 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.7, delay: 0.15 }}
-          className="relative"
-        >
-          <HeroChat />
-        </motion.div>
+        {/* ── Derecha: cotizador ── */}
+        <QuickQuote />
+
       </div>
     </section>
   );

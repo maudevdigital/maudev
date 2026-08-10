@@ -93,9 +93,10 @@ export async function trackLeadEvent({ email, phone, params = {} } = {}) {
   return eventId;
 }
 
-// Alias simple para eventos que no necesitan CAPI (PageView, etc.)
-export function trackEvent(name, params) {
-  if (typeof window === "undefined" || typeof window.fbq !== "function") return;
-  if (params) window.fbq("track", name, params);
-  else window.fbq("track", name);
+// Eventos de interacción no sensibles. Los stubs de index.html los mantienen
+// en memoria y los scripts solo se cargan cuando existe consentimiento.
+export function trackAction(name, params = {}) {
+  if (typeof window === "undefined") return;
+  if (typeof window.gtag === "function") window.gtag("event", name, params);
+  if (typeof window.fbq === "function") window.fbq("trackCustom", name, params);
 }

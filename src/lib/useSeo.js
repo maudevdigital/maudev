@@ -42,8 +42,10 @@ export function useSeo({ title, description, path, image, type = "website", json
       el.setAttribute("href", href);
     };
 
-    const url = path ? `${ORIGIN}${path}` : undefined;
-    const img = image ? (image.startsWith("http") ? image : `${ORIGIN}${image}`) : undefined;
+    const normalizedPath = path === "/" ? "/" : path?.replace(/\/$/, "");
+    const url = normalizedPath ? `${ORIGIN}${normalizedPath}` : undefined;
+    const selectedImage = image || "/og-image.png";
+    const img = selectedImage.startsWith("http") ? selectedImage : `${ORIGIN}${selectedImage}`;
 
     setMeta("name", "description", description);
     setLink("canonical", url);
@@ -55,7 +57,8 @@ export function useSeo({ title, description, path, image, type = "website", json
     setMeta("name", "twitter:card", "summary_large_image");
     setMeta("name", "twitter:title", title);
     setMeta("name", "twitter:description", description);
-    if (noindex) setMeta("name", "robots", "noindex,follow");
+    setMeta("name", "twitter:image", img);
+    setMeta("name", "robots", noindex ? "noindex,follow" : "index,follow");
 
     if (jsonLd) {
       const ld = document.createElement("script");

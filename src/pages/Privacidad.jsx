@@ -1,9 +1,8 @@
-import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
 import { Shield } from "lucide-react";
-import { t, lang } from "@/lib/i18n";
+import { useSeo } from "@/lib/useSeo";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // POLÍTICA DE PRIVACIDAD
@@ -35,108 +34,90 @@ const mail = (
 const sections = [
   {
     num: "01",
-    title: t("Quién es responsable de tus datos", "Who is responsible for your data"),
+    title: "Quién es responsable de tus datos",
     content: (
       <>
         <p>
-          {t(
-            "Maudev, con domicilio en la Región de Valparaíso, Chile, es el responsable del tratamiento de los datos personales que se recogen a través de este sitio. Para cualquier tema de privacidad puedes escribir a",
-            "Maudev, domiciled in the Valparaíso Region, Chile, is the controller of the personal data collected through this site. For any privacy matter you can write to"
-          )}{" "}
+          {"Maudev, con domicilio en la Región de Valparaíso, Chile, es el responsable del tratamiento de los datos personales que se recogen a través de este sitio. Para cualquier tema de privacidad puedes escribir a"}{" "}
           {mail}.
         </p>
         <p>
-          {t(
-            "Esta política se rige por la Ley N° 21.719 sobre Protección de Datos Personales de Chile, que entra en vigencia el 1 de diciembre de 2026 y reemplaza a la Ley N° 19.628. Hasta esa fecha sigue aplicando la Ley N° 19.628; hemos redactado esta política conforme al estándar más exigente de ambas.",
-            "This policy is governed by Chilean Law No. 21.719 on Personal Data Protection, which takes effect on December 1, 2026 and replaces Law No. 19.628. Until then, Law No. 19.628 still applies; this policy has been drafted to the stricter standard of the two."
-          )}
+          Esta política se rige por la Ley N° 21.719 sobre Protección de Datos Personales de Chile, que entra en vigencia el 1 de diciembre de 2026 y reemplaza a la Ley N° 19.628. Hasta esa fecha sigue aplicando la Ley N° 19.628; hemos redactado esta política conforme al estándar más exigente de ambas.
         </p>
         <p>
-          {t(
-            "Si resides en el Espacio Económico Europeo o en el Reino Unido, te aplican además los derechos del RGPD, y esta política los respeta.",
-            "If you reside in the European Economic Area or the United Kingdom, GDPR rights also apply to you, and this policy honours them."
-          )}
+          Si resides en el Espacio Económico Europeo o en el Reino Unido, te aplican además los derechos del RGPD, y esta política los respeta.
         </p>
       </>
     ),
   },
   {
     num: "02",
-    title: t("Qué datos recogemos", "What data we collect"),
+    title: "Qué datos recogemos",
     content: (
       <>
         <p className="font-medium text-foreground">
-          {t("Los que tú nos entregas:", "What you give us:")}
+          Los que tú nos entregas:
         </p>
         <ul className="mt-2 space-y-1.5 list-disc pl-5">
           {[
-            t("Nombre y apellido", "First and last name"),
-            t("Correo electrónico", "Email address"),
-            t("Teléfono o WhatsApp", "Phone or WhatsApp number"),
-            t("El mensaje o descripción del proyecto que escribes", "The message or project description you write"),
-            t("Rubro o tipo de negocio, si lo indicas", "Industry or business type, if you provide it"),
+            "Nombre y apellido",
+            "Correo electrónico",
+            "Teléfono o WhatsApp",
+            "El mensaje o descripción del proyecto que escribes",
+            "Rubro o tipo de negocio, si lo indicas",
           ].map((x, i) => <li key={i}>{x}</li>)}
         </ul>
 
         <p className="mt-4 font-medium text-foreground">
-          {t("Los que se recogen solos al navegar:", "What is collected automatically as you browse:")}
+          Los que se recogen solos al navegar:
         </p>
         <ul className="mt-2 space-y-1.5 list-disc pl-5">
           {[
-            t("Dirección IP y país aproximado", "IP address and approximate country"),
-            t("Navegador, sistema operativo y tipo de dispositivo", "Browser, operating system and device type"),
-            t("Páginas visitadas, tiempo en el sitio y desde dónde llegaste", "Pages visited, time on site and referrer"),
-            t("Parámetros de campaña (utm_source, utm_medium, utm_campaign y similares)", "Campaign parameters (utm_source, utm_medium, utm_campaign and similar)"),
+            "Dirección IP y país aproximado",
+            "Navegador, sistema operativo y tipo de dispositivo",
+            "Páginas visitadas, tiempo en el sitio y desde dónde llegaste",
+            "Parámetros de campaña (utm_source, utm_medium, utm_campaign y similares)",
           ].map((x, i) => <li key={i}>{x}</li>)}
         </ul>
 
         <p className="mt-4">
-          {t(
-            "No pedimos ni queremos datos sensibles: no necesitamos tu RUT para cotizar, ni datos de salud, origen étnico, afiliación política o sindical, orientación sexual ni datos biométricos. Tampoco procesamos datos de menores de 14 años a sabiendas. Si nos envías información sensible por tu cuenta, la eliminaremos.",
-            "We don't ask for or want sensitive data: we don't need your national ID to quote, nor health data, ethnic origin, political or union affiliation, sexual orientation or biometric data. We also don't knowingly process data of children under 14. If you send us sensitive information on your own, we will delete it."
-          )}
+          No pedimos ni queremos datos sensibles: no necesitamos tu RUT para cotizar, ni datos de salud, origen étnico, afiliación política o sindical, orientación sexual ni datos biométricos. Tampoco procesamos datos de menores de 14 años a sabiendas. Si nos envías información sensible por tu cuenta, la eliminaremos.
         </p>
         <p>
-          {t(
-            "Los datos de pago (tarjeta, cuenta bancaria) nunca pasan por este sitio: los maneja directamente la pasarela o el banco.",
-            "Payment data (card, bank account) never passes through this site: it is handled directly by the payment provider or bank."
-          )}
+          Los datos de pago (tarjeta, cuenta bancaria) nunca pasan por este sitio: los maneja directamente la pasarela o el banco.
         </p>
       </>
     ),
   },
   {
     num: "03",
-    title: t("Para qué los usamos y con qué base legal", "What we use them for and on what legal basis"),
+    title: "Para qué los usamos y con qué base legal",
     content: (
       <>
         <p>
-          {t(
-            "La Ley 21.719 exige declarar la base de licitud de cada tratamiento. Estas son las nuestras:",
-            "Law 21.719 requires declaring the legal basis for each processing activity. These are ours:"
-          )}
+          La Ley 21.719 exige declarar la base de licitud de cada tratamiento. Estas son las nuestras:
         </p>
         <div className="mt-3 space-y-3">
           {[
             {
-              use: t("Responder tu consulta y preparar una cotización", "Replying to your enquiry and preparing a quote"),
-              basis: t("Consentimiento", "Consent"),
-              note: t("Lo das al enviar el formulario o escribirnos. Puedes revocarlo cuando quieras.", "You give it by submitting the form or messaging us. You can revoke it at any time."),
+              use: "Responder tu consulta y preparar una cotización",
+              basis: "Consentimiento",
+              note: "Lo das al enviar el formulario o escribirnos. Puedes revocarlo cuando quieras.",
             },
             {
-              use: t("Ejecutar el proyecto contratado y darte soporte", "Delivering the contracted project and supporting you"),
-              basis: t("Ejecución de un contrato", "Performance of a contract"),
-              note: t("Sin estos datos no podemos entregarte el servicio que compraste.", "Without this data we cannot deliver the service you purchased."),
+              use: "Ejecutar el proyecto contratado y darte soporte",
+              basis: "Ejecución de un contrato",
+              note: "Sin estos datos no podemos entregarte el servicio que compraste.",
             },
             {
-              use: t("Emitir boleta o factura y llevar contabilidad", "Issuing invoices and keeping accounting records"),
-              basis: t("Obligación legal", "Legal obligation"),
-              note: t("Normativa tributaria del SII. No podemos borrar estos datos antes del plazo legal.", "Chilean tax authority (SII) rules. We cannot delete this data before the legal retention period."),
+              use: "Emitir boleta o factura y llevar contabilidad",
+              basis: "Obligación legal",
+              note: "Normativa tributaria del SII. No podemos borrar estos datos antes del plazo legal.",
             },
             {
-              use: t("Medir qué campañas y páginas funcionan, y proteger el sitio", "Measuring which campaigns and pages work, and protecting the site"),
-              basis: t("Consentimiento (analítica y publicidad) · Interés legítimo (seguridad)", "Consent (analytics and advertising) · Legitimate interest (security)"),
-              note: t("La analítica y los píxeles publicitarios solo se activan si los aceptas. La protección contra ataques y abuso se apoya en interés legítimo, ponderado para no afectar tus derechos.", "Analytics and advertising pixels only activate if you accept them. Protection against attacks and abuse relies on legitimate interest, balanced so as not to affect your rights."),
+              use: "Medir qué campañas y páginas funcionan, y proteger el sitio",
+              basis: "Consentimiento (analítica y publicidad) · Interés legítimo (seguridad)",
+              note: "La analítica y los píxeles publicitarios solo se activan si los aceptas. La protección contra ataques y abuso se apoya en interés legítimo, ponderado para no afectar tus derechos.",
             },
           ].map((r, i) => (
             <div key={i} className="rounded-lg border border-border/60 bg-card/50 p-3">
@@ -147,25 +128,22 @@ const sections = [
           ))}
         </div>
         <p className="mt-4">
-          {t(
-            "No vendemos, arrendamos ni cedemos tus datos. No tomamos decisiones automatizadas que te afecten legalmente, ni hacemos perfilamiento para negarte un servicio.",
-            "We do not sell, rent or transfer your data. We do not make automated decisions that legally affect you, nor do we profile you to deny you a service."
-          )}
+          No vendemos, arrendamos ni cedemos tus datos. No tomamos decisiones automatizadas que te afecten legalmente, ni hacemos perfilamiento para negarte un servicio.
         </p>
       </>
     ),
   },
   {
     num: "04",
-    title: t("Cuánto tiempo los guardamos", "How long we keep them"),
+    title: "Cuánto tiempo los guardamos",
     content: (
       <>
         <div className="space-y-2">
           {[
-            { k: t("Formularios guardados en nuestra base de datos", "Form submissions stored in our database"), v: t("12 meses", "12 months") },
-            { k: t("Datos de clientes con proyecto ejecutado", "Client data for delivered projects"), v: t("Mientras dure la relación y 5 años después", "For the relationship plus 5 years") },
-            { k: t("Documentos tributarios (boletas, facturas)", "Tax documents (invoices, receipts)"), v: t("6 años, por obligación del SII", "6 years, as required by the SII") },
-            { k: t("Registros de analítica", "Analytics records"), v: t("14 meses (configuración de GA4)", "14 months (GA4 setting)") },
+            { k: "Formularios guardados en nuestra base de datos", v: "12 meses" },
+            { k: "Datos de clientes con proyecto ejecutado", v: "Mientras dure la relación y 5 años después" },
+            { k: "Documentos tributarios (boletas, facturas)", v: "6 años, por obligación del SII" },
+            { k: "Registros de analítica", v: "14 meses (configuración de GA4)" },
           ].map((r, i) => (
             <div key={i} className="flex items-start justify-between gap-4 border-b border-border/30 pb-2 last:border-b-0">
               <span>{r.k}</span>
@@ -174,51 +152,45 @@ const sections = [
           ))}
         </div>
         <p className="mt-3">
-          {t(
-            "Cumplido el plazo, se eliminan o se anonimizan de forma irreversible. Si pides la eliminación antes, la hacemos, salvo en lo que la ley tributaria nos obliga a conservar (y en ese caso te decimos exactamente qué queda y por qué).",
-            "Once the period ends, data is deleted or irreversibly anonymised. If you request deletion earlier, we comply, except where tax law requires retention (and in that case we tell you exactly what remains and why)."
-          )}
+          Cumplido el plazo, se eliminan o se anonimizan de forma irreversible. Si pides la eliminación antes, la hacemos, salvo en lo que la ley tributaria nos obliga a conservar (y en ese caso te decimos exactamente qué queda y por qué).
         </p>
       </>
     ),
   },
   {
     num: "05",
-    title: t("Quién más toca tus datos", "Who else touches your data"),
+    title: "Quién más toca tus datos",
     content: (
       <>
         <p>
-          {t(
-            "Trabajamos con los siguientes encargados de tratamiento. Cada uno accede solo a lo necesario para su función:",
-            "We work with the following data processors. Each one accesses only what is necessary for its function:"
-          )}
+          Trabajamos con los siguientes encargados de tratamiento. Cada uno accede solo a lo necesario para su función:
         </p>
         <ul className="mt-3 space-y-2.5">
           {[
             {
               name: "Cloudflare",
-              desc: t("Hosting del sitio, CDN y protección contra ataques", "Site hosting, CDN and attack protection"),
-              loc: t("EE.UU. / red global", "USA / global network"),
+              desc: "Hosting del sitio, CDN y protección contra ataques",
+              loc: "EE.UU. / red global",
             },
             {
               name: "Cloudflare D1",
-              desc: t("Base de datos donde se guardan los formularios que envías", "Database where the forms you submit are stored"),
-              loc: t("EE.UU. / red global", "USA / global network"),
+              desc: "Base de datos donde se guardan los formularios que envías",
+              loc: "EE.UU. / red global",
             },
             {
               name: "Resend",
-              desc: t("Envío del correo que nos avisa de tu contacto", "Delivery of the email that notifies us of your contact"),
-              loc: t("EE.UU.", "USA"),
+              desc: "Envío del correo que nos avisa de tu contacto",
+              loc: "EE.UU.",
             },
             {
               name: "Meta",
-              desc: t("Píxel y API de conversiones, para medir publicidad", "Pixel and Conversions API, to measure advertising"),
-              loc: t("EE.UU.", "USA"),
+              desc: "Píxel y API de conversiones, para medir publicidad",
+              loc: "EE.UU.",
             },
             {
               name: "Google Analytics 4",
-              desc: t("Analítica de tráfico agregada", "Aggregate traffic analytics"),
-              loc: t("EE.UU.", "USA"),
+              desc: "Analítica de tráfico agregada",
+              loc: "EE.UU.",
             },
           ].map((item, i) => (
             <li key={i} className="flex items-start gap-3 text-sm">
@@ -232,61 +204,49 @@ const sections = [
           ))}
         </ul>
         <p className="mt-4">
-          {t(
-            "Además podemos entregar datos a la autoridad cuando exista una orden judicial o una obligación legal que nos obligue a hacerlo.",
-            "We may also disclose data to authorities where there is a court order or a legal obligation requiring it."
-          )}
+          Además podemos entregar datos a la autoridad cuando exista una orden judicial o una obligación legal que nos obligue a hacerlo.
         </p>
       </>
     ),
   },
   {
     num: "06",
-    title: t("Transferencias fuera de Chile", "Transfers outside Chile"),
+    title: "Transferencias fuera de Chile",
     content: (
       <>
         <p>
-          {t(
-            "Varios de los servicios anteriores están alojados fuera de Chile, principalmente en Estados Unidos. Eso significa que tus datos cruzan la frontera.",
-            "Several of the services above are hosted outside Chile, mainly in the United States. That means your data crosses the border."
-          )}
+          Varios de los servicios anteriores están alojados fuera de Chile, principalmente en Estados Unidos. Eso significa que tus datos cruzan la frontera.
         </p>
         <p>
-          {t(
-            "La Ley 21.719 permite estas transferencias cuando el país de destino ofrece un nivel de protección equivalente, o cuando existe un contrato con cláusulas que garanticen esa protección. Nos apoyamos en los acuerdos de tratamiento de datos y cláusulas contractuales tipo que cada uno de estos proveedores ofrece, que es el mecanismo estándar y el más usado en la práctica.",
-            "Law 21.719 allows these transfers where the destination country offers an equivalent level of protection, or where a contract with clauses guaranteeing that protection is in place. We rely on the data processing agreements and standard contractual clauses each of these providers offers, which is the standard and most widely used mechanism in practice."
-          )}
+          La Ley 21.719 permite estas transferencias cuando el país de destino ofrece un nivel de protección equivalente, o cuando existe un contrato con cláusulas que garanticen esa protección. Nos apoyamos en los acuerdos de tratamiento de datos y cláusulas contractuales tipo que cada uno de estos proveedores ofrece, que es el mecanismo estándar y el más usado en la práctica.
         </p>
         <p>
-          {t(
-            "Si necesitas saber la ubicación exacta del servidor donde corre nuestra automatización, escríbenos y te lo confirmamos por escrito.",
-            "If you need to know the exact location of the server running our automation, write to us and we'll confirm it in writing."
-          )}
+          Si necesitas saber la ubicación exacta del servidor donde corre nuestra automatización, escríbenos y te lo confirmamos por escrito.
         </p>
       </>
     ),
   },
   {
     num: "07",
-    title: t("Cookies y seguimiento", "Cookies and tracking"),
+    title: "Cookies y seguimiento",
     content: (
       <>
         <p>
-          {t("Usamos tres tipos de cookies, y solo el primero es obligatorio:", "We use three types of cookies, and only the first is mandatory:")}
+          Usamos tres tipos de cookies, y solo el primero es obligatorio:
         </p>
         <div className="mt-3 space-y-2">
           {[
             {
-              k: t("Técnicas", "Essential"),
-              v: t("Hacen funcionar el sitio: recuerdan tu preferencia de tema claro/oscuro y protegen contra abuso. No requieren consentimiento.", "Make the site work: remember your light/dark theme preference and protect against abuse. No consent required."),
+              k: "Técnicas",
+              v: "Hacen funcionar el sitio: recuerdan tu preferencia de tema claro/oscuro y protegen contra abuso. No requieren consentimiento.",
             },
             {
-              k: t("Analíticas", "Analytics"),
-              v: t("Google Analytics 4. Nos dicen qué páginas sirven y cuáles no. Solo se activan si aceptas.", "Google Analytics 4. Tell us which pages work and which don't. Only activate if you accept."),
+              k: "Analíticas",
+              v: "Google Analytics 4. Nos dicen qué páginas sirven y cuáles no. Solo se activan si aceptas.",
             },
             {
-              k: t("Publicitarias", "Advertising"),
-              v: t("Meta Pixel y Meta CAPI. Miden si un anuncio se convirtió en contacto. Solo se activan si aceptas.", "Meta Pixel and Meta CAPI. Measure whether an ad turned into a contact. Only activate if you accept."),
+              k: "Publicitarias",
+              v: "Meta Pixel y Meta CAPI. Miden si un anuncio se convirtió en contacto. Solo se activan si aceptas.",
             },
           ].map((r, i) => (
             <div key={i} className="rounded-lg border border-border/60 bg-card/50 p-3">
@@ -296,30 +256,27 @@ const sections = [
           ))}
         </div>
         <p className="mt-3">
-          {t(
-            "Puedes cambiar tu decisión cuando quieras desde el aviso de cookies, o bloquearlas desde tu navegador. Si las bloqueas, el sitio sigue funcionando igual.",
-            "You can change your decision at any time from the cookie notice, or block them from your browser. If you block them, the site still works the same."
-          )}
+          Puedes cambiar tu decisión cuando quieras desde el aviso de cookies, o bloquearlas desde tu navegador. Si las bloqueas, el sitio sigue funcionando igual.
         </p>
       </>
     ),
   },
   {
     num: "08",
-    title: t("Tus derechos", "Your rights"),
+    title: "Tus derechos",
     content: (
       <>
         <p>
-          {t("La Ley 21.719 te reconoce estos derechos sobre tus datos:", "Law 21.719 grants you these rights over your data:")}
+          La Ley 21.719 te reconoce estos derechos sobre tus datos:
         </p>
         <div className="mt-3 space-y-2">
           {[
-            { k: t("Acceso", "Access"), v: t("Pedir una copia de todo lo que tenemos sobre ti.", "Request a copy of everything we hold about you.") },
-            { k: t("Rectificación", "Rectification"), v: t("Corregir lo que esté equivocado o incompleto.", "Correct anything wrong or incomplete.") },
-            { k: t("Supresión", "Erasure"), v: t("Pedir que lo borremos, salvo lo que la ley nos obligue a guardar.", "Ask us to delete it, except what the law requires us to keep.") },
-            { k: t("Oposición", "Objection"), v: t("Negarte a un tratamiento concreto, como la analítica o la publicidad.", "Refuse a specific processing activity, such as analytics or advertising.") },
-            { k: t("Portabilidad", "Portability"), v: t("Recibir tus datos en un formato estructurado y reutilizable, o que los enviemos a otro proveedor.", "Receive your data in a structured, reusable format, or have us send it to another provider.") },
-            { k: t("Bloqueo", "Blocking"), v: t("Suspender temporalmente el uso de tus datos mientras se resuelve un reclamo.", "Temporarily suspend use of your data while a claim is resolved.") },
+            { k: "Acceso", v: "Pedir una copia de todo lo que tenemos sobre ti." },
+            { k: "Rectificación", v: "Corregir lo que esté equivocado o incompleto." },
+            { k: "Supresión", v: "Pedir que lo borremos, salvo lo que la ley nos obligue a guardar." },
+            { k: "Oposición", v: "Negarte a un tratamiento concreto, como la analítica o la publicidad." },
+            { k: "Portabilidad", v: "Recibir tus datos en un formato estructurado y reutilizable, o que los enviemos a otro proveedor." },
+            { k: "Bloqueo", v: "Suspender temporalmente el uso de tus datos mientras se resuelve un reclamo." },
           ].map((r, i) => (
             <div key={i} className="flex items-start gap-3 border-b border-border/30 pb-2 last:border-b-0">
               <span className="mt-0.5 w-24 shrink-0 font-mono text-xs text-primary">{r.k}</span>
@@ -328,21 +285,15 @@ const sections = [
           ))}
         </div>
         <p className="mt-4">
-          {t("Para ejercerlos, escribe a", "To exercise them, write to")} {mail}.{" "}
-          {t(
-            "Respondemos dentro de 30 días corridos. No cobramos por esto. Solo te pediremos verificar tu identidad, para no entregarle tus datos a otra persona.",
-            "We respond within 30 calendar days. There is no charge. We will only ask you to verify your identity, so we don't hand your data to someone else."
-          )}
+          {"Para ejercerlos, escribe a"} {mail}.{" "}
+          Respondemos dentro de 30 días corridos. No cobramos por esto. Solo te pediremos verificar tu identidad, para no entregarle tus datos a otra persona.
         </p>
         <p>
-          {t(
-            "Si no quedas conforme con nuestra respuesta, puedes reclamar ante la Agencia de Protección de Datos Personales, el organismo fiscalizador creado por la Ley 21.719.",
-            "If you are not satisfied with our response, you may complain to the Personal Data Protection Agency, the supervisory authority created by Law 21.719."
-          )}
+          Si no quedas conforme con nuestra respuesta, puedes reclamar ante la Agencia de Protección de Datos Personales, el organismo fiscalizador creado por la Ley 21.719.
         </p>
         <p className="mt-2">
           <Link to="/eliminacion-datos" className="text-primary hover:underline">
-            {t("Ver el procedimiento paso a paso para eliminar tus datos →", "See the step-by-step data deletion procedure →")}
+            Ver el procedimiento paso a paso para eliminar tus datos →
           </Link>
         </p>
       </>
@@ -350,47 +301,40 @@ const sections = [
   },
   {
     num: "09",
-    title: t("Seguridad y qué pasa si hay una brecha", "Security and what happens in a breach"),
+    title: "Seguridad y qué pasa si hay una brecha",
     content: (
       <>
         <p>
-          {t(
-            "El sitio va sobre HTTPS, el acceso a los sistemas está restringido y usa autenticación en dos pasos, y guardamos el mínimo de datos necesario. Ningún sistema es infalible, así que también tenemos un plan para cuando algo falle.",
-            "The site runs over HTTPS, system access is restricted and uses two-factor authentication, and we store the minimum data necessary. No system is infallible, so we also have a plan for when something fails."
-          )}
+          El sitio va sobre HTTPS, el acceso a los sistemas está restringido y usa autenticación en dos pasos, y guardamos el mínimo de datos necesario. Ningún sistema es infalible, así que también tenemos un plan para cuando algo falle.
         </p>
         <p>
-          {t(
-            "Si ocurre una brecha que afecte tus datos, la Ley 21.719 nos obliga a notificarla a la Agencia de Protección de Datos Personales sin demora, y a más tardar dentro de 72 horas de haberla detectado. Si el riesgo para ti es alto, te avisaremos directamente por correo, explicando qué pasó, qué datos se vieron afectados y qué te recomendamos hacer.",
-            "If a breach affecting your data occurs, Law 21.719 requires us to notify the Personal Data Protection Agency without delay, and no later than 72 hours after detecting it. If the risk to you is high, we will notify you directly by email, explaining what happened, which data was affected and what we recommend you do."
-          )}
+          Si ocurre una brecha que afecte tus datos, la Ley 21.719 nos obliga a notificarla a la Agencia de Protección de Datos Personales sin demora, y a más tardar dentro de 72 horas de haberla detectado. Si el riesgo para ti es alto, te avisaremos directamente por correo, explicando qué pasó, qué datos se vieron afectados y qué te recomendamos hacer.
         </p>
       </>
     ),
   },
   {
     num: "10",
-    title: t("Cambios a esta política", "Changes to this policy"),
+    title: "Cambios a esta política",
     content: (
       <p>
-        {t(
-          "Si esta política cambia de forma relevante, actualizamos la fecha de arriba y, cuando el cambio te afecte de manera significativa, te avisamos por correo si tenemos uno tuyo. Te recomendamos revisarla antes de enviarnos datos nuevos.",
-          "If this policy changes materially, we update the date above and, where the change significantly affects you, we notify you by email if we have one. We recommend reviewing it before sending us new data."
-        )}
+        Si esta política cambia de forma relevante, actualizamos la fecha de arriba y, cuando el cambio te afecte de manera significativa, te avisamos por correo si tenemos uno tuyo. Te recomendamos revisarla antes de enviarnos datos nuevos.
       </p>
     ),
   },
 ];
 
 export default function Privacidad() {
-  useEffect(() => {
-    document.title = t("Política de Privacidad · Maudev", "Privacy Policy · Maudev");
-  }, []);
+  useSeo({
+    title: "Política de privacidad · Maudev",
+    description: "Cómo Maudev recopila, utiliza, conserva y protege los datos personales de quienes usan el sitio.",
+    path: "/privacidad",
+  });
 
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
-      <section className="pt-32 pb-24">
+      <main className="pt-32 pb-24">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
 
           {/* Header */}
@@ -399,23 +343,20 @@ export default function Privacidad() {
               <span className="kicker">legal</span>
               <span className="inline-flex items-center gap-1.5 text-xs font-mono px-2.5 py-1 rounded-full bg-primary/8 text-primary border border-primary/15">
                 <Shield className="h-3 w-3" />
-                {t("Ley 21.719", "Law 21.719")}
+                Ley 21.719
               </span>
             </div>
             <h1 className="text-4xl font-black tracking-tight mt-1 mb-3">
-              {t("Política de privacidad", "Privacy policy")}
+              Política de privacidad
             </h1>
             <p className="text-sm text-muted-foreground">
-              {t("Última actualización:", "Last updated:")}{" "}
+              {"Última actualización:"}{" "}
               <strong className="text-foreground">
-                {new Date().toLocaleDateString(lang === "en" ? "en-US" : "es-CL", { year: "numeric", month: "long", day: "numeric" })}
+                {new Date().toLocaleDateString("es-CL", { year: "numeric", month: "long", day: "numeric" })}
               </strong>
             </p>
             <p className="text-sm text-muted-foreground mt-2">
-              {t(
-                "Qué datos recogemos, con qué base legal, quién más los ve y cómo pedir que los borremos. Sin letra chica.",
-                "What data we collect, on what legal basis, who else sees it and how to ask us to delete it. No fine print."
-              )}
+              Qué datos recogemos, con qué base legal, quién más los ve y cómo pedir que los borremos. Sin letra chica.
             </p>
           </div>
 
@@ -441,14 +382,14 @@ export default function Privacidad() {
           {/* Terms link */}
           <div className="mt-10 p-5 bg-card border border-border rounded-xl flex items-center justify-between gap-4">
             <p className="text-sm text-muted-foreground">
-              {t("¿Buscas los términos y condiciones?", "Looking for the terms and conditions?")}
+              ¿Buscas los términos y condiciones?
             </p>
             <Link to="/terminos" className="text-sm font-semibold text-primary hover:underline whitespace-nowrap">
-              {t("Ver términos →", "View terms →")}
+              Ver términos →
             </Link>
           </div>
         </div>
-      </section>
+      </main>
       <Footer />
     </div>
   );

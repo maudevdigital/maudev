@@ -4,119 +4,86 @@
 @theme inline {
   --font-sans: 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
+  --font-display: 'Sora', 'Inter', sans-serif;
 
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
   --color-card: hsl(var(--card));
   --color-card-foreground: hsl(var(--card-foreground));
-  --color-popover: hsl(var(--popover));
-  --color-popover-foreground: hsl(var(--popover-foreground));
   --color-primary: hsl(var(--primary));
   --color-primary-foreground: hsl(var(--primary-foreground));
   --color-secondary: hsl(var(--secondary));
   --color-secondary-foreground: hsl(var(--secondary-foreground));
   --color-muted: hsl(var(--muted));
   --color-muted-foreground: hsl(var(--muted-foreground));
-  --color-accent: hsl(var(--accent));
-  --color-accent-foreground: hsl(var(--accent-foreground));
   --color-destructive: hsl(var(--destructive));
-  --color-destructive-foreground: hsl(var(--destructive-foreground));
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
   --color-ring: hsl(var(--ring));
   --color-success: hsl(var(--success));
-  --color-sidebar: hsl(var(--sidebar-background));
-  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
-  --color-sidebar-primary: hsl(var(--sidebar-primary));
-  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
-  --color-sidebar-accent: hsl(var(--sidebar-accent));
-  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
-  --color-sidebar-border: hsl(var(--sidebar-border));
-  --color-sidebar-ring: hsl(var(--sidebar-ring));
-  --color-chart-1: hsl(var(--chart-1));
-  --color-chart-2: hsl(var(--chart-2));
-  --color-chart-3: hsl(var(--chart-3));
-  --color-chart-4: hsl(var(--chart-4));
-  --color-chart-5: hsl(var(--chart-5));
+  --color-error: hsl(var(--error));
+  --color-ink: hsl(var(--ink));
+  --font-display: 'Sora', 'Inter', sans-serif;
 }
 
 @layer base {
-  /* ===== Tema CLARO — fondo blanco, acento cyan oscuro ===== */
+  /* ───────────────────────────────────────────────────────────────────────
+     Dirección de arte: "papel y tinta".
+     Papel apenas cálido, tinta casi negra y un solo acento cobalto.
+
+     El verde anterior venía de la etapa en que el negocio se contaba desde la
+     automatización por WhatsApp, y ese verde es el de WhatsApp: leía a
+     "chatbot". Con la web al centro, el azul es la señal correcta —oficio
+     digital, confianza, nada de mensajería— y de paso despega la marca del
+     verde que usa media competencia de automatizaciones.
+
+     Un solo acento, a propósito: cuando el trabajo que vendes son sitios web,
+     la portada es la muestra. Un sitio con tres colores de acento no puede
+     argumentar que sabe jerarquizar.
+     ─────────────────────────────────────────────────────────────────────── */
   :root {
     --font-sans: 'Inter', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
+    --font-display: 'Sora', 'Inter', sans-serif;
 
-    --background: 0 0% 100%;
-    --foreground: 0 0% 7%;
+    --background: 40 24% 97%;
+    --foreground: 222 30% 9%;
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 7%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 7%;
-    --primary: 185 90% 28%;          /* teal oscuro — legible sobre blanco */
-    --primary-foreground: 0 0% 100%; /* texto blanco sobre botón teal */
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 40%;
-    --accent: 185 90% 28%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 72% 45%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 90%;
-    --input: 0 0% 90%;
-    --ring: 185 90% 28%;
-    --chart-1: 185 90% 28%;
-    --chart-2: 185 70% 45%;
-    --chart-3: 185 50% 58%;
-    --chart-4: 0 0% 68%;
-    --chart-5: 0 0% 82%;
-    --radius: 0.5rem;
-    --success: 185 90% 28%;
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 0 0% 7%;
-    --sidebar-primary: 185 90% 28%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 185 90% 95%;
-    --sidebar-accent-foreground: 185 90% 28%;
-    --sidebar-border: 0 0% 90%;
-    --sidebar-ring: 185 90% 28%;
+    --card-foreground: 222 30% 9%;
+    --primary: 228 84% 52%;
+    --primary-foreground: 40 30% 99%;
+    --secondary: 40 16% 93%;
+    --secondary-foreground: 222 30% 12%;
+    --muted: 40 14% 93%;
+    --muted-foreground: 222 10% 40%;
+    --destructive: 2 70% 45%;
+    --border: 225 12% 85%;
+    --input: 225 12% 80%;
+    --ring: 228 84% 52%;
+    --radius: 0.75rem;
+    --success: 151 57% 33%;
+    --error: 2 70% 45%;
+    --ink: 222 38% 7%;
   }
 
-  /* ===== Tema OSCURO — fondo negro, acento cyan brillante ===== */
   .dark {
-    --background: 0 0% 4%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 7%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 7%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 185 85% 52%;          /* cyan brillante sobre fondo oscuro */
-    --primary-foreground: 0 0% 7%;   /* texto casi negro sobre botón cyan */
-    --secondary: 0 0% 15%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 15%;
-    --muted-foreground: 0 0% 64%;
-    --accent: 185 85% 52%;
-    --accent-foreground: 0 0% 7%;
+    --background: 222 34% 7%;
+    --foreground: 40 26% 96%;
+    --card: 222 28% 10%;
+    --card-foreground: 40 26% 96%;
+    --primary: 224 96% 70%;
+    --primary-foreground: 222 38% 7%;
+    --secondary: 222 20% 15%;
+    --secondary-foreground: 40 26% 96%;
+    --muted: 222 20% 15%;
+    --muted-foreground: 220 10% 66%;
     --destructive: 0 62% 45%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 16%;
-    --input: 0 0% 16%;
-    --ring: 185 85% 52%;
-    --chart-1: 185 85% 52%;
-    --chart-2: 185 65% 65%;
-    --chart-3: 185 45% 58%;
-    --chart-4: 0 0% 42%;
-    --chart-5: 0 0% 28%;
-    --success: 185 85% 52%;
-    --sidebar-background: 0 0% 6%;
-    --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 185 85% 52%;
-    --sidebar-primary-foreground: 0 0% 7%;
-    --sidebar-accent: 185 85% 10%;
-    --sidebar-accent-foreground: 185 85% 52%;
-    --sidebar-border: 0 0% 16%;
-    --sidebar-ring: 185 85% 52%;
+    --border: 222 16% 21%;
+    --input: 222 16% 25%;
+    --ring: 224 96% 70%;
+    --success: 151 57% 52%;
+    --error: 2 70% 60%;
+    --ink: 222 40% 4%;
   }
 }
 
@@ -127,6 +94,543 @@
 
   body {
     @apply bg-background text-foreground font-sans;
+    min-width: 320px;
+    overflow-x: hidden;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: hsl(var(--primary) / 0.22);
+  }
+}
+
+/* Estructura y tipografía compartidas. */
+.site-container {
+  width: min(100% - 2rem, 75rem);
+  margin-inline: auto;
+}
+
+.section-pad {
+  padding-block: clamp(4.5rem, 8vw, 8rem);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: hsl(var(--primary));
+}
+
+.eyebrow::before {
+  content: "";
+  width: 1.4rem;
+  height: 1px;
+  background: currentColor;
+}
+
+.eyebrow-on-dark {
+  color: hsl(var(--primary));
+}
+
+.display-title {
+  max-width: 13ch;
+  font-size: clamp(2.75rem, 6.4vw, 5.9rem);
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+
+.section-title {
+  max-width: 18ch;
+  font-size: clamp(2.1rem, 4.2vw, 4rem);
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+
+@media (min-width: 640px) {
+  .site-container { width: min(100% - 3rem, 75rem); }
+}
+
+/* Hero: ocupa el alto real de la ventana.
+   `100dvh` y no `100vh` porque en móvil la barra del navegador se recoge al
+   hacer scroll; con vh el hero queda cortado al cargar. `min-height` en vez de
+   `height` para que el contenido nunca se recorte si el texto crece o la
+   pantalla es muy baja (móvil apaisado). El padding superior deja libre la
+   píldora flotante del navbar. */
+.hero-section {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  min-height: 100svh;
+  min-height: 100dvh;
+  padding-block: clamp(5.5rem, 7vw, 6.2rem) clamp(1.5rem, 3vw, 2.5rem);
+}
+
+@supports not (min-height: 100dvh) {
+  .hero-section { min-height: 100vh; }
+}
+
+/* Partículas del hero (ver ParticleField.jsx).
+   Solo anima transform y opacity para que corra en el compositor y no cueste
+   CPU durante el scroll. El recorrido de cada punto llega por --move-x /
+   --move-y desde el estilo en línea. */
+.particle {
+  box-shadow: 0 0 8px 2px hsl(var(--primary) / 0.55);
+  will-change: transform, opacity;
+  animation-name: particleFloat;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+@keyframes particleFloat {
+  0%, 100% { transform: translate3d(0, 0, 0); opacity: 0.4; }
+  50% { transform: translate3d(var(--move-x, 0), var(--move-y, 0), 0); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .particle { animation: none; opacity: 0.35; }
+}
+
+/* Partículas sobre una superficie oscura fija.
+   El bloque del cierre es de tinta en los DOS temas, así que no puede heredar
+   el color de acento: en tema claro el primary es azul oscuro y las partículas
+   desaparecían contra el fondo. Acá se fija un tono claro propio. */
+.particles-on-dark .particle {
+  background: hsl(224 96% 78%);
+  box-shadow: 0 0 8px 2px hsl(224 96% 78% / 0.5);
+}
+
+/* Retícula sobre superficie oscura, la del hero pero en claro sobre tinta. */
+.grid-on-dark {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgb(255 255 255 / 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.05) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 45%, black 30%, transparent 100%);
+}
+
+.hero-orbit {
+  position: absolute;
+  z-index: -1;
+  border: 1px solid hsl(var(--primary) / 0.1);
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+.hero-orbit-one {
+  width: 38rem;
+  height: 38rem;
+  top: -17rem;
+  right: -12rem;
+}
+
+.hero-orbit-two {
+  width: 24rem;
+  height: 24rem;
+  top: -6rem;
+  right: -4rem;
+}
+
+/* Foco de luz que sigue al puntero.
+   Las coordenadas llegan por --mx / --my desde Hero.jsx, actualizadas dentro de
+   un requestAnimationFrame: mousemove dispara decenas de veces por segundo y
+   escribir la variable en cada evento provoca repintados de más.
+   La transición de opacidad —y no de posición— evita que la luz "persiga" al
+   cursor con retraso, que se ve peor que no tener efecto. */
+.hero-spot {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  background: radial-gradient(
+    22rem 22rem at var(--mx, 50%) var(--my, 50%),
+    hsl(var(--primary) / 0.16),
+    hsl(var(--primary) / 0.05) 45%,
+    transparent 70%
+  );
+}
+
+.hero-section:hover .hero-spot { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-spot { display: none; }
+}
+
+/* Titular del hero: ocupa el ancho completo, así que puede crecer más que el
+   `display-title` de 13ch que se usaba con una imagen al lado. */
+.hero-title {
+  max-width: 20ch;
+  font-size: clamp(2.9rem, 8.2vw, 7.5rem);
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 0.94;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+
+
+/* ───────────────────────────────────────────────────────────────────────────
+   Panel: el mismo tratamiento de la píldora del navbar, disponible para
+   cualquier bloque. Es lo que le da al sitio la lectura "tech": superficies
+   flotantes de vidrio sobre el fondo, en vez de secciones a sangre.
+
+   Tres capas, siempre las mismas: borde de 1px, fondo translúcido con blur y
+   un hairline degradado arriba. La coherencia está en repetirlas sin variar.
+   ─────────────────────────────────────────────────────────────────────────── */
+.panel {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid hsl(var(--border));
+  border-radius: 1rem;
+  background: hsl(var(--card) / 0.72);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 18px 50px hsl(var(--ink) / 0.06);
+}
+
+.panel::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, hsl(var(--primary) / 0.4), transparent);
+}
+
+.panel-pad { padding: clamp(1.5rem, 3.5vw, 3rem); }
+
+/* Variante opaca: para menús y desplegables, donde el texto de atrás
+   atravesando la superficie no es un efecto, es un defecto de lectura. */
+.panel-solid {
+  background: hsl(var(--card));
+  backdrop-filter: none;
+  box-shadow: 0 24px 60px hsl(var(--ink) / 0.16);
+}
+
+/* Variante oscura, para los bloques sobre tinta. */
+.panel-dark {
+  border-color: rgb(255 255 255 / 0.12);
+  background: rgb(255 255 255 / 0.04);
+  box-shadow: 0 24px 60px rgb(0 0 0 / 0.28);
+}
+
+/* Filas editoriales de soluciones */
+.solution-row {
+  display: grid;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+@media (min-width: 1024px) {
+  .solution-row {
+    grid-template-columns: 0.55fr 2.1fr 1.5fr 1fr;
+    gap: 2.5rem;
+    align-items: center;
+  }
+}
+
+/* Casos de éxito: paneles amplios, no grilla de tarjetas. */
+.case-feature {
+  display: grid;
+  overflow: hidden;
+  border: 1px solid hsl(var(--border));
+  border-radius: 1rem;
+  background: hsl(var(--card));
+  box-shadow: 0 20px 60px hsl(var(--ink) / 0.07);
+}
+
+.case-media {
+  position: relative;
+  min-height: 18rem;
+  overflow: hidden;
+  border-bottom: 1px solid hsl(var(--border));
+  background: hsl(var(--secondary));
+}
+
+@media (min-width: 1024px) {
+  .case-feature { grid-template-columns: 1.18fr 0.82fr; }
+  .case-media { min-height: 31rem; border-right: 1px solid hsl(var(--border)); border-bottom: 0; }
+}
+
+.final-cta {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 1rem;
+  background:
+    radial-gradient(circle at 90% 10%, hsl(var(--primary) / 0.32), transparent 32%),
+    hsl(var(--ink));
+  padding: clamp(2rem, 7vw, 6rem);
+}
+
+.final-cta::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 18rem;
+  height: 18rem;
+  right: -6rem;
+  bottom: -9rem;
+  border: 1px solid rgb(255 255 255 / 0.12);
+  border-radius: 999px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Lo que el cliente toca.
+
+   Un botón que solo baja la opacidad al pasar el mouse se siente a plantilla,
+   y este sitio vende precisamente lo contrario. La idea acá es que la
+   superficie responda como un instrumento: un milímetro de elevación, una
+   luz que recorre el borde, un clic que hunde la pieza. Nada de rebotes ni
+   animaciones largas —lo caro se nota en el control, no en el movimiento.
+
+   Va en un solo lugar para que los diecinueve servicios, el hero y el
+   formulario se comporten igual: si cada pantalla inventa su propio hover,
+   el sitio deja de sentirse como un producto y pasa a sentirse como páginas
+   sueltas.
+   ───────────────────────────────────────────────────────────────────────── */
+.btn {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  /* La curva es la misma de los desplegables: entra rápido y frena suave, que
+     es como se mueve algo que tiene masa. */
+  transition:
+    transform 180ms cubic-bezier(0.2, 0.7, 0.3, 1),
+    box-shadow 240ms cubic-bezier(0.2, 0.7, 0.3, 1),
+    border-color 240ms ease,
+    background-color 240ms ease,
+    color 240ms ease;
+}
+
+.btn:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 3px;
+}
+
+.btn-primary {
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  /* La línea clara de arriba es lo que separa un botón de un rectángulo de
+     color: simula que la pieza recibe luz desde arriba. */
+  box-shadow:
+    inset 0 1px 0 hsl(0 0% 100% / 0.2),
+    0 10px 26px hsl(var(--primary) / 0.26);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 hsl(0 0% 100% / 0.26),
+    0 16px 36px hsl(var(--primary) / 0.36);
+}
+
+/* Al presionar vuelve al plano y la sombra se mete hacia adentro: es la única
+   forma de que un botón plano confirme el clic sin esperar a la página. */
+.btn-primary:active {
+  transform: translateY(0);
+  box-shadow: inset 0 2px 6px hsl(var(--ink) / 0.32);
+}
+
+/* Reflejo que cruza la pieza una sola vez al entrar el puntero. Va en un
+   pseudo-elemento con z-index negativo dentro del propio aislamiento del
+   botón, así queda sobre el fondo y bajo el texto sin tocar el resto. */
+.btn-primary::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 32%,
+    hsl(0 0% 100% / 0.22) 46%,
+    transparent 62%
+  );
+  transform: translateX(-115%);
+  transition: transform 700ms cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+.btn-primary:hover::after { transform: translateX(115%); }
+
+.btn-ghost {
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--card) / 0.5);
+  color: hsl(var(--foreground));
+  backdrop-filter: blur(10px);
+}
+
+.btn-ghost:hover {
+  transform: translateY(-1px);
+  border-color: hsl(var(--primary) / 0.45);
+  background: hsl(var(--primary) / 0.07);
+  color: hsl(var(--primary));
+  box-shadow: 0 12px 28px hsl(var(--ink) / 0.09);
+}
+
+.btn-ghost:active {
+  transform: translateY(0);
+  background: hsl(var(--primary) / 0.12);
+}
+
+/* Superficies informativas: no son botones, así que no se levantan ni invitan
+   al clic. Solo se enciende la línea superior, lo justo para que la página no
+   se sienta impresa. */
+.panel-hover {
+  transition:
+    border-color 260ms ease,
+    box-shadow 260ms ease;
+}
+
+.panel-hover:hover {
+  border-color: hsl(var(--primary) / 0.28);
+  box-shadow: 0 22px 56px hsl(var(--ink) / 0.10);
+}
+
+.panel-hover::before {
+  transition: background 320ms ease, opacity 320ms ease;
+  opacity: 0.55;
+}
+
+.panel-hover:hover::before {
+  opacity: 1;
+  background: linear-gradient(90deg, transparent, hsl(var(--primary) / 0.85), transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .btn::after,
+  .panel-hover,
+  .panel-hover::before { transition: none; }
+  .btn:hover { transform: none; }
+  .btn-primary:hover::after { transform: translateX(-115%); }
+}
+
+/* Sombras de scroll.
+   Una lista recortada al ras no comunica nada: el visitante ve el último
+   elemento cortado y asume que eso es todo. Acá la sombra aparece únicamente
+   por el lado que todavía tiene contenido y desaparece sola al llegar al
+   extremo, sin JavaScript.
+
+   El truco está en las capas: las dos primeras son del color del fondo y viajan
+   con el contenido (`local`), así que al estar arriba del todo tapan la sombra
+   superior, y al llegar abajo tapan la inferior. Las dos radiales quedan fijas
+   al marco (`scroll`) y son las que se ven cuando hay más para recorrer. */
+.scroll-shadows {
+  background:
+    linear-gradient(hsl(var(--secondary)) 30%, hsl(var(--secondary) / 0)) top / 100% 1.75rem no-repeat local,
+    linear-gradient(hsl(var(--secondary) / 0), hsl(var(--secondary)) 70%) bottom / 100% 1.75rem no-repeat local,
+    radial-gradient(farthest-side at 50% 0, hsl(var(--ink) / 0.16), hsl(var(--ink) / 0)) top / 100% 0.6rem no-repeat scroll,
+    radial-gradient(farthest-side at 50% 100%, hsl(var(--ink) / 0.16), hsl(var(--ink) / 0)) bottom / 100% 0.6rem no-repeat scroll;
+}
+
+.faq-item { border-bottom: 1px solid hsl(var(--border)); }
+.faq-item summary {
+  display: flex;
+  min-height: 4.5rem;
+  cursor: pointer;
+  list-style: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  font-weight: 700;
+  transition: color 200ms ease;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary:hover { color: hsl(var(--primary)); }
+.faq-item[open] summary { color: hsl(var(--primary)); }
+.faq-item summary:focus-visible { outline: 2px solid hsl(var(--ring)); outline-offset: 4px; }
+
+/* La cruz se dibuja con dos degradados de una sola parada en vez de un icono:
+   hereda el color del texto, gira a equis al abrir y no agrega una petición
+   más. Antes no había ninguna marca y la pregunta no se leía como algo que se
+   puede abrir. */
+.faq-item summary::after {
+  content: "";
+  flex: none;
+  width: 0.875rem;
+  height: 0.875rem;
+  background:
+    linear-gradient(currentColor 0 0) center / 100% 1.5px no-repeat,
+    linear-gradient(currentColor 0 0) center / 1.5px 100% no-repeat;
+  transition: transform 280ms cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+.faq-item[open] summary::after { transform: rotate(45deg); }
+
+.faq-item p {
+  max-width: 46rem;
+  padding: 0 2.5rem 1.5rem 0;
+  line-height: 1.75;
+  color: hsl(var(--muted-foreground));
+}
+
+/* `details` no anima su apertura, pero sí se puede animar lo que aparece: sin
+   esto la respuesta salta de golpe y el desplegable se siente brusco. */
+.faq-item[open] p { animation: faq-reveal 300ms cubic-bezier(0.2, 0.7, 0.3, 1) both; }
+
+@keyframes faq-reveal {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .faq-item summary::after { transition: none; }
+  .faq-item[open] p { animation: none; }
+}
+
+.footer-title {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: hsl(var(--foreground));
+}
+.footer-link {
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+  transition: color 160ms ease;
+}
+.footer-link:hover { color: hsl(var(--primary)); }
+
+.form-label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: hsl(var(--foreground));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
@@ -158,37 +662,6 @@
   box-shadow: 0 0 20px hsl(var(--primary) / 0.25), 0 0 40px hsl(var(--primary) / 0.12);
 }
 
-.glow-text {
-  text-shadow: 0 0 30px hsl(var(--primary) / 0.4);
-}
-
-.pulse-border {
-  animation: pulseBorder 2s ease-in-out infinite;
-}
-
-@keyframes pulseBorder {
-  0%, 100% { border-color: hsl(var(--primary) / 0.25); }
-  50% { border-color: hsl(var(--primary) / 0.65); }
-}
-
-/* Marquee infinito (stack de tecnologías). La pista contiene la lista
-   duplicada, por eso el loop se cierra al llegar a -50%. */
-.marquee-track {
-  animation: marquee 22s linear infinite;
-}
-.marquee-track:hover {
-  animation-play-state: paused;
-}
-.marquee-mask {
-  mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
-}
-@keyframes marquee {
-  to { transform: translateX(-50%); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .marquee-track { animation: none; }
-}
-
 /* Smooth scroll */
 html {
   scroll-behavior: smooth;
@@ -213,284 +686,4 @@ html {
   background: var(--color-primary);
   opacity: 0.8;
   flex-shrink: 0;
-}
-
-
-/* ================================================================
-   Blog prose — estilos para el contenido Markdown renderizado
-   via ReactMarkdown dentro de .blog-prose
-   ================================================================ */
-.blog-prose {
-  color: hsl(var(--foreground));
-  line-height: 1.8;
-  font-size: 1.0625rem;
-}
-
-.blog-prose > * + * { margin-top: 1.5em; }
-
-.blog-prose h1,
-.blog-prose h2,
-.blog-prose h3,
-.blog-prose h4 {
-  font-weight: 800;
-  letter-spacing: -0.025em;
-  line-height: 1.25;
-  color: hsl(var(--foreground));
-  margin-top: 2.5em;
-  margin-bottom: 0.75em;
-}
-
-.blog-prose h1 { font-size: 2rem; }
-.blog-prose h2 {
-  font-size: 1.5rem;
-  padding-bottom: 0.5em;
-  border-bottom: 1px solid hsl(var(--border));
-}
-.blog-prose h3 { font-size: 1.2rem; color: hsl(var(--primary)); }
-.blog-prose h4 { font-size: 1rem; text-transform: uppercase; letter-spacing: 0.08em; font-family: var(--font-mono); color: hsl(var(--muted-foreground)); }
-
-.blog-prose p { color: hsl(var(--muted-foreground)); }
-
-.blog-prose a {
-  color: hsl(var(--primary));
-  text-decoration: underline;
-  text-decoration-color: hsl(var(--primary) / 0.35);
-  text-underline-offset: 3px;
-  transition: text-decoration-color 0.15s;
-}
-.blog-prose a:hover { text-decoration-color: hsl(var(--primary)); }
-
-.blog-prose strong { color: hsl(var(--foreground)); font-weight: 700; }
-.blog-prose em { color: hsl(var(--muted-foreground)); font-style: italic; }
-
-.blog-prose ul,
-.blog-prose ol {
-  padding-left: 1.5em;
-  color: hsl(var(--muted-foreground));
-}
-.blog-prose ul { list-style-type: none; }
-.blog-prose ul li { position: relative; padding-left: 0.5em; }
-.blog-prose ul li::before {
-  content: "▸";
-  position: absolute;
-  left: -1em;
-  color: hsl(var(--primary));
-  font-size: 0.75em;
-  top: 0.2em;
-}
-.blog-prose ol { list-style-type: decimal; }
-.blog-prose li { margin-bottom: 0.4em; }
-.blog-prose li > ul, .blog-prose li > ol { margin-top: 0.5em; }
-
-.blog-prose blockquote {
-  border-left: 3px solid hsl(var(--primary));
-  padding: 1em 1.5em;
-  margin: 2em 0;
-  background: hsl(var(--primary) / 0.04);
-  border-radius: 0 0.5rem 0.5rem 0;
-  color: hsl(var(--foreground));
-  font-size: 1.05rem;
-  font-style: italic;
-}
-.blog-prose blockquote p { color: hsl(var(--foreground)); margin: 0; }
-
-.blog-prose code {
-  font-family: var(--font-mono);
-  font-size: 0.875em;
-  background: hsl(var(--secondary));
-  color: hsl(var(--primary));
-  padding: 0.2em 0.45em;
-  border-radius: 0.3em;
-  border: 1px solid hsl(var(--border));
-}
-
-.blog-prose pre {
-  background: hsl(var(--card));
-  border: 1px solid hsl(var(--border));
-  border-radius: 0.75rem;
-  padding: 1.25em 1.5em;
-  overflow-x: auto;
-  font-size: 0.875rem;
-  line-height: 1.7;
-  margin: 2em 0;
-}
-.blog-prose pre code {
-  background: none;
-  border: none;
-  padding: 0;
-  color: hsl(var(--foreground));
-  font-size: 1em;
-}
-
-.blog-prose hr {
-  border: none;
-  border-top: 1px solid hsl(var(--border));
-  margin: 3em 0;
-}
-
-.blog-prose img {
-  border-radius: 0.75rem;
-  border: 1px solid hsl(var(--border));
-  max-width: 100%;
-  height: auto;
-}
-
-.blog-table-wrap {
-  overflow-x: auto;
-  border: 1px solid hsl(var(--border));
-  border-radius: 0.75rem;
-  -webkit-overflow-scrolling: touch;
-}
-.blog-prose table {
-  width: 100%;
-  min-width: 480px;
-  border-collapse: collapse;
-  font-size: 0.9rem;
-  margin: 0;
-}
-.blog-prose th {
-  background: hsl(var(--secondary));
-  font-weight: 700;
-  text-align: left;
-  padding: 0.7em 1em;
-  border-bottom: 1px solid hsl(var(--border));
-  color: hsl(var(--foreground));
-  white-space: nowrap;
-}
-.blog-prose td {
-  padding: 0.7em 1em;
-  border-bottom: 1px solid hsl(var(--border) / 0.6);
-  color: hsl(var(--muted-foreground));
-  vertical-align: top;
-}
-.blog-prose tbody tr:nth-child(even) { background: hsl(var(--secondary) / 0.35); }
-.blog-prose tbody tr:last-child td { border-bottom: none; }
-/* Primera columna de cada fila resaltada (etiqueta de la fila) */
-.blog-prose td:first-child { color: hsl(var(--foreground)); font-weight: 500; }
-
-/* Legal prose (similar pero con menos ornamentación) */
-.legal-prose > section { padding-bottom: 2rem; border-bottom: 1px solid hsl(var(--border) / 0.5); }
-.legal-prose > section:last-child { border-bottom: none; padding-bottom: 0; }
-.legal-prose h2 {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: hsl(var(--foreground));
-  margin-bottom: 0.75rem;
-}
-.legal-prose h2::before {
-  content: attr(data-num);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.75rem;
-  height: 1.75rem;
-  border-radius: 0.4rem;
-  background: hsl(var(--primary) / 0.1);
-  border: 1px solid hsl(var(--primary) / 0.2);
-  color: hsl(var(--primary));
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  font-weight: 700;
-  flex-shrink: 0;
-}
-
-/* ─── Impresión: convierte la página en un documento limpio ─────────────────
-   Pensado para /contrato (y cualquier página legal): oculta el chrome del
-   sitio, fuerza fondo blanco con tinta oscura y evita cortar cláusulas. */
-.print-only { display: none; }
-
-@media print {
-  @page { margin: 1.8cm; }
-
-  /* Oculta navegación, pie, botón flotante y todo lo marcado como no imprimible */
-  nav,
-  footer,
-  .print-hidden { display: none !important; }
-
-  /* Documento sobre papel blanco */
-  html, body { background: #ffffff !important; }
-
-  /* Membrete / pie que solo aparecen al imprimir */
-  .print-only { display: block !important; }
-
-  /* Contenedor del documento: sin rellenos del layout, tinta oscura, sin color de fondo */
-  .print-doc { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
-  .print-doc,
-  .print-doc * {
-    color: #1a1a1a !important;
-    background: transparent !important;
-    box-shadow: none !important;
-  }
-  .print-doc [class*="border"] { border-color: #d4d4d4 !important; }
-
-  /* No partir una cláusula entre dos páginas */
-  .print-clause { break-inside: avoid; page-break-inside: avoid; }
-
-  /* Marca de agua diagonal, repetida en cada página impresa (position: fixed) */
-  .print-watermark {
-    display: flex !important;
-    position: fixed;
-    inset: 0;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none;
-    z-index: 9999;
-  }
-  .print-watermark span {
-    transform: rotate(-32deg);
-    font-family: var(--font-mono);
-    font-size: 64px;
-    font-weight: 800;
-    letter-spacing: 0.12em;
-    color: rgba(20, 20, 20, 0.07);
-    border: 5px solid rgba(20, 20, 20, 0.07);
-    border-radius: 16px;
-    padding: 0.25em 0.6em;
-    white-space: nowrap;
-  }
-}
-
-/* Oculta la marca de agua en pantalla (solo aparece en impresión) */
-.print-watermark { display: none; }
-
-/* ─── Partículas del hero (ver ParticleField.jsx) ───────────────────────────
-   Solo anima transform/opacity para que corra en el compositor. El recorrido
-   de cada punto llega por --move-x / --move-y desde el inline style. */
-.particle {
-  box-shadow: 0 0 6px 1px hsl(var(--primary) / 0.5);
-  will-change: transform, opacity;
-  animation-name: particleFloat;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: infinite;
-}
-@keyframes particleFloat {
-  0%, 100% {
-    transform: translate3d(0, 0, 0);
-    opacity: 0.35;
-  }
-  50% {
-    transform: translate3d(var(--move-x, 0), var(--move-y, 0), 0);
-    opacity: 0.95;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .particle { animation: none; opacity: 0.5; }
-}
-
-/* ─── Mini-pipeline del hero: dato que viaja por la línea ──────────────────── */
-@keyframes flow-dot {
-  0%   { left: 0;    opacity: 0; }
-  15%  { opacity: 1; }
-  85%  { opacity: 1; }
-  100% { left: 100%; opacity: 0; }
-}
-.flow-dot {
-  animation: flow-dot 2.4s ease-in-out infinite;
-  box-shadow: 0 0 6px 1px hsl(var(--primary) / 0.7);
-}
-@media (prefers-reduced-motion: reduce) {
-  .flow-dot { animation: none; left: 50%; }
 }

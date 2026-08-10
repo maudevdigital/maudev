@@ -1,53 +1,55 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X, Sun, Moon } from "lucide-react";
+import { CalendarClock, ChevronDown, Menu, Moon, Sun, X } from "lucide-react";
 import Logo from "@/components/landing/Logo";
 import CtaButton from "@/components/landing/CtaButton";
-import { t } from "@/lib/i18n";
+import CurrencySwitcher from "@/components/landing/CurrencySwitcher";
+import { catalog, headerActions } from "@/data/catalog";
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Navbar flotante.
+// Navbar flotante: una píldora de vidrio despegada del borde.
 //
-// Sigue siendo la misma navegación reducida (anclas de la home + un solo botón
-// sólido), pero montada sobre una "píldora" de vidrio despegada del borde:
-// da lectura más tech y separa el chrome del contenido al hacer scroll.
+// Comportamiento:
+//   · al salir del top gana fondo, borde y sombra para separarse del contenido,
+//   · con un menú desplegado se vuelve opaco: leer una lista con el texto de la
+//     página cruzándose por detrás no es un efecto, es un defecto,
+//   · en móvil se esconde al bajar y reaparece al subir (gana pantalla), salvo
+//     con el menú abierto, donde esconderlo se llevaría el menú con él,
+//   · marca la sección visible en la home (scrollspy con IntersectionObserver),
+//   · el menú móvil cierra con Escape y fija el cuerpo para que el fondo no se
+//     mueva mientras se recorre la lista.
 //
-// Tres detalles de comportamiento:
-//   · en móvil se esconde al bajar y reaparece al subir (gana pantalla),
-//   · al salir del top gana borde/sombra para despegarse del fondo,
-//   · en la home marca la sección visible (scrollspy con IntersectionObserver).
+// La superficie es `secondary`, la misma del footer: el header abre la página y
+// el footer la cierra, y cuando cada uno usaba su propio tono el salto se veía
+// al llegar abajo.
 // ─────────────────────────────────────────────────────────────────────────────
 
-const sections = [
-  { label: t("Qué automatizo", "What I automate"), id: "automatizaciones" },
-  { label: t("Trabajos", "Work"), id: "portafolio" },
-  { label: t("Cómo funciona", "How it works"), id: "proceso" },
-  { label: t("Dudas", "FAQ"), id: "dudas" },
+// El navbar de escritorio muestra solo los destinos que son una decisión.
+// "Proceso" y "Preguntas" se encuentran bajando y viven en el menú móvil:
+// en el header solo sumaban ancho y obligaban a leer más para elegir.
+const navigation = [
+  { label: "Servicios", id: "soluciones", enHeader: true },
+  { label: "Portafolio", id: "casos", enHeader: true },
+  { label: "Proceso", id: "proceso", enHeader: false },
+  { label: "Preguntas", id: "preguntas", enHeader: false },
 ];
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
-  const [dark, setDark] = useState(() =>
-    typeof document !== "undefined" && document.documentElement.classList.contains("dark")
-  );
   const [scrolled, setScrolled] = useState(false);
   const [show, setShow] = useState(true);
   const [active, setActive] = useState(null);
+  const [mega, setMega] = useState(false);
+  const [dark, setDark] = useState(() =>
+    typeof document !== "undefined" && document.documentElement.classList.contains("dark")
+  );
   const lastScrollY = useRef(0);
+  const headerRef = useRef(null);
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
-  const toggleTheme = () => {
-    const next = !dark;
-    setDark(next);
-    document.documentElement.classList.toggle("dark", next);
-    try {
-      localStorage.setItem("theme", next ? "dark" : "light");
-    } catch { /* almacenamiento bloqueado: el toggle igual funciona en la sesión */ }
-  };
-
-  // Un solo listener de scroll para las dos cosas (sombra + ocultar en móvil),
-  // pasado por rAF para no disparar layout en cada evento.
+  // Un solo listener para fondo y auto-ocultado, pasado por rAF para no
+  // disparar layout en cada evento de scroll.
   useEffect(() => {
     lastScrollY.current = window.scrollY;
     let ticking = false;
@@ -57,13 +59,12 @@ export default function Navbar() {
       ticking = true;
       window.requestAnimationFrame(() => {
         const y = window.scrollY;
-        setScrolled(y > 8);
-        // De vuelta arriba estamos en el hero: ninguna sección va marcada.
+        setScrolled(y > 12);
         if (y < 200) setActive(null);
 
-        if (window.innerWidth < 768) {
+        if (window.innerWidth < 1024) {
           const bajando = y > lastScrollY.current;
-          setShow(!bajando || y < 80);
+          setShow(!bajando || y < 96);
         } else {
           setShow(true);
         }
@@ -73,175 +74,340 @@ export default function Navbar() {
       });
     };
 
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Scrollspy: solo tiene sentido en la home, donde las anclas existen.
+  // Scrollspy: solo en la home, que es donde existen las anclas. La banda es
+  // una franja fina a media pantalla; con umbrales por proporción, una sección
+  // más alta que la franja nunca llegaría a marcarse.
   useEffect(() => {
     if (pathname !== "/") {
       setActive(null);
       return;
     }
-    const nodes = sections
-      .map((s) => document.getElementById(s.id))
-      .filter(Boolean);
+    const nodes = navigation.map((item) => document.getElementById(item.id)).filter(Boolean);
     if (!nodes.length) return;
 
-    // La "banda" es una franja fina a media pantalla: se marca la sección que
-    // la cruza. Con umbrales por ratio no basta — una sección más alta que la
-    // franja nunca llega a cubrir la fracción pedida y no se marcaría nunca.
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) setActive(e.target.id);
-        });
-      },
+      (entries) => entries.forEach((entry) => entry.isIntersecting && setActive(entry.target.id)),
       { rootMargin: "-45% 0px -50% 0px", threshold: 0 }
     );
-    nodes.forEach((n) => observer.observe(n));
+    nodes.forEach((node) => observer.observe(node));
     return () => observer.disconnect();
   }, [pathname]);
 
-  // Cierra el menú móvil al cambiar de ruta.
-  useEffect(() => setOpen(false), [pathname]);
+  useEffect(() => {
+    setOpen(false);
+    setMega(false);
+  }, [pathname]);
 
-  // En la home hacemos scroll suave; fuera de ella navegamos a la home con hash.
-  const goToSection = (e, id) => {
-    e.preventDefault();
+  // El mega se cierra al hacer clic fuera del header, con Escape o volviendo a
+  // pulsar Servicios. NO se cierra al salir el puntero: ese cierre automático
+  // hacía desaparecer la lista mientras se leía, apenas el cursor se iba un
+  // momento del panel, y obligaba a volver a abrirla. Un menú que el visitante
+  // abrió a propósito se cierra cuando él decide.
+  useEffect(() => {
+    if (!mega) return;
+    const fuera = (evento) => {
+      if (!headerRef.current?.contains(evento.target)) setMega(false);
+    };
+    const esc = (evento) => {
+      if (evento.key === "Escape") setMega(false);
+    };
+    document.addEventListener("mousedown", fuera);
+    window.addEventListener("keydown", esc);
+    return () => {
+      document.removeEventListener("mousedown", fuera);
+      window.removeEventListener("keydown", esc);
+    };
+  }, [mega]);
+
+  // Con cualquiera de los dos menús desplegado, la página de atrás se queda
+  // quieta: el único que se desplaza es la lista.
+  //
+  // `overflow: hidden` en el body no alcanza —Safari en iPhone lo ignora— así
+  // que el cuerpo se fija y se compensa con `top` la posición en la que estaba,
+  // para que al cerrar el visitante vuelva exactamente donde iba.
+  //
+  // Al fijar el cuerpo desaparece la barra de desplazamiento, y en escritorio
+  // eso ensancha la página de golpe: el contenido salta unos pixeles hacia el
+  // costado justo al abrir el menú. Se rellena ese ancho con padding para que
+  // el fondo quede realmente inmóvil y no solo sin scroll.
+  useEffect(() => {
+    if (!open && !mega) return;
+    const { body } = document;
+    const y = window.scrollY;
+    const barra = window.innerWidth - document.documentElement.clientWidth;
+    const previo = {
+      position: body.style.position,
+      top: body.style.top,
+      left: body.style.left,
+      right: body.style.right,
+      overflow: body.style.overflow,
+      paddingRight: body.style.paddingRight,
+    };
+
+    body.style.position = "fixed";
+    body.style.top = `-${y}px`;
+    body.style.left = "0";
+    body.style.right = "0";
+    body.style.overflow = "hidden";
+    if (barra > 0) body.style.paddingRight = `${barra}px`;
+
+    const onKey = (event) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+
+    return () => {
+      Object.assign(body.style, previo);
+      window.scrollTo(0, y);
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [open, mega]);
+
+  const goToSection = (event, id) => {
+    event.preventDefault();
     setOpen(false);
     if (pathname === "/") {
       document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-    } else {
-      navigate(`/#${id}`);
+      window.history.replaceState(null, "", `/#${id}`);
+      return;
+    }
+    navigate(`/#${id}`);
+  };
+
+  const toggleTheme = () => {
+    const next = !dark;
+    setDark(next);
+    document.documentElement.classList.toggle("dark", next);
+    try {
+      localStorage.setItem("theme", next ? "dark" : "light");
+    } catch {
+      // El tema sigue funcionando durante la sesión si el almacenamiento falla.
     }
   };
 
   return (
-    <nav
-      className="fixed inset-x-3 top-3 z-50 transition-transform duration-300 ease-out sm:inset-x-4 sm:top-4"
-      style={{ transform: `translateY(${show ? 0 : -120}%)` }}
+    <header
+      ref={headerRef}
+      className="fixed inset-x-3 top-3 z-50 transition-transform duration-300 ease-out sm:inset-x-5 sm:top-5"
+      style={{ transform: `translateY(${show || open ? 0 : -140}%)` }}
     >
       <div
-        className={[
-          "mx-auto max-w-6xl overflow-hidden rounded-2xl border backdrop-blur-xl transition-all duration-300",
-          scrolled
-            ? "border-border bg-background/85 shadow-lg shadow-black/10"
-            : "border-border/50 bg-background/60 shadow-none",
-        ].join(" ")}
+        className={`mx-auto w-full max-w-300 overflow-hidden rounded-2xl border transition-colors duration-200 ${
+          open || mega
+            ? "border-border bg-secondary shadow-xl shadow-[hsl(var(--ink)/0.12)]"
+            : scrolled
+              ? "border-border bg-secondary/92 shadow-lg shadow-[hsl(var(--ink)/0.08)] backdrop-blur-xl"
+              : "border-border/60 bg-secondary/70 backdrop-blur-md"
+        }`}
       >
-        {/* Hairline superior: el detalle que da el aire "panel" del navbar */}
+        {/* Hairline superior: el detalle que da la lectura de panel */}
         <div
           aria-hidden="true"
           className="h-px w-full bg-linear-to-r from-transparent via-primary/40 to-transparent"
         />
 
-        <div className="px-3 sm:px-5">
-          <div className="flex h-14 items-center justify-between sm:h-16">
-            <Link
-              to="/"
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              className="group flex items-center gap-2.5 text-primary"
+        <div className="flex h-15 items-center justify-between gap-3 px-3 sm:h-16 sm:px-5">
+          <Link to="/" aria-label="Maudev, ir al inicio" className="group flex shrink-0 items-center gap-2.5">
+            <Logo size={28} className="text-primary transition-transform duration-200 group-hover:rotate-6" />
+            <span className="text-[1.05rem] font-extrabold tracking-[-0.04em] text-foreground">
+              mau<span className="text-primary">dev</span>
+            </span>
+          </Link>
+
+          <nav aria-label="Navegación principal" className="hidden items-center gap-1 lg:flex">
+            <div>
+              <button
+                type="button"
+                onClick={() => setMega((v) => !v)}
+                aria-expanded={mega}
+                aria-controls="mega-servicios"
+                className={`flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+                  mega ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                Servicios
+                <ChevronDown className={`h-3.5 w-3.5 transition-transform ${mega ? "rotate-180" : ""}`} aria-hidden="true" />
+              </button>
+            </div>
+
+            <a
+              href="/#casos"
+              onClick={(event) => goToSection(event, "casos")}
+              aria-current={active === "casos" ? "true" : undefined}
+              className={`rounded-lg px-3 py-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+                active === "casos" ? "text-primary" : "text-muted-foreground hover:text-foreground"
+              }`}
             >
-              <Logo size={30} className="transition-transform duration-300 group-hover:rotate-6" />
-              <span className="text-lg font-bold tracking-tight text-foreground">
-                mau
-                <span className="bg-linear-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-                  dev
-                </span>
-              </span>
+              Portafolio
+            </a>
+
+            <Link
+              to="/contacto"
+              className="rounded-lg px-3 py-2 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              Contacto
             </Link>
+          </nav>
 
-            {/* Desktop */}
-            <div className="hidden items-center gap-1 md:flex">
-              {sections.map((s) => {
-                const isActive = active === s.id;
-                return (
-                  <a
-                    key={s.id}
-                    href={`/#${s.id}`}
-                    onClick={(e) => goToSection(e, s.id)}
-                    aria-current={isActive ? "true" : undefined}
-                    className={[
-                      "group relative rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-                      isActive ? "text-primary" : "text-muted-foreground hover:text-foreground",
-                    ].join(" ")}
-                  >
-                    {s.label}
-                    <span
-                      aria-hidden="true"
-                      className={[
-                        "absolute bottom-1 left-1/2 h-0.5 -translate-x-1/2 rounded-full",
-                        "bg-linear-to-r from-primary/60 via-primary to-primary/60",
-                        "transition-all duration-300 ease-out",
-                        isActive
-                          ? "w-6 opacity-100"
-                          : "w-0 opacity-0 group-hover:w-6 group-hover:opacity-100",
-                      ].join(" ")}
-                    />
-                  </a>
-                );
-              })}
+          <div className="hidden items-center gap-2 lg:flex">
+            <span aria-hidden="true" className="mr-1 h-5 w-px bg-border" />
+            <button
+              type="button"
+              onClick={toggleTheme}
+              aria-label={dark ? "Usar tema claro" : "Usar tema oscuro"}
+              className="grid h-10 w-10 place-items-center rounded-xl border border-border text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </button>
+            <CurrencySwitcher />
+            <a
+              href={headerActions.agendar.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-ghost h-10 rounded-lg! px-3.5 text-sm"
+            >
+              <CalendarClock className="h-4 w-4" aria-hidden="true" />
+              {headerActions.agendar.label}
+            </a>
+            <CtaButton size="md" context="header" label={headerActions.cotizar.label} className="h-10! px-5!" />
+          </div>
 
-              <span aria-hidden="true" className="mx-2 h-5 w-px bg-border" />
-
-              <button
-                onClick={toggleTheme}
-                aria-label={t("Cambiar tema", "Toggle theme")}
-                className="flex h-9 w-9 items-center justify-center rounded-lg border border-border text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
-              >
-                {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-              </button>
-              <CtaButton size="md" context="navbar" className="ml-2! h-10! px-5! text-sm!" />
-            </div>
-
-            {/* Mobile */}
-            <div className="flex items-center gap-2 md:hidden">
-              <button
-                onClick={toggleTheme}
-                aria-label={t("Cambiar tema", "Toggle theme")}
-                className="flex h-9 w-9 items-center justify-center rounded-lg border border-border text-muted-foreground"
-              >
-                {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-              </button>
-              <button
-                onClick={() => setOpen(!open)}
-                aria-label={t("Abrir menú", "Open menu")}
-                aria-expanded={open}
-                className="flex h-9 w-9 items-center justify-center rounded-lg border border-border text-foreground transition-transform duration-300"
-                style={{ transform: `rotate(${open ? 180 : 0}deg)` }}
-              >
-                {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-              </button>
-            </div>
+          <div className="flex items-center gap-2 lg:hidden">
+            <button
+              type="button"
+              onClick={toggleTheme}
+              aria-label={dark ? "Usar tema claro" : "Usar tema oscuro"}
+              className="grid h-10 w-10 place-items-center rounded-xl border border-border text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </button>
+            <button
+              type="button"
+              onClick={() => setOpen((value) => !value)}
+              aria-expanded={open}
+              aria-controls="menu-movil"
+              aria-label={open ? "Cerrar menú" : "Abrir menú"}
+              className="grid h-10 w-10 place-items-center rounded-xl border border-border text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
           </div>
         </div>
 
-        {open && (
-          <div className="border-t border-border/60 md:hidden">
-            <div className="space-y-1 px-3 py-4">
-              {sections.map((s) => (
-                <a
-                  key={s.id}
-                  href={`/#${s.id}`}
-                  onClick={(e) => goToSection(e, s.id)}
-                  className={[
-                    "block rounded-lg px-3 py-2.5 text-sm transition-colors",
-                    active === s.id
-                      ? "border border-primary/20 bg-primary/10 text-primary"
-                      : "text-muted-foreground hover:bg-secondary hover:text-foreground",
-                  ].join(" ")}
-                >
-                  {s.label}
-                </a>
+        {mega && (
+          <div
+            id="mega-servicios"
+            className="scroll-shadows hidden max-h-[calc(100dvh-9rem)] overflow-y-auto overscroll-contain border-t border-border bg-secondary lg:block"
+          >
+            <div className="grid gap-x-8 gap-y-8 p-6 sm:grid-cols-2 xl:grid-cols-4">
+              {catalog.map((familia) => (
+                <div key={familia.id}>
+                  <p className="flex items-center gap-2 border-b border-border pb-2.5 font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                    <span className={`h-1.5 w-1.5 rounded-full bg-current ${familia.accent}`} aria-hidden="true" />
+                    {familia.label}
+                  </p>
+                  <ul className="mt-2">
+                    {familia.items.map(({ icon: Icon, title, text, href }) => (
+                      <li key={title}>
+                        <Link
+                          to={href}
+                          onClick={() => setMega(false)}
+                          className="group flex gap-3 rounded-lg p-2.5 transition-colors hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                        >
+                          <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-md border border-border text-primary transition-colors group-hover:border-primary/40">
+                            <Icon className="h-3.5 w-3.5" aria-hidden="true" />
+                          </span>
+                          <span className="min-w-0">
+                            <span className="block text-sm font-semibold text-foreground">{title}</span>
+                            <span className="mt-0.5 block text-xs leading-snug text-muted-foreground">{text}</span>
+                          </span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               ))}
-              <div className="pt-3">
-                <CtaButton size="md" context="navbar-movil" full />
-              </div>
             </div>
           </div>
         )}
+
+        {open && (
+          <nav id="menu-movil" aria-label="Navegación móvil" className="border-t border-border lg:hidden">
+            {/* Dos zonas: la lista se desplaza y las acciones quedan fijas
+                abajo.
+
+                Antes era un solo bloque con scroll: el contenido cabía casi
+                justo, así que el menú terminaba al ras del borde inferior de la
+                pantalla, "Cotizar proyecto" quedaba cortado por unos píxeles y
+                nada indicaba que hubiera más abajo. Se podía deslizar, pero no
+                se veía que se pudiera, que para el visitante es lo mismo que no
+                poder.
+
+                Ahora la altura deja aire bajo la píldora, la lista lleva
+                sombras de scroll que aparecen solo cuando queda contenido hacia
+                ese lado, y el botón principal no depende de que alguien baje
+                para encontrarlo. */}
+            <div className="flex max-h-[calc(100dvh-9.5rem)] flex-col">
+              <div className="scroll-shadows min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-4">
+              <div className="mb-2">
+                {catalog.map((familia) => (
+                  <details key={familia.id} className="border-b border-border">
+                    <summary className="flex cursor-pointer items-center justify-between py-3.5 text-lg font-bold tracking-tight text-foreground">
+                      {familia.label}
+                      <ChevronDown className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+                    </summary>
+                    <ul className="pb-3">
+                      {familia.items.map(({ title, href }) => (
+                        <li key={title}>
+                          <Link to={href} className="block py-2 pl-1 text-sm font-semibold text-muted-foreground">
+                            {title}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </details>
+                ))}
+              </div>
+
+              <div className="flex flex-col">
+                {navigation.map((item) => (
+                  <a
+                    key={item.id}
+                    href={`/#${item.id}`}
+                    onClick={(event) => goToSection(event, item.id)}
+                    className="border-b border-border py-3.5 text-lg font-bold tracking-tight text-foreground focus-visible:text-primary focus-visible:outline-none"
+                  >
+                    {item.label}
+                  </a>
+                ))}
+                <Link to="/contacto" className="border-b border-border py-3.5 text-lg font-bold tracking-tight text-foreground">
+                  Contacto
+                </Link>
+                <CurrencySwitcher className="pt-5" />
+              </div>
+              </div>
+
+              <div className="shrink-0 space-y-2.5 border-t border-border px-4 py-4">
+                <CtaButton size="lg" context="menu-movil" label={headerActions.cotizar.label} full />
+                <a
+                  href={headerActions.agendar.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-ghost h-12 w-full rounded-lg! text-sm"
+                >
+                  <CalendarClock className="h-4 w-4" aria-hidden="true" />
+                  {headerActions.agendar.label}
+                </a>
+              </div>
+            </div>
+          </nav>
+        )}
       </div>
-    </nav>
+    </header>
   );
 }

@@ -21,8 +21,8 @@
 
 const KEY = "maudev_region_v1";
 
-export const CL = "CL";
-export const INTL = "INTL";
+const CL = "CL";
+const INTL = "INTL";
 
 const CHILE_TIMEZONES = ["America/Santiago", "Pacific/Easter", "America/Punta_Arenas"];
 
@@ -52,22 +52,21 @@ export function getRegion() {
   return detect();
 }
 
-/** Cambio manual. Persiste para las siguientes visitas. */
-export function setRegion(r) {
-  const v = r === CL ? CL : INTL;
-  try { localStorage.setItem(KEY, v); } catch { /* no persistible */ }
-  return v;
-}
-
 /**
- * Precio a mostrar según la región, con el otro entre paréntesis como referencia.
- * Devuelve { main, secondary, currency }.
+ * Precio a mostrar según la región. Devuelve { main, secondary, currency }.
+ *
+ * En Chile se muestra SOLO el precio en pesos. Poner el equivalente en dólares
+ * al lado abarata la percepción del servicio —convierte un proyecto en un
+ * ticket de e-commerce internacional— y obliga al cliente a hacer una
+ * conversión mental que no necesita: va a pagar en pesos. Fuera de Chile sí se
+ * deja el CLP como referencia, porque ahí el dólar es la moneda de decisión y
+ * el peso solo aporta contexto.
  */
 export function priceFor(product, region = getRegion()) {
   const cl = product?.priceCLP;
   const usd = product?.priceUSD;
   if (region === CL) {
-    return { main: cl || usd, secondary: cl && usd ? usd : null, currency: "CLP" };
+    return { main: cl || usd, secondary: null, currency: "CLP" };
   }
   return { main: usd || cl, secondary: usd && cl ? cl : null, currency: "USD" };
 }

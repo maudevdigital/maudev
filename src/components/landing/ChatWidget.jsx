@@ -1,10 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, X, Calendar, Calculator, Download } from "lucide-react";
-import { getWhatsAppUrl } from "./WhatsAppFloat";
+import { getWhatsAppUrl } from "@/lib/whatsapp";
 import { founder } from "@/data/site";
-import { t } from "@/lib/i18n";
 
 // Chat de bienvenida (idea validada en la competencia): se abre solo la primera
 // vez, saluda según el ORIGEN del visitante y ofrece acciones rápidas.
@@ -14,10 +12,10 @@ const CAL_URL = "https://cal.com/maudev/30min";
 const OPEN_DELAY_MS = 3500;
 
 const SOURCE_GREETINGS = {
-  tt: t("¡Hola! Vienes de nuestro TikTok 🎵", "Hi! You came from our TikTok 🎵"),
-  ig: t("¡Hola! Vienes de nuestro Instagram 📸", "Hi! You came from our Instagram 📸"),
-  fb: t("¡Hola! Vienes de nuestro Facebook 👋", "Hi! You came from our Facebook 👋"),
-  li: t("¡Hola! Vienes de nuestro LinkedIn 💼", "Hi! You came from our LinkedIn 💼"),
+  tt: "¡Hola! Vienes de nuestro TikTok 🎵",
+  ig: "¡Hola! Vienes de nuestro Instagram 📸",
+  fb: "¡Hola! Vienes de nuestro Facebook 👋",
+  li: "¡Hola! Vienes de nuestro LinkedIn 💼",
 };
 
 function detectSource(search) {
@@ -66,54 +64,49 @@ export default function ChatWidget() {
   };
 
   const greeting = visitorName
-    ? t(`¡Hola ${visitorName}! 👋`, `Hi ${visitorName}! 👋`)
-    : (source && SOURCE_GREETINGS[source]) || t("¡Hola! 👋", "Hi! 👋");
+    ? `¡Hola ${visitorName}! 👋`
+    : (source && SOURCE_GREETINGS[source]) || "¡Hola! 👋";
 
   const actions = [
     {
       icon: Calendar,
-      label: t("Agendar diagnóstico gratis", "Book a free assessment"),
-      sub: t("30 min · eliges día y hora", "30 min · pick a slot"),
+      label: "Agendar diagnóstico gratis",
+      sub: "30 min · eliges día y hora",
       onClick: () => window.open(CAL_URL, "_blank", "noopener"),
     },
     {
       icon: Calculator,
-      label: t("Ver automatizaciones", "See automations"),
-      sub: t("Agenda, boletas, cobros y más", "Booking, invoicing, payments & more"),
-      onClick: () => { close(); navigate("/automatizaciones"); },
+      label: "Ver automatizaciones",
+      sub: "Agenda, boletas, cobros y más",
+      onClick: () => { close(); navigate("/automatizacion"); },
     },
     {
       icon: Download,
-      label: t("Ver portafolio", "See portfolio"),
-      sub: t("Proyectos reales en producción", "Real projects in production"),
-      onClick: () => { close(); navigate("/portafolio"); },
+      label: "Ver portafolio",
+      sub: "Proyectos reales en producción",
+      onClick: () => { close(); navigate("/casos"); },
     },
   ];
 
   return (
-    <div className="print-hidden fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3">
-      <AnimatePresence>
+    <div className="print-hidden fixed bottom-5 right-5 z-50 hidden flex-col items-end gap-3 sm:flex">
         {open && (
-          <motion.div
-            initial={{ opacity: 0, y: 16, scale: 0.96 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 16, scale: 0.96 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
+          <div
             className="w-[calc(100vw-2.5rem)] max-w-xs rounded-2xl border border-border bg-card shadow-2xl shadow-black/40 overflow-hidden"
           >
             {/* Header */}
             <div className="flex items-center gap-3 px-4 py-3 bg-secondary/60 border-b border-border">
               <div className="relative">
-                <div className="h-9 w-9 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center text-sm font-black text-primary">
+                <div className="h-9 w-9 rounded-xl bg-primary/15 border border-primary/30 flex items-center justify-center text-sm font-black text-primary">
                   m
                 </div>
                 <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-green-500 border-2 border-card" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-bold leading-tight">{founder.firstName} · maudev</p>
-                <p className="text-[11px] text-muted-foreground">{t("Responde en minutos", "Replies in minutes")}</p>
+                <p className="text-[11px] text-muted-foreground">{"Responde en minutos"}</p>
               </div>
-              <button onClick={close} aria-label={t("Cerrar chat", "Close chat")} className="h-7 w-7 rounded-md hover:bg-secondary flex items-center justify-center text-muted-foreground">
+              <button onClick={close} aria-label={"Cerrar chat"} className="h-7 w-7 rounded-md hover:bg-secondary flex items-center justify-center text-muted-foreground">
                 <X className="h-4 w-4" />
               </button>
             </div>
@@ -131,7 +124,7 @@ export default function ChatWidget() {
                   <div className="bg-secondary rounded-2xl rounded-tl-sm px-3.5 py-2.5 text-sm leading-relaxed">
                     <p className="font-medium">{greeting}</p>
                     <p className="text-muted-foreground mt-1">
-                      {t("¿Te ayudo con tu web, software o automatización? Elige por dónde partimos:", "Need help with your website, software or automation? Pick a starting point:")}
+                      ¿Te ayudo con tu web, software o automatización? Elige por dónde partimos:
                     </p>
                   </div>
                   <div className="mt-3 space-y-2">
@@ -149,36 +142,30 @@ export default function ChatWidget() {
                       </button>
                     ))}
                     <a
-                      href={getWhatsAppUrl(t("Hola, estoy en su sitio web y quiero hablar sobre mi proyecto.", "Hi, I'm on your website and want to talk about my project."))}
+                      href={getWhatsAppUrl("Hola, estoy en su sitio web y quiero hablar sobre mi proyecto.")}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-full flex items-center justify-center gap-2 rounded-xl bg-[#25D366]/10 border border-[#25D366]/30 hover:bg-[#25D366]/20 px-3.5 py-2.5 text-sm font-semibold text-[#25D366] transition-colors"
                     >
                       <MessageCircle className="h-4 w-4" />
-                      {t("Escribir por WhatsApp", "Message on WhatsApp")}
+                      Escribir por WhatsApp
                     </a>
                   </div>
                 </>
               )}
             </div>
-          </motion.div>
+          </div>
         )}
-      </AnimatePresence>
 
       {/* Burbuja */}
-      <motion.button
+      <button
         onClick={toggle}
-        aria-label={t("Abrir chat", "Open chat")}
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 1.2, duration: 0.35, ease: "easeOut" }}
-        whileHover={{ scale: 1.06 }}
-        whileTap={{ scale: 0.94 }}
-        className="relative h-13 w-13 rounded-full bg-primary text-primary-foreground shadow-lg shadow-black/25 flex items-center justify-center"
+        aria-label={"Abrir chat"}
+        className="relative flex h-13 w-13 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-lg shadow-black/25 transition-transform hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
       >
         {open ? <X className="h-5 w-5" /> : <MessageCircle className="h-5.5 w-5.5" />}
         {!open && !dismissed && <span className="absolute -top-0.5 -right-0.5 h-3 w-3 rounded-full bg-green-500 border-2 border-background" />}
-      </motion.button>
+      </button>
     </div>
   );
 }

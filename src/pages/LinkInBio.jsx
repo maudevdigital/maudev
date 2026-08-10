@@ -1,25 +1,24 @@
 import { Link } from "react-router-dom";
 import { Zap, Code2, Tag, Briefcase, Sparkles, MessageCircle, ArrowUpRight } from "lucide-react";
 import Logo from "@/components/landing/Logo";
-import { getWhatsAppUrl, whatsappEnabled } from "@/components/landing/WhatsAppFloat";
+import { getWhatsAppUrl, whatsappEnabled } from "@/lib/whatsapp";
 import { availability, founder } from "@/data/site";
 import { useSeo } from "@/lib/useSeo";
-import { t } from "@/lib/i18n";
 
 // Página "link in bio" universal para TODAS las redes (maudev.cl/links, con
 // alias /ig). Mobile-first, sin navbar/footer: un hub de enlaces que convierte
 // el tráfico de RRSS en acciones del sitio.
 const links = [
-  { to: "/contacto", icon: Zap, label: t("Pedir diagnóstico gratis", "Get a free assessment"), desc: t("Respuesta en menos de 24h", "Reply within 24h"), primary: true },
-  { to: "/automatizaciones", icon: Sparkles, label: t("Automatizaciones", "Automations"), desc: t("Agenda, boletas, cobros y más — con n8n", "Booking, invoicing, payments & more — with n8n") },
-  { to: "/servicios", icon: Code2, label: t("Servicios", "Services"), desc: t("Web, software y automatización", "Web, software & automation") },
-  { to: "/precios", icon: Tag, label: t("Precios", "Pricing"), desc: t("Transparentes, sin letra chica", "Transparent, no fine print") },
-  { to: "/portafolio", icon: Briefcase, label: t("Portafolio", "Portfolio"), desc: t("Proyectos reales en producción", "Real projects in production") },
+  { to: "/contacto", icon: Zap, label: "Pedir diagnóstico gratis", desc: "Respuesta en menos de 24h", primary: true },
+  { to: "/automatizaciones", icon: Sparkles, label: "Automatizaciones", desc: "Agenda, boletas, cobros y más — con n8n" },
+  { to: "/servicios", icon: Code2, label: "Servicios", desc: "Web, software y automatización" },
+  { to: "/precios", icon: Tag, label: "Precios", desc: "Transparentes, sin letra chica" },
+  { to: "/portafolio", icon: Briefcase, label: "Portafolio", desc: "Proyectos reales en producción" },
 ];
 
 export default function LinkInBio() {
   // Hub de enlaces para tráfico de redes: no indexar.
-  useSeo({ title: "maudev · " + t("Enlaces", "Links"), noindex: true });
+  useSeo({ title: "maudev · " + "Enlaces", noindex: true });
 
   return (
     <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
@@ -36,7 +35,7 @@ export default function LinkInBio() {
             mau<span className="text-primary">dev</span>
           </h1>
           <p className="text-sm text-muted-foreground mt-1.5 font-mono">
-            {t("Desarrollo web · Software · Automatización", "Web dev · Software · Automation")}
+            Desarrollo web · Software · Automatización
           </p>
           <span className="inline-flex items-center gap-2 mt-4 px-3 py-1.5 rounded-full border border-primary/20 bg-primary/5">
             <span className={`h-1.5 w-1.5 rounded-full ${availability.open ? "bg-primary animate-pulse" : "bg-muted-foreground"}`} />
@@ -71,7 +70,7 @@ export default function LinkInBio() {
 
           {whatsappEnabled && (
             <a
-              href={getWhatsAppUrl(t("Hola, los encontré en sus redes y quiero saber más.", "Hi, I found you on social media and want to know more."))}
+              href={getWhatsAppUrl("Hola, los encontré en sus redes y quiero saber más.")}
               target="_blank"
               rel="noopener noreferrer"
               className="group flex items-center gap-4 rounded-2xl border border-border bg-card p-4 hover:border-[#25D366]/50 transition-all"
@@ -81,7 +80,7 @@ export default function LinkInBio() {
               </div>
               <div className="flex-1 min-w-0">
                 <p className="font-bold text-sm">WhatsApp</p>
-                <p className="text-xs text-muted-foreground truncate">{t("Escríbenos directo", "Message us directly")}</p>
+                <p className="text-xs text-muted-foreground truncate">{"Escríbenos directo"}</p>
               </div>
               <ArrowUpRight className="h-4 w-4 text-muted-foreground group-hover:text-[#25D366] transition-colors shrink-0" />
             </a>

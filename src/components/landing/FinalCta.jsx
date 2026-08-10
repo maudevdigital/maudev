@@ -1,51 +1,85 @@
-import { Link } from "react-router-dom";
-import { ShieldCheck, Clock, KeyRound } from "lucide-react";
-import { t } from "@/lib/i18n";
-import { CTA_SECONDARY } from "@/data/site";
-import CtaButton from "@/components/landing/CtaButton";
+import { CalendarClock, MessageCircle } from "lucide-react";
+import ParticleField from "@/components/landing/ParticleField";
+import { CAL_URL } from "@/data/catalog";
+import { getWhatsAppUrl } from "@/lib/whatsapp";
+import { trackAction } from "@/lib/MetaPixelTracker";
 
-// Cierre. La garantía va aquí y no en su propia sección: es lo último que el
-// cliente necesita leer antes de apretar el botón, no un tema aparte.
-
-const guarantees = [
-  { icon: ShieldCheck, text: t("30 días de garantía", "30-day warranty") },
-  { icon: Clock, text: t("Precio fijo por escrito", "Fixed price in writing") },
-  { icon: KeyRound, text: t("El código queda tuyo", "The code stays yours") },
+// Cierre.
+//
+// Antes terminaba con una pregunta —"¿Tu sitio te está trayendo clientes?"—.
+// Una pregunta al final da permiso para irse a pensarlo; lo que cierra es un
+// compromiso, porque responde el miedo real del que va a escribir: cuánto voy a
+// esperar, cuánto me va a costar y con quién voy a terminar hablando.
+//
+// Los tres compromisos de abajo son verificables y ya se cumplen. No se promete
+// plazo de entrega ni resultado: eso depende de cada proyecto y no se puede
+// firmar en una portada.
+const compromisos = [
+  { titulo: "Respuesta el mismo día", detalle: "Escribes hoy y hoy sabes si podemos ayudarte." },
+  { titulo: "Precio por escrito", detalle: "Antes de empezar, y no cambia durante el proyecto." },
+  { titulo: "Hablas conmigo", detalle: "Sin ejecutivo de cuentas y sin derivar el proyecto a terceros." },
 ];
 
 export default function FinalCta() {
   return (
-    <section id="contacto" className="scroll-mt-20 border-t border-border/60 py-20 lg:py-28">
-      <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
-        <h2 className="text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl">
-          {t("Cuéntame qué te está quitando el tiempo.", "Tell me what's eating your time.")}
-        </h2>
-        <p className="mx-auto mt-5 max-w-xl text-lg text-muted-foreground">
-          {t(
-            "Un mensaje, sin formularios. Te respondo el mismo día si tiene solución y cuánto cuesta — aunque la respuesta sea que no lo necesitas.",
-            "One message, no forms. I'll tell you the same day if it's solvable and what it costs — even if the answer is that you don't need it."
-          )}
-        </p>
+    <section id="contacto" className="section-pad border-t border-border" aria-labelledby="cta-final-title">
+      <div className="site-container">
+        {/* Las partículas cierran el libro que abre el hero. Van solo en esos
+            dos extremos: repetidas en cada sección dejarían de ser un detalle
+            para volverse un fondo, y sobre los paneles con texto le compiten a
+            la lectura. */}
+        <div className="final-cta relative overflow-hidden">
+          <div className="grid-on-dark" aria-hidden="true" />
+          <ParticleField className="particles-on-dark mask-[radial-gradient(ellipse_at_center,black_60%,transparent_100%)]" />
 
-        <div className="mt-9 flex justify-center">
-          <CtaButton size="lg" context="cierre" />
+          <div className="relative">
+            <span className="eyebrow">Conversemos</span>
+            <h2
+              id="cta-final-title"
+              className="mt-5 max-w-4xl font-display text-4xl font-bold leading-[1.04] tracking-[-0.04em] text-white sm:text-5xl lg:text-6xl"
+            >
+              Cuéntame qué vendes. Te digo qué necesitas y cuánto cuesta.
+            </h2>
+            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/62">
+              Sin formularios largos ni presentación de ventas. Una conversación para ver si lo que necesitas se puede resolver y con qué presupuesto.
+            </p>
+
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
+              <a
+                href={getWhatsAppUrl("Hola, vengo de maudev.cl y quiero conversar sobre un sitio web para mi negocio.")}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => trackAction("whatsapp_click", { ubicacion: "cta-final" })}
+                className="inline-flex h-14 items-center justify-center gap-2.5 rounded-xl bg-white px-7 font-semibold text-ink transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+              >
+                <MessageCircle className="h-5 w-5 shrink-0" aria-hidden="true" />
+                Hablar por WhatsApp
+              </a>
+              <a
+                href={CAL_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => trackAction("agendar_click", { ubicacion: "cta-final" })}
+                className="inline-flex h-14 items-center justify-center gap-2.5 rounded-xl border border-white/25 px-6 font-semibold text-white transition-colors hover:border-white/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+              >
+                <CalendarClock className="h-5 w-5 shrink-0" aria-hidden="true" />
+                Agendar 30 min
+              </a>
+            </div>
+
+            <dl className="mt-12 grid gap-6 border-t border-white/12 pt-8 sm:grid-cols-3">
+              {compromisos.map(({ titulo, detalle }) => (
+                <div key={titulo}>
+                  <dt className="flex items-center gap-2 text-sm font-bold text-white">
+                    <span className="h-1 w-1 shrink-0 rounded-full bg-primary" aria-hidden="true" />
+                    {titulo}
+                  </dt>
+                  <dd className="mt-1.5 pl-3 text-sm leading-relaxed text-white/55">{detalle}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
         </div>
-
-        <Link
-          to="/contacto"
-          className="mt-5 inline-block text-sm text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
-        >
-          {CTA_SECONDARY}
-        </Link>
-
-        <ul className="mt-12 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
-          {guarantees.map(({ icon: Icon, text }) => (
-            <li key={text} className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Icon className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
-              {text}
-            </li>
-          ))}
-        </ul>
       </div>
     </section>
   );
