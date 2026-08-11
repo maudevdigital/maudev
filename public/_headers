@@ -10,7 +10,9 @@
   # una etiqueta <base>, que se envíe un formulario a otro dominio y que corra
   # cualquier plugin. Falta la parte de script-src y connect-src, que necesita
   # el dominio del worker de leads (vive en una variable de entorno) y no se
-  # puede adivinar: una lista incompleta ahí deja el formulario mudo.
+  # puede adivinar: una lista incompleta ahí deja el formulario mudo. Cuando se
+  # complete tiene que incluir challenges.cloudflare.com en script-src y en
+  # frame-src, que es donde Turnstile dibuja su desafío.
   Content-Security-Policy: frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'
 
 # Revalidar los chunks evita fijar en caché una respuesta 404 durante la breve

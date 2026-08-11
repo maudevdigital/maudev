@@ -28,7 +28,11 @@ export function useLeadSubmit() {
       }
       return true;
     } catch {
-      toast.error("No pudimos enviar el mensaje. Intenta nuevamente.");
+      // El envío puede fallar por red, por el webhook o porque la verificación
+      // anti-bots rechazó el intento. En los tres casos el visitante no puede
+      // hacer nada útil reintentando a ciegas, así que se le ofrece la vía que
+      // no depende de nada de esto y que además es el CTA principal del sitio.
+      toast.error("No pudimos enviar el mensaje. Escríbenos por WhatsApp y te respondemos igual.");
       return false;
     } finally {
       setLoading(false);

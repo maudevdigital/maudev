@@ -17,6 +17,12 @@
 // El payload se reenvía tal cual lo arma cada formulario (name, email, whatsapp,
 // interest, message, source, atribución de campaña, etc.).
 
+// El token de Turnstile se resuelve acá y no en cada formulario: son cuatro y
+// todos salen por esta función, así que protegerlos es una línea en vez de
+// cuatro parches. Mientras no exista VITE_TURNSTILE_SITE_KEY esto devuelve null
+// sin cargar nada y el envío se comporta igual que antes.
+import { obtenerTokenTurnstile } from "@/lib/turnstile";
+
 const LEAD_WEBHOOK = import.meta.env.VITE_LEAD_WEBHOOK_URL || "";
 
 export async function submitLead(data) {
@@ -29,10 +35,16 @@ export async function submitLead(data) {
     throw new Error("Lead webhook not configured");
   }
 
+  const turnstileToken = await obtenerTokenTurnstile();
+
   const res = await fetch(LEAD_WEBHOOK, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ ...data, submitted_at: new Date().toISOString() }),
+    body: JSON.stringify({
+      ...data,
+      ...(turnstileToken ? { turnstileToken } : {}),
+      submitted_at: new Date().toISOString(),
+    }),
   });
   if (!res.ok) {
     throw new Error(`Lead submit failed: ${res.status}`);

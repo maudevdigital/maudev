@@ -33,6 +33,10 @@ jobs:
           # Obligatoria: ya no hay fallback. Si falta, el formulario de /contacto
           # falla explícitamente (ver src/lib/leads.js). El CTA WhatsApp no depende.
           VITE_LEAD_WEBHOOK_URL: ${{ secrets.VITE_LEAD_WEBHOOK_URL }}
+          # Site key PÚBLICA de Turnstile. Si falta, el sitio no carga el widget
+          # y funciona como siempre. Ojo con el orden: poner el secreto en el
+          # worker sin esta variable deja todo envío en 403.
+          VITE_TURNSTILE_SITE_KEY: ${{ secrets.VITE_TURNSTILE_SITE_KEY }}
 
       # cloudflare/pages-action@v1 quedó descontinuado (corría en Node 20).
       # wrangler-action@v3 es el reemplazo oficial: publica con `wrangler pages deploy`.
