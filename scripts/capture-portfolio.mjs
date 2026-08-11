@@ -79,11 +79,22 @@ async function capture(page, { id, url }) {
 
   const full = await page.screenshot({ fullPage: true, type: "png" });
 
-  // Recortamos por arriba: una home de 8000px daría un scroll-on-hover eterno.
+  // Recortamos por arriba y por el costado.
+  //
+  // El alto: una home de 8000px daría un scroll-on-hover eterno.
+  //
+  // El ancho: `fullPage` no captura el viewport, captura toda el área
+  // desplazable. Un sitio con desbordamiento horizontal —ParaguayAccess se pasa
+  // 80px— devuelve una imagen más ancha que WIDTH, y esa franja sobrante sale
+  // vacía: en el portafolio se veía como una barra blanca vertical pegada al
+  // borde derecho de la tarjeta. Se recortó a mano una vez y la siguiente
+  // ejecución programada la trajo de vuelta, así que se corrige acá.
   const meta = await sharp(full).metadata();
+  const ancho = Math.min(meta.width, WIDTH);
+  const alto = Math.min(meta.height, MAX_HEIGHT);
   let img = sharp(full);
-  if (meta.height > MAX_HEIGHT) {
-    img = img.extract({ left: 0, top: 0, width: meta.width, height: MAX_HEIGHT });
+  if (ancho !== meta.width || alto !== meta.height) {
+    img = img.extract({ left: 0, top: 0, width: ancho, height: alto });
   }
 
   mkdirSync(OUT_DIR, { recursive: true });
@@ -99,8 +110,7 @@ async function capture(page, { id, url }) {
     kb = Math.round(statSync(dest).size / 1024);
   }
 
-  const h = Math.min(meta.height, MAX_HEIGHT);
-  console.log(`ok · ${meta.width}x${h} · ${kb}KB`);
+  console.log(`ok · ${ancho}x${alto} · ${kb}KB`);
 }
 
 const only = process.argv[2];
