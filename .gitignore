@@ -1,6 +1,9 @@
 #env
 .env
 .env.*
+# El ejemplo sí se versiona: solo tiene marcadores de posición y el README
+# manda copiarlo a .env.local. Ignorado, quien clona el repo no lo recibe.
+!.env.local.example
 
 # Logs
 /logs

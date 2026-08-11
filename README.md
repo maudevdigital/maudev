@@ -21,8 +21,14 @@ Copia `.env.local.example` a `.env.local`:
 
 ```txt
 VITE_LEAD_WEBHOOK_URL=https://TU-N8N/webhook/maudev-lead
+VITE_TURNSTILE_SITE_KEY=0x4AAAAAAA_tu_site_key
 VITE_PSI_API_KEY=
 ```
+
+> **Formato.** Toda variable necesita su signo igual. Una línea suelta del tipo
+> `nombre valor` no se ignora: dotenv absorbe como parte de *ese* nombre todo lo
+> que venga después, y las variables siguientes dejan de existir sin ningún
+> aviso. Si una variable "no llega" al código, revisa esto antes que nada.
 
 `VITE_LEAD_WEBHOOK_URL` es **obligatoria**: ya no hay fallback (el worker
 `ig-autopost/notify-lead` se dio de baja). Si falta, el formulario de `/contacto`
@@ -119,7 +125,27 @@ Producen media para redes; no forman parte del build del sitio.
 - Framework preset: `Vite`
 - Build command: `npm run build`
 - Build output directory: `dist`
-- Variable de entorno: `VITE_LEAD_WEBHOOK_URL`
+- Variables de entorno: `VITE_LEAD_WEBHOOK_URL` y `VITE_TURNSTILE_SITE_KEY`
+
+Ojo: el build **no** corre en Cloudflare, corre en GitHub Actions, que le entrega
+a Pages la carpeta `dist` ya compilada. Las variables del build viven entonces en
+Settings → Secrets → Actions del repositorio; ponerlas en Pages no tiene efecto.
+
+## Verificación anti-bots (Turnstile)
+
+El endpoint de leads es público. El worker valida Turnstile solo si existe
+`TURNSTILE_SECRET`, y el sitio manda el token solo si existe la site key, así que
+se enciende en dos pasos **y el orden importa**:
+
+1. Site key pública → secreto `VITE_TURNSTILE_SITE_KEY` en Actions. Desplegar y
+   comprobar que el formulario sigue enviando.
+2. Secret key → `cd workers/lead-intake && wrangler secret put TURNSTILE_SECRET`.
+
+Al revés el worker exige un token que el sitio todavía no manda y **todo envío
+responde 403**. Para apagarlo, quitar primero el secreto.
+
+El widget va en modo `interaction-only`: invisible salvo que Cloudflare pida
+interacción. Ver `src/lib/turnstile.js`.
 
 `public/_redirects` maneja los 301 y el fallback SPA.
 `public/_headers` maneja cache y seguridad.
