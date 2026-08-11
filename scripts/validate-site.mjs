@@ -58,6 +58,14 @@ try {
   await waitForServer();
   const browser = await chromium.launch({ headless: true });
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, colorScheme: "light" });
+  // Turnstile queda fuera de la validación. Su widget sondea a Cloudflare en
+  // segundo plano, así que /contacto nunca alcanza `networkidle` y la suite se
+  // caía por timeout. Además, una validación que depende de un servicio
+  // externo falla cuando falla ese servicio, no cuando falla el sitio.
+  const sinTurnstile = (route) =>
+    route.fulfill({ status: 200, contentType: "application/javascript", body: "" });
+  await context.route("**challenges.cloudflare.com**", sinTurnstile);
+
   await context.addInitScript(() => {
     localStorage.setItem("maudev_consent_v1", "denied");
     localStorage.setItem("theme", "light");
@@ -132,6 +140,10 @@ try {
     const url = route.request().url();
     if (url.includes("webhook") || url.includes("workers.dev")) {
       await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ ok: true }) });
+    } else if (url.includes("challenges.cloudflare.com")) {
+      // `continue()` en un manejador de página no cae al de contexto, así que
+      // la exclusión de Turnstile hay que repetirla acá.
+      await sinTurnstile(route);
     } else {
       await route.continue();
     }

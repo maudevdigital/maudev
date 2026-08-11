@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { CheckCircle2, Mail, MessageCircle, Send } from "lucide-react";
 import Breadcrumbs from "@/components/landing/Breadcrumbs";
 import PageShell from "@/components/landing/PageShell";
+import TurnstileGate from "@/components/landing/TurnstileGate";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -149,6 +150,7 @@ export default function Contacto() {
           </div>
         </section>
       </main>
+          <TurnstileGate />
     </PageShell>
   );
 }

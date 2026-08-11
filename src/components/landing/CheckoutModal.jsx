@@ -5,6 +5,7 @@ import { useLeadSubmit } from "@/lib/useLeadSubmit";
 import { toast } from "sonner";
 import { defaultPaymentMethod, priceFor, getRegion } from "@/lib/region";
 import RiskReversal from "@/components/landing/RiskReversal";
+import TurnstileGate from "@/components/landing/TurnstileGate";
 
 export default function CheckoutModal({ product, isOpen, onClose }) {
   const [name, setName] = useState("");
@@ -213,6 +214,7 @@ export default function CheckoutModal({ product, isOpen, onClose }) {
           </div>
         )}
       </div>
+      <TurnstileGate />
     </div>
   );
 }
