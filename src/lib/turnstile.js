@@ -36,6 +36,7 @@ const ESPERA_MS = 8000;
 let token = null;
 let avisar = [];
 let scriptPromise = null;
+let reiniciarWidget = null;
 
 export const turnstileHabilitado = () => Boolean(SITE_KEY);
 
@@ -65,6 +66,19 @@ export function cargarTurnstile() {
   return scriptPromise;
 }
 
+/**
+ * El widget registra acá cómo pedirse un token nuevo.
+ *
+ * Los tokens de Turnstile son de un solo uso: una vez enviados no valen para un
+ * segundo intento. Sin esto, si el primer envío falla por cualquier motivo —red,
+ * un error del servidor— el reintento salía sin token y el worker lo rechazaba
+ * con 403. El visitante quedaba encerrado: el formulario correcto, y aun así
+ * imposible de mandar.
+ */
+export function registrarReinicio(fn) {
+  reiniciarWidget = fn;
+}
+
 /** La llama el widget cada vez que resuelve, caduca o falla. */
 export function guardarToken(valor) {
   token = valor;
@@ -87,6 +101,8 @@ export async function obtenerTokenTurnstile() {
   if (token) {
     const actual = token;
     token = null;
+    // Se pide el siguiente de inmediato: así un reintento no se queda esperando.
+    reiniciarWidget?.();
     return actual;
   }
 
@@ -100,6 +116,7 @@ export async function obtenerTokenTurnstile() {
     };
     const recibir = (valor) => {
       token = null;
+      reiniciarWidget?.();
       terminar(valor);
     };
     avisar.push(recibir);

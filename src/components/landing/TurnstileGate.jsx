@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
-import { SITE_KEY, cargarTurnstile, guardarToken } from "@/lib/turnstile";
+import { SITE_KEY, cargarTurnstile, guardarToken, registrarReinicio } from "@/lib/turnstile";
 
-// Verificación anti-bots, montada en todas las páginas.
+// Verificación anti-bots, montada en las pantallas que envían leads.
 //
 // La primera versión pedía el token recién al pulsar "enviar", con quince
 // segundos de plazo. Se comprobó en producción que no sirve: cuando Cloudflare
@@ -42,6 +42,18 @@ export default function TurnstileGate() {
           },
           "error-callback": () => guardarToken(null),
         });
+
+        // Cada token sirve una sola vez. Al consumirlo se pide el siguiente,
+        // para que un reintento del visitante no se quede sin verificación.
+        registrarReinicio(() => {
+          if (idWidget.current !== null && window.turnstile) {
+            try {
+              window.turnstile.reset(idWidget.current);
+            } catch {
+              // El widget ya no está montado; el próximo montaje lo repone.
+            }
+          }
+        });
       })
       .catch(() => {
         // Sin verificación se sigue: que un bloqueador de scripts impida
@@ -59,6 +71,7 @@ export default function TurnstileGate() {
         idWidget.current = null;
       }
       guardarToken(null);
+      registrarReinicio(null);
     };
   }, []);
 
