@@ -108,6 +108,7 @@ ${row("Interés", d.interest)}
 ${row("Mensaje", d.message)}
 ${row("Origen", d.source)}
 ${row("Enviado", d.submitted_at)}
+${row("Verificación", d.verificacion)}
 </table>
 <p style="font-family:sans-serif;font-size:13px;color:#666">Responde este correo para contactar al lead directamente.</p>`;
 }
@@ -141,10 +142,24 @@ export default {
     // ── 2. Captcha (solo si está configurado) ──
     // Mientras TURNSTILE_SECRET no exista, el worker sigue funcionando igual.
     // Así se puede desplegar hoy y encender el captcha después, sin romper nada.
+    //
+    // El resultado viaja al correo. Con la validación apagada, que llegue un
+    // aviso no dice nada sobre el captcha —el worker acepta con token o sin él—,
+    // así que sin esta línea no había forma de saber si el sitio está
+    // generando tokens antes de encender el secreto. Encendido, sirve para ver
+    // de un vistazo si un lead pasó la verificación.
+    const tokenRecibido = Boolean(clean(raw.turnstileToken, 3000));
+    let verificacion;
+
     if (env.TURNSTILE_SECRET) {
       const ip = request.headers.get("CF-Connecting-IP");
       const ok = await turnstileOk(raw.turnstileToken, env.TURNSTILE_SECRET, ip);
       if (!ok) return json({ error: "Verificación fallida" }, 403, cors);
+      verificacion = "superada";
+    } else {
+      verificacion = tokenRecibido
+        ? "token recibido · validación apagada"
+        : "SIN TOKEN · validación apagada";
     }
 
     // ── 3. Normalizar y validar ──
@@ -156,6 +171,7 @@ export default {
       message: clean(raw.message, LIMITS.message),
       source: clean(raw.source, LIMITS.source),
       submitted_at: clean(raw.submitted_at, LIMITS.submitted_at) || new Date().toISOString(),
+      verificacion,
     };
 
     // Un lead sin forma de contactarlo no sirve de nada.
