@@ -6,14 +6,26 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Cross-Origin-Opener-Policy: same-origin-allow-popups
   Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=()
-  # CSP mínima y sin riesgo: bloquea que otro sitio te incruste, que inyecten
-  # una etiqueta <base>, que se envíe un formulario a otro dominio y que corra
-  # cualquier plugin. Falta la parte de script-src y connect-src, que necesita
-  # el dominio del worker de leads (vive en una variable de entorno) y no se
-  # puede adivinar: una lista incompleta ahí deja el formulario mudo. Cuando se
-  # complete tiene que incluir challenges.cloudflare.com en script-src y en
-  # frame-src, que es donde Turnstile dibuja su desafío.
-  Content-Security-Policy: frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'
+  # Content-Security-Policy: la lista de orígenes desde los que el navegador
+  # acepta cargar algo. Si a alguien le entra código por una dependencia
+  # comprometida o un tercero hackeado, el navegador se niega a ejecutarlo
+  # porque no viene de acá. No evita que entre; evita que sirva de algo.
+  #
+  # Los orígenes NO se adivinaron: salen de recorrer el sitio registrando cada
+  # petición por tipo de recurso. Turnstile usa subdominios propios
+  # (brunhild.challenges.cloudflare.com), de ahí el comodín.
+  #
+  # `unsafe-inline` en script-src es una concesión conocida: index.html lleva
+  # dos scripts en línea (tema y consentimiento) y _headers es estático, así
+  # que no hay forma de emitir un nonce por respuesta. Aun así script-src sigue
+  # cortando lo que más importa, que es cargar JavaScript desde un dominio no
+  # autorizado.
+  #
+  # Estuvo primero en modo reporte y se recorrieron diecisiete rutas más el
+  # envío del formulario sin una sola violación, así que ahora bloquea de
+  # verdad. `npm run test:csp` repite esa comprobación contra ESTE archivo: si
+  # el sitio suma un servicio externo, falla antes de salir a producción.
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://*.challenges.cloudflare.com https://www.googletagmanager.com https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https://www.googletagmanager.com https://www.google-analytics.com https://www.facebook.com https://challenges.cloudflare.com; connect-src 'self' https://open.er-api.com https://maudev-lead-intake.maudevchile.workers.dev https://maudev-meta-capi.maudevchile.workers.dev https://www.google-analytics.com https://analytics.google.com https://region1.google-analytics.com https://stats.g.doubleclick.net https://www.facebook.com https://challenges.cloudflare.com https://*.challenges.cloudflare.com; frame-src https://challenges.cloudflare.com https://*.challenges.cloudflare.com; worker-src 'self' blob:; manifest-src 'self'
 
 # Revalidar los chunks evita fijar en caché una respuesta 404 durante la breve
 # propagación entre el HTML de un deploy y sus assets.
