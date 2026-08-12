@@ -11,7 +11,7 @@ export default function Cases() {
   const projects = getProjectsInDisplayOrder();
 
   useSeo({
-    title: "Proyectos de desarrollo web y automatización · Maudev",
+    title: "Portafolio · Sitios web y sistemas que hicimos en Chile · Maudev",
     description: "Sitios web y sistemas que construimos, explicados por el problema que resolvían y lo que cambió después.",
     path: "/casos",
     image: "/og-image.png",

@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { CheckCircle2, Mail, MessageCircle, Send } from "lucide-react";
 import Breadcrumbs from "@/components/landing/Breadcrumbs";
 import PageShell from "@/components/landing/PageShell";
@@ -22,8 +23,12 @@ export default function Contacto() {
   const { submit, loading, sent } = useLeadSubmit();
 
   useSeo({
-    title: "Contacto · Cuéntanos qué quieres automatizar · Maudev",
-    description: "Describe el proceso que quieres automatizar. Te diremos si es viable, qué necesitaríamos y cómo podría implementarse.",
+    // El título y la descripción decían "automatizar", del posicionamiento
+    // anterior, y además contradecían al HTML estático, que ya hablaba de
+    // sitios web: el rastreador leía una cosa antes de ejecutar JavaScript y
+    // otra después. Ahora coinciden con scripts/prerender-meta.mjs.
+    title: "Contacto · Cotiza tu sitio web · Maudev",
+    description: "Cuéntanos qué vendes y a quién. Te decimos qué tipo de sitio necesitas, cuánto costaría y en cuánto tiempo estaría publicado. Respuesta el mismo día hábil.",
     path: "/contacto",
     image: "/og-image.png",
     jsonLd: {
@@ -146,6 +151,62 @@ export default function Contacto() {
                   </form>
                 )}
               </div>
+            </div>
+          </div>
+        </section>
+        {/* La página tenía menos de doscientas palabras y ningún encabezado
+            propio: para el buscador era una plantilla vacía, y para quien
+            duda antes de escribir no respondía nada. Esto contesta las tres
+            preguntas que frenan el mensaje. */}
+        <section className="section-pad border-t border-border bg-secondary/40" aria-labelledby="antes-titulo">
+          <div className="site-container grid gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:gap-16">
+            <div>
+              <span className="eyebrow">Antes de escribir</span>
+              <h2 id="antes-titulo" className="section-title mt-4">
+                Lo que conviene saber.
+              </h2>
+            </div>
+
+            <div className="max-w-2xl">
+              <article className="border-t border-border py-8 first:border-t-0 first:pt-0">
+                <h3 className="font-display text-xl font-bold tracking-[-0.02em]">Qué pasa después de que envías</h3>
+                <p className="mt-4 leading-relaxed text-muted-foreground">
+                  Te responde Lucas, no un ejecutivo de cuentas ni un formulario automático. El mismo
+                  día hábil, por el medio que hayas indicado.
+                </p>
+                <p className="mt-4 leading-relaxed text-muted-foreground">
+                  En esa primera respuesta ya va lo concreto: qué tipo de proyecto corresponde, un
+                  rango de precio y un plazo estimado. Si tu caso no lo hacemos nosotros o se resuelve
+                  con una herramienta de mercado más barata, también te lo decimos ahí.
+                </p>
+              </article>
+
+              <article className="border-t border-border py-8">
+                <h3 className="font-display text-xl font-bold tracking-[-0.02em]">Qué incluir en el mensaje</h3>
+                <p className="mt-4 leading-relaxed text-muted-foreground">
+                  No hace falta un documento técnico ni saber qué tecnología quieres. Con tres cosas
+                  alcanza: qué vendes, a quién, y qué pasa hoy cuando alguien quiere comprarte.
+                </p>
+                <p className="mt-4 leading-relaxed text-muted-foreground">
+                  Si ya tienes sitio, la dirección. Si tienes una fecha límite o un presupuesto
+                  máximo, dilo desde el principio: cambia lo que conviene proponerte y evita dos
+                  correos de ida y vuelta.
+                </p>
+              </article>
+
+              <article className="border-t border-border py-8">
+                <h3 className="font-display text-xl font-bold tracking-[-0.02em]">Si prefieres no escribir un formulario</h3>
+                <p className="mt-4 leading-relaxed text-muted-foreground">
+                  WhatsApp funciona igual de bien y suele ser más rápido para resolver una duda
+                  puntual. Y si prefieres conversarlo, puedes agendar treinta minutos directamente en
+                  el calendario, sin pasar por acá.
+                </p>
+                <p className="mt-4 leading-relaxed text-muted-foreground">
+                  Los precios de todos los servicios están publicados en{" "}
+                  <Link to="/precios" className="font-semibold text-primary hover:underline">la página de precios</Link>,
+                  así que puedes hacerte una idea antes de contactarnos.
+                </p>
+              </article>
             </div>
           </div>
         </section>

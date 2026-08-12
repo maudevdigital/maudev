@@ -13,7 +13,7 @@ const principles = [
 
 export default function About() {
   useSeo({
-    title: "Nosotros · Maudev",
+    title: "Sobre Maudev · Desarrollo web en Chile con trato directo · Maudev",
     description: "Cómo trabaja Maudev: desarrollo web con comunicación directa, precio cerrado por escrito y los accesos siempre a tu nombre.",
     path: "/nosotros",
     image: "/og-image.png",

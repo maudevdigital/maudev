@@ -18,12 +18,12 @@ const pages = [
   })),
   {
     route: "/casos",
-    title: "Proyectos de desarrollo web y automatización · Maudev",
+    title: "Portafolio · Sitios web y sistemas que hicimos en Chile · Maudev",
     description: "Sitios web y sistemas que construimos, explicados por el problema que resolvían y lo que cambió después.",
   },
   {
     route: "/nosotros",
-    title: "Nosotros · Maudev",
+    title: "Sobre Maudev · Desarrollo web en Chile con trato directo · Maudev",
     description: "Cómo trabaja Maudev: desarrollo web con comunicación directa, precio cerrado por escrito y los accesos siempre a tu nombre.",
   },
   {

@@ -78,7 +78,7 @@ export default function TurnstileGate() {
   if (!SITE_KEY) return null;
 
   return (
-    <div className="pointer-events-none fixed inset-x-0 bottom-4 z-60 flex justify-center px-4">
+    <div className="pointer-events-none fixed inset-x-0 bottom-4 z-110 flex justify-center px-4">
       <div className="pointer-events-auto flex flex-col items-center gap-2 empty:hidden">
         <div ref={caja} />
       </div>
