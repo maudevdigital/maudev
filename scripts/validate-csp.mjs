@@ -13,6 +13,12 @@ import { subservicios } from "../src/data/subservices.js";
 //
 // Cada violación se recoge del evento `securitypolicyviolation` de la propia
 // página, que es lo que el navegador reporta.
+//
+// ⚠️ Esta comprobación NO sustituye revisar el sitio publicado. Cloudflare Pages
+// inyecta su script de analítica por su cuenta y solo en producción, así que no
+// aparece ni en `dist` ni acá. Se descubrió justamente así: la suite daba cero
+// violaciones y maudev.cl bloqueaba el beacon en las nueve rutas revisadas.
+// Al tocar la política, verificar también contra el dominio real.
 
 const root = path.resolve(import.meta.dirname, "..");
 const baseUrl = "http://127.0.0.1:4179";
