@@ -41,7 +41,20 @@ const LIMITS = {
   message: 2000,
   source: 120,
   submitted_at: 40,
+  page_path: 200,
+  referrer: 300,
+  utm_source: 120,
+  utm_medium: 120,
+  utm_campaign: 120,
+  utm_term: 120,
+  utm_content: 120,
 };
+
+// De dónde vino el lead. El sitio ya enviaba estos campos y acá se descartaban,
+// así que la pregunta más útil del negocio —qué trae clientes— quedaba sin
+// responder. No usa cookies y cubre el 100% de los envíos, acepte o no el
+// visitante la medición.
+const ATRIBUCION = ["page_path", "referrer", "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"];
 
 // Campo trampa: va oculto en el formulario. Un humano no lo ve y lo deja vacío;
 // muchos bots rellenan todo lo que encuentran. Si viene con algo, es bot.
@@ -109,6 +122,9 @@ ${row("Mensaje", d.message)}
 ${row("Origen", d.source)}
 ${row("Enviado", d.submitted_at)}
 ${row("Verificación", d.verificacion)}
+${row("Página", d.page_path)}
+${row("Llegó desde", d.referrer)}
+${d.utm_source ? row("Campaña", [d.utm_source, d.utm_medium, d.utm_campaign].filter(Boolean).join(" / ")) : ""}
 </table>
 <p style="font-family:sans-serif;font-size:13px;color:#666">Responde este correo para contactar al lead directamente.</p>`;
 }
@@ -172,7 +188,13 @@ export default {
       source: clean(raw.source, LIMITS.source),
       submitted_at: clean(raw.submitted_at, LIMITS.submitted_at) || new Date().toISOString(),
       verificacion,
+      ...Object.fromEntries(ATRIBUCION.map((k) => [k, clean(raw[k], LIMITS[k])])),
     };
+
+    // El referente lo pone el navegador en la cabecera; si el sitio no lo mandó,
+    // se toma de ahí. Es el dato que dice si llegó por Google, por Instagram o
+    // escribiendo la dirección.
+    if (!data.referrer) data.referrer = clean(request.headers.get("Referer"), LIMITS.referrer);
 
     // Un lead sin forma de contactarlo no sirve de nada.
     if (!data.email && !data.whatsapp) {
@@ -187,18 +209,11 @@ export default {
     let stored = false;
     if (env.DB) {
       try {
+        const columnas = ["name", "email", "whatsapp", "interest", "message", "source", "submitted_at", ...ATRIBUCION];
         await env.DB.prepare(
-          "INSERT INTO leads (name, email, whatsapp, interest, message, source, submitted_at) VALUES (?, ?, ?, ?, ?, ?, ?)"
+          `INSERT INTO leads (${columnas.join(", ")}) VALUES (${columnas.map(() => "?").join(", ")})`
         )
-          .bind(
-            data.name,
-            data.email,
-            data.whatsapp,
-            data.interest,
-            data.message,
-            data.source,
-            data.submitted_at
-          )
+          .bind(...columnas.map((c) => data[c] ?? null))
           .run();
         stored = true;
       } catch {
