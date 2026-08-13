@@ -12,8 +12,19 @@ import { useEffect } from "react";
 
 const ORIGIN = "https://maudev.cl";
 
-export function useSeo({ title, description, path, image, type = "website", jsonLd, noindex } = {}) {
+// `lang` y `alternates` son para las versiones en otro idioma.
+//
+// El sitio ya tuvo una versión bilingüe y hubo que sacarla: servía inglés en las
+// mismas direcciones en español, así que Google indexaba una mezcla y ninguna
+// versión posicionaba. La regla que evita repetirlo es simple y está impuesta
+// acá: cada idioma vive en SU dirección, cada página declara el idioma que
+// realmente tiene en <html lang>, y las tres se apuntan entre sí con hreflang
+// —incluida ella misma, que es el error más común—.
+//
+//   useSeo({ ..., lang: "en", alternates: { es: "/", en: "/en", pt: "/pt" } })
+export function useSeo({ title, description, path, image, type = "website", jsonLd, noindex, lang = "es-CL", alternates } = {}) {
   const ldKey = jsonLd ? JSON.stringify(jsonLd) : "";
+  const altKey = alternates ? JSON.stringify(alternates) : "";
 
   useEffect(() => {
     if (title) document.title = title;
@@ -30,6 +41,30 @@ export function useSeo({ title, description, path, image, type = "website", json
       }
       el.setAttribute("content", content);
     };
+    // Las alternativas son varias etiquetas con el mismo rel, así que no sirve
+    // el buscador por rel de setLink: se limpian y se vuelven a crear.
+    const setAlternates = (mapa) => {
+      document.head.querySelectorAll('link[rel="alternate"][data-i18n]').forEach((el) => el.remove());
+      if (!mapa) return;
+      const idiomas = { es: "es-CL", en: "en", pt: "pt-BR" };
+      const entradas = [
+        ...Object.entries(mapa).map(([clave, ruta]) => [idiomas[clave] || clave, ruta]),
+        // x-default es la que se sirve a quien no calza con ningún idioma
+        // declarado. Va la española: es el mercado principal.
+        ["x-default", mapa.es],
+      ];
+      for (const [hreflang, ruta] of entradas) {
+        if (!ruta) continue;
+        const el = document.createElement("link");
+        el.setAttribute("rel", "alternate");
+        el.setAttribute("hreflang", hreflang);
+        el.setAttribute("href", `${ORIGIN}${ruta === "/" ? "/" : ruta.replace(/\/$/, "")}`);
+        el.setAttribute("data-i18n", "1");
+        document.head.appendChild(el);
+        created.push(el);
+      }
+    };
+
     const setLink = (rel, href) => {
       if (!href) return;
       let el = document.head.querySelector(`link[rel="${rel}"]`);
@@ -47,6 +82,11 @@ export function useSeo({ title, description, path, image, type = "website", json
     const selectedImage = image || "/og-image.png";
     const img = selectedImage.startsWith("http") ? selectedImage : `${ORIGIN}${selectedImage}`;
 
+    // El atributo del documento tiene que decir el idioma que la página tiene
+    // de verdad: es lo que leen el buscador y los lectores de pantalla.
+    document.documentElement.setAttribute("lang", lang);
+
+    setAlternates(alternates);
     setMeta("name", "description", description);
     setLink("canonical", url);
     setMeta("property", "og:type", type);
@@ -68,8 +108,11 @@ export function useSeo({ title, description, path, image, type = "website", json
       created.push(ld);
     }
 
-    return () => created.forEach((el) => el.remove());
+    return () => {
+      created.forEach((el) => el.remove());
+      document.documentElement.setAttribute("lang", "es-CL");
+    };
     // ldKey (jsonLd estringificado) cubre el contenido de jsonLd sin re-render por identidad.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [title, description, path, image, type, noindex, ldKey]);
+  }, [title, description, path, image, type, noindex, ldKey, lang, altKey]);
 }

@@ -28,6 +28,7 @@ const pages = [
   },
   {
     route: "/contacto",
+    alternates: { "es-CL": "/contacto", en: "/en/contact", "pt-BR": "/pt/contato" },
     title: "Contacto · Cotiza tu sitio web · Maudev",
     description: "Cuéntanos qué vendes y a quién. Te decimos qué tipo de sitio necesitas, cuánto costaría y en cuánto tiempo estaría publicado.",
   },
@@ -74,6 +75,37 @@ const pages = [
     title: `${auto.title || auto.name} · Automatización · Maudev`,
     description: auto.summary || auto.tagline || "Automatización lista para implementar en tu negocio.",
   })),
+  // Las versiones en otro idioma necesitan su <html lang> y su hreflang en el
+  // HTML estático: es lo que lee el rastreador antes de ejecutar JavaScript, y
+  // el motivo por el que el bilingüe anterior terminó mal indexado.
+  {
+    route: "/en",
+    alternates: { "es-CL": "/", "en": "/en", "pt-BR": "/pt" },
+    lang: "en",
+    title: "Web development for companies in Latin America · Maudev",
+    description: "Websites, online stores and custom software, built in Chile for companies across the Americas. Fixed price agreed in writing before we start.",
+  },
+  {
+    route: "/en/contact",
+    alternates: { "es-CL": "/contacto", "en": "/en/contact", "pt-BR": "/pt/contato" },
+    lang: "en",
+    title: "Contact · Get a quote for your web project · Maudev",
+    description: "Tell us what you sell and to whom. We reply the same business day with what you need, what it would cost and how long it would take.",
+  },
+  {
+    route: "/pt",
+    alternates: { "es-CL": "/", "en": "/en", "pt-BR": "/pt" },
+    lang: "pt-BR",
+    title: "Desenvolvimento web para empresas na América Latina · Maudev",
+    description: "Sites, lojas online e software sob medida, feitos no Chile para empresas de toda a América. Preço fechado por escrito antes de começar.",
+  },
+  {
+    route: "/pt/contato",
+    alternates: { "es-CL": "/contacto", "en": "/en/contact", "pt-BR": "/pt/contato" },
+    lang: "pt-BR",
+    title: "Contato · Orçamento para o seu projeto web · Maudev",
+    description: "Conte o que você vende e para quem. Respondemos no mesmo dia útil com o que precisa, quanto custaria e em quanto tempo estaria no ar.",
+  },
   ...projects.map((project) => ({
     route: `/casos/${project.id}`,
     title: `${project.title} · Caso de estudio · Maudev`,
@@ -107,6 +139,21 @@ for (const page of pages) {
   html = replaceMeta(html, "name", "twitter:image", image);
   html = html.replace(/<link\s+rel="canonical"\s+href="[^"]*"\s*\/?>/i, `<link rel="canonical" href="${canonical}" />`);
 
+  // Idioma e hreflang en el HTML estático. `useSeo` los pone también al montar,
+  // pero eso ocurre DESPUÉS de ejecutar JavaScript: un rastreador que mire la
+  // primera respuesta vería una página en inglés declarada como es-CL. Es el
+  // mismo error que dejó mal indexada la versión bilingüe anterior.
+  if (page.lang) {
+    html = html.replace(/<html([^>]*)\slang="[^"]*"/i, `<html$1 lang="${page.lang}"`);
+  }
+  if (page.alternates) {
+    const enlaces = [
+      ...Object.entries(page.alternates).map(([hreflang, ruta]) => `<link rel="alternate" hreflang="${hreflang}" href="${origin}${ruta}" />`),
+      `<link rel="alternate" hreflang="x-default" href="${origin}${page.alternates["es-CL"]}" />`,
+    ].join("\n    ");
+    html = html.replace("</head>", `  ${enlaces}\n  </head>`);
+  }
+
   // Se escribe `ruta.html` y NO `ruta/index.html`. Con la forma de directorio,
   // Cloudflare Pages sirve la URL con barra final y responde 308 a la versión
   // sin barra — que es justo la que declaran el sitemap y el canonical. Eso
@@ -117,5 +164,19 @@ for (const page of pages) {
   await fs.mkdir(path.dirname(file), { recursive: true });
   await fs.writeFile(file, html);
 }
+
+// La portada en español no pasa por el bucle —es la plantilla— y también tiene
+// que declarar sus alternativas. Un grupo de hreflang en el que una página no
+// devuelve el apunte queda descartado entero por Google, así que sin esto las
+// versiones en inglés y portugués no servirían de nada.
+const portadaAlternates = [
+  `<link rel="alternate" hreflang="es-CL" href="${origin}/" />`,
+  `<link rel="alternate" hreflang="en" href="${origin}/en" />`,
+  `<link rel="alternate" hreflang="pt-BR" href="${origin}/pt" />`,
+  `<link rel="alternate" hreflang="x-default" href="${origin}/" />`,
+].join("\n    ");
+const indexPath = path.join(dist, "index.html");
+const indexHtml = await fs.readFile(indexPath, "utf8");
+await fs.writeFile(indexPath, indexHtml.replace("</head>", `  ${portadaAlternates}\n  </head>`));
 
 console.log(`Metadatos estáticos generados para ${pages.length} rutas.`);

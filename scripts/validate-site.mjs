@@ -14,6 +14,10 @@ const routes = [
   "/mantencion",
   "/apps-moviles",
   "/diseno",
+  "/en",
+  "/en/contact",
+  "/pt",
+  "/pt/contato",
   "/servicios/landing-page",
   "/servicios/punto-de-venta",
   "/casos",
@@ -82,9 +86,14 @@ try {
     const response = await page.goto(`${baseUrl}${route}`, { waitUntil: "networkidle" });
     assert(response?.ok(), `${route}: respuesta HTTP ${response?.status()}`);
     assert(await page.locator("h1").count() === 1, `${route}: debe tener exactamente un H1`);
+    // El idioma tiene que coincidir con la ruta. Antes se exigía es-CL en
+    // todas; con las versiones en inglés y portugués eso dejaría pasar
+    // justamente el error que hundió al bilingüe anterior: contenido en un
+    // idioma declarado como otro.
+    const idiomaEsperado = route.startsWith("/en") ? "en" : route.startsWith("/pt") ? "pt-BR" : "es-CL";
     assert(
-      await page.evaluate(() => document.documentElement.lang) === "es-CL",
-      `${route}: el atributo lang debe ser es-CL`
+      await page.evaluate(() => document.documentElement.lang) === idiomaEsperado,
+      `${route}: el atributo lang debe ser ${idiomaEsperado}`
     );
     // El blog se eliminó: ninguna página puede volver a enlazarlo.
     assert(

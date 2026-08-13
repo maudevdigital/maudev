@@ -12,6 +12,11 @@ import Landing from './pages/Landing'; // eager: es la home (LCP) y la entrada m
 const AutomatizacionDetail = lazy(() => import('./pages/AutomatizacionDetail'));
 const CasoEstudio = lazy(() => import('./pages/CasoEstudio'));
 const ServicePage = lazy(() => import('./pages/ServicePage'));
+// Versiones en inglés y portugués. Cada idioma en SU dirección: el bilingüe
+// anterior servía inglés en las direcciones en español y Google indexaba una
+// mezcla en la que no posicionaba ninguna de las dos.
+const LangHome = lazy(() => import('./pages/LangHome'));
+const LangContact = lazy(() => import('./pages/LangContact'));
 const SubservicePage = lazy(() => import('./pages/SubservicePage'));
 const Cases = lazy(() => import('./pages/Cases'));
 const About = lazy(() => import('./pages/About'));
@@ -46,6 +51,10 @@ function App() {
             <Route path="/mantencion" element={<ServicePage serviceKey="mantencion" />} />
             <Route path="/apps-moviles" element={<ServicePage serviceKey="apps-moviles" />} />
             <Route path="/diseno" element={<ServicePage serviceKey="diseno" />} />
+            <Route path="/en" element={<LangHome lang="en" />} />
+            <Route path="/en/contact" element={<LangContact lang="en" />} />
+            <Route path="/pt" element={<LangHome lang="pt" />} />
+            <Route path="/pt/contato" element={<LangContact lang="pt" />} />
 
             {/* Una página por servicio del catálogo. Generadas desde datos:
                 ver src/data/subservices.js */}
