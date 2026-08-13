@@ -67,6 +67,77 @@ export default function Cases() {
             ))}
           </div>
         </section>
+        {/* Cuatro proyectos con dos frases cada uno no sostienen una página de
+            portafolio, ni para quien la lee ni para posicionarla. Esto explica
+            qué se puede leer en ellos y qué no, que es más honesto que inflar
+            la lista con trabajos que no existen. */}
+        <section className="section-pad border-t border-border bg-secondary/40" aria-labelledby="leer-titulo">
+          <div className="site-container grid gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:gap-16">
+            <div>
+              <span className="eyebrow">Cómo leer esto</span>
+              <h2 id="leer-titulo" className="section-title mt-4">
+                Cuatro proyectos reales, no una galería.
+              </h2>
+            </div>
+
+            <div className="max-w-2xl">
+              <article className="border-t border-border py-8 first:border-t-0 first:pt-0">
+                <h3 className="font-display text-xl font-bold tracking-[-0.02em]">Son capturas de lo que está publicado</h3>
+                <p className="mt-4 leading-relaxed text-muted-foreground">
+                  No hay maquetas ni conceptos. Cada imagen es el sitio funcionando, tomada de la
+                  dirección real, y puedes abrirla y recorrerla tú mismo.
+                </p>
+                <p className="mt-4 leading-relaxed text-muted-foreground">
+                  Una maqueta inventada se vería mejor —no tuvo cliente, ni presupuesto, ni un dueño
+                  cambiando de opinión a mitad de camino— y por eso mismo no diría nada sobre cómo
+                  trabajamos.
+                </p>
+              </article>
+
+              <article className="border-t border-border py-8">
+                <h3 className="font-display text-xl font-bold tracking-[-0.02em]">Están contados por el problema, no por el diseño</h3>
+                <p className="mt-4 leading-relaxed text-muted-foreground">
+                  Cada caso parte por qué estaba pasando antes: pedidos que se copiaban a mano,
+                  reservas que se perdían en mensajes, un catálogo que nadie podía actualizar. Esa es
+                  la parte que se parece a tu situación; el color del botón no.
+                </p>
+                <p className="mt-4 leading-relaxed text-muted-foreground">
+                  Verás rubros distintos a propósito: repuestos, barbería, servicios profesionales y
+                  software de gestión. Lo que se repite entre ellos es el método, no la industria.
+                </p>
+              </article>
+
+              <article className="border-t border-border py-8">
+                <h3 className="font-display text-xl font-bold tracking-[-0.02em]">Lo que no vas a encontrar</h3>
+                <p className="mt-4 leading-relaxed text-muted-foreground">
+                  Porcentajes de aumento de ventas ni cifras de tráfico. No porque los proyectos no
+                  hayan servido, sino porque atribuir una venta a un sitio web exige medición previa
+                  que en la mayoría de estos casos no existía, y publicar un número que no podemos
+                  sostener sería inventarlo.
+                </p>
+                <p className="mt-4 leading-relaxed text-muted-foreground">
+                  Tampoco hay testimonios todavía. Cuando los haya, van a ser de estos mismos
+                  clientes y con nombre.
+                </p>
+              </article>
+
+              <article className="border-t border-border py-8">
+                <h3 className="font-display text-xl font-bold tracking-[-0.02em]">Si tu rubro no está acá</h3>
+                <p className="mt-4 leading-relaxed text-muted-foreground">
+                  No significa que no se pueda. Las preguntas que hay que resolver —qué vendes, cómo
+                  te contactan, qué pasa después— son las mismas en casi todos los negocios, y el
+                  trabajo cambia menos de lo que parece entre un taller y una consultora.
+                </p>
+                <p className="mt-4 leading-relaxed text-muted-foreground">
+                  Los precios de cada servicio están publicados en{" "}
+                  <Link to="/precios" className="font-semibold text-primary hover:underline">la página de precios</Link>,
+                  así que puedes estimar tu caso antes de escribir.
+                </p>
+              </article>
+            </div>
+          </div>
+        </section>
+
         <FinalCta />
       </main>
     </PageShell>

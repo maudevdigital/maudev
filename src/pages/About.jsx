@@ -78,6 +78,77 @@ export default function About() {
             </div>
           </div>
         </section>
+        {/* La página prometía "hablas conmigo" y no explicaba qué significa eso
+            en la práctica. Estas cuatro secciones responden lo que un cliente
+            necesita saber de un proveedor chico antes de confiarle un proyecto,
+            que es exactamente la desventaja que hay que despejar frente a una
+            agencia grande. */}
+        <section className="section-pad border-t border-border bg-secondary/40" aria-labelledby="como-titulo">
+          <div className="site-container grid gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:gap-16">
+            <div>
+              <span className="eyebrow">Cómo trabajamos</span>
+              <h2 id="como-titulo" className="section-title mt-4">
+                Lo que puedes esperar, dicho antes.
+              </h2>
+            </div>
+
+            <div className="max-w-2xl">
+              <article className="border-t border-border py-8 first:border-t-0 first:pt-0">
+                <h3 className="font-display text-xl font-bold tracking-[-0.02em]">El precio se cierra por escrito y no se mueve</h3>
+                <p className="mt-4 leading-relaxed text-muted-foreground">
+                  Se fija después de revisar qué necesitas y antes de que pagues nada. Si el proyecto
+                  toma más tiempo del previsto, ese riesgo es nuestro, no tuyo. Lo que sí se cotiza
+                  aparte es lo que pidas después y no estaba en el alcance, y se dice en el momento.
+                </p>
+                <p className="mt-4 leading-relaxed text-muted-foreground">
+                  Se paga la mitad al empezar y la mitad contra la entrega aprobada. Sin cobros
+                  intermedios ni mensualidades por usar lo que ya te entregamos.
+                </p>
+              </article>
+
+              <article className="border-t border-border py-8">
+                <h3 className="font-display text-xl font-bold tracking-[-0.02em]">Los accesos quedan a tu nombre desde el primer día</h3>
+                <p className="mt-4 leading-relaxed text-muted-foreground">
+                  Dominio, alojamiento, repositorio y cuentas de terceros se crean con tu correo y tu
+                  tarjeta, no con los nuestros. Suena a detalle administrativo y es lo que decide si
+                  mañana puedes cambiar de proveedor sin pedirle permiso a nadie.
+                </p>
+                <p className="mt-4 leading-relaxed text-muted-foreground">
+                  El código es tuyo y se entrega documentado, para que otro desarrollador pueda
+                  continuarlo. No trabajamos con sitios que solo funcionan mientras nos sigas pagando.
+                </p>
+              </article>
+
+              <article className="border-t border-border py-8">
+                <h3 className="font-display text-xl font-bold tracking-[-0.02em]">Te vamos a decir cuándo no nos necesitas</h3>
+                <p className="mt-4 leading-relaxed text-muted-foreground">
+                  Hay casos que se resuelven mejor con una herramienta de mercado que cuesta una
+                  fracción, y lo decimos aunque signifique no vender. Es la razón por la que varias
+                  páginas de este sitio explican en qué situación conviene no contratar ese servicio.
+                </p>
+                <p className="mt-4 leading-relaxed text-muted-foreground">
+                  Tampoco prometemos porcentajes de conversión ni plazos que no podamos sostener. Si
+                  no se puede comprobar, no aparece escrito en ninguna parte de este sitio.
+                </p>
+              </article>
+
+              <article className="border-t border-border py-8">
+                <h3 className="font-display text-xl font-bold tracking-[-0.02em]">Somos chicos, y eso tiene las dos caras</h3>
+                <p className="mt-4 leading-relaxed text-muted-foreground">
+                  A favor: hablas directo con quien construye, sin ejecutivo de cuentas ni teléfono
+                  descompuesto entre lo que pediste y lo que se programó. Las decisiones se toman en
+                  la misma conversación.
+                </p>
+                <p className="mt-4 leading-relaxed text-muted-foreground">
+                  En contra: no tomamos diez proyectos a la vez ni sostenemos un equipo de turnos.
+                  Cuando un proyecto necesita especialistas adicionales, el alcance lo dice desde el
+                  principio en vez de descubrirse a mitad de camino.
+                </p>
+              </article>
+            </div>
+          </div>
+        </section>
+
         <FinalCta />
       </main>
     </PageShell>
