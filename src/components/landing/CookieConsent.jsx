@@ -54,35 +54,32 @@ export default function CookieConsent() {
   return (
     <div
       role="dialog"
-      aria-labelledby="cookie-title"
-      aria-describedby="cookie-description"
+      aria-label="Cookies y condiciones de uso"
       className="print-hidden fixed inset-x-0 bottom-0 z-100 p-3 sm:p-4"
     >
-      <div className="panel panel-solid mx-auto max-w-300 p-5 sm:p-6">
-        <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
-          <div className="min-w-0">
-            <h2 id="cookie-title" className="font-display text-base font-bold tracking-[-0.02em]">
-              Cookies y condiciones de uso
-            </h2>
-            <p id="cookie-description" className="mt-2 max-w-3xl text-sm leading-relaxed text-muted-foreground">
-              Al usar este sitio aceptas nuestros{" "}
-              <a href="/terminos" className="font-medium text-primary underline underline-offset-2 hover:no-underline">
-                términos y condiciones
-              </a>{" "}
-              y nuestra{" "}
-              <a href="/privacidad" className="font-medium text-primary underline underline-offset-2 hover:no-underline">
-                política de privacidad
-              </a>
-              . Usamos cookies para medir qué páginas funcionan y si un anuncio trajo un contacto; esas
-              no se activan hasta que las aceptes, y el sitio funciona exactamente igual sin ellas.
-            </p>
-          </div>
+      <div className="panel panel-solid mx-auto max-w-300 px-5 py-4 sm:px-6">
+        {/* Una sola línea. El detalle —qué cookie hace qué— vive en
+            "Configurar", que es donde va a mirarlo quien de verdad le importa.
+            Un párrafo de cuatro líneas en la barra no lo lee nadie y ocupa
+            media pantalla en un teléfono. */}
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
+          <p className="min-w-0 text-sm leading-relaxed text-muted-foreground">
+            Usamos cookies para medir el tráfico. Al usar el sitio aceptas los{" "}
+            <a href="/terminos" className="font-medium text-primary underline underline-offset-2 hover:no-underline">
+              términos
+            </a>{" "}
+            y la{" "}
+            <a href="/privacidad" className="font-medium text-primary underline underline-offset-2 hover:no-underline">
+              política de privacidad
+            </a>
+            .
+          </p>
 
-          <div className="flex shrink-0 flex-col gap-2 sm:flex-row-reverse lg:w-auto">
+          <div className="flex shrink-0 gap-2 sm:flex-row-reverse lg:w-auto">
             <button
               type="button"
               onClick={() => decidir(GRANTED)}
-              className="btn btn-primary h-11 px-6 text-sm sm:min-w-36"
+              className="btn btn-primary h-10 flex-1 px-6 text-sm sm:flex-none sm:min-w-32"
             >
               Aceptar
             </button>
@@ -91,7 +88,7 @@ export default function CookieConsent() {
               onClick={() => setOpciones((v) => !v)}
               aria-expanded={opciones}
               aria-controls="cookie-opciones"
-              className="btn btn-ghost h-11 px-5 text-sm"
+              className="btn btn-ghost h-10 flex-1 px-5 text-sm sm:flex-none"
             >
               Configurar
             </button>
@@ -99,7 +96,7 @@ export default function CookieConsent() {
         </div>
 
         {opciones && (
-          <div id="cookie-opciones" className="mt-5 border-t border-border pt-5">
+          <div id="cookie-opciones" className="mt-4 border-t border-border pt-4">
             <dl className="grid gap-4 sm:grid-cols-2">
               <div>
                 <dt className="text-sm font-semibold text-foreground">Necesarias · siempre activas</dt>
