@@ -4,6 +4,15 @@ const CAPI_URL = `https://graph.facebook.com/v21.0/${PIXEL_ID}/events`;
 const ALLOWED_ORIGINS = [
   "https://maudev.cl",
   "https://www.maudev.cl",
+  // Cloudflare Pages: alias de produccion y de la rama develop. Sin estos, el
+  // formulario del preview muere en el preflight: corsHeaders cae al primer
+  // origen de la lista y responde Access-Control-Allow-Origin: maudev.cl, que
+  // no coincide con el origen que pregunta y el navegador lo rechaza.
+  //
+  // Las URLs por despliegue (<hash>.maudev.pages.dev) no estan cubiertas a
+  // proposito: se prueba en los alias estables, no en cada build.
+  "https://maudev.pages.dev",
+  "https://develop.maudev.pages.dev",
   "http://localhost:5173",
   "http://localhost:5174",
   "http://localhost:5180",
