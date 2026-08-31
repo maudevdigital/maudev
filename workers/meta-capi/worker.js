@@ -94,18 +94,43 @@ export default {
     };
 
     let result;
+    let estadoMeta;
     try {
       const res = await fetch(CAPI_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
+      estadoMeta = res.status;
       result = await res.json();
     } catch (err) {
       return new Response(JSON.stringify({ error: "CAPI request failed", detail: String(err) }), {
         status: 502,
         headers: { "Content-Type": "application/json", ...corsHeaders(origin) },
       });
+    }
+
+    // Meta responde HTTP 200 con un objeto `error` adentro en varios fallos que
+    // importan: token vencido, permisos insuficientes, dataset inexistente.
+    // Devolver 200 acá los volvía invisibles —el sitio "funcionaba" mientras no
+    // se registraba una sola conversión, y solo se descubría probando a mano.
+    // Se propaga como 502 y queda rastro en `wrangler tail`.
+    //
+    // El frontend envuelve esta llamada en try/catch y la ignora (ver
+    // MetaPixelTracker.jsx), y un 502 no hace lanzar a fetch: el envío del lead
+    // no se ve afectado. Esto es observabilidad, no control de flujo.
+    if (estadoMeta >= 400 || result?.error) {
+      console.error("CAPI rechazado por Meta", {
+        status: estadoMeta,
+        error: result?.error,
+      });
+      return new Response(
+        JSON.stringify({ error: "CAPI rejected", status: estadoMeta, meta: result?.error ?? result }),
+        {
+          status: 502,
+          headers: { "Content-Type": "application/json", ...corsHeaders(origin) },
+        },
+      );
     }
 
     return new Response(JSON.stringify(result), {
