@@ -2,9 +2,13 @@ name: Deploy to Cloudflare Pages
 
 on:
   push:
-    branches: [main]
+    branches: [main, develop]
   # Nota: el deploy de preview en pull_request se quitó porque fallaba con
-  # "No ref found" al borrar la rama en el merge. Producción se publica en push a main.
+  # "No ref found" al borrar la rama en el merge. Se dispara por push a una rama
+  # estable, que no tiene ese problema: la rama nunca desaparece bajo el job.
+  #
+  # main    → producción (maudev.cl)
+  # develop → preview en develop.maudev.pages.dev, sin tocar producción
 
 jobs:
   deploy:
@@ -45,4 +49,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy dist --project-name=maudev --branch=main
+          command: pages deploy dist --project-name=maudev --branch=${{ github.ref_name }}
