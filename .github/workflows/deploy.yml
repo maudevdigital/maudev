@@ -34,13 +34,39 @@ jobs:
         run: npm run build
         env:
           # Webhook de n8n para los leads del formulario (Settings → Secrets).
-          # Obligatoria: ya no hay fallback. Si falta, el formulario de /contacto
-          # falla explícitamente (ver src/lib/leads.js). El CTA WhatsApp no depende.
+          # Obligatoria y ahora crítica: ya no hay fallback y, desde que el hero
+          # y el bloque de planes llevan al formulario, es el camino principal
+          # de contacto del sitio. Si falta, /contacto falla explícitamente (ver
+          # src/lib/leads.js) y solo queda el respaldo por WhatsApp del aviso de
+          # error.
           VITE_LEAD_WEBHOOK_URL: ${{ secrets.VITE_LEAD_WEBHOOK_URL }}
           # Site key PÚBLICA de Turnstile. Si falta, el sitio no carga el widget
           # y funciona como siempre. Ojo con el orden: poner el secreto en el
           # worker sin esta variable deja todo envío en 403.
           VITE_TURNSTILE_SITE_KEY: ${{ secrets.VITE_TURNSTILE_SITE_KEY }}
+          # Número de WhatsApp del negocio. Opcional: sin ella se usa el valor
+          # por defecto de src/lib/whatsapp.js, que es un número PERSONAL.
+          #
+          # Tiene que estar acá y no en el panel de Cloudflare: el build ocurre
+          # en este runner y Vite congela las VITE_* en ese momento. Cloudflare
+          # solo recibe el dist ya compilado, así que una variable definida allá
+          # nunca llega al bundle.
+          VITE_WHATSAPP_NUMBER: ${{ secrets.VITE_WHATSAPP_NUMBER }}
+
+      # Las pruebas corren DESPUÉS del build porque validan el dist real
+      # (validate-site levanta `vite preview` sobre él) y ANTES del deploy
+      # porque, si fallan, el job se detiene y no se publica nada.
+      #
+      # Antes este workflow no corría ninguna: todo se validaba a mano en la
+      # máquina de quien programaba, así que cualquier regresión llegaba a
+      # producción sin que nada la frenara. Cubre rutas, hreflang, canonicals,
+      # consentimiento por finalidad, coherencia de precios, el camino del
+      # cotizador al formulario, la jerarquía de CTA y la CSP.
+      - name: Instalar Chromium para las validaciones
+        run: npx playwright install --with-deps chromium
+
+      - name: Validar el sitio y la CSP
+        run: npm test
 
       # cloudflare/pages-action@v1 quedó descontinuado (corría en Node 20).
       # wrangler-action@v3 es el reemplazo oficial: publica con `wrangler pages deploy`.
