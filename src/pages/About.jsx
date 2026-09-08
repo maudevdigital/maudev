@@ -40,7 +40,13 @@ export default function About() {
               </div>
               <div className="flex flex-col justify-end">
                 <p className="text-lg leading-relaxed text-muted-foreground sm:text-xl">
-                  Maudev es una empresa chilena enfocada en automatización y software para equipos que necesitan resolver tareas concretas, sin sumar complejidad innecesaria.
+                  {/* Decía "enfocada en automatización y software", del
+                      posicionamiento anterior. La portada ya vende diseño y
+                      desarrollo web, así que quien leía las dos páginas
+                      encontraba dos empresas distintas. La automatización
+                      sigue siendo parte del catálogo, pero no es la puerta de
+                      entrada. */}
+                  Maudev es un estudio chileno de diseño y desarrollo web. Hacemos sitios que explican lo que haces y facilitan que te contacten, y el software o las automatizaciones que sostienen la operación detrás cuando el proyecto lo pide.
                 </p>
                 <div className="mt-8 border-l border-primary pl-5">
                   <p className="font-bold text-foreground">{founder.name}</p>

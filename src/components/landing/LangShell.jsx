@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
-import { CalendarClock, MessageCircle } from "lucide-react";
+import { ArrowRight, CalendarClock } from "lucide-react";
 import Logo from "@/components/landing/Logo";
 import { CAL_URL } from "@/data/catalog";
-import { getWhatsAppUrl } from "@/lib/whatsapp";
 import { trackAction } from "@/lib/MetaPixelTracker";
 
 // Marco de las páginas en inglés y portugués.
@@ -13,8 +12,9 @@ import { trackAction } from "@/lib/MetaPixelTracker";
 // enlazando a veintitantas en español, que es señal de traducción a medias.
 //
 // Mientras estas versiones sean una prueba de mercado, el marco se queda en lo
-// mínimo: identidad, cambio de idioma y las dos acciones. Cuando se traduzcan
-// los servicios, esto crece a un menú propio por idioma.
+// mínimo: identidad, cambio de idioma y una sola acción, la misma arriba y
+// abajo. Cuando se traduzcan los servicios, esto crece a un menú propio por
+// idioma.
 export default function LangShell({ lang, rutas, textos, children }) {
   const idiomas = [
     { code: "es", label: "ES", href: rutas.es },
@@ -51,16 +51,25 @@ export default function LangShell({ lang, rutas, textos, children }) {
                 </Link>
               ))}
             </nav>
-            <a
-              href={getWhatsAppUrl(textos.whatsappMensaje)}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => trackAction("whatsapp_click", { ubicacion: `header-${lang}` })}
+            {/* Este botón abría WhatsApp mientras el del pie, con la MISMA
+                etiqueta, llevaba al formulario. Ahora los dos van al mismo
+                lugar, que además es lo que la etiqueta promete: "Get a quote"
+                no es una invitación a chatear.
+                El resto de los motivos son los del hero en español: es el
+                punto más frío de la página, y un clic a WhatsApp no queda
+                registrado como lead. WhatsApp sigue disponible en la página de
+                contacto, a un clic. */}
+            <Link
+              to={rutas.contacto}
+              onClick={() => trackAction("cta_principal_click", { ubicacion: `header-${lang}` })}
+              aria-label={textos.ctaHeader}
               className="btn btn-primary h-10 px-4 text-sm"
             >
-              <MessageCircle className="h-4 w-4 shrink-0" aria-hidden="true" />
+              {/* En móvil solo se ve el icono, así que el nombre accesible lo
+                  pone aria-label: el <span> oculto no lo aporta. */}
+              <ArrowRight className="h-4 w-4 shrink-0" aria-hidden="true" />
               <span className="hidden sm:inline">{textos.ctaHeader}</span>
-            </a>
+            </Link>
           </div>
         </div>
       </header>

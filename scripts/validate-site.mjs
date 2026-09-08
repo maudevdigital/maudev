@@ -368,6 +368,25 @@ try {
     [...new Set(enlaces.map((enlace) => enlace.getAttribute("href").split("?")[0]))]
   );
   assert(numeros.length === 1, `WhatsApp: hay ${numeros.length} números distintos en la portada (${numeros.join(", ")})`);
+
+  // Lo mismo en inglés y portugués. Ahí el botón del header y el del pie usan
+  // la MISMA etiqueta, así que apuntar a destinos distintos —uno a WhatsApp y
+  // otro al formulario— era además una contradicción visible.
+  for (const [ruta, contacto] of [["/en", "/en/contact"], ["/pt", "/pt/contato"]]) {
+    await ctaPage.goto(`${baseUrl}${ruta}`, { waitUntil: "domcontentloaded" });
+    await ctaPage.waitForSelector("header a.btn-primary", { state: "attached" });
+    assert(
+      await ctaPage.locator("header a[href*='wa.me']").count() === 0,
+      `${ruta}: el header manda el tráfico frío directo a WhatsApp`
+    );
+    const destinos = await ctaPage.locator("header a.btn-primary, footer a.btn-primary").evaluateAll(
+      (enlaces) => [...new Set(enlaces.map((enlace) => enlace.getAttribute("href")))]
+    );
+    assert(
+      destinos.length === 1 && destinos[0] === contacto,
+      `${ruta}: el CTA de cabecera y el de pie deberían llevar los dos a ${contacto} (${destinos.join(", ")})`
+    );
+  }
   await ctaPage.close();
 
   const sitemap = await fs.readFile(path.join(root, "public", "sitemap.xml"), "utf8");
