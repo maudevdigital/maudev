@@ -300,16 +300,16 @@ try {
   // servicio sin caso y una con caso: si la regla se rompe, se rompe en las dos
   // direcciones y conviene enterarse de cual.
   const vitrinaPage = await context.newPage();
-  await vitrinaPage.goto(`${baseUrl}/servicios/punto-de-venta`, { waitUntil: "domcontentloaded" });
+  await vitrinaPage.goto(`${baseUrl}/servicios/app-nativa`, { waitUntil: "domcontentloaded" });
   await vitrinaPage.getByRole("heading", { level: 1 }).waitFor({ state: "visible" });
   const textoSinCaso = await vitrinaPage.locator("main").innerText();
   assert(
-    !/\$\s?\d{2,3}\.\d{3}/.test(textoSinCaso),
-    "Vitrina: /servicios/punto-de-venta muestra un precio y no tiene caso publicado"
+    !/\$\s?[\d.]{5,}/.test(textoSinCaso),
+    "Vitrina: /servicios/app-nativa muestra un precio, y es de ticket alto sin caso publicado"
   );
   assert(
     textoSinCaso.includes("A convenir"),
-    "Vitrina: /servicios/punto-de-venta deberia decir 'A convenir' donde iria la cifra"
+    "Vitrina: /servicios/app-nativa deberia decir 'A convenir' donde iria la cifra"
   );
 
   await vitrinaPage.goto(`${baseUrl}/servicios/landing-page`, { waitUntil: "domcontentloaded" });

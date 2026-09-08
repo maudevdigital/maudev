@@ -228,9 +228,9 @@ export const subserviciosBase = [
     resumen: "Tu sitio actual, más rápido y más claro, sin partir de cero.",
     incluye: ["Renovación visual conservando el contenido", "Migración a hosting moderno", "Optimización para celular"],
     precios: [190000, 350000, 590000],
-    metaTitle: "Rediseño de página web en Chile · Maudev",
+    metaTitle: "Rediseño de página web en Chile desde $190.000 · Maudev",
     metaDescription:
-      "Rediseño web conservando tu contenido: más rápido, claro en el celular y ordenado para convertir. Sin partir de cero. Precio por escrito tras revisar tu sitio.",
+      "Rediseño web conservando tu contenido: más rápido, claro en el celular y ordenado para convertir. Desde $190.000 + IVA, sin partir de cero.",
     intro:
       "Un rediseño no es hacer el sitio otra vez. Es tomar lo que ya tienes —tus textos, tus fotos, tu posicionamiento ganado en Google— y arreglar lo que está frenando las consultas: la velocidad, la lectura en el celular y el orden de la información.",
     secciones: [
@@ -523,9 +523,9 @@ export const subserviciosBase = [
     resumen: "Caja moderna para tu local, conectada al inventario.",
     incluye: ["Una caja y hasta 200 productos", "Boleta electrónica", "Inventario simple"],
     precios: [290000, 490000, 890000],
-    metaTitle: "Sistema punto de venta (POS) a medida en Chile · Maudev",
+    metaTitle: "Sistema punto de venta (POS) a medida en Chile desde $290.000 · Maudev",
     metaDescription:
-      "Punto de venta para tu local: caja rápida, inventario conectado y boleta electrónica. Funciona sin internet y sin licencia mensual por caja. Precio por escrito tras el diagnóstico.",
+      "Punto de venta para tu local: caja rápida, inventario conectado y boleta electrónica. Funciona sin internet. Desde $290.000 + IVA, sin licencia mensual por caja.",
     intro:
       "Un punto de venta es la pantalla donde tu local cobra. Suena simple, y por eso mismo se subestima: es el único software del negocio que, si falla dos minutos, tienes una fila de gente esperando y mirándote.",
     secciones: [
@@ -596,9 +596,9 @@ export const subserviciosBase = [
       { nombre: "Cola con reintentos", para: "Si el otro sistema está caído, el dato espera en vez de perderse" },
       { nombre: "Registro de sincronización", para: "Qué se envió, cuándo y con qué resultado, para poder auditarlo" },
     ],
-    metaTitle: "Integración entre sistemas en Chile · Maudev",
+    metaTitle: "Integración entre sistemas en Chile desde $190.000 · Maudev",
     metaDescription:
-      "Conectamos tus sistemas para que dejen de copiarse a mano: ventas, clientes y stock sincronizados, con reintentos y registro. Precio por escrito tras revisar qué hay que conectar.",
+      "Conectamos tus sistemas para que dejen de copiarse a mano: ventas, clientes y stock sincronizados, con reintentos y registro. Desde $190.000 + IVA.",
     intro:
       "Casi siempre el problema no es que falte un sistema, sino que hay dos y alguien los mantiene iguales a mano. Ese alguien copia, se equivoca poco pero se equivoca, y cuando los números no calzan nadie sabe cuál de los dos tiene la razón.",
     secciones: [
@@ -668,9 +668,9 @@ export const subserviciosBase = [
       { nombre: "PostgreSQL", para: "Deja registro de lo procesado para no repetir ni saltarse nada" },
       { nombre: "Avisos por correo o WhatsApp", para: "Si algo se cae, te enteras el mismo día" },
     ],
-    metaTitle: "Automatización de procesos en Chile · Maudev",
+    metaTitle: "Automatización de procesos en Chile desde $290.000 · Maudev",
     metaDescription:
-      "Automatizamos la tarea repetitiva que hoy hace una persona a mano: reglas claras, registro de cada ejecución y aviso si algo falla. Precio por escrito tras el diagnóstico.",
+      "Automatizamos la tarea repetitiva que hoy hace una persona a mano: reglas claras, registro de cada ejecución y aviso si algo falla. Desde $290.000 + IVA.",
     intro:
       "Hay trabajos que alguien de tu equipo hace todos los días, siempre igual, y que no requieren criterio: bajar datos de un lado, ordenarlos, enviarlos, avisar. Esa parte se puede dejar corriendo sola. La que sí requiere criterio, no.",
     secciones: [
@@ -823,9 +823,9 @@ export const subserviciosBase = [
     resumen: "Se instala desde el navegador y funciona sin señal.",
     incluye: ["Instalable en celular y escritorio", "Funciona sin conexión", "Notificaciones"],
     precios: [290000, 490000, 790000],
-    metaTitle: "App web instalable (PWA) en Chile · Maudev",
+    metaTitle: "App web instalable (PWA) en Chile desde $290.000 · Maudev",
     metaDescription:
-      "App que se instala desde el navegador, funciona sin señal y envía notificaciones. Sin tiendas de aplicaciones ni comisiones. Precio por escrito tras el diagnóstico.",
+      "App que se instala desde el navegador, funciona sin señal y envía notificaciones. Sin tiendas de aplicaciones ni comisiones. Desde $290.000 + IVA.",
     intro:
       "Una app web instalable es una aplicación que vive en el navegador pero se comporta como una app: el usuario la agrega a su pantalla de inicio, se abre sin barra de direcciones y sigue funcionando aunque se caiga la señal. No pasa por App Store ni por Google Play.",
     secciones: [
@@ -1118,9 +1118,9 @@ export const subserviciosBase = [
       { nombre: "Tipografías con licencia", para: "Fuentes que puedes usar comercialmente sin heredar un problema legal" },
       { nombre: "Manual de uso breve", para: "Tamaño mínimo, márgenes y qué no hacer con el logo" },
     ],
-    metaTitle: "Diseño de logo e identidad visual en Chile · Maudev",
+    metaTitle: "Diseño de logo e identidad visual en Chile desde $90.000 · Maudev",
     metaDescription:
-      "Logo en tres versiones, paleta de color y tipografías, con archivos para imprenta y web. Probado en tamaño chico y en una sola tinta. Precio por escrito antes de empezar.",
+      "Logo en tres versiones, paleta de color y tipografías, con archivos para imprenta y web. Probado en tamaño chico y en una sola tinta. Desde $90.000 + IVA.",
     intro:
       "Un logo no es la marca: es la parte de la marca que tiene que seguir funcionando cuando mide dieciséis píxeles en la pestaña del navegador, o cuando alguien lo manda a bordar en una sola tinta.",
     secciones: [
@@ -1201,9 +1201,9 @@ export const subserviciosBase = [
       { nombre: "Texto en capas separadas", para: "Se reemplaza sin tocar el diseño ni mover lo que está detrás" },
       { nombre: "Espacio para foto", para: "Marcos donde tu imagen entra recortada como corresponde, no estirada" },
     ],
-    metaTitle: "Kit de plantillas para redes sociales en Chile · Maudev",
+    metaTitle: "Kit de plantillas para redes sociales en Chile desde $90.000 · Maudev",
     metaDescription:
-      "Plantillas editables en Canva con tu marca aplicada: publicación, historia y carrusel. Cambias texto y foto y publicas el mismo día. Precio por escrito antes de empezar.",
+      "Plantillas editables en Canva con tu marca aplicada: publicación, historia y carrusel. Cambias texto y foto y publicas el mismo día. Desde $90.000 + IVA.",
     intro:
       "Esto no se trata de tener publicaciones bonitas. Se trata de que puedas publicar un martes a las ocho de la noche sin escribirle a nadie ni esperar a que te respondan.",
     secciones: [
@@ -1279,9 +1279,9 @@ export const subserviciosBase = [
       { nombre: "Prueba en equipo real", para: "El sitio abierto en un teléfono con datos móviles, no solo en un emulador" },
       { nombre: "Revisión de accesibilidad", para: "Contraste, tamaño de toque y navegación por teclado según los criterios WCAG" },
     ],
-    metaTitle: "Revisión de usabilidad y auditoría UX de sitios web en Chile · Maudev",
+    metaTitle: "Revisión de usabilidad y auditoría UX de sitios web en Chile desde $190.000 · Maudev",
     metaDescription:
-      "Revisamos por qué tu sitio recibe visitas y casi nadie escribe. Diez mejoras priorizadas, con captura, ubicación y explicación, listas para aplicar. Precio por escrito tras revisar tu sitio.",
+      "Revisamos por qué tu sitio recibe visitas y casi nadie escribe. Diez mejoras priorizadas, con captura, ubicación y explicación, listas para aplicar. Desde $190.000 + IVA.",
     intro:
       "Tu sitio recibe visitas y casi nadie escribe. Antes de gastar más en publicidad conviene saber dónde se pierden los que ya están llegando: llevar tráfico pagado a un sitio que no convierte es la forma más cara de descubrir que el problema nunca fue el tráfico.",
     secciones: [

@@ -28,20 +28,32 @@ export const formatCLP = (valor) => `$${valor.toLocaleString("es-CL")}`;
 export const desdeCLP = (id) => formatCLP(desdePrecio(id));
 
 /**
+ * Desde cuánto un servicio necesita un caso publicado para mostrar su precio.
+ *
+ * Bajo este monto la cifra no pide prueba: nadie necesita ver un caso para
+ * creer que se puede hacer un logo de $90.000, y ahí el precio funciona al
+ * revés —atrae al que busca "cuánto cuesta" y ya viene decidido—.
+ */
+export const UMBRAL_PRECIO_CON_PRUEBA = 390000;
+
+/**
  * Si un servicio publica su precio en la vitrina.
  *
- * La regla es "sin caso, sin precio": un "desde $1.490.000" sin un solo
- * proyecto publicado que lo respalde no convence a quien evalúa esa cifra, y sí
- * atrae consultas que se caen en la primera respuesta. Los cuatro servicios con
- * caso —landing, sitio, ecommerce y plataforma— lo siguen mostrando.
+ * La regla es "sin caso, sin precio" pero solo desde cierto ticket. Un "desde
+ * $1.490.000" para una app nativa sin una sola app que mostrar no convence a
+ * quien evalúa esa cifra, y sí atrae consultas que se caen en la primera
+ * respuesta. A $90.000 ese problema no existe.
  *
- * Se DERIVA del caso y no es un campo aparte a propósito: el día que un
- * servicio publique el suyo, su precio aparece solo, y nadie puede saltarse la
- * regla por olvido. Para cambiar la política —estrecharla a los tickets altos,
- * por ejemplo— se toca únicamente esta función.
+ * Se DERIVA del caso y del catálogo, y no es una bandera aparte a propósito: el
+ * día que un servicio publique el suyo, su precio reaparece solo, y nadie puede
+ * saltarse la regla por olvido. La política entera es esta función, así que
+ * moverla —cambiar el umbral, o exigir caso a todos— es un cambio de una línea.
  */
 export function publicaPrecio(id) {
-  return Boolean(subservicios.find((item) => item.id === id)?.caso);
+  const servicio = subservicios.find((item) => item.id === id);
+  if (!servicio) return false;
+  if (servicio.caso) return true;
+  return desdePrecio(id) < UMBRAL_PRECIO_CON_PRUEBA;
 }
 
 /** Lo que va donde iría la cifra cuando el servicio no publica precio. */
