@@ -1,5 +1,9 @@
-import { subservicios } from "@/data/subservices";
-import { getRate } from "@/data/currencies";
+// Rutas relativas y no el alias "@/": scripts/prerender-meta.mjs importa este
+// archivo desde Node para escribir los metadatos de /en y /pt en el HTML
+// estático, y Node no resuelve alias. Antes esas descripciones estaban copiadas
+// a mano en el prerender y ya se habían desincronizado de las de acá.
+import { subservicios } from "./subservices.js";
+import { getRate } from "./currencies.js";
 
 // Contenido de las versiones en inglés y portugués.
 //
@@ -41,6 +45,17 @@ export function desdeUSD(id) {
 
 export const SERVICIOS_DESTACADOS = ["landing", "sitio", "ecommerce", "plataforma", "app-multi", "erp"];
 
+// El "desde" de los metadatos sale del catálogo, no de la memoria de nadie.
+// Estaba escrito a mano —"From USD 120"— contra un catálogo que da USD 100: un
+// 20% de diferencia, en el texto que Google muestra como resultado. Es el mismo
+// error que la portada en español tenía con $390.000.
+//
+// El redondeo a la centena de desdeUSD lo deja estable: para que esta cifra se
+// moviera, el peso tendría que pasar de 667 o de 2.000 por dólar.
+const DESDE_USD = desdeUSD("landing");
+const DESDE_EN = DESDE_USD ? ` From USD ${DESDE_USD}.` : "";
+const DESDE_PT = DESDE_USD ? ` A partir de USD ${DESDE_USD}.` : "";
+
 export const EN = {
   lang: "en",
   idioma: "Language",
@@ -53,8 +68,15 @@ export const EN = {
 
   meta: {
     title: "Web development for companies in Latin America · Maudev",
-    description:
-      "Websites, online stores and custom software, built in Chile for companies across the Americas. Fixed price agreed in writing before we start. From USD 120.",
+    description: `Websites, online stores and custom software, built in Chile for companies across the Americas. Fixed price agreed in writing before we start.${DESDE_EN}`,
+  },
+
+  // Los metadatos de la página de contacto viven acá, junto a los de la
+  // portada, y no dentro del componente: el prerender los necesita para el HTML
+  // estático y no puede importar un .jsx.
+  metaContacto: {
+    title: "Contact · Get a quote for your web project · Maudev",
+    description: "Tell us what you sell and to whom. We reply the same business day with what you need, what it would cost and how long it would take.",
   },
 
   hero: {
@@ -149,8 +171,12 @@ export const PT = {
 
   meta: {
     title: "Desenvolvimento web para empresas na América Latina · Maudev",
-    description:
-      "Sites, lojas online e software sob medida, feitos no Chile para empresas de toda a América. Preço fechado por escrito antes de começar. A partir de USD 120.",
+    description: `Sites, lojas online e software sob medida, feitos no Chile para empresas de toda a América. Preço fechado por escrito antes de começar.${DESDE_PT}`,
+  },
+
+  metaContacto: {
+    title: "Contato · Orçamento para o seu projeto web · Maudev",
+    description: "Conte o que você vende e para quem. Respondemos no mesmo dia útil com o que precisa, quanto custaria e em quanto tempo estaria no ar.",
   },
 
   hero: {

@@ -9,11 +9,12 @@ import FinalCta from "@/components/landing/FinalCta";
 import Footer from "@/components/landing/Footer";
 import { useSeo } from "@/lib/useSeo";
 import { founder } from "@/data/site";
+import { homeSeo } from "@/data/seo";
 
 export default function Landing() {
   useSeo({
-    title: "Diseño y desarrollo de páginas web en Chile · Maudev",
-    description: "Diseñamos y programamos sitios web rápidos y claros para empresas y emprendedores en Chile. Landing desde $390.000, con mantención mensual y automatizaciones opcionales.",
+    ...homeSeo,
+    alternates: { es: "/", en: "/en", pt: "/pt" },
     path: "/",
     image: "/og-image.png",
     // Solo entidades que existen y son visibles en la página: la organización,

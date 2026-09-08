@@ -44,7 +44,7 @@ export function useSeo({ title, description, path, image, type = "website", json
     // Las alternativas son varias etiquetas con el mismo rel, así que no sirve
     // el buscador por rel de setLink: se limpian y se vuelven a crear.
     const setAlternates = (mapa) => {
-      document.head.querySelectorAll('link[rel="alternate"][data-i18n]').forEach((el) => el.remove());
+      document.head.querySelectorAll('link[rel="alternate"][hreflang]').forEach((el) => el.remove());
       if (!mapa) return;
       const idiomas = { es: "es-CL", en: "en", pt: "pt-BR" };
       const entradas = [
@@ -101,6 +101,7 @@ export function useSeo({ title, description, path, image, type = "website", json
     setMeta("name", "robots", noindex ? "noindex,follow" : "index,follow");
 
     if (jsonLd) {
+      document.head.querySelectorAll('script[type="application/ld+json"][data-site-schema]').forEach(el => el.remove());
       const ld = document.createElement("script");
       ld.type = "application/ld+json";
       ld.text = ldKey;

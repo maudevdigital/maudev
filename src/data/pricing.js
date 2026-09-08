@@ -15,34 +15,30 @@
 // sin decirlo, porque ahí sí el total final se vuelve una sorpresa.
 
 import { BASE, formatFrom } from "@/data/currencies";
-import { subservicios } from "@/data/subservices";
-
-// El piso de cada plan NO se escribe a mano: se lee del catálogo, en su nivel
-// de entrada. Tenerlo duplicado ya provocó que un nivel anunciara $290.000
-// mientras su propia carta cobraba $490.000.
-const desdeCatalogo = (id) => subservicios.find((s) => s.id === id).precios[0];
-
-const CLP = (value) => `$${value.toLocaleString("es-CL")}`;
+// El piso de cada plan NO se escribe a mano: se lee del catálogo, en su primer
+// nivel con precio. Tenerlo duplicado ya provocó que un nivel anunciara
+// $290.000 mientras su propia carta cobraba $490.000.
+import { desdePrecio, formatCLP } from "@/data/from-price";
 
 export const pricing = {
   landing: {
     id: "landing",
     label: "Landing page",
-    from: desdeCatalogo("landing"),
+    from: desdePrecio("landing"),
     unit: "proyecto",
     summary: "Una propuesta y una acción, para campañas o para validar una idea.",
   },
   sitio: {
     id: "sitio",
     label: "Sitio corporativo",
-    from: desdeCatalogo("sitio"),
+    from: desdePrecio("sitio"),
     unit: "proyecto",
     summary: "Varias páginas de servicio, con la arquitectura y el texto que las sostienen.",
   },
   ecommerce: {
     id: "ecommerce",
     label: "Tienda online",
-    from: desdeCatalogo("ecommerce"),
+    from: desdePrecio("ecommerce"),
     unit: "proyecto",
     summary: "Catálogo, pagos, despacho e inventario funcionando de punta a punta.",
   },
@@ -55,8 +51,8 @@ export const pricing = {
   },
 };
 
-/** "$390.000" — para mostrar junto a la palabra "desde". */
-export const priceFrom = (key) => CLP(pricing[key].from);
+/** El piso del plan ya formateado en pesos, para ir junto a "desde". */
+export const priceFrom = (key) => formatCLP(pricing[key].from);
 
 /**
  * Precio en la moneda pedida, con el sufijo "/mes" si es recurrente.

@@ -4,6 +4,8 @@ import { services } from "../src/data/services.js";
 import { projects } from "../src/data/projects.js";
 import { subservicios } from "../src/data/subservices.js";
 import { AUTOMATIONS } from "../src/data/automations.js";
+import { homeSeo } from "../src/data/seo.js";
+import { EN, PT } from "../src/data/i18n.js";
 
 const root = path.resolve(import.meta.dirname, "..");
 const dist = path.join(root, "dist");
@@ -78,33 +80,35 @@ const pages = [
   // Las versiones en otro idioma necesitan su <html lang> y su hreflang en el
   // HTML estático: es lo que lee el rastreador antes de ejecutar JavaScript, y
   // el motivo por el que el bilingüe anterior terminó mal indexado.
+  //
+  // Los títulos y descripciones se leen de data/i18n.js, que es de donde
+  // también los toma la app. Estaban copiados a mano acá y ya se habían
+  // desincronizado: el archivo estático prometía una cosa y React montaba otra
+  // —la de i18n incluía un "From USD 120" que además no coincidía con el
+  // catálogo—. Es el mismo motivo por el que existe data/seo.js.
   {
     route: "/en",
     alternates: { "es-CL": "/", "en": "/en", "pt-BR": "/pt" },
     lang: "en",
-    title: "Web development for companies in Latin America · Maudev",
-    description: "Websites, online stores and custom software, built in Chile for companies across the Americas. Fixed price agreed in writing before we start.",
+    ...EN.meta,
   },
   {
     route: "/en/contact",
     alternates: { "es-CL": "/contacto", "en": "/en/contact", "pt-BR": "/pt/contato" },
     lang: "en",
-    title: "Contact · Get a quote for your web project · Maudev",
-    description: "Tell us what you sell and to whom. We reply the same business day with what you need, what it would cost and how long it would take.",
+    ...EN.metaContacto,
   },
   {
     route: "/pt",
     alternates: { "es-CL": "/", "en": "/en", "pt-BR": "/pt" },
     lang: "pt-BR",
-    title: "Desenvolvimento web para empresas na América Latina · Maudev",
-    description: "Sites, lojas online e software sob medida, feitos no Chile para empresas de toda a América. Preço fechado por escrito antes de começar.",
+    ...PT.meta,
   },
   {
     route: "/pt/contato",
     alternates: { "es-CL": "/contacto", "en": "/en/contact", "pt-BR": "/pt/contato" },
     lang: "pt-BR",
-    title: "Contato · Orçamento para o seu projeto web · Maudev",
-    description: "Conte o que você vende e para quem. Respondemos no mesmo dia útil com o que precisa, quanto custaria e em quanto tempo estaria no ar.",
+    ...PT.metaContacto,
   },
   ...projects.map((project) => ({
     route: `/casos/${project.id}`,
@@ -177,6 +181,10 @@ const portadaAlternates = [
 ].join("\n    ");
 const indexPath = path.join(dist, "index.html");
 const indexHtml = await fs.readFile(indexPath, "utf8");
-await fs.writeFile(indexPath, indexHtml.replace("</head>", `  ${portadaAlternates}\n  </head>`));
+let homeHtml = indexHtml.replace(/<title>[^<]*<\/title>/i, `<title>${escapeHtml(homeSeo.title)}</title>`);
+homeHtml = replaceMeta(homeHtml, "name", "description", homeSeo.description);
+homeHtml = replaceMeta(homeHtml, "property", "og:description", homeSeo.description);
+homeHtml = replaceMeta(homeHtml, "name", "twitter:description", homeSeo.description);
+await fs.writeFile(indexPath, homeHtml.replace("</head>", `  ${portadaAlternates}\n  </head>`));
 
 console.log(`Metadatos estáticos generados para ${pages.length} rutas.`);
