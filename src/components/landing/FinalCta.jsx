@@ -1,4 +1,5 @@
 import { CalendarClock, MessageCircle } from "lucide-react";
+import ParticleField from "@/components/landing/ParticleField";
 import { CAL_URL } from "@/data/catalog";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
 import { trackAction } from "@/lib/MetaPixelTracker";
@@ -24,6 +25,7 @@ export default function FinalCta() {
     <section id="contacto" className="section-pad border-t border-border" aria-labelledby="cta-final-title">
       <div className="site-container">
         <div className="final-cta relative overflow-hidden">
+          <ParticleField className="closing-particles" />
 
 
 

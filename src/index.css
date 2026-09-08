@@ -157,29 +157,30 @@
 }
 
 .hero-section {
+  position: relative;
+  isolation: isolate;
   padding-block: clamp(8rem, 11vw, 10rem) 0;
 }
 
+/* Solo se anima transform: el recorrido de cada punto viaja como variable
+   inline desde ParticleField. Con prefers-reduced-motion no se apaga la
+   animacion acá sino el campo entero (.particle-field), que ademas se ahorra
+   renderizar los nodos. */
 .particle {
-  box-shadow: 0 0 8px 2px hsl(var(--primary) / 0.55);
-  will-change: transform, opacity;
-  animation-name: particleFloat;
+  will-change: transform;
+  animation-name: particleDrift;
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
+  animation-direction: alternate;
 }
 
-@keyframes particleFloat {
-  0%, 100% { transform: translate3d(0, 0, 0); opacity: 0.4; }
-  50% { transform: translate3d(var(--move-x, 0), var(--move-y, 0), 0); opacity: 1; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .particle { animation: none; opacity: 0.35; }
+@keyframes particleDrift {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(var(--move-x, 0), var(--move-y, 0), 0); }
 }
 
 .particles-on-dark .particle {
   background: hsl(224 96% 78%);
-  box-shadow: 0 0 8px 2px hsl(224 96% 78% / 0.5);
 }
 
 .grid-on-dark {
@@ -517,13 +518,19 @@ section[id] { scroll-margin-top: 7rem; }
 .quote-disclosure { border: 1px solid hsl(var(--border)); border-radius: 1.25rem; background: hsl(var(--card)); }
 .quote-disclosure > summary { padding: 1.5rem; }
 .plan-details > summary { padding-block: 0.5rem; font-size: 0.875rem; font-weight: 600; color: hsl(var(--primary)); }
-.site-header { position: fixed; inset: 0 0 auto; z-index: 50; background: hsl(var(--background) / 0.97); border-bottom: 1px solid hsl(var(--border)); }
-.site-header-inner { width: min(100% - 2rem, 75rem); margin-inline: auto; }
+.site-header { position: fixed; inset: 0.75rem 0.75rem auto; z-index: 50; width: min(calc(100% - 1.5rem), 77rem); margin-inline: auto; border: 1px solid hsl(var(--border)); border-radius: 1.25rem; background: hsl(var(--card) / 0.94); backdrop-filter: blur(16px); box-shadow: 0 8px 28px hsl(var(--ink) / 0.07); }
+.site-header-inner { width: calc(100% - 1.5rem); margin-inline: auto; }
+.site-header:has([aria-expanded="true"]) { background: hsl(var(--card)); }
+.hero-particles { z-index: -1; opacity: 0.36; mask-image: linear-gradient(90deg, transparent, black 70%, transparent); }
+.closing-particles { opacity: 0.3; }
+.particle-field[data-paused="true"] .particle { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) { .particle-field { display: none; } }
 .footer-catalog { padding-block: 1rem; border-top: 1px solid hsl(var(--border)); }
 .footer-catalog > summary { min-height: 2.75rem; align-content: center; font-size: 0.875rem; font-weight: 600; }
 
 @media (min-width: 640px) {
-  .site-header-inner { width: min(100% - 3rem, 75rem); }
+  .site-header { top: 1rem; }
+  .site-header-inner { width: calc(100% - 2.5rem); }
 }
 @media (min-width: 1024px) {
   .hero-layout { grid-template-columns: 1.1fr 0.9fr; gap: 4rem; }
