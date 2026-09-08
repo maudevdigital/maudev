@@ -24,9 +24,6 @@ const WA_MESSAGE = encodeURIComponent(
 
 export const whatsappEnabled = true;
 
-/** True cuando el sitio ya usa un número de empresa y no el personal. */
-export const usandoNumeroDedicado = WA_NUMBER !== NUMERO_PERSONAL_POR_DEFECTO;
-
 export function getWhatsAppUrl(customMessage) {
   const message = customMessage ? encodeURIComponent(customMessage) : WA_MESSAGE;
   return `https://wa.me/${WA_NUMBER}?text=${message}`;
