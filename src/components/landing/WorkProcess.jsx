@@ -39,32 +39,19 @@ export default function WorkProcess() {
         <div className="max-w-3xl">
           <span className="eyebrow">Cómo trabajamos</span>
           <h2 id="proceso-title" className="section-title mt-4">
-            Tres etapas, con decisiones claras en cada una.
+            Te acompañamos en cada paso.
           </h2>
         </div>
 
         <ol className="mt-14 grid gap-3 md:grid-cols-3">
           {stages.map((stage) => (
-            <li key={stage.number} className="panel flex flex-col p-7 lg:p-9">
+            <li key={stage.number} className="flex flex-col border-t-2 border-primary/25 px-2 py-6">
               <div className="flex items-baseline justify-between gap-4">
                 <span className="font-mono text-xs font-semibold text-primary">{stage.number}</span>
                 <span className="rounded-md border border-border px-2 py-1 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
                   {stage.when}
                 </span>
               </div>
-
-              {/* Barra de avance: ubica la etapa dentro del proyecto completo */}
-              <span className="mt-6 flex gap-1" aria-hidden="true">
-                {stages.map((other) => (
-                  <span
-                    key={other.number}
-                    className={`h-1 flex-1 rounded-full ${
-                      other.number <= stage.number ? "bg-primary" : "bg-border"
-                    }`}
-                  />
-                ))}
-              </span>
-
               <h3 className="mt-6 text-2xl font-extrabold tracking-[-0.035em]">{stage.title}</h3>
               <p className="mt-3 leading-relaxed text-muted-foreground">{stage.text}</p>
 

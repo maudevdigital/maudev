@@ -98,9 +98,9 @@ export default function Contacto() {
             <div className="grid gap-12 lg:grid-cols-[0.82fr_1.18fr] lg:gap-20">
               <div>
                 <span className="eyebrow">Contacto</span>
-                <h1 className="mt-5 max-w-[12ch] text-5xl font-extrabold leading-[0.99] tracking-[-0.06em] sm:text-6xl">Cuéntame qué vendes y a quién.</h1>
+                <h1 className="display-title mt-5">Cuéntanos tu idea.</h1>
                 <p className="mt-6 max-w-lg text-lg leading-relaxed text-muted-foreground">
-                  No necesitas preparar un documento técnico. Describe qué ocurre hoy, qué se repite y dónde se traba.
+                  Cuéntanos qué hace tu negocio y qué te gustaría mejorar. Te ayudamos a definir el siguiente paso.
                 </p>
                 <div className="mt-10 space-y-4 border-t border-border pt-6">
                   <a href="mailto:contacto@maudev.cl" className="flex items-center gap-3 text-sm font-semibold hover:text-primary">
@@ -145,7 +145,7 @@ export default function Contacto() {
                     {error && <p className="mt-5 rounded-lg border border-error/25 bg-error/8 p-3 text-sm text-error" role="alert">{error}</p>}
 
                     <button type="submit" disabled={loading} className="btn btn-primary mt-6 h-13 w-full px-6 text-sm font-bold disabled:cursor-wait disabled:opacity-65">
-                      {loading ? "Enviando…" : "Enviar mi proceso"} <Send className="h-4 w-4" aria-hidden="true" />
+                      {loading ? "Enviando…" : "Enviar mi consulta"} <Send className="h-4 w-4" aria-hidden="true" />
                     </button>
                     <p className="mt-4 text-center text-[11px] leading-relaxed text-muted-foreground">Al enviar aceptas nuestra <a href="/privacidad" className="underline underline-offset-2 hover:text-primary">política de privacidad</a>.</p>
                   </form>

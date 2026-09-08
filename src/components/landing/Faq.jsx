@@ -1,4 +1,3 @@
-import { ChevronDown } from "lucide-react";
 
 export const faqs = [
   {
@@ -36,11 +35,10 @@ export default function Faq() {
           <h2 id="preguntas-title" className="section-title mt-4">Lo importante antes de empezar.</h2>
         </div>
         <div className="border-t border-border">
-          {faqs.map((faq, index) => (
-            <details key={faq.q} className="faq-item group" open={index === 0}>
+          {faqs.map((faq) => (
+            <details key={faq.q} className="faq-item group">
               <summary>
                 <span>{faq.q}</span>
-                <ChevronDown className="h-5 w-5 shrink-0 text-muted-foreground transition-transform duration-200 group-open:rotate-180" aria-hidden="true" />
               </summary>
               <p>{faq.a}</p>
             </details>

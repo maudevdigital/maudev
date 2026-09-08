@@ -6,30 +6,11 @@ import CtaButton from "@/components/landing/CtaButton";
 import CurrencySwitcher from "@/components/landing/CurrencySwitcher";
 import { catalog, headerActions } from "@/data/catalog";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Navbar flotante: una píldora de vidrio despegada del borde.
-//
-// Comportamiento:
-//   · al salir del top gana fondo, borde y sombra para separarse del contenido,
-//   · con un menú desplegado se vuelve opaco: leer una lista con el texto de la
-//     página cruzándose por detrás no es un efecto, es un defecto,
-//   · en móvil se esconde al bajar y reaparece al subir (gana pantalla), salvo
-//     con el menú abierto, donde esconderlo se llevaría el menú con él,
-//   · marca la sección visible en la home (scrollspy con IntersectionObserver),
-//   · el menú móvil cierra con Escape y fija el cuerpo para que el fondo no se
-//     mueva mientras se recorre la lista.
-//
-// La superficie es `secondary`, la misma del footer: el header abre la página y
-// el footer la cierra, y cuando cada uno usaba su propio tono el salto se veía
-// al llegar abajo.
-// ─────────────────────────────────────────────────────────────────────────────
-
-// El navbar de escritorio muestra solo los destinos que son una decisión.
-// "Proceso" y "Preguntas" se encuentran bajando y viven en el menú móvil:
-// en el header solo sumaban ancho y obligaban a leer más para elegir.
+// Navegación persistente, catálogo desplegable y preferencias de visualización.
 const navigation = [
   { label: "Servicios", id: "soluciones", enHeader: true },
   { label: "Portafolio", id: "casos", enHeader: true },
+  { label: "Planes", id: "planes", enHeader: true },
   { label: "Proceso", id: "proceso", enHeader: false },
   { label: "Preguntas", id: "preguntas", enHeader: false },
 ];
@@ -171,8 +152,14 @@ export default function Navbar() {
   const goToSection = (event, id) => {
     event.preventDefault();
     setOpen(false);
+    setMega(false);
     if (pathname === "/") {
-      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+      // Esperar a que el menú libere el body y restaure su posición de scroll.
+      window.requestAnimationFrame(() => {
+        document.getElementById(id)?.scrollIntoView({
+          behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
+        });
+      });
       window.history.replaceState(null, "", `/#${id}`);
       return;
     }
@@ -193,25 +180,14 @@ export default function Navbar() {
   return (
     <header
       ref={headerRef}
-      className="fixed inset-x-3 top-3 z-50 transition-transform duration-300 ease-out sm:inset-x-5 sm:top-5"
-      style={{ transform: `translateY(${show || open ? 0 : -140}%)` }}
+      className={`site-header transition-transform duration-200 ${scrolled ? "shadow-sm" : ""}`}
+      style={{ transform: `translateY(${show || open || mega ? 0 : -140}%)` }}
+      onFocusCapture={() => setShow(true)}
     >
       <div
-        className={`mx-auto w-full max-w-300 overflow-hidden rounded-2xl border transition-colors duration-200 ${
-          open || mega
-            ? "border-border bg-secondary shadow-xl shadow-[hsl(var(--ink)/0.12)]"
-            : scrolled
-              ? "border-border bg-secondary/92 shadow-lg shadow-[hsl(var(--ink)/0.08)] backdrop-blur-xl"
-              : "border-border/60 bg-secondary/70 backdrop-blur-md"
-        }`}
+        className="site-header-inner"
       >
-        {/* Hairline superior: el detalle que da la lectura de panel */}
-        <div
-          aria-hidden="true"
-          className="h-px w-full bg-linear-to-r from-transparent via-primary/40 to-transparent"
-        />
-
-        <div className="flex h-15 items-center justify-between gap-3 px-3 sm:h-16 sm:px-5">
+        <div className="flex h-18 items-center justify-between gap-3">
           <Link to="/" aria-label="Maudev, ir al inicio" className="group flex shrink-0 items-center gap-2.5">
             <Logo size={28} className="text-primary transition-transform duration-200 group-hover:rotate-6" />
             <span className="text-[1.05rem] font-extrabold tracking-[-0.04em] text-foreground">
@@ -246,12 +222,13 @@ export default function Navbar() {
               Portafolio
             </a>
 
-            <Link
-              to="/contacto"
+            <a
+              href="/#planes"
+              onClick={(event) => goToSection(event, "planes")}
               className="rounded-lg px-3 py-2 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
-              Contacto
-            </Link>
+              Planes
+            </a>
           </nav>
 
           <div className="hidden items-center gap-2 lg:flex">

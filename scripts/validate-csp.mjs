@@ -148,7 +148,7 @@ try {
   await page.getByLabel("Empresa o tipo de negocio").fill("Prueba");
   await page.getByLabel("Qué necesitas").fill("Envio de prueba para ejercitar connect-src contra el worker de leads.");
   await page.getByLabel("Correo o WhatsApp").fill("qa@example.com");
-  await page.getByRole("button", { name: "Enviar mi proceso" }).click();
+  await page.getByRole("button", { name: "Enviar mi consulta" }).click();
   await page.waitForTimeout(12000);
 
   await browser.close();

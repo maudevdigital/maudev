@@ -1,5 +1,4 @@
 import { CalendarClock, MessageCircle } from "lucide-react";
-import ParticleField from "@/components/landing/ParticleField";
 import { CAL_URL } from "@/data/catalog";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
 import { trackAction } from "@/lib/MetaPixelTracker";
@@ -24,23 +23,19 @@ export default function FinalCta() {
   return (
     <section id="contacto" className="section-pad border-t border-border" aria-labelledby="cta-final-title">
       <div className="site-container">
-        {/* Las partículas cierran el libro que abre el hero. Van solo en esos
-            dos extremos: repetidas en cada sección dejarían de ser un detalle
-            para volverse un fondo, y sobre los paneles con texto le compiten a
-            la lectura. */}
         <div className="final-cta relative overflow-hidden">
-          <div className="grid-on-dark" aria-hidden="true" />
-          <ParticleField className="particles-on-dark mask-[radial-gradient(ellipse_at_center,black_60%,transparent_100%)]" />
+
+
 
           <div className="relative">
-            <span className="eyebrow">Conversemos</span>
+            <span className="eyebrow text-white/80!">Conversemos</span>
             <h2
               id="cta-final-title"
-              className="mt-5 max-w-4xl font-display text-4xl font-bold leading-[1.04] tracking-[-0.04em] text-white sm:text-5xl lg:text-6xl"
+              className="mt-5 max-w-4xl font-display text-3xl font-semibold leading-[1.15] tracking-[-0.04em] text-white sm:text-4xl lg:text-5xl"
             >
-              Cuéntame qué vendes. Te digo qué necesitas y cuánto cuesta.
+              Tu próxima etapa empieza con una conversación.
             </h2>
-            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/62">
+            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/80">
               Sin formularios largos ni presentación de ventas. Una conversación para ver si lo que necesitas se puede resolver y con qué presupuesto.
             </p>
 
@@ -71,10 +66,10 @@ export default function FinalCta() {
               {compromisos.map(({ titulo, detalle }) => (
                 <div key={titulo}>
                   <dt className="flex items-center gap-2 text-sm font-bold text-white">
-                    <span className="h-1 w-1 shrink-0 rounded-full bg-primary" aria-hidden="true" />
+                    <span className="h-1 w-1 shrink-0 rounded-full bg-white/70" aria-hidden="true" />
                     {titulo}
                   </dt>
-                  <dd className="mt-1.5 pl-3 text-sm leading-relaxed text-white/55">{detalle}</dd>
+                  <dd className="mt-1.5 pl-3 text-sm leading-relaxed text-white/75">{detalle}</dd>
                 </div>
               ))}
             </dl>

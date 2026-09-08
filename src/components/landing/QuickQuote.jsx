@@ -39,7 +39,7 @@ const Opcion = ({ activo, onClick, children }) => (
     type="button"
     onClick={onClick}
     aria-pressed={activo}
-    className={`rounded-lg border px-3 py-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+    className={`min-h-11 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
       activo
         ? "border-primary bg-primary/10 text-primary"
         : "border-border text-muted-foreground hover:border-primary/40 hover:text-foreground"
@@ -66,10 +66,10 @@ export default function QuickQuote() {
   return (
     <section className="panel panel-solid" aria-labelledby="cotizador-titulo">
       <div className="flex items-center justify-between border-b border-border px-6 py-4">
-        <h2 id="cotizador-titulo" className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
-          Cotiza en 10 segundos
+        <h2 id="cotizador-titulo" className="text-base font-semibold">
+          Estima tu inversión
         </h2>
-        <span className="font-mono text-[10px] font-semibold text-primary">{moneda}</span>
+        <span className="text-sm font-semibold text-primary">{moneda}</span>
       </div>
 
       <div className="space-y-5 px-6 py-5">

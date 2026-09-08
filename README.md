@@ -74,11 +74,18 @@ interna. Si agregas o quitas rutas, actualiza los dos lugares **y**
 `src/pages/Landing.jsx` compone, en este orden:
 
 ```
-Hero → Problema → 3 categorías → Demostración → Casos → Proceso → Confianza → FAQ → CTA
+Presentación → Servicios → Proyectos destacados → Planes y cotizador → Proceso → FAQ → Contacto
 ```
 
-Las promesas de alcance, propiedad, garantía y soporte se concentran en una sola
-sección. La portada no repite CTA ni beneficios después de cada bloque.
+El catálogo ampliado, las inclusiones de cada plan y el cotizador se despliegan
+a petición del visitante. El portafolio completo sigue en `/casos`. La ayuda
+flotante se abre manualmente. Los precios, monedas y envíos conservan sus
+fuentes de datos y mecanismos actuales.
+
+La dirección visual, el alcance y las capturas están en
+[`docs/rediseno-experiencia-visual.md`](docs/rediseno-experiencia-visual.md).
+Después de compilar, `npm run test:design` verifica los flujos del rediseño;
+`npm run test:design -- --screenshots` regenera las capturas en `docs/redesign/`.
 
 ---
 

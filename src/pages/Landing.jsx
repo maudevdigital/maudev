@@ -3,7 +3,6 @@ import Hero from "@/components/landing/Hero";
 import PlanTiers from "@/components/landing/PlanTiers";
 import SolutionsOverview from "@/components/landing/SolutionsOverview";
 import CaseStudies from "@/components/landing/CaseStudies";
-import Capabilities from "@/components/landing/Capabilities";
 import WorkProcess from "@/components/landing/WorkProcess";
 import Faq, { faqs } from "@/components/landing/Faq";
 import FinalCta from "@/components/landing/FinalCta";
@@ -65,10 +64,9 @@ export default function Landing() {
       <Navbar />
       <main>
         <Hero />
-        <PlanTiers />
-        <CaseStudies />
-        <Capabilities />
         <SolutionsOverview />
+        <CaseStudies />
+        <PlanTiers />
         <WorkProcess />
         <Faq />
         <FinalCta />

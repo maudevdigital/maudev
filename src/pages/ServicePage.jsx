@@ -65,13 +65,12 @@ export default function ServicePage({ serviceKey }) {
     <PageShell>
       <main>
         <section className="relative overflow-hidden pb-20 pt-30 sm:pt-36 lg:pb-28 lg:pt-42">
-          <div className="hero-orbit hero-orbit-one" aria-hidden="true" />
           <div className="site-container relative">
             <Breadcrumbs items={[{ label: service.navLabel }]} />
             <div className="grid items-end gap-12 lg:grid-cols-[1.12fr_0.88fr] lg:gap-20">
               <div>
                 <span className="eyebrow">{service.eyebrow}</span>
-                <h1 className="mt-5 max-w-[13ch] text-5xl font-extrabold leading-[0.99] tracking-[-0.06em] sm:text-6xl lg:text-7xl">{service.title}</h1>
+                <h1 className="display-title mt-5">{service.title}</h1>
                 <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl">{service.intro}</p>
                 <div className="mt-9"><CtaButton size="lg" context={`servicio-${serviceKey}`} /></div>
               </div>

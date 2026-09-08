@@ -24,7 +24,7 @@ export default function Footer() {
   return (
     <footer className="border-t border-border bg-secondary/55">
       <div className="site-container py-12 sm:py-16">
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_repeat(5,1fr)]">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.3fr_1.7fr_0.7fr]">
           <div className="max-w-sm">
             <Link to="/" className="inline-flex items-center gap-2.5" aria-label="Maudev, inicio">
               <Logo size={30} className="text-primary" />
@@ -64,18 +64,21 @@ export default function Footer() {
             </p>
           </div>
 
+          <div>
+            <h2 className="footer-title mb-4">Explora nuestros servicios</h2>
           {columnas.map(({ id, label, enlaces }) => (
-            <div key={id}>
-              <h2 className="footer-title">{label}</h2>
-              <ul className="mt-4 space-y-2.5">
+            <details key={id} className="footer-catalog">
+              <summary>{label}</summary>
+              <ul className="mt-3 grid gap-3 pb-2 sm:grid-cols-2">
                 {enlaces.map(([texto, href]) => (
                   <li key={texto}>
                     <Link to={href} className="footer-link">{texto}</Link>
                   </li>
                 ))}
               </ul>
-            </div>
+            </details>
           ))}
+          </div>
 
           <div>
             <h2 className="footer-title">Empresa</h2>

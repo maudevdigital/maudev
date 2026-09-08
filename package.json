@@ -10,6 +10,7 @@
     "lint": "eslint .",
     "test": "node scripts/validate-site.mjs && node scripts/validate-csp.mjs",
     "test:redirects": "node scripts/validate-redirects.mjs",
+    "test:design": "node scripts/validate-design.mjs",
     "preview": "vite preview",
     "capture": "node scripts/capture-portfolio.mjs",
     "gen:carousel-w2": "node scripts/gen-carousel-w2.mjs",

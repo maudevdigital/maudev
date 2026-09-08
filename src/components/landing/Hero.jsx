@@ -1,84 +1,78 @@
-import { useCallback, useEffect, useRef } from "react";
-import { CalendarClock, MessageCircle } from "lucide-react";
-import { CAL_URL } from "@/data/catalog";
+import { ArrowDown, ArrowUpRight, Check, MessageCircle } from "lucide-react";
+import { Link } from "react-router-dom";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
-import CountryFlags from "@/components/landing/CountryFlags";
-import ParticleField from "@/components/landing/ParticleField";
-import QuickQuote from "@/components/landing/QuickQuote";
-import RotatingAudience from "@/components/landing/RotatingAudience";
+import { getFeaturedProjects } from "@/data/projects";
 import { trackAction } from "@/lib/MetaPixelTracker";
 
+const project = getFeaturedProjects()[0];
+
 export default function Hero() {
-  const seccionRef = useRef(null);
-  const frameRef = useRef(0);
-
-  // El foco de luz se actualiza dentro de un rAF: mousemove dispara decenas de
-  // veces por segundo y escribir la variable CSS en cada evento provoca
-  // repintados de más sin que el ojo note la diferencia.
-  const seguirPuntero = useCallback((evento) => {
-    const nodo = seccionRef.current;
-    if (!nodo) return;
-    const { clientX, clientY } = evento;
-    cancelAnimationFrame(frameRef.current);
-    frameRef.current = requestAnimationFrame(() => {
-      const caja = nodo.getBoundingClientRect();
-      nodo.style.setProperty("--mx", `${clientX - caja.left}px`);
-      nodo.style.setProperty("--my", `${clientY - caja.top}px`);
-    });
-  }, []);
-
-  useEffect(() => () => cancelAnimationFrame(frameRef.current), []);
-
   return (
-    <section ref={seccionRef} onMouseMove={seguirPuntero} className="hero-section">
-      <div className="hero-grid" aria-hidden="true" />
-      <div className="hero-spot" aria-hidden="true" />
-      <div className="hero-orbit hero-orbit-one" aria-hidden="true" />
-      <ParticleField className="-z-10 mask-[radial-gradient(ellipse_at_center,black_60%,transparent_100%)]" />
-
-      <div className="site-container relative grid w-full items-center gap-14 lg:grid-cols-[1.2fr_0.8fr] lg:gap-16">
-        {/* ── Izquierda: mensaje y acción ── */}
-        <div>
-          <span className="eyebrow">Diseño y desarrollo web · Chile</span>
-
-          <h1 className="hero-title mt-7">Tu sitio web, hecho para que te contacten.</h1>
-
-          <RotatingAudience />
-
-          {/* Las dos acciones del hero son las dos formas reales de empezar
-              una conversación: escribir ahora o reservar una hora. Ambas salen
-              del sitio, así que van como <a> y no como <Link>. El cotizador de
-              la derecha cubre a quien todavía no quiere hablar con nadie. */}
-          <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <a
-              href={getWhatsAppUrl("Hola, vengo de maudev.cl y quiero conversar sobre un sitio web para mi negocio.")}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => trackAction("whatsapp_click", { ubicacion: "hero" })}
-              className="btn btn-primary h-14 px-7"
-            >
-              <MessageCircle className="h-5 w-5 shrink-0" aria-hidden="true" />
-              Hablar por WhatsApp
-            </a>
-            <a
-              href={CAL_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => trackAction("agendar_click", { ubicacion: "hero" })}
-              className="btn btn-ghost h-14 px-6"
-            >
-              <CalendarClock className="h-5 w-5 shrink-0" aria-hidden="true" />
-              Agendar 30 min
-            </a>
+    <section className="hero-section" aria-labelledby="hero-title">
+      <div className="site-container">
+        <div className="hero-layout">
+          <div className="hero-copy">
+            <span className="eyebrow">Estudio digital · Chile</span>
+            <h1 id="hero-title" className="hero-title mt-6">
+              Tu negocio,<br />su mejor <span className="text-primary">versión digital.</span>
+            </h1>
+            <p className="mt-6 max-w-lg text-lg leading-relaxed text-muted-foreground">
+              Diseñamos sitios web que explican lo que haces y facilitan que te contacten.
+              Te acompañamos desde la primera idea hasta la publicación.
+            </p>
+            <div className="mt-8 flex flex-wrap items-center gap-5">
+              <a
+                href={getWhatsAppUrl("Hola, vengo de maudev.cl y quiero conversar sobre un sitio web para mi negocio.")}
+                target="_blank" rel="noopener noreferrer"
+                onClick={() => trackAction("whatsapp_click", { ubicacion: "hero" })}
+                className="btn btn-primary min-h-12 px-6 text-sm"
+              >
+                Conversemos de tu proyecto <MessageCircle className="h-4 w-4" aria-hidden="true" />
+              </a>
+              <a href="#casos" className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold hover:text-primary">
+                Ver nuestro trabajo <ArrowDown className="h-4 w-4" aria-hidden="true" />
+              </a>
+            </div>
+            <p className="mt-7 flex items-center gap-2 text-sm text-muted-foreground">
+              <Check className="h-4 w-4 text-primary" aria-hidden="true" />
+              Alcance, precio y plazos claros desde el inicio.
+            </p>
           </div>
-
-          <CountryFlags />
-
+          <div className="hero-showcase">
+            <div className="flex items-center justify-between gap-3 px-1 pb-5 text-sm">
+              <span className="font-medium">Ideas que ya están en línea</span>
+              <span className="rounded-full bg-card/80 px-3 py-1 text-xs text-muted-foreground">Proyecto real</span>
+            </div>
+            <Link to={`/casos/${project.id}`} className="showcase-browser group block" aria-label={`Conocer el proyecto ${project.title}`}>
+              <div className="flex items-center gap-1.5 border-b border-border bg-card px-4 py-3" aria-hidden="true">
+                <span className="h-2 w-2 rounded-full bg-border" />
+                <span className="h-2 w-2 rounded-full bg-border" />
+                <span className="h-2 w-2 rounded-full bg-border" />
+                <span className="ml-3 text-xs text-muted-foreground">{project.title} · Diseño y desarrollo web</span>
+              </div>
+              <img src={project.image} alt={`Diseño del sitio web de ${project.title}`} width="1280" height="2560" fetchPriority="high" className="showcase-image" />
+              <div className="flex items-center justify-between gap-4 bg-card p-5">
+                <div>
+                  <p className="text-xs text-muted-foreground">{project.industry}</p>
+                  <p className="mt-1 font-semibold">{project.title}</p>
+                </div>
+                <span className="grid h-10 w-10 place-items-center rounded-full bg-secondary text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                  <ArrowUpRight className="h-5 w-5" aria-hidden="true" />
+                </span>
+              </div>
+            </Link>
+            <p className="mt-5 flex items-center gap-2 text-xs text-muted-foreground">
+              <span className="h-2 w-2 rounded-full bg-primary" aria-hidden="true" />
+              Diseño propio. Pensado para personas reales.
+            </p>
+          </div>
         </div>
-
-        {/* ── Derecha: cotizador ── */}
-        <QuickQuote />
-
+        <div className="hero-footnote">
+          <span>De tu primera web a una operación conectada.</span>
+          <a href="#soluciones" className="inline-flex items-center gap-2 font-medium text-foreground hover:text-primary">
+            Encuentra lo que necesitas <ArrowDown className="h-4 w-4" aria-hidden="true" />
+          </a>
+        </div>
       </div>
     </section>
   );

@@ -24,8 +24,8 @@ export default function LangShell({ lang, rutas, textos, children }) {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <header className="fixed inset-x-3 top-3 z-50 sm:inset-x-5 sm:top-5">
-        <div className="mx-auto flex w-full max-w-300 items-center justify-between gap-3 rounded-2xl border border-border bg-secondary/92 px-4 py-3 backdrop-blur-xl sm:px-5">
+      <header className="site-header">
+        <div className="site-header-inner flex min-h-18 items-center justify-between gap-3">
           <Link to={rutas[lang]} className="flex shrink-0 items-center gap-2.5" aria-label="Maudev">
             <Logo size={28} className="text-primary" />
             <span className="text-[1.05rem] font-extrabold tracking-[-0.04em]">

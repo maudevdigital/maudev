@@ -2,17 +2,7 @@ import { ArrowRight, Code2, Palette, Smartphone, Globe } from "lucide-react";
 import { Link } from "react-router-dom";
 import { trackAction } from "@/lib/MetaPixelTracker";
 
-// Capacidades: con qué está construido lo que entregamos.
-//
-// Va bajo el portafolio a propósito. El visitante acaba de ver cuatro sitios
-// funcionando; esta sección responde la pregunta que sigue —"¿y con qué lo
-// hacen?"— sin obligarlo a entrar a una página de servicio.
-//
-// El remate de cada tarjeta es un compromiso verificable y no una métrica: los
-// "Lighthouse 95+ garantizado" o "escala a 100K usuarios" que se estilan en el
-// rubro son números que nadie audita y que, si un cliente los mide y no dan,
-// cuestan la relación completa. Lo que sí se puede afirmar es cómo se trabaja y
-// qué queda en manos de quien paga.
+// Catálogo ampliado disponible desde el desplegable de servicios.
 const capacidades = [
   {
     id: "web",
@@ -39,7 +29,7 @@ const capacidades = [
     resumen: "Android y iPhone desde un solo desarrollo, o nativas cuando el caso lo pide.",
     stack: ["React Native", "Expo", "PWA"],
     remate: "Publicada con tu propia cuenta de desarrollador",
-    href: "/software-a-medida",
+    href: "/apps-moviles",
   },
   {
     id: "diseno",
@@ -48,25 +38,24 @@ const capacidades = [
     resumen: "Marca, interfaz y sistema visual, pensados para que tu equipo los pueda usar solo.",
     stack: ["Figma", "SVG", "Design tokens"],
     remate: "Archivos editables entregados, no solo imágenes",
-    href: "/contacto",
+    href: "/diseno",
   },
 ];
 
 export default function Capabilities() {
   return (
-    <section className="section-pad border-y border-border bg-secondary/40" aria-labelledby="capacidades-titulo">
-      <div className="site-container grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+    <section className="py-6" aria-labelledby="capacidades-titulo">
+      <div className="grid gap-8">
         <div>
-          <span className="eyebrow">Capacidades</span>
-          <h2 id="capacidades-titulo" className="section-title mt-4">
-            Construido a mano, no armado con plantillas.
+          <h2 id="capacidades-titulo" className="text-xl font-semibold">
+            Más posibilidades para tu proyecto.
           </h2>
           <p className="mt-5 max-w-lg text-lg leading-relaxed text-muted-foreground">
-            Cada proyecto se diseña, se programa y se mantiene acá mismo. Sin subcontratar, sin gestores de contenido pesados y sin dejarte amarrado a una herramienta que no controlas.
+            Diseñamos y desarrollamos cada proyecto según lo que tu equipo necesita.
           </p>
         </div>
 
-        <div className="grid gap-3 sm:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {capacidades.map(({ id, icono: Icono, titulo, resumen, stack, remate, href }) => (
             <article key={id} className="panel flex flex-col p-6">
               <div className="flex items-center gap-3">
@@ -78,7 +67,9 @@ export default function Capabilities() {
 
               <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{resumen}</p>
 
-              <ul className="mt-4 flex flex-wrap gap-1.5">
+              <details className="plan-details mt-4">
+                <summary>Herramientas que usamos</summary>
+              <ul className="mt-3 flex flex-wrap gap-1.5">
                 {stack.map((tec) => (
                   <li
                     key={tec}
@@ -88,8 +79,9 @@ export default function Capabilities() {
                   </li>
                 ))}
               </ul>
+              </details>
 
-              <p className="mt-4 flex items-start gap-2 text-xs font-semibold leading-relaxed">
+              <p className="my-4 flex items-start gap-2 text-xs font-semibold leading-relaxed">
                 <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-primary" aria-hidden="true" />
                 {remate}
               </p>

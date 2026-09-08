@@ -161,13 +161,13 @@ try {
   const visibleFields = formPage.locator("form input:not([aria-hidden='true']), form textarea, form select");
   const unlabeled = await visibleFields.evaluateAll((elements) => elements.filter((element) => !element.labels?.length && !element.getAttribute("aria-label")).length);
   assert(unlabeled === 0, `Formulario: ${unlabeled} campos sin etiqueta`);
-  await formPage.getByRole("button", { name: "Enviar mi proceso" }).click();
+  await formPage.getByRole("button", { name: "Enviar mi consulta" }).click();
   assert(await formPage.getByRole("alert").isVisible(), "Formulario: no muestra error al enviar vacío");
   await formPage.getByLabel("Nombre").fill("Prueba QA");
   await formPage.getByLabel("Empresa o tipo de negocio").fill("Empresa de prueba");
   await formPage.getByLabel("Qué necesitas").fill("Validar el envio del formulario sin contactar servicios externos.");
   await formPage.getByLabel("Correo o WhatsApp").fill("qa@example.com");
-  await formPage.getByRole("button", { name: "Enviar mi proceso" }).click();
+  await formPage.getByRole("button", { name: "Enviar mi consulta" }).click();
   await formPage.getByRole("heading", { name: "Mensaje recibido" }).waitFor({ state: "visible" });
   await formPage.close();
 
