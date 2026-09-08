@@ -1,136 +1,74 @@
 import { useEffect, useState } from "react";
-import { getConsent, setConsent, initConsent, GRANTED, DENIED } from "@/lib/consent";
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Aviso de cookies: barra inferior, no bloqueante.
-//
-// Antes era un modal centrado con fondo oscuro que impedía tocar el sitio hasta
-// decidir. Cumplía, pero lo primero que veía una visita nueva era un muro: en
-// una página que se vende por su diseño, esa es la peor primera impresión
-// posible, y es la razón número uno de rebote en el primer segundo.
-//
-// Ahora la barra informa y deja pasar. Dos caminos, ninguno escondido:
-//   · "Aceptar" activa la medición.
-//   · "Configurar" abre las opciones, con rechazar tan a mano como aceptar.
-//
-// Lo que NO cambia: la medición sigue apagada hasta que haya una decisión
-// explícita. El texto dice —como corresponde— que usar el sitio implica aceptar
-// los términos y la política, porque eso sí se acepta por uso; las cookies de
-// medición y publicidad no, y activarlas por "seguir navegando" es exactamente
-// lo que la Ley 21.719 y el RGPD no admiten. Por eso mientras la barra está
-// arriba no se ha cargado ningún script de terceros.
-//
-// Reabrir desde cualquier parte:
-//   window.dispatchEvent(new Event("maudev:open-cookies"))
-// ─────────────────────────────────────────────────────────────────────────────
+import { CONSENT_EVENT, getConsent, setConsent, initConsent, GRANTED, DENIED } from "@/lib/consent";
 
 export default function CookieConsent() {
   const [visible, setVisible] = useState(false);
-  const [opciones, setOpciones] = useState(false);
+  const [options, setOptions] = useState(false);
+  const [preferences, setPreferences] = useState({ analytics: false, marketing: false });
 
   useEffect(() => {
-    // Si ya había decidido antes, aplica su elección sin volver a preguntar.
     initConsent();
-    if (getConsent() === null) setVisible(true);
-  }, []);
-
-  useEffect(() => {
-    const abrir = () => {
-      setOpciones(true);
+    setVisible(getConsent() === null);
+    const open = () => {
+      setPreferences(getConsent() || { analytics: false, marketing: false });
+      setOptions(true);
       setVisible(true);
     };
-    window.addEventListener("maudev:open-cookies", abrir);
-    return () => window.removeEventListener("maudev:open-cookies", abrir);
+    const sync = () => {
+      setPreferences(getConsent() || { analytics: false, marketing: false });
+      setVisible(getConsent() === null);
+    };
+    window.addEventListener("maudev:open-cookies", open);
+    window.addEventListener(CONSENT_EVENT, sync);
+    return () => {
+      window.removeEventListener("maudev:open-cookies", open);
+      window.removeEventListener(CONSENT_EVENT, sync);
+    };
   }, []);
 
-  const decidir = (valor) => {
-    setConsent(valor);
-    setOpciones(false);
+  const decide = value => {
+    setConsent(value);
+    setOptions(false);
     setVisible(false);
   };
-
   if (!visible) return null;
 
   return (
-    <div
-      role="dialog"
-      aria-label="Cookies y condiciones de uso"
-      className="print-hidden fixed inset-x-0 bottom-0 z-100 p-3 sm:p-4"
-    >
-      <div className="panel panel-solid mx-auto max-w-300 px-5 py-4 sm:px-6">
-        {/* Una sola línea. El detalle —qué cookie hace qué— vive en
-            "Configurar", que es donde va a mirarlo quien de verdad le importa.
-            Un párrafo de cuatro líneas en la barra no lo lee nadie y ocupa
-            media pantalla en un teléfono. */}
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
-          <p className="min-w-0 text-sm leading-relaxed text-muted-foreground">
-            Usamos cookies para medir el tráfico. Al usar el sitio aceptas los{" "}
-            <a href="/terminos" className="font-medium text-primary underline underline-offset-2 hover:no-underline">
-              términos
-            </a>{" "}
-            y la{" "}
-            <a href="/privacidad" className="font-medium text-primary underline underline-offset-2 hover:no-underline">
-              política de privacidad
-            </a>
-            .
-          </p>
-
-          <div className="flex shrink-0 gap-2 sm:flex-row-reverse lg:w-auto">
-            <button
-              type="button"
-              onClick={() => decidir(GRANTED)}
-              className="btn btn-primary h-10 flex-1 px-6 text-sm sm:flex-none sm:min-w-32"
-            >
-              Aceptar
-            </button>
-            <button
-              type="button"
-              onClick={() => setOpciones((v) => !v)}
-              aria-expanded={opciones}
-              aria-controls="cookie-opciones"
-              className="btn btn-ghost h-10 flex-1 px-5 text-sm sm:flex-none"
-            >
-              Configurar
-            </button>
+    <div role="dialog" aria-label="Preferencias de cookies" className="cookie-banner print-hidden fixed inset-x-0 bottom-0 z-100 p-3 sm:p-4">
+      <div className="panel panel-solid mx-auto max-h-[calc(100dvh-2rem)] max-w-300 overflow-y-auto! p-5 sm:p-6">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between lg:gap-8">
+          <div className="max-w-2xl">
+            <p className="text-sm font-semibold">Tú eliges qué compartes</p>
+            <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+              Con tu permiso, usamos Google Analytics para mejorar el sitio y Meta para medir anuncios.
+              Puedes aceptar, rechazar o elegir por separado. <a href="/privacidad" className="text-primary underline underline-offset-2">Privacidad</a> · <a href="/terminos" className="text-primary underline underline-offset-2">Términos</a>.
+            </p>
+          </div>
+          <div className="grid shrink-0 grid-cols-2 gap-2 sm:flex sm:flex-wrap">
+            <button type="button" onClick={() => decide(GRANTED)} className="btn btn-primary min-h-11 px-4 text-sm">Aceptar todas</button>
+            <button type="button" onClick={() => decide(DENIED)} className="btn btn-ghost min-h-11 px-4 text-sm">Rechazar</button>
+            <button type="button" onClick={() => {
+              setPreferences(getConsent() || { analytics: false, marketing: false });
+              setOptions(value => !value);
+            }} aria-expanded={options} aria-controls="cookie-opciones" className="btn btn-ghost col-span-2 min-h-11 px-4 text-sm">Configurar</button>
           </div>
         </div>
-
-        {opciones && (
-          <div id="cookie-opciones" className="mt-4 border-t border-border pt-4">
-            <dl className="grid gap-4 sm:grid-cols-2">
-              <div>
-                <dt className="text-sm font-semibold text-foreground">Necesarias · siempre activas</dt>
-                <dd className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                  Recuerdan tu tema claro u oscuro, tu moneda y esta misma decisión. Sin ellas el
-                  sitio no puede funcionar y no identifican a nadie.
-                </dd>
-              </div>
-              <div>
-                <dt className="text-sm font-semibold text-foreground">Medición y publicidad · opcionales</dt>
-                <dd className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                  Google Analytics y Meta, para saber qué páginas sirven y si un anuncio trajo un
-                  contacto. Puedes rechazarlas y navegar igual, o cambiar de opinión cuando quieras
-                  desde el pie de página.
-                </dd>
-              </div>
-            </dl>
-
-            <div className="mt-5 flex flex-col gap-2 sm:flex-row">
-              <button
-                type="button"
-                onClick={() => decidir(DENIED)}
-                className="btn btn-ghost h-11 px-5 text-sm"
-              >
-                Rechazar las opcionales
-              </button>
-              <button
-                type="button"
-                onClick={() => decidir(GRANTED)}
-                className="btn btn-primary h-11 px-6 text-sm"
-              >
-                Aceptar todas
-              </button>
+        {options && (
+          <div id="cookie-opciones" className="mt-5 border-t border-border pt-5">
+            <p className="text-sm text-muted-foreground">Las preferencias del sitio y las funciones de seguridad permanecen activas. Enviar una consulta no autoriza la medición publicitaria.</p>
+            <div className="my-4 grid gap-3 sm:grid-cols-2">
+              {[
+                { key: "analytics", title: "Analítica", text: "Google Analytics: visitas y uso del sitio." },
+                { key: "marketing", title: "Publicidad", text: "Meta Pixel y API de Conversiones: atribución de anuncios y contactos." },
+              ].map(({ key, title, text }) => (
+                <label key={key} className="flex cursor-pointer items-start gap-3 rounded-xl border border-border p-4">
+                  <input type="checkbox" checked={preferences[key]} onChange={event => setPreferences(current => ({ ...current, [key]: event.target.checked }))} className="mt-1 h-5 w-5 shrink-0 accent-primary" />
+                  <span><strong className="block text-sm">{title}</strong><span className="mt-1 block text-sm text-muted-foreground">{text}</span></span>
+                </label>
+              ))}
             </div>
+            <button type="button" onClick={() => decide(preferences)} className="btn btn-primary min-h-11 w-full px-5 text-sm sm:w-auto">Guardar preferencias</button>
+            <p className="mt-3 text-xs text-muted-foreground">Puedes cambiar tu elección desde «Cookies» en el pie de página.</p>
           </div>
         )}
       </div>

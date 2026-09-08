@@ -87,7 +87,7 @@ try {
   // son justamente los orígenes que más fácil se olvidan en la lista.
   const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
   await context.addInitScript(() => {
-    localStorage.setItem("maudev_consent_v1", "granted");
+    localStorage.setItem("maudev_consent_v2", JSON.stringify({ version: 2, analytics: true, marketing: true }));
     localStorage.setItem("theme", "light");
     sessionStorage.setItem("chat_seen", "1");
   });

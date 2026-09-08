@@ -22,10 +22,10 @@
   # proyecto hay que verificarla también contra el sitio en vivo.
   #
   # `unsafe-inline` en script-src es una concesión conocida: index.html lleva
-  # dos scripts en línea (tema y consentimiento) y _headers es estático, así
-  # que no hay forma de emitir un nonce por respuesta. Aun así script-src sigue
-  # cortando lo que más importa, que es cargar JavaScript desde un dominio no
-  # autorizado.
+  # un script en línea (el que aplica el tema antes del primer paint, para que
+  # no haya destello) y _headers es estático, así que no hay forma de emitir un
+  # nonce por respuesta. Aun así script-src sigue cortando lo que más importa,
+  # que es cargar JavaScript desde un dominio no autorizado.
   #
   # Estuvo primero en modo reporte y se recorrieron diecisiete rutas más el
   # envío del formulario sin una sola violación, así que ahora bloquea de

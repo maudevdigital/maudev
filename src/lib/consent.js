@@ -1,65 +1,51 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// CONSENTIMIENTO DE COOKIES
-//
-// Fuente única de verdad sobre si el visitante aceptó analítica y publicidad.
-//
-// Por qué existe: la Ley 21.719 (vigente 1-dic-2026) exige consentimiento
-// PREVIO, específico e inequívoco. El consentimiento tácito ya no vale. Antes
-// este sitio cargaba GA4 y el Meta Pixel a los 4 segundos sin preguntar nada,
-// mientras la política de privacidad afirmaba lo contrario.
-//
-// Decisión de diseño: si el visitante rechaza, los scripts NO se descargan
-// nunca. Nada de "cargar igual pero sin cookies" — es más defendible y más
-// honesto. El sitio funciona idéntico sin ellos.
-// ─────────────────────────────────────────────────────────────────────────────
+import { applyAnalyticsConsent } from "./analytics";
 
-const KEY = "maudev_consent_v1";
-
+const KEY = "maudev_consent_v2";
+const LEGACY_KEY = "maudev_consent_v1";
+export const CONSENT_EVENT = "maudev:consent-changed";
 export const GRANTED = "granted";
 export const DENIED = "denied";
+let memory;
+let listening = false;
 
-/** Devuelve "granted", "denied" o null si todavía no decide. */
 export function getConsent() {
+  if (memory !== undefined) return memory;
   try {
-    const v = localStorage.getItem(KEY);
-    return v === GRANTED || v === DENIED ? v : null;
-  } catch {
-    // Almacenamiento bloqueado (modo incógnito estricto, cookies de terceros
-    // deshabilitadas). Sin decisión persistible tratamos como "no aceptó".
-    return null;
-  }
+    const value = JSON.parse(localStorage.getItem(KEY));
+    if (value?.version === 2 && typeof value.analytics === "boolean" && typeof value.marketing === "boolean") return value;
+    const legacy = localStorage.getItem(LEGACY_KEY);
+    if ([GRANTED, DENIED].includes(legacy)) return { version: 2, analytics: legacy === GRANTED, marketing: legacy === GRANTED };
+  } catch { /* La elección puede mantenerse en memoria si el navegador bloquea almacenamiento. */ }
+  return null;
 }
 
-export const isGranted = () => getConsent() === GRANTED;
+export const hasConsent = purpose => getConsent()?.[purpose] === true;
 
-/** Guarda la decisión, avisa a Consent Mode y carga (o no) los scripts. */
 export function setConsent(value) {
-  const v = value === GRANTED ? GRANTED : DENIED;
+  memory = {
+    version: 2,
+    analytics: value === GRANTED || value?.analytics === true,
+    marketing: value === GRANTED || value?.marketing === true,
+    updatedAt: new Date().toISOString(),
+  };
   try {
-    localStorage.setItem(KEY, v);
-  } catch { /* si no se puede persistir, al menos vale para esta sesión */ }
-
-  // Google Consent Mode v2: informar el cambio aunque GA no esté cargado todavía.
-  if (typeof window.gtag === "function") {
-    window.gtag("consent", "update", {
-      analytics_storage: v,
-      ad_storage: v,
-      ad_user_data: v,
-      ad_personalization: v,
-    });
-  }
-
-  if (v === GRANTED && typeof window.__maudevLoadAnalytics === "function") {
-    window.__maudevLoadAnalytics();
-  }
-
-  return v;
+    localStorage.setItem(KEY, JSON.stringify(memory));
+    localStorage.removeItem(LEGACY_KEY);
+  } catch { /* memory conserva la decisión durante esta carga. */ }
+  applyAnalyticsConsent(memory);
+  window.dispatchEvent(new CustomEvent(CONSENT_EVENT, { detail: memory }));
+  return memory;
 }
 
-/**
- * Al arrancar: si ya había aceptado en una visita anterior, carga los scripts.
- * Si rechazó o no ha decidido, no se descarga nada.
- */
 export function initConsent() {
-  if (isGranted()) setConsent(GRANTED);
+  applyAnalyticsConsent(getConsent() || {});
+  if (listening) return;
+  listening = true;
+  window.addEventListener("storage", event => {
+    if (event.key && ![KEY, LEGACY_KEY].includes(event.key)) return;
+    memory = undefined;
+    const value = getConsent();
+    applyAnalyticsConsent(value || {});
+    window.dispatchEvent(new CustomEvent(CONSENT_EVENT, { detail: value }));
+  });
 }

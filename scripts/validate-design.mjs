@@ -21,7 +21,7 @@ try {
   await context.route("**challenges.cloudflare.com**", route => route.fulfill({ status: 200, body: "" }));
   // Conversión determinista con las tasas de respaldo, sin consultar un proveedor.
   await context.route("**open.er-api.com**", route => route.fulfill({ status: 503, body: "" }));
-  await context.addInitScript(() => localStorage.setItem("maudev_consent_v1", "denied"));
+  await context.addInitScript(() => localStorage.setItem("maudev_consent_v2", JSON.stringify({ version: 2, analytics: false, marketing: false })));
   const page = await context.newPage();
   const errors = [];
   page.on("pageerror", error => errors.push(error.message));

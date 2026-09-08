@@ -1,102 +1,83 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import { isGranted } from "@/lib/consent";
+import { CONSENT_EVENT, hasConsent } from "@/lib/consent";
 
 const CAPI_WORKER = "https://maudev-meta-capi.maudevchile.workers.dev";
+const CAMPAIGN_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_id", "utm_content", "utm_term", "gclid", "fbclid"];
 
-// Nota sobre consentimiento:
-// Las llamadas a fbq() y gtag() son inofensivas sin consentimiento: los stubs
-// de index.html solo encolan en memoria, y los scripts reales no se descargan
-// hasta que el visitante acepta. No hay red ni cookies.
-//
-// La API de Conversiones SÍ es distinta: manda correo y teléfono a Meta desde
-// el servidor, saltándose el navegador. Eso es tratamiento con fines
-// publicitarios y necesita consentimiento explícito, así que va gateada.
+// Evita enviar parámetros libres como nombre, correo o el mensaje del formulario.
+function measurementUrl(value = window.location.href) {
+  const url = new URL(value);
+  for (const key of [...url.searchParams.keys()]) if (!CAMPAIGN_KEYS.includes(key)) url.searchParams.delete(key);
+  url.hash = "";
+  return url.href;
+}
 
-// Ya no hay rutas privadas (el panel /admin se eliminó). Se deja el helper
-// por si mañana vuelve alguna ruta que no deba trackearse.
-const isPrivate = () => false;
-
-// Dispara PageView de Google Analytics 4 + Meta Pixel en cada cambio de ruta
-// (SPA), incluida la carga inicial.
 export default function MetaPixelTracker() {
   const { pathname, search } = useLocation();
+  const last = useRef({ analytics: null, marketing: null });
+  const referrer = useRef(document.referrer);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    if (isPrivate(pathname)) return; // el admin no se trackea
-
-    const page_path = pathname + search;
-    if (typeof window.gtag === "function") {
-      window.gtag("event", "page_view", {
-        page_path,
-        page_location: window.location.href,
-        page_title: document.title,
+    let frame;
+    const track = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const page = measurementUrl();
+        const path = new URL(page);
+        if (!hasConsent("analytics")) last.current.analytics = null;
+        else if (last.current.analytics !== page && window.gtag) {
+          window.gtag("event", "page_view", {
+            page_path: path.pathname + path.search,
+            page_location: page,
+            page_title: document.title,
+            page_referrer: referrer.current ? measurementUrl(referrer.current) : "",
+          });
+          last.current.analytics = page;
+          referrer.current = page;
+        }
+        if (!hasConsent("marketing")) last.current.marketing = null;
+        else if (last.current.marketing !== page && window.fbq) {
+          window.fbq("track", "PageView");
+          last.current.marketing = page;
+        }
       });
-    }
-    if (typeof window.fbq === "function") {
-      window.fbq("track", "PageView");
-    }
+    };
+    track();
+    window.addEventListener(CONSENT_EVENT, track);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener(CONSENT_EVENT, track);
+    };
   }, [pathname, search]);
-
   return null;
 }
 
 function getCookie(name) {
-  const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
-  return match ? match[2] : undefined;
+  return document.cookie.split(";").map(item => item.trim()).find(item => item.startsWith(`${name}=`))?.slice(name.length + 1);
 }
 
-// Dispara evento en el Pixel cliente + API de Conversiones servidor (deduplicado).
-// Devuelve el event_id generado.
 export async function trackLeadEvent({ email, phone, params = {} } = {}) {
   const eventId = crypto.randomUUID();
-  const sourceUrl = window.location.href;
-  const fbc = getCookie("_fbc");
-  const fbp = getCookie("_fbp");
-
-  // 1. Pixel cliente (con event_id para deduplicación)
-  if (typeof window.fbq === "function") {
-    window.fbq("track", "Lead", params, { eventID: eventId });
-  }
-
-  // 1b. Google Analytics 4: evento de lead. Márcalo como "evento clave"
-  //     (conversión) en GA4 → Administrar → Eventos clave.
-  if (typeof window.gtag === "function") {
-    window.gtag("event", "generate_lead", { ...params, event_id: eventId });
-  }
-
-  // 2. CAPI servidor — solo con consentimiento publicitario.
-  //    Sin él no se envía nada: el lead igual te llega por el webhook de n8n,
-  //    lo único que se pierde es la atribución del anuncio en Meta.
-  if (!isGranted()) return eventId;
-
+  // Solo viajan etiquetas fijas escritas en el codigo: los datos libres que
+  // escribe el visitante (rubro, mensaje) no se usan como dimensiones.
+  const eventParams = { content_name: params.content_name || "Consulta de proyecto", source: params.source || "website" };
+  if (hasConsent("analytics")) window.gtag?.("event", "generate_lead", { ...eventParams, event_id: eventId });
+  if (!hasConsent("marketing")) return eventId;
+  window.fbq?.("track", "Lead", eventParams, { eventID: eventId });
   try {
     await fetch(CAPI_WORKER, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        event_name: "Lead",
-        event_id: eventId,
-        email,
-        phone,
-        source_url: sourceUrl,
-        fbc,
-        fbp,
-      }),
+      signal: AbortSignal.timeout(5000),
+      body: JSON.stringify({ event_name: "Lead", event_id: eventId, email, phone, source_url: measurementUrl(), fbc: getCookie("_fbc"), fbp: getCookie("_fbp") }),
     });
-  } catch {
-    // No bloquear el flujo si el worker falla
-  }
-
-  // El aviso interno del lead lo maneja el flujo de n8n (ver lib/leads.js).
+  } catch { /* La atribución publicitaria no bloquea el envío de la consulta. */ }
   return eventId;
 }
 
-// Eventos de interacción no sensibles. Los stubs de index.html los mantienen
-// en memoria y los scripts solo se cargan cuando existe consentimiento.
 export function trackAction(name, params = {}) {
   if (typeof window === "undefined") return;
-  if (typeof window.gtag === "function") window.gtag("event", name, params);
-  if (typeof window.fbq === "function") window.fbq("trackCustom", name, params);
+  if (hasConsent("analytics")) window.gtag?.("event", name, params);
+  if (hasConsent("marketing")) window.fbq?.("trackCustom", name, params);
 }
