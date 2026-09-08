@@ -228,9 +228,9 @@ export const subserviciosBase = [
     resumen: "Tu sitio actual, más rápido y más claro, sin partir de cero.",
     incluye: ["Renovación visual conservando el contenido", "Migración a hosting moderno", "Optimización para celular"],
     precios: [190000, 350000, 590000],
-    metaTitle: "Rediseño de página web en Chile desde $190.000 · Maudev",
+    metaTitle: "Rediseño de página web en Chile · Maudev",
     metaDescription:
-      "Rediseño web conservando tu contenido: más rápido, claro en el celular y ordenado para convertir. Desde $190.000 + IVA, sin partir de cero.",
+      "Rediseño web conservando tu contenido: más rápido, claro en el celular y ordenado para convertir. Sin partir de cero. Precio por escrito tras revisar tu sitio.",
     intro:
       "Un rediseño no es hacer el sitio otra vez. Es tomar lo que ya tienes —tus textos, tus fotos, tu posicionamiento ganado en Google— y arreglar lo que está frenando las consultas: la velocidad, la lectura en el celular y el orden de la información.",
     secciones: [
@@ -449,9 +449,9 @@ export const subserviciosBase = [
     resumen: "Contactos, oportunidades y seguimiento en un solo lugar.",
     incluye: ["Hasta 500 contactos", "Embudo visual", "Avisos por correo", "Hosting incluido"],
     precios: [390000, 690000, 1190000],
-    metaTitle: "Sistema de gestión de clientes (CRM) a medida en Chile desde $390.000 · Maudev",
+    metaTitle: "Sistema de gestión de clientes (CRM) a medida en Chile · Maudev",
     metaDescription:
-      "CRM a medida: contactos, embudo de ventas y seguimiento en un solo lugar, conectado a WhatsApp. Desde $390.000 + IVA, sin licencia por usuario.",
+      "CRM a medida: contactos, embudo de ventas y seguimiento en un solo lugar, conectado a WhatsApp. Sin licencia por usuario. Precio por escrito tras el diagnóstico.",
     intro:
       "Un sistema de gestión de clientes guarda con quién hablaste, qué le ofreciste y qué quedó pendiente. Suena obvio, pero en la mayoría de las PYMEs esa información vive repartida entre el teléfono de una persona, una planilla y la memoria de alguien — y se pierde completa el día que esa persona no está.",
     secciones: [
@@ -523,9 +523,9 @@ export const subserviciosBase = [
     resumen: "Caja moderna para tu local, conectada al inventario.",
     incluye: ["Una caja y hasta 200 productos", "Boleta electrónica", "Inventario simple"],
     precios: [290000, 490000, 890000],
-    metaTitle: "Sistema punto de venta (POS) a medida en Chile desde $290.000 · Maudev",
+    metaTitle: "Sistema punto de venta (POS) a medida en Chile · Maudev",
     metaDescription:
-      "Punto de venta para tu local: caja rápida, inventario conectado y boleta electrónica. Funciona sin internet. Desde $290.000 + IVA, sin licencia mensual por caja.",
+      "Punto de venta para tu local: caja rápida, inventario conectado y boleta electrónica. Funciona sin internet y sin licencia mensual por caja. Precio por escrito tras el diagnóstico.",
     intro:
       "Un punto de venta es la pantalla donde tu local cobra. Suena simple, y por eso mismo se subestima: es el único software del negocio que, si falla dos minutos, tienes una fila de gente esperando y mirándote.",
     secciones: [
@@ -596,9 +596,9 @@ export const subserviciosBase = [
       { nombre: "Cola con reintentos", para: "Si el otro sistema está caído, el dato espera en vez de perderse" },
       { nombre: "Registro de sincronización", para: "Qué se envió, cuándo y con qué resultado, para poder auditarlo" },
     ],
-    metaTitle: "Integración entre sistemas en Chile desde $190.000 · Maudev",
+    metaTitle: "Integración entre sistemas en Chile · Maudev",
     metaDescription:
-      "Conectamos tus sistemas para que dejen de copiarse a mano: ventas, clientes y stock sincronizados, con reintentos y registro. Desde $190.000 + IVA.",
+      "Conectamos tus sistemas para que dejen de copiarse a mano: ventas, clientes y stock sincronizados, con reintentos y registro. Precio por escrito tras revisar qué hay que conectar.",
     intro:
       "Casi siempre el problema no es que falte un sistema, sino que hay dos y alguien los mantiene iguales a mano. Ese alguien copia, se equivoca poco pero se equivoca, y cuando los números no calzan nadie sabe cuál de los dos tiene la razón.",
     secciones: [
@@ -668,9 +668,9 @@ export const subserviciosBase = [
       { nombre: "PostgreSQL", para: "Deja registro de lo procesado para no repetir ni saltarse nada" },
       { nombre: "Avisos por correo o WhatsApp", para: "Si algo se cae, te enteras el mismo día" },
     ],
-    metaTitle: "Automatización de procesos en Chile desde $290.000 · Maudev",
+    metaTitle: "Automatización de procesos en Chile · Maudev",
     metaDescription:
-      "Automatizamos la tarea repetitiva que hoy hace una persona a mano: reglas claras, registro de cada ejecución y aviso si algo falla. Desde $290.000 + IVA.",
+      "Automatizamos la tarea repetitiva que hoy hace una persona a mano: reglas claras, registro de cada ejecución y aviso si algo falla. Precio por escrito tras el diagnóstico.",
     intro:
       "Hay trabajos que alguien de tu equipo hace todos los días, siempre igual, y que no requieren criterio: bajar datos de un lado, ordenarlos, enviarlos, avisar. Esa parte se puede dejar corriendo sola. La que sí requiere criterio, no.",
     secciones: [
@@ -746,9 +746,9 @@ export const subserviciosBase = [
       { nombre: "Reportes exportables", para: "Salida a planilla para lo que tu contador o tu banco pidan" },
       { nombre: "Respaldo automático", para: "Copias diarias, porque acá vive la operación completa" },
     ],
-    metaTitle: "Sistema de gestión a medida en Chile desde $1.290.000 · Maudev",
+    metaTitle: "Sistema de gestión a medida en Chile · Maudev",
     metaDescription:
-      "Inventario, compras, ventas y documentos en una sola herramienta, hecha a la medida de tu operación. Por módulos y en producción desde el primero. Desde $1.290.000 + IVA.",
+      "Inventario, compras, ventas y documentos en una sola herramienta, hecha a la medida de tu operación. Por módulos y en producción desde el primero. Precio por escrito tras definir el alcance.",
     intro:
       "Este es el proyecto más grande del catálogo y el que más seguido sale mal en manos de cualquiera. No por lo técnico: porque se aborda entero, de una vez, y termina siendo un sistema que lleva un año en desarrollo y todavía nadie usa.",
     secciones: [
@@ -823,9 +823,9 @@ export const subserviciosBase = [
     resumen: "Se instala desde el navegador y funciona sin señal.",
     incluye: ["Instalable en celular y escritorio", "Funciona sin conexión", "Notificaciones"],
     precios: [290000, 490000, 790000],
-    metaTitle: "App web instalable (PWA) en Chile desde $290.000 · Maudev",
+    metaTitle: "App web instalable (PWA) en Chile · Maudev",
     metaDescription:
-      "App que se instala desde el navegador, funciona sin señal y envía notificaciones. Sin tiendas de aplicaciones ni comisiones. Desde $290.000 + IVA.",
+      "App que se instala desde el navegador, funciona sin señal y envía notificaciones. Sin tiendas de aplicaciones ni comisiones. Precio por escrito tras el diagnóstico.",
     intro:
       "Una app web instalable es una aplicación que vive en el navegador pero se comporta como una app: el usuario la agrega a su pantalla de inicio, se abre sin barra de direcciones y sigue funcionando aunque se caiga la señal. No pasa por App Store ni por Google Play.",
     secciones: [
@@ -897,9 +897,9 @@ export const subserviciosBase = [
     resumen: "Una app para uso interno, no para el público.",
     incluye: ["Hasta 20 usuarios", "Un flujo principal", "Distribución interna"],
     precios: [590000, 890000, 1490000],
-    metaTitle: "App interna para empresas en Chile desde $590.000 · Maudev",
+    metaTitle: "App interna para empresas en Chile · Maudev",
     metaDescription:
-      "App para uso interno de tu equipo: un flujo de trabajo resuelto en el teléfono, con distribución privada. Desde $590.000 + IVA, sin publicar en tiendas.",
+      "App para uso interno de tu equipo: un flujo de trabajo resuelto en el teléfono, con distribución privada y sin publicar en tiendas. Precio por escrito tras definir el alcance.",
     intro:
       "Una app interna la usa tu equipo, no tus clientes. Reemplaza el cuaderno, la planilla compartida o el grupo de WhatsApp donde hoy se registran las cosas en terreno — y con eso deja de perderse información entre lo que pasa y lo que alguien alcanza a anotar después.",
     secciones: [
@@ -970,9 +970,9 @@ export const subserviciosBase = [
     resumen: "Un solo desarrollo que corre en Android y iPhone.",
     incluye: ["Sesión y tres pantallas", "Publicación en una tienda", "Base para crecer"],
     precios: [890000, 1290000, 2290000],
-    metaTitle: "Desarrollo de app multiplataforma en Chile desde $890.000 · Maudev",
+    metaTitle: "Desarrollo de app multiplataforma en Chile · Maudev",
     metaDescription:
-      "App para Android y iPhone desde un solo desarrollo, publicada a tu nombre en ambas tiendas. Desde $890.000 + IVA, con actualizaciones sin esperar revisión.",
+      "App para Android y iPhone desde un solo desarrollo, publicada a tu nombre en ambas tiendas, con actualizaciones sin esperar revisión. Precio por escrito tras definir el alcance.",
     intro:
       "Una app multiplataforma se programa una vez y corre en Android y en iPhone. Es la diferencia entre pagar un desarrollo o dos, y entre mantener un código o dos cada vez que quieras cambiar algo — que es donde el costo real aparece, no en el primer proyecto sino en el tercer año.",
     secciones: [
@@ -1043,9 +1043,9 @@ export const subserviciosBase = [
     resumen: "Desarrollo propio para Android o iPhone, máximo rendimiento.",
     incluye: ["Publicada a tu nombre", "Acceso completo al dispositivo", "Rendimiento nativo"],
     precios: [null, 1490000, 2790000],
-    metaTitle: "Desarrollo de app nativa iOS y Android en Chile desde $1.490.000 · Maudev",
+    metaTitle: "Desarrollo de app nativa iOS y Android en Chile · Maudev",
     metaDescription:
-      "App nativa en Swift o Kotlin, con acceso completo al dispositivo y máximo rendimiento. Publicada a tu nombre. Desde $1.490.000 + IVA.",
+      "App nativa en Swift o Kotlin, con acceso completo al dispositivo y máximo rendimiento. Publicada a tu nombre. Precio por escrito tras definir el alcance.",
     intro:
       "Una app nativa se programa en el lenguaje propio de cada sistema: Swift para iPhone, Kotlin para Android. Es el camino más caro y el que más rinde cuando la app depende de verdad del dispositivo — la cámara, los sensores, la biometría o la fluidez de la interfaz.",
     secciones: [
@@ -1118,9 +1118,9 @@ export const subserviciosBase = [
       { nombre: "Tipografías con licencia", para: "Fuentes que puedes usar comercialmente sin heredar un problema legal" },
       { nombre: "Manual de uso breve", para: "Tamaño mínimo, márgenes y qué no hacer con el logo" },
     ],
-    metaTitle: "Diseño de logo e identidad visual en Chile desde $90.000 · Maudev",
+    metaTitle: "Diseño de logo e identidad visual en Chile · Maudev",
     metaDescription:
-      "Logo en tres versiones, paleta de color y tipografías, con archivos para imprenta y web. Probado en tamaño chico y en una sola tinta. Desde $90.000 + IVA.",
+      "Logo en tres versiones, paleta de color y tipografías, con archivos para imprenta y web. Probado en tamaño chico y en una sola tinta. Precio por escrito antes de empezar.",
     intro:
       "Un logo no es la marca: es la parte de la marca que tiene que seguir funcionando cuando mide dieciséis píxeles en la pestaña del navegador, o cuando alguien lo manda a bordar en una sola tinta.",
     secciones: [
@@ -1201,9 +1201,9 @@ export const subserviciosBase = [
       { nombre: "Texto en capas separadas", para: "Se reemplaza sin tocar el diseño ni mover lo que está detrás" },
       { nombre: "Espacio para foto", para: "Marcos donde tu imagen entra recortada como corresponde, no estirada" },
     ],
-    metaTitle: "Kit de plantillas para redes sociales en Chile desde $90.000 · Maudev",
+    metaTitle: "Kit de plantillas para redes sociales en Chile · Maudev",
     metaDescription:
-      "Plantillas editables en Canva con tu marca aplicada: publicación, historia y carrusel. Cambias texto y foto y publicas el mismo día. Desde $90.000 + IVA.",
+      "Plantillas editables en Canva con tu marca aplicada: publicación, historia y carrusel. Cambias texto y foto y publicas el mismo día. Precio por escrito antes de empezar.",
     intro:
       "Esto no se trata de tener publicaciones bonitas. Se trata de que puedas publicar un martes a las ocho de la noche sin escribirle a nadie ni esperar a que te respondan.",
     secciones: [
@@ -1279,9 +1279,9 @@ export const subserviciosBase = [
       { nombre: "Prueba en equipo real", para: "El sitio abierto en un teléfono con datos móviles, no solo en un emulador" },
       { nombre: "Revisión de accesibilidad", para: "Contraste, tamaño de toque y navegación por teclado según los criterios WCAG" },
     ],
-    metaTitle: "Revisión de usabilidad y auditoría UX de sitios web en Chile desde $190.000 · Maudev",
+    metaTitle: "Revisión de usabilidad y auditoría UX de sitios web en Chile · Maudev",
     metaDescription:
-      "Revisamos por qué tu sitio recibe visitas y casi nadie escribe. Diez mejoras priorizadas, con captura, ubicación y explicación, listas para aplicar. Desde $190.000 + IVA.",
+      "Revisamos por qué tu sitio recibe visitas y casi nadie escribe. Diez mejoras priorizadas, con captura, ubicación y explicación, listas para aplicar. Precio por escrito tras revisar tu sitio.",
     intro:
       "Tu sitio recibe visitas y casi nadie escribe. Antes de gastar más en publicidad conviene saber dónde se pierden los que ya están llegando: llevar tráfico pagado a un sitio que no convierte es la forma más cara de descubrir que el problema nunca fue el tráfico.",
     secciones: [
@@ -1376,9 +1376,9 @@ export const subserviciosBase = [
       { nombre: "Plantillas editables", para: "Presentación, documento y piezas de redes con la marca ya aplicada" },
       { nombre: "Archivos originales", para: "Los editables quedan contigo, no en el computador del diseñador" },
     ],
-    metaTitle: "Identidad corporativa y manual de marca en Chile desde $390.000 · Maudev",
+    metaTitle: "Identidad corporativa y manual de marca en Chile · Maudev",
     metaDescription:
-      "Identidad de marca completa: logo, paleta, tipografías, tono de voz, aplicaciones y manual de uso. Para que tu marca se vea igual la haga quien la haga. Desde $390.000 + IVA.",
+      "Identidad de marca completa: logo, paleta, tipografías, tono de voz, aplicaciones y manual de uso. Para que tu marca se vea igual la haga quien la haga. Precio por escrito antes de empezar.",
     intro:
       "Un logo resuelve cómo te ves en un lugar. Una identidad completa resuelve cómo te ves en todos: la boleta, la camioneta, el correo que manda tu vendedora, la publicación que subió alguien un domingo. Es lo que se contrata cuando la marca ya dejó de depender de una sola persona.",
     secciones: [
@@ -1473,9 +1473,9 @@ export const subserviciosBase = [
       { nombre: "Storybook", para: "Cada componente con sus estados a la vista, para revisarlo sin abrir el producto" },
       { nombre: "Guía de accesibilidad", para: "Contraste, foco visible y tamaños de toque resueltos en el componente y no en cada pantalla" },
     ],
-    metaTitle: "Sistema de diseño y librería de componentes en Chile desde $890.000 · Maudev",
+    metaTitle: "Sistema de diseño y librería de componentes en Chile · Maudev",
     metaDescription:
-      "Componentes documentados, tokens exportables y guía de uso, compartidos entre diseño y código. Para equipos con más de un producto que mantener. Desde $890.000 + IVA.",
+      "Componentes documentados, tokens exportables y guía de uso, compartidos entre diseño y código. Para equipos con más de un producto que mantener. Precio por escrito tras definir el alcance.",
     intro:
       "Esto no es para empresas que tienen un sitio. Es para las que tienen un sitio, una app, un panel interno y dos personas construyendo al mismo tiempo, y ya llevan tres versiones distintas del mismo botón sin que nadie lo haya decidido.",
     secciones: [

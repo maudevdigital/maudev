@@ -7,6 +7,7 @@ import { familias, getSubservicio, nivelesLabel } from "@/data/subservices";
 import { getProjectById } from "@/data/projects";
 import { formatFrom } from "@/data/currencies";
 import { IVA_NOTA } from "@/data/pricing";
+import { PRECIO_A_CONVENIR, publicaPrecio } from "@/data/from-price";
 import { useCurrency } from "@/lib/useCurrency";
 import { useSeo } from "@/lib/useSeo";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
@@ -31,6 +32,8 @@ export default function SubservicePage() {
   const familia = familias.find((f) => f.id === servicio?.familia);
   const caso = servicio?.caso ? getProjectById(servicio.caso) : null;
   const desde = servicio?.precios.find((p) => p !== null);
+  // Sin caso publicado no se muestra cifra: ver publicaPrecio en data/from-price.
+  const conPrecio = servicio ? publicaPrecio(servicio.id) : false;
 
   // useSeo va ANTES del return temprano: un hook detrás de un return se salta
   // en unos renders y no en otros, y React exige el mismo orden siempre.
@@ -40,7 +43,7 @@ export default function SubservicePage() {
         title: servicio.metaTitle || `${servicio.nombre} en Chile · Precio y qué incluye · Maudev`,
         description:
           servicio.metaDescription ||
-          `${servicio.resumen} Desde ${formatFrom(desde, "CLP")} ${IVA_NOTA}. Precio por escrito antes de empezar y accesos a tu nombre.`,
+          `${servicio.resumen} ${conPrecio ? `Desde ${formatFrom(desde, "CLP")} ${IVA_NOTA}. ` : ""}Precio por escrito antes de empezar y accesos a tu nombre.`,
         path: servicio.path,
         jsonLd: {
       "@context": "https://schema.org",
@@ -164,10 +167,21 @@ export default function SubservicePage() {
                   ))}
                 </ul>
                 <p className="mt-6 border-t border-border pt-5 font-display text-2xl font-bold tracking-[-0.03em]">
-                  Desde {formatFrom(desde, moneda)}
-                  <span className="ml-1.5 font-sans text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
-                    {IVA_NOTA}
-                  </span>
+                  {conPrecio ? (
+                    <>
+                      Desde {formatFrom(desde, moneda)}
+                      <span className="ml-1.5 font-sans text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+                        {IVA_NOTA}
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      {PRECIO_A_CONVENIR}
+                      <span className="mt-1 block font-sans text-[11px] font-medium normal-case tracking-normal text-muted-foreground">
+                        Se fija por escrito tras el diagnóstico
+                      </span>
+                    </>
+                  )}
                 </p>
               </aside>
               </div>
@@ -195,6 +209,10 @@ export default function SubservicePage() {
                     {precio === null ? (
                       <span className="text-base font-semibold text-muted-foreground">
                         No aplica en este nivel
+                      </span>
+                    ) : !conPrecio ? (
+                      <span className="text-base font-semibold text-muted-foreground">
+                        {PRECIO_A_CONVENIR}
                       </span>
                     ) : (
                       <>

@@ -4,6 +4,7 @@ import { MessageCircle, X } from "lucide-react";
 import { familias, subservicios } from "@/data/subservices";
 import { formatFrom } from "@/data/currencies";
 import { IVA_NOTA } from "@/data/pricing";
+import { PRECIO_A_CONVENIR, publicaPrecio } from "@/data/from-price";
 import { useCurrency } from "@/lib/useCurrency";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
 import { trackAction } from "@/lib/MetaPixelTracker";
@@ -127,10 +128,16 @@ export default function TierModal({ nivel, onClose }) {
               <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{servicio.resumen}</p>
 
               <p className="mt-4 font-display text-xl font-bold tracking-[-0.03em]">
-                {formatFrom(servicio.precios[nivel.indice], moneda)}
-                <span className="ml-1.5 font-sans text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
-                  {IVA_NOTA}
-                </span>
+                {publicaPrecio(servicio.id) ? (
+                  <>
+                    {formatFrom(servicio.precios[nivel.indice], moneda)}
+                    <span className="ml-1.5 font-sans text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+                      {IVA_NOTA}
+                    </span>
+                  </>
+                ) : (
+                  PRECIO_A_CONVENIR
+                )}
               </p>
 
               <ul className="mt-4 space-y-2">
@@ -148,7 +155,9 @@ export default function TierModal({ nivel, onClose }) {
                   las tarjetas midan distinto. */}
               <a
                 href={getWhatsAppUrl(
-                  `Hola, vengo de maudev.cl. Quiero cotizar "${servicio.nombre}" del nivel ${nivel.titulo} (${formatFrom(servicio.precios[nivel.indice], moneda)} ${IVA_NOTA}).`
+                  publicaPrecio(servicio.id)
+                    ? `Hola, vengo de maudev.cl. Quiero cotizar "${servicio.nombre}" del nivel ${nivel.titulo} (${formatFrom(servicio.precios[nivel.indice], moneda)} ${IVA_NOTA}).`
+                    : `Hola, vengo de maudev.cl. Quiero cotizar "${servicio.nombre}" del nivel ${nivel.titulo}.`
                 )}
                 target="_blank"
                 rel="noopener noreferrer"

@@ -9,6 +9,7 @@ import { getService } from "@/data/services";
 import { subservicios } from "@/data/subservices";
 import { formatFrom } from "@/data/currencies";
 import { IVA_NOTA } from "@/data/pricing";
+import { PRECIO_A_CONVENIR, publicaPrecio } from "@/data/from-price";
 import { useCurrency } from "@/lib/useCurrency";
 import { useSeo } from "@/lib/useSeo";
 import { trackAction } from "@/lib/MetaPixelTracker";
@@ -192,10 +193,16 @@ export default function ServicePage({ serviceKey }) {
                         {sub.resumen}
                       </span>
                       <span className="mt-5 font-mono text-xs font-bold uppercase tracking-wider text-primary">
-                        Desde {formatFrom(sub.precios.find((precio) => precio !== null), moneda)}
-                        <span className="ml-1.5 font-sans font-medium text-muted-foreground">
-                          {IVA_NOTA}
-                        </span>
+                        {publicaPrecio(sub.id) ? (
+                          <>
+                            Desde {formatFrom(sub.precios.find((precio) => precio !== null), moneda)}
+                            <span className="ml-1.5 font-sans font-medium text-muted-foreground">
+                              {IVA_NOTA}
+                            </span>
+                          </>
+                        ) : (
+                          PRECIO_A_CONVENIR
+                        )}
                       </span>
                     </Link>
                   </li>

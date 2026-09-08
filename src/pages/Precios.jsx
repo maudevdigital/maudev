@@ -7,6 +7,7 @@ import { catalog } from "@/data/catalog";
 import { nivelesLabel, subservicios } from "@/data/subservices";
 import { formatFrom } from "@/data/currencies";
 import { IVA_NOTA } from "@/data/pricing";
+import { PRECIO_A_CONVENIR, publicaPrecio } from "@/data/from-price";
 import { useCurrency } from "@/lib/useCurrency";
 import { useSeo } from "@/lib/useSeo";
 
@@ -157,10 +158,12 @@ export default function Precios() {
                         </span>
                         {precio === null ? (
                           <span className="text-sm text-muted-foreground/70">No aplica</span>
-                        ) : (
+                        ) : publicaPrecio(servicio.id) ? (
                           <span className="font-display font-bold tracking-[-0.02em]">
                             {formatFrom(precio, moneda)}
                           </span>
+                        ) : (
+                          <span className="text-sm text-muted-foreground/70">{PRECIO_A_CONVENIR}</span>
                         )}
                       </div>
                     ))}

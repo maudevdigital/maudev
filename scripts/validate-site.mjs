@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { chromium } from "playwright";
 import { subservicios } from "../src/data/subservices.js";
-import { desdePrecio, formatCLP } from "../src/data/from-price.js";
+import { desdePrecio, formatCLP, publicaPrecio } from "../src/data/from-price.js";
 import { homeSeo } from "../src/data/seo.js";
 import { EN, PT } from "../src/data/i18n.js";
 
@@ -270,10 +270,24 @@ try {
   // $100.000, y nada lo detectó porque la cifra estaba escrita a mano.
   for (const servicio of subservicios) {
     const esperado = formatCLP(desdePrecio(servicio.id));
+    const anuncia = publicaPrecio(servicio.id);
     for (const campo of ["metaTitle", "metaDescription"]) {
       const texto = servicio[campo];
       if (!texto) continue;
       const cifras = [...texto.matchAll(/\$[\d.]+/g)].map((coincidencia) => coincidencia[0]);
+
+      // "Sin caso, sin precio en vitrina". Un servicio sin un proyecto
+      // publicado que lo respalde no anuncia cifra en ninguna parte, y uno con
+      // caso tiene que anunciarla y que sea la del catálogo. Derivar la regla
+      // de `caso` no basta: la copia de los metadatos se escribe a mano, asi
+      // que es acá donde se detecta el olvido.
+      if (!anuncia) {
+        assert(
+          cifras.length === 0,
+          `Vitrina: ${servicio.id}.${campo} anuncia ${cifras.join(" y ")} pero el servicio no tiene caso publicado`
+        );
+        continue;
+      }
       if (!cifras.length) continue;
       assert(
         cifras.includes(esperado),
@@ -281,6 +295,30 @@ try {
       );
     }
   }
+
+  // Y que la vitrina tampoco la muestre en pantalla. Se revisa una página de
+  // servicio sin caso y una con caso: si la regla se rompe, se rompe en las dos
+  // direcciones y conviene enterarse de cual.
+  const vitrinaPage = await context.newPage();
+  await vitrinaPage.goto(`${baseUrl}/servicios/punto-de-venta`, { waitUntil: "domcontentloaded" });
+  await vitrinaPage.getByRole("heading", { level: 1 }).waitFor({ state: "visible" });
+  const textoSinCaso = await vitrinaPage.locator("main").innerText();
+  assert(
+    !/\$\s?\d{2,3}\.\d{3}/.test(textoSinCaso),
+    "Vitrina: /servicios/punto-de-venta muestra un precio y no tiene caso publicado"
+  );
+  assert(
+    textoSinCaso.includes("A convenir"),
+    "Vitrina: /servicios/punto-de-venta deberia decir 'A convenir' donde iria la cifra"
+  );
+
+  await vitrinaPage.goto(`${baseUrl}/servicios/landing-page`, { waitUntil: "domcontentloaded" });
+  await vitrinaPage.getByRole("heading", { level: 1 }).waitFor({ state: "visible" });
+  assert(
+    (await vitrinaPage.locator("main").innerText()).includes(formatCLP(desdePrecio("landing"))),
+    `Vitrina: /servicios/landing-page tiene caso publicado y deberia mostrar ${formatCLP(desdePrecio("landing"))}`
+  );
+  await vitrinaPage.close();
 
   // El camino de mayor intención del sitio: quien configura el cotizador ya
   // dijo qué quiere y cuán grande es. Esa elección viajaba en la URL y
