@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { formatFrom } from "@/data/currencies";
 import { proofPoints } from "@/data/site";
 import { IVA_NOTA, pricing } from "@/data/pricing";
+import { quoteSizes, quoteTypes } from "@/data/quote";
 import { useCurrency } from "@/lib/useCurrency";
 import { trackAction } from "@/lib/MetaPixelTracker";
 
@@ -20,19 +22,10 @@ import { trackAction } from "@/lib/MetaPixelTracker";
 
 // Los montos se leen de pricing.js y NO se copian acá: tenerlos duplicados ya
 // había dejado al cotizador mostrando precios viejos cuando cambió la tabla.
-const tipos = [
-  { id: "landing", label: "Landing", plan: "landing", semanas: "1 a 2" },
-  { id: "sitio", label: "Sitio web", plan: "sitio", semanas: "3 a 5" },
-  { id: "tienda", label: "Tienda online", plan: "ecommerce", semanas: "5 a 8" },
-];
-
-// Multiplicadores por tamaño. Son tramos gruesos a propósito: un estimado con
-// dos decimales aparentaría una precisión que no existe antes del diagnóstico.
-const tamanos = [
-  { id: "chico", label: "1 a 3", factor: 1 },
-  { id: "medio", label: "4 a 7", factor: 1.35 },
-  { id: "grande", label: "8 o más", factor: 1.8 },
-];
+// Las opciones viven en data/quote.js porque /contacto traduce de vuelta lo
+// que se elige acá.
+const tipos = quoteTypes;
+const tamanos = quoteSizes;
 
 const Opcion = ({ activo, onClick, children }) => (
   <button
@@ -113,14 +106,17 @@ export default function QuickQuote() {
       </dl>
 
       <div className="border-t border-border p-4">
-        <a
-          href={`/contacto?intencion=cotizar&tipo=${tipo.id}&tamano=${tamano.id}`}
-          onClick={() => trackAction("cotizador_enviar", { tipo: tipo.id, tamano: tamano.id })}
+        {/* Navegación interna con <Link>: el <a> anterior recargaba el sitio
+            completo para cambiar de vista, y esa espera cae justo en el clic de
+            mayor intención de toda la página. */}
+        <Link
+          to={`/contacto?intencion=cotizar&tipo=${tipo.id}&tamano=${tamano.id}`}
+          onClick={() => trackAction("cotizador_enviar", { tipo: tipo.id, tamano: tamano.id, estimado })}
           className="group btn btn-primary w-full justify-between px-4 py-3"
         >
           <span className="text-sm font-bold">Pedir precio por escrito</span>
           <ArrowRight className="h-4 w-4 shrink-0 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
-        </a>
+        </Link>
         <p className="mt-2.5 px-1 text-xs leading-relaxed text-muted-foreground">
           Es una referencia, no una cotización. El precio final se fija por escrito después de revisar qué necesitas.
         </p>

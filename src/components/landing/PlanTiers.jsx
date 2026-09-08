@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { ArrowRight, Crown, Rocket, Sprout, Wand2 } from "lucide-react";
 import QuickQuote from "@/components/landing/QuickQuote";
 import TierModal from "@/components/landing/TierModal";
@@ -6,7 +7,6 @@ import { IVA_NOTA } from "@/data/pricing";
 import { subservicios } from "@/data/subservices";
 import { formatFrom } from "@/data/currencies";
 import { useCurrency } from "@/lib/useCurrency";
-import { getWhatsAppUrl } from "@/lib/whatsapp";
 import { trackAction } from "@/lib/MetaPixelTracker";
 
 // Los precios y el catálogo del modal conservan su fuente de datos compartida.
@@ -165,16 +165,19 @@ export default function PlanTiers() {
             </div>
           </div>
 
-          <a
-            href={getWhatsAppUrl("Hola, vengo de maudev.cl. Mi proyecto no calza en los planes y quiero contarte qué necesito.")}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => trackAction("whatsapp_click", { ubicacion: "planes" })}
+          {/* Justamente el caso que MENOS conviene mandar a WhatsApp: un
+              proyecto que no calza en ningún plan hay que describirlo, y en el
+              chat llega en tres mensajes sueltos y sin contexto. El formulario
+              tiene el campo donde escribirlo, y deja el lead con su atribución
+              en vez de una conversación suelta en el teléfono. */}
+          <Link
+            to="/contacto"
+            onClick={() => trackAction("cta_principal_click", { ubicacion: "planes-sin-encasillar" })}
             className="btn btn-ghost h-12 shrink-0 px-6"
           >
             Cuéntanos tu caso
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
-          </a>
+          </Link>
         </div>
 
         <p className="mt-6 text-sm text-muted-foreground">

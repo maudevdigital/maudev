@@ -7,9 +7,15 @@ import { trackAction } from "@/lib/MetaPixelTracker";
 //
 // Regla de diseño: si un visitante tiene que elegir entre dos acciones, duda;
 // si duda, se va. Por eso todas las secciones terminan en este mismo botón,
-// con el mismo texto y el mismo destino. La única variación permitida es el
-// `context`, que precarga el mensaje de WhatsApp según desde dónde se hizo
-// clic (así Lucas sabe qué estaba mirando el cliente sin preguntarle).
+// con el mismo texto y el mismo destino: el formulario de /contacto.
+//
+// `context` NO cambia el destino: solo dice desde qué sección se hizo clic, y
+// viaja en el evento de medición. Es lo que permite saber qué bloque de la
+// página es el que realmente empuja a contactar.
+//
+// (El comentario anterior decía que `context` precargaba un mensaje de
+// WhatsApp. Nunca lo hizo: este botón siempre llevó a /contacto. Quien sí
+// precarga el mensaje según lo elegido es el cotizador, vía data/quote.js.)
 // ─────────────────────────────────────────────────────────────────────────────
 
 const sizes = {

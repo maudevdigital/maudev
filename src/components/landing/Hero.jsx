@@ -1,14 +1,16 @@
-import { ArrowDown, ArrowUpRight, Check, MessageCircle } from "lucide-react";
+import { ArrowDown, ArrowUpRight, Check } from "lucide-react";
 import { Link } from "react-router-dom";
-import { getWhatsAppUrl } from "@/lib/whatsapp";
 import { getFeaturedProjects } from "@/data/projects";
 import { trackAction } from "@/lib/MetaPixelTracker";
+import CtaButton from "@/components/landing/CtaButton";
+import ParticleField from "@/components/landing/ParticleField";
 
 const project = getFeaturedProjects()[0];
 
 export default function Hero() {
   return (
     <section className="hero-section" aria-labelledby="hero-title">
+      <ParticleField className="hero-particles" />
       <div className="site-container">
         <div className="hero-layout">
           <div className="hero-copy">
@@ -20,16 +22,22 @@ export default function Hero() {
               Diseñamos sitios web que explican lo que haces y facilitan que te contacten.
               Te acompañamos desde la primera idea hasta la publicación.
             </p>
+            {/* El hero recibe el tráfico más frío del sitio: alguien que leyó
+                una frase y todavía no sabe si servimos para lo suyo. Este botón
+                abría WhatsApp, así que ese visitante entraba directo al
+                teléfono, sin haber visto precios ni trabajo, y esa conversación
+                además no queda registrada como lead: un clic a WhatsApp no
+                dispara generate_lead ni la API de Conversiones, así que ni la
+                atribución de anuncios ni lo que eligió en el cotizador
+                sobreviven. WhatsApp sigue en el sitio, pero abajo, donde la
+                persona ya leyó y elige hablar. */}
             <div className="mt-8 flex flex-wrap items-center gap-5">
+              <CtaButton context="hero" size="md" />
               <a
-                href={getWhatsAppUrl("Hola, vengo de maudev.cl y quiero conversar sobre un sitio web para mi negocio.")}
-                target="_blank" rel="noopener noreferrer"
-                onClick={() => trackAction("whatsapp_click", { ubicacion: "hero" })}
-                className="btn btn-primary min-h-12 px-6 text-sm"
+                href="#casos"
+                onClick={() => trackAction("ver_trabajo_click", { ubicacion: "hero" })}
+                className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold hover:text-primary"
               >
-                Conversemos de tu proyecto <MessageCircle className="h-4 w-4" aria-hidden="true" />
-              </a>
-              <a href="#casos" className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold hover:text-primary">
                 Ver nuestro trabajo <ArrowDown className="h-4 w-4" aria-hidden="true" />
               </a>
             </div>

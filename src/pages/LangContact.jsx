@@ -37,10 +37,10 @@ const FORMULARIO = {
     exitoTexto: "We reply the same business day, through the channel you gave us, with what you need and what it would cost.",
     privacidad: "By sending this you accept our",
     privacidadEnlace: "privacy policy",
-    meta: {
-      title: "Contact · Get a quote for your web project · Maudev",
-      description: "Tell us what you sell and to whom. We reply the same business day with what you need, what it would cost and how long it would take.",
-    },
+    // Fuente única con el prerender, que escribe estos mismos metadatos en el
+    // HTML estático. Duplicados, el rastreador leía una descripción y React la
+    // reemplazaba por otra.
+    meta: EN.metaContacto,
     otras: "Prefer not to fill in a form?",
     porWhatsapp: "Message us on WhatsApp",
   },
@@ -65,10 +65,7 @@ const FORMULARIO = {
     exitoTexto: "Respondemos no mesmo dia útil, pelo canal que você indicou, com o que precisa e quanto custaria.",
     privacidad: "Ao enviar você aceita nossa",
     privacidadEnlace: "política de privacidade",
-    meta: {
-      title: "Contato · Orçamento para o seu projeto web · Maudev",
-      description: "Conte o que você vende e para quem. Respondemos no mesmo dia útil com o que precisa, quanto custaria e em quanto tempo estaria no ar.",
-    },
+    meta: PT.metaContacto,
     otras: "Prefere não preencher um formulário?",
     porWhatsapp: "Falar pelo WhatsApp",
   },
@@ -134,6 +131,16 @@ export default function LangContact({ lang }) {
         status: "new",
         consent: true,
         ...getLeadAttribution(),
+      },
+      // Faltaba, y era el motivo por el que no se podía saber si /en y /pt
+      // sirven: sin `track` no se llama a trackLeadEvent, así que estos envíos
+      // no generaban generate_lead en GA4, ni Lead en el Pixel, ni la API de
+      // Conversiones. El lead igual llegaba por el webhook, pero como
+      // conversión estas dos páginas no existían.
+      track: {
+        email: email || undefined,
+        phone: whatsapp || undefined,
+        params: { content_name: "Consulta de proyecto", content_category: `idioma-${lang}`, source: `contact_page_${lang}` },
       },
       successMessage: null,
     });
