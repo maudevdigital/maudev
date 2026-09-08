@@ -3,7 +3,7 @@ import { ArrowRight, Check, Image as ImageIcon, MessageCircle } from "lucide-rea
 import Breadcrumbs from "@/components/landing/Breadcrumbs";
 import PageShell from "@/components/landing/PageShell";
 import FinalCta from "@/components/landing/FinalCta";
-import { familias, getSubservicio, nivelesLabel } from "@/data/subservices";
+import { familias, getSubservicio, nivelesLabel, subservicios } from "@/data/subservices";
 import { getProjectById } from "@/data/projects";
 import { formatFrom } from "@/data/currencies";
 import { IVA_NOTA } from "@/data/pricing";
@@ -34,6 +34,13 @@ export default function SubservicePage() {
   const desde = servicio?.precios.find((p) => p !== null);
   // Sin caso publicado no se muestra cifra: ver publicaPrecio en data/from-price.
   const conPrecio = servicio ? publicaPrecio(servicio.id) : false;
+  // El otro extremo de la fusión: si esta página es una variante, su hermano es
+  // el servicio del que es nivel; si es el servicio, su hermano es la variante.
+  const hermano = servicio
+    ? subservicios.find((otro) =>
+        servicio.nivelDe ? otro.id === servicio.nivelDe : otro.nivelDe === servicio.id
+      )
+    : null;
 
   // useSeo va ANTES del return temprano: un hook detrás de un return se salta
   // en unos renders y no en otros, y React exige el mismo orden siempre.
@@ -102,6 +109,21 @@ export default function SubservicePage() {
                 <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
                   {servicio.intro || servicio.resumen}
                 </p>
+
+                {/* Enlace entre un servicio y su variante, en las dos
+                    direcciones. Sin esto las variantes quedarían huérfanas: se
+                    salieron de la grilla del catálogo, así que ningún enlace
+                    interno llegaría a ellas y el buscador las trataría como
+                    páginas sueltas por mucho que sigan en el sitemap. */}
+                {hermano && (
+                  <p className="mt-5 text-sm text-muted-foreground">
+                    {servicio.nivelDe ? "Es el nivel de entrada de " : "¿Buscas solo "}
+                    <Link to={hermano.path} className="font-semibold text-primary underline underline-offset-2 hover:no-underline">
+                      {hermano.nombre}
+                    </Link>
+                    {servicio.nivelDe ? ", que lo lleva hasta el final." : "? Tiene su propia página."}
+                  </p>
+                )}
 
                 <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
                   <a

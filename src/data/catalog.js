@@ -3,7 +3,7 @@ import {
   MonitorSmartphone, Palette, PenTool, RefreshCw, Share2, ShoppingCart,
   Smartphone, Sparkles, Store, Users, Wrench,
 } from "lucide-react";
-import { familias, subservicios } from "@/data/subservices";
+import { enCatalogo, familias } from "@/data/subservices";
 
 // Catálogo del mega-menú y del footer.
 //
@@ -52,7 +52,7 @@ export const catalog = familias.map((familia) => ({
   id: familia.id,
   label: familia.label,
   accent: "text-primary",
-  items: subservicios
+  items: enCatalogo
     .filter((servicio) => servicio.familia === familia.id)
     .map((servicio) => ({
       icon: iconos[servicio.id] || iconoFamilia[familia.id],

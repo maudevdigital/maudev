@@ -23,6 +23,7 @@ export default function ServicePage({ serviceKey }) {
   // servicio conviene que el visitante empiece a mirar.
   const agrupados = (service.subservicios || [])
     .map((id) => subservicios.find((sub) => sub.id === id))
+    .filter((sub) => !sub?.nivelDe)
     .filter(Boolean);
 
   const jsonLd = {

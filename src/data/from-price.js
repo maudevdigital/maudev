@@ -34,7 +34,12 @@ export const desdeCLP = (id) => formatCLP(desdePrecio(id));
  * creer que se puede hacer un logo de $90.000, y ahí el precio funciona al
  * revés —atrae al que busca "cuánto cuesta" y ya viene decidido—.
  */
-export const UMBRAL_PRECIO_CON_PRUEBA = 390000;
+// ⚠️ Está en la MISMA moneda que el catálogo, así que si los precios vuelven a
+// reescalarse hay que mover este número con ellos. Ya pasó una vez: al llevar
+// el piso de la landing de $100.000 a $290.000, el umbral de $390.000 quedó por
+// debajo de casi todo el catálogo y de golpe dejaba sin precio a servicios que
+// sí debían mostrarlo. Se movió por el mismo factor.
+export const UMBRAL_PRECIO_CON_PRUEBA = 1090000;
 
 /**
  * Si un servicio publica su precio en la vitrina.

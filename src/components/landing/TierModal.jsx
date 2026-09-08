@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { MessageCircle, X } from "lucide-react";
-import { familias, subservicios } from "@/data/subservices";
+import { enCatalogo, familias } from "@/data/subservices";
 import { formatFrom } from "@/data/currencies";
 import { IVA_NOTA } from "@/data/pricing";
 import { PRECIO_A_CONVENIR, publicaPrecio } from "@/data/from-price";
@@ -56,7 +56,7 @@ export default function TierModal({ nivel, onClose }) {
   }, [onClose]);
 
   // Solo lo disponible en este nivel, y solo de la familia elegida.
-  const disponibles = subservicios.filter((s) => s.precios[nivel.indice] !== null);
+  const disponibles = enCatalogo.filter((s) => s.precios[nivel.indice] !== null);
   const visibles = disponibles.filter((s) => familia === "todos" || s.familia === familia);
   // Una pestaña vacía es un callejón: solo se ofrecen las familias con algo.
   const familiasConStock = familias.filter((f) => disponibles.some((s) => s.familia === f.id));
