@@ -120,7 +120,7 @@ export default function Navbar() {
     if (!open && !mega) return;
     const { body } = document;
     const y = window.scrollY;
-    const barra = window.innerWidth - document.documentElement.clientWidth;
+    const anchoAntes = document.documentElement.clientWidth;
     const previo = {
       position: body.style.position,
       top: body.style.top,
@@ -135,7 +135,14 @@ export default function Navbar() {
     body.style.left = "0";
     body.style.right = "0";
     body.style.overflow = "hidden";
-    if (barra > 0) body.style.paddingRight = `${barra}px`;
+
+    // Se mide el ensanche REAL en vez de suponer que es el ancho de la barra.
+    // Con `scrollbar-gutter: stable` en el html el hueco ya está reservado y no
+    // hay ensanche, así que esto queda en cero y no compensa de más —que
+    // desplazaría el contenido hacia el otro lado—. En un navegador sin soporte
+    // para esa propiedad sigue funcionando como antes.
+    const salto = document.documentElement.clientWidth - anchoAntes;
+    if (salto > 0) body.style.paddingRight = `${salto}px`;
 
     const onKey = (event) => {
       if (event.key === "Escape") setOpen(false);
@@ -144,7 +151,21 @@ export default function Navbar() {
 
     return () => {
       Object.assign(body.style, previo);
-      window.scrollTo(0, y);
+
+      // `behavior: "instant"` NO es decorativo: el sitio declara
+      // `html { scroll-behavior: smooth }`, así que un `scrollTo` normal ANIMA
+      // el regreso desde 0 hasta `y`. Esa animación emite decenas de eventos de
+      // scroll crecientes, y el detector de dirección los lee como que el
+      // visitante está bajando: la cabecera se escondía sola justo al cerrar el
+      // menú y en el teléfono parecía que la página se hubiera recargado.
+      window.scrollTo({ top: y, left: 0, behavior: "instant" });
+
+      // Y se pone al día la última posición conocida antes de que corra el
+      // manejador —va diferido en un requestAnimationFrame—, para que el salto
+      // tampoco se interprete como gesto.
+      lastScrollY.current = y;
+      setShow(true);
+
       window.removeEventListener("keydown", onKey);
     };
   }, [open, mega]);

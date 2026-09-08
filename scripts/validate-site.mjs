@@ -146,6 +146,32 @@ try {
   assert(await responsivePage.getByRole("navigation", { name: "Navegación móvil" }).isVisible(), "Menú móvil: no se abrió");
   await responsivePage.keyboard.press("Escape");
   assert(await responsivePage.getByRole("navigation", { name: "Navegación móvil" }).count() === 0, "Menú móvil: Escape no lo cerró");
+
+  // Cerrar el menú no puede mover la página ni esconder la cabecera.
+  //
+  // Con el menú abierto el cuerpo queda fijo y scrollY cae a 0; al cerrarlo hay
+  // que devolverlo a donde estaba. Como el sitio declara
+  // `html { scroll-behavior: smooth }`, ese regreso se ANIMABA, y el detector de
+  // dirección leía la animación como que el visitante bajaba: la cabecera se
+  // escondía sola justo al cerrar, y en el teléfono parecía una recarga.
+  await responsivePage.evaluate(() => window.scrollTo(0, 900));
+  await responsivePage.waitForTimeout(250);
+  await responsivePage.evaluate(() => window.scrollTo(0, 700));
+  await responsivePage.waitForTimeout(350);
+  const menuBoton = responsivePage.locator('[aria-controls="menu-movil"]');
+  await menuBoton.evaluate((el) => el.click());
+  await responsivePage.waitForTimeout(300);
+  await menuBoton.evaluate((el) => el.click());
+  await responsivePage.waitForTimeout(600);
+  const trasCerrar = await responsivePage.evaluate(() => ({
+    y: Math.round(window.scrollY),
+    cabecera: Math.round(document.querySelector(".site-header").getBoundingClientRect().top),
+  }));
+  assert(trasCerrar.y === 700, `Menú móvil: al cerrar se perdió la posición de lectura (${trasCerrar.y} en vez de 700)`);
+  assert(
+    trasCerrar.cabecera > -10,
+    `Menú móvil: al cerrar, la cabecera se escondió sola (top ${trasCerrar.cabecera}px)`
+  );
   await responsivePage.close();
 
   const formPage = await context.newPage();
