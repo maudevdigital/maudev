@@ -149,7 +149,6 @@ export default function LangContact({ lang }) {
   return (
     <LangShell lang={lang} rutas={rutas} textos={t}>
       <section className="relative overflow-hidden pb-20 pt-32 sm:pt-40">
-        <div className="hero-orbit hero-orbit-one" aria-hidden="true" />
         <div className="site-container relative grid items-start gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
           <div>
             <span className="eyebrow">{f.eyebrow}</span>

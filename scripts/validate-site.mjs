@@ -425,6 +425,26 @@ try {
     "Cierre: desapareció la salida por WhatsApp, que es donde sí corresponde"
   );
 
+  // El foco de luz que sigue al puntero. Se vigila porque ya desapareció una
+  // vez en un rediseño, sin que nada lo notara: es de las cosas que solo se ven
+  // moviendo el mouse, así que ninguna revisión de capturas lo detecta.
+  const spot = ctaPage.locator(".hero-spot");
+  assert(await spot.count() === 1, "Hero: falta el foco de luz que sigue al puntero");
+  await ctaPage.mouse.move(400, 300);
+  await ctaPage.mouse.move(700, 420);
+  await ctaPage.waitForTimeout(500);
+  const foco = await ctaPage.evaluate(() => ({
+    opacidad: Number(getComputedStyle(document.querySelector(".hero-spot")).opacity),
+    mx: document.querySelector(".hero-section").style.getPropertyValue("--mx"),
+  }));
+  assert(foco.opacidad > 0.9, `Hero: el foco no se enciende con el puntero encima (opacidad ${foco.opacidad})`);
+  assert(foco.mx === "700px", `Hero: el foco no sigue al puntero (--mx = "${foco.mx}")`);
+
+  // Las partículas conservan el halo: sin él se leen como polvo plano, y es lo
+  // primero que se pierde cuando alguien "simplifica" el CSS.
+  const halo = await ctaPage.evaluate(() => getComputedStyle(document.querySelector(".particle")).boxShadow);
+  assert(halo && halo !== "none", "Partículas: perdieron el halo que les da profundidad");
+
   // El número sale de un único lugar y admite reemplazo por variable de
   // entorno. Si alguien vuelve a escribirlo a mano en un componente, el día que
   // exista el número de empresa ese punto se queda con el personal.

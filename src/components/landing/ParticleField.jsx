@@ -1,10 +1,25 @@
 import { useEffect, useRef, useState } from "react";
 
-// Posiciones estables, pocos elementos y movimiento solo con transform.
-const particles = Array.from({ length: 32 }, (_, id) => ({
-  id, x: (id * 37 + 7) % 100, y: (id * 23 + 13) % 100,
-  size: 2 + id % 3, duration: 20 + id % 12,
-  moveX: (id % 2 ? -1 : 1) * (14 + id % 24), moveY: -12 - id % 28,
+// Ruido determinista: la misma semilla da siempre el mismo valor, así que las
+// posiciones no cambian entre renders ni parpadean al hidratar, pero se ven
+// repartidas al azar. La fórmula anterior —(id * 37 + 7) % 100— distribuía
+// demasiado parejo y el conjunto se leía como una retícula, no como un campo.
+const azar = (semilla) => {
+  const x = Math.sin(semilla * 12.9898 + 78.233) * 43758.5453;
+  return x - Math.floor(x);
+};
+
+// El recorrido es amplio a propósito: con desplazamientos de treinta píxeles el
+// campo parecía vibrar en el sitio en vez de derivar.
+const particles = Array.from({ length: 64 }, (_, id) => ({
+  id,
+  x: azar(id + 1) * 100,
+  y: azar(id + 11) * 100,
+  size: 1.6 + azar(id + 21) * 2.6,
+  duration: 16 + azar(id + 31) * 14,
+  delay: azar(id + 41) * 12,
+  moveX: (azar(id + 51) - 0.5) * 190,
+  moveY: (azar(id + 61) - 0.5) * 140,
 }));
 
 export default function ParticleField({ className = "" }) {
@@ -14,7 +29,9 @@ export default function ParticleField({ className = "" }) {
   useEffect(() => {
     const motion = matchMedia("(prefers-reduced-motion: reduce)");
     const mobile = matchMedia("(max-width: 767px)");
-    const update = () => setCount(motion.matches ? 0 : mobile.matches ? 12 : 32);
+    // 64 en escritorio: menos de las 120 que habia —que era gasto sin lectura—
+    // pero suficientes para que se lea como un campo y no como cuatro puntos.
+    const update = () => setCount(motion.matches ? 0 : mobile.matches ? 20 : 64);
     update();
     motion.addEventListener("change", update);
     mobile.addEventListener("change", update);
@@ -36,7 +53,9 @@ export default function ParticleField({ className = "" }) {
         <span key={p.id} className="particle absolute rounded-full bg-primary" style={{
           left: `${p.x}%`, top: `${p.y}%`, width: p.size, height: p.size,
           "--move-x": `${p.moveX}px`, "--move-y": `${p.moveY}px`,
-          animationDuration: `${p.duration}s`, animationDelay: `${-p.id}s`,
+          // Retardo NEGATIVO: cada punto arranca con su ciclo ya empezado, asi
+          // el campo aparece en movimiento en vez de partir todo alineado.
+          animationDuration: `${p.duration}s`, animationDelay: `-${p.delay}s`,
         }} />
       ))}
     </div>

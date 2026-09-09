@@ -75,7 +75,6 @@ export default function Precios() {
     <PageShell>
       <main>
         <section className="relative overflow-hidden pb-14 pt-30 sm:pt-36">
-          <div className="hero-orbit hero-orbit-one" aria-hidden="true" />
           <div className="site-container relative">
             <Breadcrumbs items={[{ label: "Precios" }]} />
             <span className="eyebrow mt-4 block">Precios</span>
