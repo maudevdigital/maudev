@@ -18,7 +18,7 @@ import { BASE, formatFrom } from "@/data/currencies";
 // El piso de cada plan NO se escribe a mano: se lee del catálogo, en su primer
 // nivel con precio. Tenerlo duplicado ya provocó que un nivel anunciara
 // $290.000 mientras su propia carta cobraba $490.000.
-import { desdePrecio, formatCLP } from "@/data/from-price";
+import { desdePrecio } from "@/data/from-price";
 
 export const pricing = {
   landing: {
@@ -51,9 +51,6 @@ export const pricing = {
   },
 };
 
-/** El piso del plan ya formateado en pesos, para ir junto a "desde". */
-export const priceFrom = (key) => formatCLP(pricing[key].from);
-
 /**
  * Precio en la moneda pedida, con el sufijo "/mes" si es recurrente.
  *
@@ -67,13 +64,4 @@ export const priceIn = (key, code = BASE) => {
   return item.unit === "mes" ? `${monto}/mes` : monto;
 };
 
-/** Atajo en pesos, para textos que no dependen del selector. */
-export const priceLabel = (key) => priceIn(key, BASE);
-
-export const IVA_RATE = 0.19;
 export const IVA_NOTA = "+ IVA 19%";
-
-/** Total con IVA de un monto neto. */
-export const conIva = (neto) => Math.round(neto * (1 + IVA_RATE));
-
-export const webPlans = [pricing.landing, pricing.sitio, pricing.ecommerce];

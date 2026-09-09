@@ -38,8 +38,6 @@ let avisar = [];
 let scriptPromise = null;
 let reiniciarWidget = null;
 
-export const turnstileHabilitado = () => Boolean(SITE_KEY);
-
 export function cargarTurnstile() {
   if (!SITE_KEY) return Promise.reject(new Error("Turnstile sin site key"));
   if (scriptPromise) return scriptPromise;

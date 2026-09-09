@@ -1,4 +1,3 @@
-import { useCallback, useEffect, useRef } from "react";
 import { ArrowDown, ArrowUpRight, Check } from "lucide-react";
 import { Link } from "react-router-dom";
 import { getFeaturedProjects } from "@/data/projects";
@@ -9,34 +8,10 @@ import ParticleField from "@/components/landing/ParticleField";
 const project = getFeaturedProjects()[0];
 
 export default function Hero() {
-  const seccionRef = useRef(null);
-  const frameRef = useRef(0);
-
-  // El foco de luz se actualiza dentro de un rAF: mousemove dispara decenas de
-  // veces por segundo y escribir la variable CSS en cada evento provoca
-  // repintados de más sin que el ojo note la diferencia.
-  const seguirPuntero = useCallback((evento) => {
-    const nodo = seccionRef.current;
-    if (!nodo) return;
-    const { clientX, clientY } = evento;
-    cancelAnimationFrame(frameRef.current);
-    frameRef.current = requestAnimationFrame(() => {
-      const caja = nodo.getBoundingClientRect();
-      nodo.style.setProperty("--mx", `${clientX - caja.left}px`);
-      nodo.style.setProperty("--my", `${clientY - caja.top}px`);
-    });
-  }, []);
-
-  useEffect(() => () => cancelAnimationFrame(frameRef.current), []);
-
+  // El foco de luz que seguía al puntero vivía acá y solo existía en la
+  // portada. Ahora es una capa global: ver PointerGlow.jsx.
   return (
-    <section
-      ref={seccionRef}
-      onMouseMove={seguirPuntero}
-      className="hero-section"
-      aria-labelledby="hero-title"
-    >
-      <div className="hero-spot" aria-hidden="true" />
+    <section className="hero-section" aria-labelledby="hero-title">
       <ParticleField className="hero-particles" />
       <div className="site-container">
         <div className="hero-layout">

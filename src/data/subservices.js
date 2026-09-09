@@ -57,7 +57,7 @@ export const nivelesLabel = ["Presencia", "Operación", "Comercio"];
 // sugieran), sin sombras realistas ni degradados, 3:2. Los prompts de los otros
 // dieciocho servicios siguen en el formato fotográfico anterior y hay que
 // reescribirlos con esta dirección, uno por uno.
-export const subserviciosBase = [
+const subserviciosBase = [
   {
     id: "landing",
     tecnologias: [

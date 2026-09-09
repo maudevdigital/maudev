@@ -91,15 +91,6 @@ export function refreshRates() {
   return cargando;
 }
 
-/** Fecha de la última actualización guardada, o null si solo hay respaldo. */
-export function ratesUpdatedAt() {
-  try {
-    const crudo = localStorage.getItem(KEY_TASAS);
-    return crudo ? new Date(JSON.parse(crudo).t) : null;
-  } catch {
-    return null;
-  }
-}
 
 export function getCurrency() {
   try {

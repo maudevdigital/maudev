@@ -39,7 +39,7 @@ export const desdeCLP = (id) => formatCLP(desdePrecio(id));
 // el piso de la landing de $100.000 a $290.000, el umbral de $390.000 quedó por
 // debajo de casi todo el catálogo y de golpe dejaba sin precio a servicios que
 // sí debían mostrarlo. Se movió por el mismo factor.
-export const UMBRAL_PRECIO_CON_PRUEBA = 1090000;
+const UMBRAL_PRECIO_CON_PRUEBA = 1090000;
 
 /**
  * Si un servicio publica su precio en la vitrina.

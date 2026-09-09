@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, CalendarClock } from "lucide-react";
 import Logo from "@/components/landing/Logo";
+import PointerGlow from "@/components/landing/PointerGlow";
 import { CAL_URL } from "@/data/catalog";
 import { trackAction } from "@/lib/MetaPixelTracker";
 
@@ -23,7 +24,8 @@ export default function LangShell({ lang, rutas, textos, children }) {
   ];
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen isolate bg-background text-foreground">
+      <PointerGlow />
       <header className="site-header">
         <div className="site-header-inner flex min-h-18 items-center justify-between gap-3">
           <Link to={rutas[lang]} className="flex shrink-0 items-center gap-2.5" aria-label="Maudev">

@@ -203,20 +203,4 @@ export const services = {
   },
 };
 
-// Orden comercial de las páginas de servicio: la web es el negocio principal,
-// las automatizaciones y la mantención lo acompañan, y el software a medida
-// cierra como la capacidad más profunda. El objeto de arriba conserva su orden
-// histórico para no romper claves; el que manda para mostrar es este.
-export const serviceOrder = [
-  "desarrollo-web",
-  "ecommerce",
-  "apps-moviles",
-  "software-a-medida",
-  "diseno",
-  "automatizacion",
-  "mantencion",
-];
-
-export const orderedServices = serviceOrder.map((key) => services[key]);
-
 export const getService = (key) => services[key];

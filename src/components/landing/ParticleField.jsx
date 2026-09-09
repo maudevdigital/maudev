@@ -11,7 +11,7 @@ const azar = (semilla) => {
 
 // El recorrido es amplio a propósito: con desplazamientos de treinta píxeles el
 // campo parecía vibrar en el sitio en vez de derivar.
-const particles = Array.from({ length: 64 }, (_, id) => ({
+const particles = Array.from({ length: 96 }, (_, id) => ({
   id,
   x: azar(id + 1) * 100,
   y: azar(id + 11) * 100,
@@ -29,9 +29,10 @@ export default function ParticleField({ className = "" }) {
   useEffect(() => {
     const motion = matchMedia("(prefers-reduced-motion: reduce)");
     const mobile = matchMedia("(max-width: 767px)");
-    // 64 en escritorio: menos de las 120 que habia —que era gasto sin lectura—
-    // pero suficientes para que se lea como un campo y no como cuatro puntos.
-    const update = () => setCount(motion.matches ? 0 : mobile.matches ? 20 : 64);
+    // 96 en escritorio. Sigue por debajo de las 120 originales, pero ya se lee
+    // como un campo denso. En movil se mantiene bajo: ahi cada nodo pesa mas y
+    // la pantalla es un tercio del ancho.
+    const update = () => setCount(motion.matches ? 0 : mobile.matches ? 28 : 96);
     update();
     motion.addEventListener("change", update);
     mobile.addEventListener("change", update);

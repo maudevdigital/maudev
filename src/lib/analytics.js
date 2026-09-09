@@ -1,6 +1,6 @@
 // Carga independiente por finalidad. No se crean colas de eventos antes de aceptar.
-export const GA_ID = "G-98P5BBFLQM";
-export const PIXEL_ID = "3002561230082800";
+const GA_ID = "G-98P5BBFLQM";
+const PIXEL_ID = "3002561230082800";
 let googleInitialized = false;
 let metaInitialized = false;
 
