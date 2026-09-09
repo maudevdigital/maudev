@@ -481,6 +481,55 @@ try {
   }
   await ctaPage.close();
 
+  // Abrir un menú no puede correr la página en horizontal.
+  //
+  // Al abrirlo se fija el cuerpo para que el fondo no se desplace, y eso hace
+  // desaparecer la barra vertical: el viewport se ensancha unos píxeles y todo
+  // el contenido se corre hacia un lado. En Windows y Linux se ve clarísimo.
+  //
+  // Esta comprobación necesita su PROPIO navegador, con --hide-scrollbars
+  // desactivado: Playwright la pasa por defecto en headless, la barra mide 0 y
+  // el ensanche no ocurre nunca. Con esa bandera puesta, esta prueba pasaría
+  // siempre y no serviría de nada. Ya pasó: dos intentos de arreglo se dieron
+  // por buenos porque acá no se reproducía.
+  const navConBarra = await chromium.launch({ ignoreDefaultArgs: ["--hide-scrollbars"] });
+  try {
+    const ctxBarra = await navConBarra.newContext({ viewport: { width: 1440, height: 900 } });
+    await ctxBarra.route("**challenges.cloudflare.com**", sinTurnstile);
+    await ctxBarra.addInitScript(() => {
+      localStorage.setItem("maudev_consent_v2", JSON.stringify({ version: 2, analytics: false, marketing: false }));
+      localStorage.setItem("theme", "light");
+      sessionStorage.setItem("chat_seen", "1");
+    });
+    const barraPage = await ctxBarra.newPage();
+    await barraPage.goto(baseUrl, { waitUntil: "networkidle" });
+
+    const anchoUtil = () => barraPage.evaluate(() => ({
+      util: document.documentElement.clientWidth,
+      titular: Math.round(document.querySelector("#hero-title").getBoundingClientRect().left),
+    }));
+
+    const cerrado = await anchoUtil();
+    const servicios = barraPage.getByRole("button", { name: "Servicios" }).first();
+    await servicios.click();
+    await barraPage.waitForTimeout(400);
+    const abierto = await anchoUtil();
+    await servicios.click();
+    await barraPage.waitForTimeout(400);
+
+    assert(
+      abierto.util === cerrado.util,
+      `Menú Servicios: al abrirlo el viewport se ensancha de ${cerrado.util} a ${abierto.util}px y la página se corre en horizontal`
+    );
+    assert(
+      abierto.titular === cerrado.titular,
+      `Menú Servicios: al abrirlo el contenido se desplaza ${abierto.titular - cerrado.titular}px en horizontal`
+    );
+    await ctxBarra.close();
+  } finally {
+    await navConBarra.close();
+  }
+
   const sitemap = await fs.readFile(path.join(root, "public", "sitemap.xml"), "utf8");
   for (const route of routes.slice(0, 15)) {
     const expected = route === "/" ? "https://maudev.cl/" : `https://maudev.cl${route}`;

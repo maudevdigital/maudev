@@ -81,10 +81,27 @@
     @apply border-border outline-ring/50;
   }
 
+  /* El desbordamiento vive en <html> y no en <body>, y la barra vertical se
+     dibuja SIEMPRE aunque la página no tenga nada que desplazar.
+
+     Las dos cosas resuelven el mismo problema: al abrir un menú se fija el
+     cuerpo para que el fondo no se mueva, eso hace desaparecer la barra, el
+     viewport se ensancha unos píxeles y la página entera se corre hacia un
+     lado. Con la barra siempre presente, el ancho no cambia nunca.
+
+     `scrollbar-gutter: stable` sería lo elegante y se probó primero, en dos
+     sitios. No sirve: puesto en <body> no aplica porque ahí no está el
+     contenedor de scroll, y puesto en <html> tampoco, porque la propiedad no se
+     propaga al viewport como sí lo hace `overflow`. Medido, no supuesto: el
+     ancho útil seguía saltando de 1434 a 1440. */
+  html {
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
+
   body {
     @apply bg-background text-foreground font-sans;
     min-width: 320px;
-    overflow-x: hidden;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
   }
@@ -499,17 +516,6 @@
 
 html {
   scroll-behavior: smooth;
-
-  /* El hueco de la barra de desplazamiento queda reservado SIEMPRE, haya o no
-     barra. Sin esto, al abrir un menú —que fija el cuerpo para que el fondo no
-     se mueva— la barra desaparece, el ancho útil crece unos 15 píxeles y la
-     página entera se corre en horizontal; al cerrar, vuelve. En Windows y Linux
-     el salto es bien visible. Se compensaba con padding en el cuerpo, pero eso
-     no alcanza: la cabecera es `position: fixed`, así que su ancho se mide
-     contra la ventana y no contra el cuerpo, y era ella la que saltaba.
-     En macOS y iOS las barras son superpuestas y no ocupan ancho, así que ahí
-     esto no cambia nada. */
-  scrollbar-gutter: stable;
 }
 
 .kicker {
