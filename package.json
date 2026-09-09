@@ -18,7 +18,8 @@
     "gen:carousel-w4": "node scripts/gen-carousel-w4.mjs",
     "gen:guia-pdf": "node scripts/gen-guia-pdf.mjs",
     "gen:logo": "node scripts/gen-logo.mjs",
-    "test:csp": "node scripts/validate-csp.mjs"
+    "test:csp": "node scripts/validate-csp.mjs",
+    "test:deployed": "node scripts/validate-deployed.mjs"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.4",
