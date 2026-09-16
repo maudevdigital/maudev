@@ -129,6 +129,10 @@ const ctx = await browser.newContext({
   deviceScaleFactor: 1,
   // Algunos sitios sirven banners de cookies distintos según idioma.
   locale: "es-CL",
+  // Pedimos "reducir movimiento": un sitio bien hecho deja quieto lo que rota
+  // solo, así que la captura no cae a media transición. A Rifa Clara le pasaba:
+  // el premio del hero cambia cada 4 s y salía con dos textos superpuestos.
+  reducedMotion: "reduce",
 });
 const page = await ctx.newPage();
 

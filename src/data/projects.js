@@ -10,9 +10,43 @@
 //
 // Cada proyecto incluye su caso de estudio (problem / solution / outcome),
 // usado por /portafolio/:id. Los campos *_en son la versión en inglés.
-// El orden del array manda: el primero aparece primero en la home.
+// El orden lo manda `displayOrder`, al final del archivo, no este array: la
+// home muestra los dos primeros de esa lista.
 
 export const projects = [
+  {
+    id: "rifaclara",
+    title: "Rifa Clara",
+    tagline: "Rifas online con un sorteo que cualquiera puede comprobar",
+    tagline_en: "Online raffles with a draw anyone can check",
+    description:
+      "Plataforma chilena para armar una rifa y venderla por WhatsApp o Instagram: página propia con la grilla de números en vivo, reservas sin crear cuenta, boletos con código, panel para confirmar los pagos y sorteo automático con azar público verificable.",
+    description_en:
+      "Chilean platform to set up a raffle and sell it over WhatsApp or Instagram: its own page with a live number grid, reservations without sign-up, coded tickets, a dashboard to confirm payments and an automatic draw with verifiable public randomness.",
+    problem:
+      "Las rifas de curso, club o beneficio se siguen llevando en un cuaderno y un grupo de WhatsApp: números vendidos dos veces, reservas que nadie recuerda y un sorteo que al final decide la misma persona que organiza. El dinero se junta igual, pero quien compra no tiene cómo saber si el resultado fue limpio, y quien organiza no tiene cómo demostrarlo.",
+    summaryProblem: "Las rifas se llevan a mano y quien compra no tiene cómo comprobar que el sorteo fue limpio.",
+    problem_en:
+      "School, club and charity raffles still run on a notebook and a WhatsApp group: numbers sold twice, reservations nobody remembers, and a draw decided by the very person running it. The money comes in anyway, but buyers have no way to know the result was clean, and organisers have no way to prove it.",
+    solution:
+      "Una página por rifa con la grilla de números en vivo: se reserva sin crear cuenta, el número queda bloqueado para el resto al instante y quien compra recibe un boleto con código. Quien organiza cobra como siempre y solo confirma los pagos en su panel. A la hora señalada la rifa se cierra sola y el ganador sale de un número aleatorio público que todavía no existía cuando se congeló la lista de participantes, así que nadie —tampoco la plataforma— podía saberlo antes. Todo lo que ocurre queda en un registro encadenado que al terminar se sella en la cadena de Bitcoin, y cualquiera puede rehacer la comprobación en su propio navegador o con herramientas externas.",
+    summarySolution: "Grilla en vivo, cierre automático y sorteo con azar público, con un registro sellado que cualquiera verifica.",
+    solution_en:
+      "One page per raffle with a live number grid: buyers reserve without creating an account, the number locks for everyone else instantly, and each buyer gets a coded ticket. The organiser collects money as usual and just confirms payments in their dashboard. At the set time the raffle closes itself, and the winner comes from a public random number that didn't yet exist when the list of entries was frozen — so nobody, the platform included, could know it in advance. Everything that happens goes into a chained log that is stamped onto the Bitcoin blockchain when the raffle ends, and anyone can re-run the check in their own browser or with outside tools.",
+    outcome:
+      "Producto propio en producción: gratis hasta 100 números y un pago único sobre esa cantidad, cobrado con Flow. Corre entero en el plan gratuito de Cloudflare, así que sostenerlo no cuesta servidor, y está construido para aparecer en las búsquedas chilenas de rifas, con guías, herramientas gratuitas y una página indexable por cada rifa publicada.",
+    summaryOutcome: "En producción, sin costo de servidor y posicionado para las búsquedas de rifas en Chile.",
+    outcome_en:
+      "Own product in production: free up to 100 numbers and a single payment above that, charged through Flow. It runs entirely on Cloudflare's free tier, so keeping it alive costs nothing in servers, and it's built to show up in Chilean searches for raffles, with guides, free tools and an indexable page for every published raffle.",
+    stack: ["Astro", "Hono", "Cloudflare Workers", "D1", "OpenTimestamps"],
+    industry: "Producto propio / Rifas online",
+    industry_en: "Own product / Online raffles",
+    role: "Producto propio · diseño, desarrollo, infraestructura y SEO",
+    role_en: "Own product · design, development, infrastructure and SEO",
+    image: "/portfolio/rifaclara.webp",
+    url: "https://rifaclara.maudev.cl",
+    featured: true,
+  },
   {
     id: "scissorhands",
     title: "Scissorhands",
@@ -147,7 +181,7 @@ export const projects = [
   },
 ];
 
-const displayOrder = ["partsmr", "scissorhands", "paraguayaccess", "systempro"];
+const displayOrder = ["rifaclara", "partsmr", "scissorhands", "paraguayaccess", "systempro"];
 
 export const getProjectsInDisplayOrder = () =>
   displayOrder.map((id) => projects.find((project) => project.id === id)).filter(Boolean);
