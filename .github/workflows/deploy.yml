@@ -62,8 +62,21 @@ jobs:
       # producción sin que nada la frenara. Cubre rutas, hreflang, canonicals,
       # consentimiento por finalidad, coherencia de precios, el camino del
       # cotizador al formulario, la jerarquía de CTA y la CSP.
-      - name: Instalar Chromium para las validaciones
+      - name: Instalar Chromium para el prerender y las validaciones
         run: npx playwright install --with-deps chromium
+
+      # El build deja el <head> de cada ruta pero el cuerpo vacio: todo lo pinta
+      # React en el cliente. Este paso visita las 53 rutas con Chromium y guarda
+      # el cuerpo ya renderizado dentro de su archivo, para que un rastreador
+      # —y las vistas previas de WhatsApp o LinkedIn— vean el contenido en la
+      # primera respuesta, sin ejecutar JavaScript.
+      #
+      # Va aqui y no en el `postbuild` porque necesita Chromium, que se instala
+      # en el paso anterior y no esta en la maquina de quien programa. Y va
+      # ANTES de las validaciones a proposito: asi `npm test` comprueba el HTML
+      # que de verdad se publica, no uno intermedio.
+      - name: Prerenderizar el cuerpo de cada ruta
+        run: npm run prerender
 
       - name: Validar el sitio y la CSP
         run: npm test

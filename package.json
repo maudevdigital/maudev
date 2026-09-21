@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "postbuild": "node scripts/prerender-meta.mjs && node scripts/gen-sitemap.mjs",
+    "prerender": "node scripts/prerender-html.mjs",
     "lint": "eslint .",
     "test": "node scripts/validate-site.mjs && node scripts/validate-csp.mjs",
     "test:redirects": "node scripts/validate-redirects.mjs",
