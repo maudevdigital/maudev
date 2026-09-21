@@ -35,7 +35,13 @@ jobs:
         run: npm ci
 
       - name: Install Chromium
-        run: npx playwright install --with-deps chromium
+        run: |
+          # Mismo blindaje que en deploy.yml: `--with-deps` corre `apt-get
+          # update` y un repo de terceros caido (packages.microsoft.com devolvio
+          # 403 el 21 de septiembre) bastaba para tumbar el job. No aporta
+          # dependencias de Chromium, asi que se saca antes de instalar.
+          sudo rm -f /etc/apt/sources.list.d/microsoft*.list /etc/apt/sources.list.d/microsoft*.sources
+          npx playwright install --with-deps chromium
 
       - name: Capturar
         run: node scripts/capture-portfolio.mjs

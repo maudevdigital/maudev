@@ -72,7 +72,21 @@ jobs:
       # consentimiento por finalidad, coherencia de precios, el camino del
       # cotizador al formulario, la jerarquía de CTA y la CSP.
       - name: Instalar Chromium para el prerender y las validaciones
-        run: npx playwright install --with-deps chromium
+        run: |
+          # `--with-deps` instala las librerias de sistema que pide Chromium, y
+          # para eso corre `apt-get update`, que consulta TODOS los repos
+          # configurados en la imagen del runner. El de packages.microsoft.com
+          # (dotnet, powershell, azure-cli) no aporta ni una dependencia de
+          # Chromium, pero si falla, apt sale con error y se cae el paso entero.
+          #
+          # Paso el 21 de septiembre: devolvio 403 Forbidden y tumbo el
+          # despliegue completo con el sitio y el codigo intactos. Un repo de
+          # terceros que no usamos no puede ser punto unico de falla del deploy.
+          #
+          # Quitar la lista solo evita que apt lo consulte en este job; no
+          # desinstala nada y el runner es efimero.
+          sudo rm -f /etc/apt/sources.list.d/microsoft*.list /etc/apt/sources.list.d/microsoft*.sources
+          npx playwright install --with-deps chromium
 
       # El build deja el <head> de cada ruta pero el cuerpo vacio: todo lo pinta
       # React en el cliente. Este paso visita las 53 rutas con Chromium y guarda
