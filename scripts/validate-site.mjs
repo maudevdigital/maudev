@@ -6,6 +6,7 @@ import { subservicios } from "../src/data/subservices.js";
 import { desdePrecio, formatCLP, publicaPrecio } from "../src/data/from-price.js";
 import { homeSeo } from "../src/data/seo.js";
 import { EN, PT } from "../src/data/i18n.js";
+import { rutas as todasLasRutas, rutasIndexables } from "./paginas.mjs";
 
 const root = path.resolve(import.meta.dirname, "..");
 const baseUrl = "http://127.0.0.1:4180";
@@ -29,6 +30,7 @@ const routes = [
   "/casos/scissorhands",
   "/casos/partsmr",
   "/casos/paraguayaccess",
+  "/casos/rifaclara",
   "/nosotros",
   "/contacto",
   "/automatizaciones/agenda-automatica",
@@ -530,8 +532,12 @@ try {
     await navConBarra.close();
   }
 
-  const sitemap = await fs.readFile(path.join(root, "public", "sitemap.xml"), "utf8");
-  for (const route of routes.slice(0, 15)) {
+  // El sitemap se genera en el build desde `paginas.mjs`, ya no se edita a mano
+  // en `public/`. Se comprueban TODAS las rutas, no las primeras quince: el
+  // recorte anterior era justo el motivo por el que faltaba /casos/rifaclara sin
+  // que ninguna validacion lo notara.
+  const sitemap = await fs.readFile(path.join(root, "dist", "sitemap.xml"), "utf8");
+  for (const route of rutasIndexables) {
     const expected = route === "/" ? "https://maudev.cl/" : `https://maudev.cl${route}`;
     assert(sitemap.includes(`<loc>${expected}</loc>`), `Sitemap: falta ${expected}`);
   }
@@ -545,7 +551,7 @@ try {
   // lista fija anterior dejaba fuera /terminos y /privacidad, y ambas llegaron
   // a producción devolviendo 404 pese a pasar la validación: `vite preview`
   // resuelve cualquier ruta con index.html y Cloudflare Pages no.
-  for (const route of routes.filter((r) => r !== "/")) {
+  for (const route of todasLasRutas.filter((r) => r !== "/")) {
     const flat = path.join(root, "dist", `${route.slice(1)}.html`);
     const asDirectory = path.join(root, "dist", route.slice(1), "index.html");
     assert(
@@ -577,4 +583,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log(`Validación completa: ${routes.length} rutas, 5 viewports, menú móvil, formulario, consentimiento, precios, cotizador, consola y sitemap.`);
+console.log(`Validación completa: ${routes.length} rutas en navegador, ${todasLasRutas.length} en sitemap y prerender, 5 viewports, menú móvil, formulario, consentimiento, precios, cotizador, consola y sitemap.`);
