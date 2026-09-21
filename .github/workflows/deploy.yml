@@ -10,6 +10,15 @@ on:
   # main    → producción (maudev.cl)
   # develop → preview en develop.maudev.pages.dev, sin tocar producción
 
+  # Botón "Run workflow" en la pestaña Actions: vuelve a construir y desplegar
+  # la rama elegida sin tener que inventar un commit.
+  #
+  # Hace falta cuando lo que cambió no está en el repo. El 21 de septiembre el
+  # CLOUDFLARE_API_TOKEN dejó de autenticar y los deploys fallaban en el último
+  # paso; al rotarlo no había forma de reintentar, porque el árbol estaba igual
+  # que antes. Hubo que re-ejecutar a mano el run fallido desde la API.
+  workflow_dispatch: {}
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
