@@ -274,3 +274,80 @@ completar una fase, emitir un cobro o responder un ticket.
 Estado: entrega 0, parte 1 (página `/ley-21719` con planes y autodiagnóstico) lista.
 Falta la parte 2: adecuar maudev.cl (canal ARCOP completo, retención de leads,
 registro de consentimiento).
+
+## 8. Arquitectura definitiva: frontend/ + backend/ (29 sep 2026)
+
+Reemplaza a 5.1 y 5.2. El pedido: un backend propio para administrar la web y sus
+personalizaciones, con seguridad, y un token único de acceso por cliente para ver
+las métricas de su solicitud y de su proyecto.
+
+```
+maudev/
+├─ frontend/   Vite + React: sitio público, portal del cliente y panel admin (carga diferida)
+├─ backend/    Worker Hono (TS): API, autenticación, cron, migraciones D1, tests
+├─ shared/     oferta, permisos y estados: lo importan los dos
+├─ workers/    lead-intake y meta-capi hasta que el backend los absorba
+└─ docs/
+```
+
+**Hosting sin migrar nada:** el frontend sigue en Cloudflare Pages. El backend es
+un Worker `maudev-api` en la ruta `maudev.cl/api/*` del mismo dominio, así que es
+el mismo origen (cookies `__Host-`, sin CORS) y tiene cron. Pages no se toca.
+
+### 8.1 Seguridad del admin, en capas
+
+1. **Cloudflare Access** (Zero Trust, gratis hasta 50 usuarios) delante de
+   `/portal/admin*` y `/api/admin/*`. Quien no pasa el login de Cloudflare (código
+   al correo o cuenta de Google) ni siquiera llega al Worker.
+2. El Worker **verifica además el JWT de Access** (`Cf-Access-Jwt-Assertion`), por
+   si alguien llega saltándose la ruta.
+3. Sesión propia de admin de 12 h y reingreso para acciones críticas; passkey después.
+4. **Auditoría** de toda escritura: quién, qué, cuándo y desde dónde.
+
+### 8.2 Token único de acceso por cliente
+
+- El admin lo genera en la ficha del cliente: 32 bytes aleatorios, mostrados
+  **una sola vez** como enlace `maudev.cl/portal/entrar#<token>`. Va en el
+  fragmento (`#`), que el navegador no envía: no queda en logs ni en referers.
+- En D1 se guarda **solo su hash** SHA-256, con cliente, alcance, vencimiento,
+  último uso y fecha de revocación.
+- Al abrir el enlace, el frontend lo canjea en `/api/auth/token` por una **cookie
+  de sesión HttpOnly**. El token no queda guardado en el navegador.
+- **Alcance "ver":** métricas y estados. Lo que compromete algo (pagar, aprobar un
+  hito, invitar a otra persona) pide confirmar con un enlace al correo del titular.
+  Si el enlace se reenvía, quien lo recibe puede mirar pero no actuar.
+- Revocar o regenerar con un clic; límite de intentos por IP; aviso por correo
+  cuando se usa desde un dispositivo nuevo.
+
+**Métricas que ve el cliente**
+- Solicitud: estado, fecha, tiempo de respuesta y propuesta.
+- Proyecto: % de avance, fases con fecha estimada frente a la real, entregables.
+- Soporte: horas usadas frente a las incluidas, tickets y tiempo de respuesta frente al SLA.
+- Pagos: pagado, pendiente y próximo cobro.
+- Más adelante: disponibilidad y visitas de su propio sitio.
+
+### 8.3 Personalizar la web desde el admin
+
+- Editable: planes y precios, casos del portafolio, textos clave (hero,
+  preguntas), aviso destacado, datos de contacto y metadatos SEO.
+- Se guarda en D1 como **borrador**. "Publicar" dispara el workflow de GitHub
+  (`workflow_dispatch`, que ya existe); el build lee `/api/publico/contenido` y
+  prerenderiza. El sitio sigue estático, rápido y con el SEO intacto.
+- Cada publicación queda versionada, así que se puede volver atrás.
+
+### 8.4 De solicitud a cliente
+
+Cada contacto crea una **solicitud** en el backend (absorbe `lead-intake`) y recibe
+su enlace de seguimiento. Si se concreta, pasa a cliente + proyecto con las fases
+del plan contratado.
+
+### 8.5 Entregas nuevas
+
+- **2a Esqueleto:** Worker en `/api/*`, migración base de D1, `/api/salud`, test de
+  permisos en CI y despliegue del backend en CI.
+- **2b Admin:** Cloudflare Access, sesión admin, clientes, generar y revocar tokens, auditoría.
+- **2c Portal por token:** métricas de solicitud y proyecto (datos cargados desde el admin).
+- **2d Contacto → solicitud** con enlace de seguimiento (absorbe `lead-intake`).
+- **3 Contenido editable** con publicar y versiones.
+- **4 Pagos con Flow, soporte y horas.**
+- Después: auditoría y limpieza (`docs/inventario-proyecto.md`).
