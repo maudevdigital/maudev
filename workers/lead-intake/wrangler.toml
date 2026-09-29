@@ -10,3 +10,8 @@ database_id = "fd24eb0f-0d69-4215-9ed7-5da04126e728"
 
 # Secret (no va aquí):
 # RESEND_API_KEY → se guarda con: wrangler secret put RESEND_API_KEY
+
+# Borrado diario de lo que cumplió su plazo de conservación (ver /privacidad).
+# La cuenta admite 5 cron en total; Rifa Clara usa otro.
+[triggers]
+crons = ["17 7 * * *"]

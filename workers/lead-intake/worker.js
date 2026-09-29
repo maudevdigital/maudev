@@ -1,7 +1,15 @@
 // Worker de captación de leads de maudev.cl
 //
 // Recibe el POST del formulario de /contacto, lo guarda en Cloudflare D1 y envía
-// un email de aviso a contacto@maudev.cl vía Resend. Vive en Cloudflare, gratis
+// un email de aviso a contacto@maudev.cl vía Resend.
+//
+// Rutas (todas POST):
+//   /                 lead del formulario de contacto
+//   /derechos         solicitud de derechos ARCOP (Ley 21.719), con folio y plazo
+//   /consentimiento   registro de la elección de cookies, sin datos personales
+// Y un cron diario que borra lo que ya cumplió el plazo de conservación que
+// promete /privacidad. Prometer "12 meses" y no borrar nunca es peor que no
+// prometer nada. Vive en Cloudflare, gratis
 // y siempre encendido, así que el formulario nunca queda muerto por
 // infraestructura caída.
 //
@@ -71,6 +79,19 @@ const HONEYPOT_FIELD = "empresa_web";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
+// Los derechos que reconoce la Ley 21.719, con las mismas etiquetas que /privacidad.
+const DERECHOS = {
+  acceso: "Acceso",
+  rectificacion: "Rectificación",
+  supresion: "Supresión",
+  oposicion: "Oposición",
+  portabilidad: "Portabilidad",
+  bloqueo: "Bloqueo",
+};
+// /privacidad promete responder dentro de 30 días corridos.
+const PLAZO_RESPUESTA_DIAS = 30;
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+
 function corsHeaders(origin) {
   const allowed = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
   return {
@@ -138,7 +159,89 @@ ${d.utm_source ? row("Campaña", [d.utm_source, d.utm_medium, d.utm_campaign].fi
 <p style="font-family:sans-serif;font-size:13px;color:#666">Responde este correo para contactar al lead directamente.</p>`;
 }
 
+async function enviarCorreo(env, payload) {
+  if (!env.RESEND_API_KEY) return { ok: false };
+  try {
+    const res = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${env.RESEND_API_KEY}` },
+      body: JSON.stringify({ from: FROM, to: [TO], ...payload }),
+    });
+    return { ok: res.ok, detail: await res.json().catch(() => ({})) };
+  } catch (err) {
+    return { ok: false, detail: String(err) };
+  }
+}
+
+// El folio es lo que la persona cita si vuelve a escribir, y la fecha límite
+// va en el asunto del correo: es el dato que no se puede pasar por alto.
+async function recibirSolicitud(raw, env, cors, verificacion) {
+  const tipo = clean(raw.tipo, 20);
+  const nombre = clean(raw.nombre, LIMITS.name);
+  const email = clean(raw.email, LIMITS.email);
+  const detalle = clean(raw.detalle, LIMITS.message);
+  if (!DERECHOS[tipo]) return json({ error: "Tipo de solicitud inválido" }, 400, cors);
+  if (!email || !EMAIL_RE.test(email)) return json({ error: "Email inválido" }, 400, cors);
+
+  const folio = crypto.randomUUID().slice(0, 8).toUpperCase();
+  const venceEl = new Date(Date.now() + PLAZO_RESPUESTA_DIAS * 86400000).toISOString().slice(0, 10);
+
+  let stored = false;
+  if (env.DB) {
+    try {
+      await env.DB.prepare(
+        "INSERT INTO solicitudes_derechos (folio, tipo, nombre, email, detalle, vence_el) VALUES (?, ?, ?, ?, ?, ?)"
+      ).bind(folio, tipo, nombre || null, email, detalle || null, venceEl).run();
+      stored = true;
+    } catch {
+      // seguimos: el correo es el respaldo
+    }
+  }
+
+  const correo = await enviarCorreo(env, {
+    subject: `⚖️ Derecho de ${DERECHOS[tipo].toLowerCase()} · folio ${folio} · responder antes del ${venceEl}`,
+    reply_to: email,
+    html: `<h2>Solicitud de derechos · Ley 21.719</h2>
+      <p><b>Folio:</b> ${folio}<br><b>Derecho:</b> ${esc(DERECHOS[tipo])}<br><b>Responder antes del:</b> ${venceEl}</p>
+      <p><b>Nombre:</b> ${esc(nombre || "—")}<br><b>Email:</b> ${esc(email)}</p>
+      <p><b>Detalle:</b><br>${esc(detalle || "—").replace(/\n/g, "<br>")}</p>
+      <p style="color:#666">Guardada en D1: ${stored ? "sí" : "NO"} · Verificación: ${esc(verificacion)}.
+      Antes de entregar datos, verifica la identidad de quien pide.</p>`,
+  });
+
+  if (!stored && !correo.ok) return json({ error: "No se pudo registrar la solicitud" }, 502, cors);
+  return json({ ok: true, folio, vence_el: venceEl }, 200, cors);
+}
+
+// Prueba de consentimiento: qué eligió un navegador y cuándo. Sin IP ni
+// user-agent: un identificador aleatorio que genera el propio navegador no
+// identifica a nadie, y basta para demostrar que el aviso se mostró y se respondió.
+async function registrarConsentimiento(raw, env, cors) {
+  const id = clean(raw.id, 36);
+  if (!UUID_RE.test(id) || typeof raw.analytics !== "boolean" || typeof raw.marketing !== "boolean") {
+    return json({ error: "Datos inválidos" }, 400, cors);
+  }
+  try {
+    await env.DB.prepare(
+      "INSERT INTO consentimientos (navegador_id, analitica, marketing, version) VALUES (?, ?, ?, ?)"
+    ).bind(id, raw.analytics ? 1 : 0, raw.marketing ? 1 : 0, clean(raw.version, 20) || null).run();
+  } catch {
+    return json({ error: "No se pudo registrar" }, 502, cors);
+  }
+  return json({ ok: true }, 200, cors);
+}
+
 export default {
+  // Cron diario (wrangler.toml). Los plazos son los de /privacidad; si cambian
+  // allá, cambian acá.
+  async scheduled(_event, env) {
+    await env.DB.batch([
+      env.DB.prepare("DELETE FROM leads WHERE created_at < datetime('now', '-12 months')"),
+      env.DB.prepare("DELETE FROM consentimientos WHERE creado_en < datetime('now', '-24 months')"),
+      env.DB.prepare("DELETE FROM solicitudes_derechos WHERE creado_en < datetime('now', '-24 months')"),
+    ]);
+  },
+
   async fetch(request, env) {
     const origin = request.headers.get("Origin") || "";
     const cors = corsHeaders(origin);
@@ -164,6 +267,11 @@ export default {
       return json({ ok: true }, 200, cors);
     }
 
+    const ruta = new URL(request.url).pathname.replace(/\/+$/, "");
+    // El consentimiento se registra al pulsar el aviso de cookies, sin captcha:
+    // no manda correos ni guarda datos personales, y su validación es estricta.
+    if (ruta === "/consentimiento") return registrarConsentimiento(raw, env, cors);
+
     // ── 2. Captcha (solo si está configurado) ──
     // Mientras TURNSTILE_SECRET no exista, el worker sigue funcionando igual.
     // Así se puede desplegar hoy y encender el captcha después, sin romper nada.
@@ -186,6 +294,8 @@ export default {
         ? "token recibido · validación apagada"
         : "SIN TOKEN · validación apagada";
     }
+
+    if (ruta === "/derechos") return recibirSolicitud(raw, env, cors, verificacion);
 
     // ── 3. Normalizar y validar ──
     const data = {
@@ -231,32 +341,13 @@ export default {
     }
 
     // ── 5. Email de aviso vía Resend ──
-    let emailed = false;
-    let emailDetail;
-    if (env.RESEND_API_KEY) {
-      const emailPayload = {
-        from: FROM,
-        to: [TO],
-        subject: `🎯 Nuevo lead: ${data.name || "sin nombre"} — ${data.interest || "sin interés"}`,
-        html: buildHtml(data),
-      };
-      // reply_to al email del lead, si lo dejó, para responder directo.
-      if (data.email) emailPayload.reply_to = data.email;
-      try {
-        const res = await fetch("https://api.resend.com/emails", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${env.RESEND_API_KEY}`,
-          },
-          body: JSON.stringify(emailPayload),
-        });
-        emailDetail = await res.json().catch(() => ({}));
-        emailed = res.ok;
-      } catch (err) {
-        emailDetail = String(err);
-      }
-    }
+    const emailPayload = {
+      subject: `🎯 Nuevo lead: ${data.name || "sin nombre"} — ${data.interest || "sin interés"}`,
+      html: buildHtml(data),
+    };
+    // reply_to al email del lead, si lo dejó, para responder directo.
+    if (data.email) emailPayload.reply_to = data.email;
+    const { ok: emailed, detail: emailDetail } = await enviarCorreo(env, emailPayload);
 
     // ── 6. El lead se considera capturado si quedó GUARDADO o AVISADO. Solo
     //      devolvemos error (para que el sitio pida reintentar) si fallan ambas

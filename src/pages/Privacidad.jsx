@@ -144,6 +144,8 @@ const sections = [
             { k: "Datos de clientes con proyecto ejecutado", v: "Mientras dure la relación y 5 años después" },
             { k: "Documentos tributarios (boletas, facturas)", v: "6 años, por obligación del SII" },
             { k: "Registros de analítica", v: "14 meses (configuración de GA4)" },
+            { k: "Solicitudes de derechos (constancia)", v: "24 meses" },
+            { k: "Registro de tu elección de cookies (sin datos personales)", v: "24 meses" },
           ].map((r, i) => (
             <div key={i} className="flex items-start justify-between gap-4 border-b border-border/30 pb-2 last:border-b-0">
               <span>{r.k}</span>
@@ -285,7 +287,7 @@ const sections = [
           ))}
         </div>
         <p className="mt-4">
-          {"Para ejercerlos, escribe a"} {mail}.{" "}
+          Para ejercerlos, usa el <Link to="/eliminacion-datos#solicitud" className="text-primary hover:underline">formulario de solicitud</Link> o escribe a {mail}.{" "}
           Respondemos dentro de 30 días corridos. No cobramos por esto. Solo te pediremos verificar tu identidad, para no entregarle tus datos a otra persona.
         </p>
         <p>

@@ -52,3 +52,34 @@ export async function submitLead(data) {
   // El webhook puede responder vacío o con JSON; no lo necesitamos.
   return res.json().catch(() => ({ ok: true }));
 }
+
+// Mismo worker, otra ruta: new URL resuelve bien tenga o no barra final la base.
+const rutaWorker = (ruta) => new URL(ruta, LEAD_WEBHOOK.endsWith("/") ? LEAD_WEBHOOK : `${LEAD_WEBHOOK}/`);
+
+/** Solicitud de derechos ARCOP. Devuelve { folio, vence_el } o lanza. */
+export async function submitDerechos(data) {
+  if (!LEAD_WEBHOOK) throw new Error("Lead webhook not configured");
+  const turnstileToken = await obtenerTokenTurnstile();
+  const res = await fetch(rutaWorker("derechos"), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ ...data, ...(turnstileToken ? { turnstileToken } : {}) }),
+  });
+  if (!res.ok) throw new Error(`Derechos submit failed: ${res.status}`);
+  return res.json();
+}
+
+/**
+ * Deja constancia de la elección de cookies. No espera respuesta ni reintenta:
+ * si falla, la elección del visitante se respeta igual. text/plain evita el
+ * preflight de CORS, y keepalive que se pierda si la página cambia enseguida.
+ */
+export function registrarConsentimiento(registro) {
+  if (!LEAD_WEBHOOK) return;
+  fetch(rutaWorker("consentimiento"), {
+    method: "POST",
+    headers: { "Content-Type": "text/plain" },
+    body: JSON.stringify(registro),
+    keepalive: true,
+  }).catch(() => {});
+}

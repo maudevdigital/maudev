@@ -3,6 +3,7 @@ import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
 import { Trash2 } from "lucide-react";
 import { useSeo } from "@/lib/useSeo";
+import SolicitudDerechos from "@/components/landing/SolicitudDerechos";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // ELIMINACIÓN DE DATOS
@@ -197,18 +198,14 @@ export default function EliminacionDatos() {
             ))}
           </div>
 
-          {/* CTA correo */}
-          <div className="mt-10 flex flex-col items-center gap-3 rounded-xl border border-border bg-card p-6 text-center">
-            <p className="text-sm text-muted-foreground">
-              ¿Quieres que borremos tus datos ahora?
+          {/* Canal ARCOP: queda registrado con folio y fecha límite */}
+          <section id="solicitud" className="mt-10 scroll-mt-28">
+            <h2 className="mb-2 text-xl font-bold">Ejercer tus derechos</h2>
+            <p className="mb-5 text-sm text-muted-foreground">
+              Acceso, rectificación, supresión, oposición, portabilidad o bloqueo. Recibes un folio y respondemos dentro de 30 días corridos. También puedes escribir a {mail}.
             </p>
-            <a
-              href={`mailto:${EMAIL}?subject=${encodeURIComponent("Eliminación de datos")}`}
-              className="text-base font-semibold text-primary hover:underline"
-            >
-              {EMAIL}
-            </a>
-          </div>
+            <SolicitudDerechos />
+          </section>
 
           {/* Links legales */}
           <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm">

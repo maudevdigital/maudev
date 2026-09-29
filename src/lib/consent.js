@@ -1,7 +1,26 @@
 import { applyAnalyticsConsent } from "./analytics";
+import { registrarConsentimiento } from "./leads";
 
 const KEY = "maudev_consent_v2";
 const LEGACY_KEY = "maudev_consent_v1";
+const ID_KEY = "maudev_consent_id";
+// Sube cuando cambie el texto del aviso: el registro dice qué versión se aceptó.
+const VERSION_AVISO = "2026-09-29";
+
+// Identificador aleatorio del navegador para el registro de consentimiento.
+// No se cruza con nada: solo agrupa las elecciones de un mismo navegador.
+function idNavegador() {
+  try {
+    let id = localStorage.getItem(ID_KEY);
+    if (!id) {
+      id = crypto.randomUUID();
+      localStorage.setItem(ID_KEY, id);
+    }
+    return id;
+  } catch {
+    return crypto.randomUUID();
+  }
+}
 export const CONSENT_EVENT = "maudev:consent-changed";
 export const GRANTED = "granted";
 export const DENIED = "denied";
@@ -33,6 +52,7 @@ export function setConsent(value) {
     localStorage.removeItem(LEGACY_KEY);
   } catch { /* memory conserva la decisión durante esta carga. */ }
   applyAnalyticsConsent(memory);
+  registrarConsentimiento({ id: idNavegador(), analytics: memory.analytics, marketing: memory.marketing, version: VERSION_AVISO });
   window.dispatchEvent(new CustomEvent(CONSENT_EVENT, { detail: memory }));
   return memory;
 }
