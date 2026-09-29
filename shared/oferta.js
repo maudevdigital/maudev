@@ -3,8 +3,8 @@
 // Reemplazará a services.js, subservices.js, catalog.js y pricing.js (ver
 // docs/plan-servicios-portal.md). Menú, páginas, sitemap y, más adelante, el
 // portal de clientes —que crea cada proyecto con las fases del plan contratado—
-// leen de acá. En la entrega 2 se mueve a shared/ para que el servidor cobre
-// desde la misma tabla que muestra la página.
+// leen de acá. Vive en shared/ porque el backend lo usa para crear proyectos y
+// cobrar desde la misma tabla que muestra la página.
 //
 // Montos NETOS en CLP: el IVA se suma aparte y así se rotula donde aparezcan.
 

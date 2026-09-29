@@ -1,0 +1,29 @@
+{
+  "name": "maudev-api",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev --port 8787 --ip 127.0.0.1 --var ENTORNO:local --var ADMIN_LOCAL:contacto@maudev.cl",
+    "db:local": "wrangler d1 migrations apply maudev-leads --local",
+    "db:remoto": "wrangler d1 migrations apply maudev-leads --remote",
+    "deploy": "wrangler deploy --minify",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "hono": "^4.13.11",
+    "jose": "^6.2.12",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260929.1",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.2",
+    "wrangler": "^4.144.0"
+  },
+  "allowScripts": {
+    "esbuild": true,
+    "workerd": true,
+    "sharp": true
+  }
+}

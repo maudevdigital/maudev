@@ -20,7 +20,25 @@ on:
   workflow_dispatch: {}
 
 jobs:
+  # Matriz de permisos del backend contra una D1 local. Si falla, no se despliega nada.
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+      - run: npm ci
+      - run: npx tsc --noEmit
+      - run: npm test
+
   deploy:
+    needs: backend
     runs-on: ubuntu-latest
     permissions:
       contents: read

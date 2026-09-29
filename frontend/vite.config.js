@@ -10,7 +10,16 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+      // Lo que comparten frontend y backend (oferta, permisos, estados).
+      '@shared': path.resolve(__dirname, '../shared'),
     },
+  },
+  server: {
+    // shared/ está fuera de frontend/: sin esto Vite se niega a servirlo en desarrollo.
+    fs: { allow: [__dirname, path.resolve(__dirname, '../shared')] },
+    // La API corre aparte (backend/, `npm run dev` en 8787). En producción es el
+    // mismo dominio: maudev.cl/api/* lo atiende el Worker.
+    proxy: { '/api': 'http://127.0.0.1:8787' },
   },
   build: {
     // Target moderno → menos "JavaScript antiguo"/polyfills (mejor TBT).

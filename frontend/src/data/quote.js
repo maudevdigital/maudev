@@ -8,7 +8,7 @@
 // Los montos NO se copian acá: salen de pricing.js, que a su vez los lee del
 // catálogo. Una segunda tabla de precios es una tabla que se desincroniza.
 
-import { getPlan } from "@/data/oferta";
+import { getPlan } from "@shared/oferta";
 
 export const quoteTypes = [
   { id: "landing", label: "Landing", plan: "landing", semanas: "1 a 2", necesidad: "una landing page" },

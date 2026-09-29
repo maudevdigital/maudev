@@ -4,7 +4,7 @@ import { ArrowRight, Check, Scale } from "lucide-react";
 import Breadcrumbs from "@/components/landing/Breadcrumbs";
 import FinalCta from "@/components/landing/FinalCta";
 import PageShell from "@/components/landing/PageShell";
-import { capacidades, precioPlan } from "@/data/oferta";
+import { capacidades, precioPlan } from "@shared/oferta";
 import { useSeo } from "@/lib/useSeo";
 import { trackAction } from "@/lib/MetaPixelTracker";
 

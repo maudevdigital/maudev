@@ -1,0 +1,35 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "maudev-api",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-09-29",
+  "workers_dev": false,
+  "preview_urls": false,
+  // Mismo dominio que el sitio: Pages sirve maudev.cl y este Worker atiende solo
+  // /api/*. Mismo origen, así que las cookies __Host- funcionan sin CORS.
+  "routes": [{ "pattern": "maudev.cl/api/*", "zone_name": "maudev.cl" }],
+  "vars": {
+    "SITIO": "https://maudev.cl",
+    "ENTORNO": "produccion",
+    // Correos con permiso de admin, separados por coma. Además de estar acá,
+    // tienen que pasar Cloudflare Access (ver docs/plan-servicios-portal.md §8.1).
+    "ADMINS": "contacto@maudev.cl",
+    // Se completan al crear la aplicación en Cloudflare Access:
+    "ACCESS_EQUIPO": "",
+    "ACCESS_AUD": ""
+  },
+  // La misma base que ya usa workers/lead-intake: el backend la absorbe en la
+  // entrega 2d y así no hay que mover datos.
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "maudev-leads",
+      "database_id": "fd24eb0f-0d69-4215-9ed7-5da04126e728",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "ratelimits": [
+    { "name": "LIMITE_TOKEN", "namespace_id": "2001", "simple": { "limit": 10, "period": 60 } }
+  ],
+  "observability": { "enabled": true }
+}
