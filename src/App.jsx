@@ -5,7 +5,10 @@ import PageNotFound from './lib/PageNotFound';
 import ScrollToTop from './lib/ScrollToTop';
 import MetaPixelTracker from './lib/MetaPixelTracker';
 import ChatWidget from '@/components/landing/ChatWidget';
-import CookieConsent from '@/components/landing/CookieConsent';
+// Nombre neutro a propósito: las listas de los bloqueadores (Brave, uBlock)
+// bloquean archivos llamados CookieConsent o consent.js, y en desarrollo eso
+// deja la app en negro porque Vite sirve cada módulo con su nombre real.
+import AvisoPrivacidad from '@/components/landing/AvisoPrivacidad';
 import Landing from './pages/Landing'; // eager: es la home (LCP) y la entrada más común
 
 // El resto se carga BAJO DEMANDA (code-splitting) → bundle inicial mucho menor.
@@ -86,7 +89,7 @@ function App() {
           </Routes>
         </Suspense>
         <ChatWidget />
-        <CookieConsent />
+        <AvisoPrivacidad />
       </Router>
       <Toaster richColors position="top-right" />
     </>

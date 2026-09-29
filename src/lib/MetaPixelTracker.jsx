@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import { CONSENT_EVENT, hasConsent } from "@/lib/consent";
+import { CONSENT_EVENT, hasConsent } from "@/lib/preferencias";
 
 const CAPI_WORKER = "https://maudev-meta-capi.maudevchile.workers.dev";
 const CAMPAIGN_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_id", "utm_content", "utm_term", "gclid", "fbclid"];

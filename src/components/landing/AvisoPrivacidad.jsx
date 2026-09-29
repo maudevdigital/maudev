@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { CONSENT_EVENT, getConsent, setConsent, initConsent, GRANTED, DENIED } from "@/lib/consent";
+import { CONSENT_EVENT, getConsent, setConsent, initConsent, GRANTED, DENIED } from "@/lib/preferencias";
 
-export default function CookieConsent() {
+export default function AvisoPrivacidad() {
   const [visible, setVisible] = useState(false);
   const [options, setOptions] = useState(false);
   const [preferences, setPreferences] = useState({ analytics: false, marketing: false });
