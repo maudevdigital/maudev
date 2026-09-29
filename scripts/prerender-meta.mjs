@@ -59,22 +59,12 @@ for (const page of pages) {
   await fs.writeFile(file, html);
 }
 
-// La portada en español no pasa por el bucle —es la plantilla— y también tiene
-// que declarar sus alternativas. Un grupo de hreflang en el que una página no
-// devuelve el apunte queda descartado entero por Google, así que sin esto las
-// versiones en inglés y portugués no servirían de nada.
-const portadaAlternates = [
-  `<link rel="alternate" hreflang="es-CL" href="${origin}/" />`,
-  `<link rel="alternate" hreflang="en" href="${origin}/en" />`,
-  `<link rel="alternate" hreflang="pt-BR" href="${origin}/pt" />`,
-  `<link rel="alternate" hreflang="x-default" href="${origin}/" />`,
-].join("\n    ");
 const indexPath = path.join(dist, "index.html");
 const indexHtml = await fs.readFile(indexPath, "utf8");
 let homeHtml = indexHtml.replace(/<title>[^<]*<\/title>/i, `<title>${escapeHtml(homeSeo.title)}</title>`);
 homeHtml = replaceMeta(homeHtml, "name", "description", homeSeo.description);
 homeHtml = replaceMeta(homeHtml, "property", "og:description", homeSeo.description);
 homeHtml = replaceMeta(homeHtml, "name", "twitter:description", homeSeo.description);
-await fs.writeFile(indexPath, homeHtml.replace("</head>", `  ${portadaAlternates}\n  </head>`));
+await fs.writeFile(indexPath, homeHtml);
 
 console.log(`Metadatos estáticos generados para ${pages.length} rutas.`);

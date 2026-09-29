@@ -8,6 +8,8 @@
 // Los montos NO se copian acá: salen de pricing.js, que a su vez los lee del
 // catálogo. Una segunda tabla de precios es una tabla que se desincroniza.
 
+import { getPlan } from "@/data/oferta";
+
 export const quoteTypes = [
   { id: "landing", label: "Landing", plan: "landing", semanas: "1 a 2", necesidad: "una landing page" },
   { id: "sitio", label: "Sitio web", plan: "sitio", semanas: "3 a 5", necesidad: "un sitio web" },
@@ -32,12 +34,15 @@ export const quoteSizes = [
 export function readQuoteIntent(params) {
   const tipo = quoteTypes.find((item) => item.id === params.get("tipo"));
   const tamano = quoteSizes.find((item) => item.id === params.get("tamano"));
-  if (!tipo && !tamano) return null;
-  return { tipo: tipo || null, tamano: tamano || null };
+  // Los planes de la oferta nueva (Ley 21.719, IA) llegan como ?plan=<id>.
+  const plan = getPlan(params.get("plan"));
+  if (!tipo && !tamano && !plan) return null;
+  return { tipo: tipo || null, tamano: tamano || null, plan };
 }
 
 /** Frase de arranque para el formulario, con lo que el visitante ya eligió. */
 export function describeQuoteIntent(intent) {
+  if (intent?.plan) return `Me interesa el plan ${intent.plan.nombre} de ${intent.plan.capacidad}. `;
   if (!intent?.tipo) return "";
   const partes = [`Necesito ${intent.tipo.necesidad}`];
   if (intent.tamano) partes.push(`de ${intent.tamano.secciones}`);

@@ -2,7 +2,6 @@ import { services } from "../src/data/services.js";
 import { projects } from "../src/data/projects.js";
 import { subservicios } from "../src/data/subservices.js";
 import { AUTOMATIONS } from "../src/data/automations.js";
-import { EN, PT } from "../src/data/i18n.js";
 
 // Fuente unica de las rutas del sitio.
 //
@@ -25,6 +24,11 @@ export const paginas = [
     description: service.metaDescription,
   })),
   {
+    route: "/ley-21719",
+    title: "Adecuación a la Ley 21.719 para empresas y PYMEs · Maudev",
+    description: "Adecuación técnica de tu sitio y formularios a la Ley 21.719 de datos personales: cookies, derechos ARCOP, seguridad y documentación. Precios publicados.",
+  },
+  {
     route: "/casos",
     title: "Portafolio · Sitios web y sistemas que hicimos en Chile · Maudev",
     description: "Sitios web y sistemas que construimos, explicados por el problema que resolvían y lo que cambió después.",
@@ -36,7 +40,6 @@ export const paginas = [
   },
   {
     route: "/contacto",
-    alternates: { "es-CL": "/contacto", en: "/en/contact", "pt-BR": "/pt/contato" },
     title: "Contacto · Cotiza tu sitio web · Maudev",
     description: "Cuéntanos qué vendes y a quién. Te decimos qué tipo de sitio necesitas, cuánto costaría y en cuánto tiempo estaría publicado.",
   },
@@ -87,39 +90,6 @@ export const paginas = [
     title: `${auto.title || auto.name} · Automatización · Maudev`,
     description: auto.summary || auto.tagline || "Automatización lista para implementar en tu negocio.",
   })),
-  // Las versiones en otro idioma necesitan su <html lang> y su hreflang en el
-  // HTML estático: es lo que lee el rastreador antes de ejecutar JavaScript, y
-  // el motivo por el que el bilingüe anterior terminó mal indexado.
-  //
-  // Los títulos y descripciones se leen de data/i18n.js, que es de donde
-  // también los toma la app. Estaban copiados a mano acá y ya se habían
-  // desincronizado: el archivo estático prometía una cosa y React montaba otra
-  // —la de i18n incluía un "From USD 120" que además no coincidía con el
-  // catálogo—. Es el mismo motivo por el que existe data/seo.js.
-  {
-    route: "/en",
-    alternates: { "es-CL": "/", "en": "/en", "pt-BR": "/pt" },
-    lang: "en",
-    ...EN.meta,
-  },
-  {
-    route: "/en/contact",
-    alternates: { "es-CL": "/contacto", "en": "/en/contact", "pt-BR": "/pt/contato" },
-    lang: "en",
-    ...EN.metaContacto,
-  },
-  {
-    route: "/pt",
-    alternates: { "es-CL": "/", "en": "/en", "pt-BR": "/pt" },
-    lang: "pt-BR",
-    ...PT.meta,
-  },
-  {
-    route: "/pt/contato",
-    alternates: { "es-CL": "/contacto", "en": "/en/contact", "pt-BR": "/pt/contato" },
-    lang: "pt-BR",
-    ...PT.metaContacto,
-  },
   ...projects.map((project) => ({
     route: `/casos/${project.id}`,
     title: `${project.title} · Caso de estudio · Maudev`,

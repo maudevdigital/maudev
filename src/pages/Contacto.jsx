@@ -56,7 +56,7 @@ export default function Contacto() {
   useEffect(() => {
     if (!intencion) return;
     trackAction("contacto_intencion", {
-      tipo: intencion.tipo?.id || "sin-tipo",
+      tipo: intencion.tipo?.id || intencion.plan?.id || "sin-tipo",
       tamano: intencion.tamano?.id || "sin-tamano",
     });
   }, [intencion]);
@@ -64,7 +64,9 @@ export default function Contacto() {
   // El mensaje precargado de WhatsApp arrastra lo elegido. Sin esto, quien
   // viene del cotizador abre el chat y tiene que explicar de nuevo, a mano, lo
   // que acaba de responder con dos botones.
-  const mensajeWhatsApp = intencion?.tipo
+  const mensajeWhatsApp = intencion?.plan
+    ? `Hola, vengo de maudev.cl. Me interesa el plan ${intencion.plan.nombre} de ${intencion.plan.capacidad}.`
+    : intencion?.tipo
     ? `Hola, vengo de maudev.cl. Estuve viendo ${intencion.tipo.necesidad}${intencion.tamano ? ` de ${intencion.tamano.secciones}` : ""} y quiero cotizarlo.`
     : CTA_MESSAGE;
 
@@ -76,13 +78,6 @@ export default function Contacto() {
     title: "Contacto · Cotiza tu sitio web · Maudev",
     description: "Cuéntanos qué vendes y a quién. Te decimos qué tipo de sitio necesitas, cuánto costaría y en cuánto tiempo estaría publicado. Respuesta el mismo día hábil.",
     path: "/contacto",
-    // Sin esto el hreflang del contacto quedaba a medias: /en/contact y
-    // /pt/contato declaraban su versión en español, pero esta página no
-    // declaraba las de ellas. Google exige el enlace de vuelta y, si falta,
-    // descarta el grupo entero. Peor todavía, el prerender SÍ escribía las
-    // cuatro etiquetas en el HTML estático y useSeo las borraba al montar,
-    // porque limpia las alternativas antes de rehacerlas.
-    alternates: { es: "/contacto", en: "/en/contact", pt: "/pt/contato" },
     image: "/og-image.png",
     jsonLd: {
       "@context": "https://schema.org",
@@ -167,7 +162,7 @@ export default function Contacto() {
         source: "contact_page",
         // Lo que eligió en el cotizador viaja con el lead y llega a la bandeja
         // de entrada junto al mensaje, en vez de quedarse en la URL.
-        quote_type: intencion?.tipo?.id,
+        quote_type: intencion?.tipo?.id || intencion?.plan?.id,
         quote_size: intencion?.tamano?.id,
         empresa_web: honeypot,
         status: "new",

@@ -5,7 +5,6 @@ import { chromium } from "playwright";
 import { subservicios } from "../src/data/subservices.js";
 import { desdePrecio, formatCLP, publicaPrecio } from "../src/data/from-price.js";
 import { homeSeo } from "../src/data/seo.js";
-import { EN, PT } from "../src/data/i18n.js";
 import { rutas as todasLasRutas, rutasIndexables } from "./paginas.mjs";
 
 const root = path.resolve(import.meta.dirname, "..");
@@ -19,10 +18,7 @@ const routes = [
   "/mantencion",
   "/apps-moviles",
   "/diseno",
-  "/en",
-  "/en/contact",
-  "/pt",
-  "/pt/contato",
+  "/ley-21719",
   "/servicios/landing-page",
   "/servicios/punto-de-venta",
   "/casos",
@@ -92,11 +88,7 @@ try {
     const response = await page.goto(`${baseUrl}${route}`, { waitUntil: "networkidle" });
     assert(response?.ok(), `${route}: respuesta HTTP ${response?.status()}`);
     assert(await page.locator("h1").count() === 1, `${route}: debe tener exactamente un H1`);
-    // El idioma tiene que coincidir con la ruta. Antes se exigía es-CL en
-    // todas; con las versiones en inglés y portugués eso dejaría pasar
-    // justamente el error que hundió al bilingüe anterior: contenido en un
-    // idioma declarado como otro.
-    const idiomaEsperado = route.startsWith("/en") ? "en" : route.startsWith("/pt") ? "pt-BR" : "es-CL";
+    const idiomaEsperado = "es-CL";
     assert(
       await page.evaluate(() => document.documentElement.lang) === idiomaEsperado,
       `${route}: el atributo lang debe ser ${idiomaEsperado}`
@@ -279,10 +271,6 @@ try {
 
   for (const [archivo, esperada, etiqueta] of [
     ["index.html", homeSeo.description, "portada"],
-    ["en.html", EN.meta.description, "/en"],
-    ["pt.html", PT.meta.description, "/pt"],
-    [path.join("en", "contact.html"), EN.metaContacto.description, "/en/contact"],
-    [path.join("pt", "contato.html"), PT.metaContacto.description, "/pt/contato"],
   ]) {
     const encontrada = decodificar(await metaEstatica(archivo));
     assert(
@@ -463,24 +451,6 @@ try {
   );
   assert(numeros.length === 1, `WhatsApp: hay ${numeros.length} números distintos en la portada (${numeros.join(", ")})`);
 
-  // Lo mismo en inglés y portugués. Ahí el botón del header y el del pie usan
-  // la MISMA etiqueta, así que apuntar a destinos distintos —uno a WhatsApp y
-  // otro al formulario— era además una contradicción visible.
-  for (const [ruta, contacto] of [["/en", "/en/contact"], ["/pt", "/pt/contato"]]) {
-    await ctaPage.goto(`${baseUrl}${ruta}`, { waitUntil: "domcontentloaded" });
-    await ctaPage.waitForSelector("header a.btn-primary", { state: "attached" });
-    assert(
-      await ctaPage.locator("header a[href*='wa.me']").count() === 0,
-      `${ruta}: el header manda el tráfico frío directo a WhatsApp`
-    );
-    const destinos = await ctaPage.locator("header a.btn-primary, footer a.btn-primary").evaluateAll(
-      (enlaces) => [...new Set(enlaces.map((enlace) => enlace.getAttribute("href")))]
-    );
-    assert(
-      destinos.length === 1 && destinos[0] === contacto,
-      `${ruta}: el CTA de cabecera y el de pie deberían llevar los dos a ${contacto} (${destinos.join(", ")})`
-    );
-  }
   await ctaPage.close();
 
   // Abrir un menú no puede correr la página en horizontal.

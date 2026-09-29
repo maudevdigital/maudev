@@ -232,6 +232,13 @@ export default function Navbar() {
               </button>
             </div>
 
+            <Link
+              to="/ley-21719"
+              className="rounded-lg px-3 py-2 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              Ley 21.719
+            </Link>
+
             <a
               href="/#casos"
               onClick={(event) => goToSection(event, "casos")}
@@ -383,6 +390,9 @@ export default function Navbar() {
                     {item.label}
                   </a>
                 ))}
+                <Link to="/ley-21719" className="border-b border-border py-3.5 text-lg font-bold tracking-tight text-foreground">
+                  Ley 21.719
+                </Link>
                 <Link to="/contacto" className="border-b border-border py-3.5 text-lg font-bold tracking-tight text-foreground">
                   Contacto
                 </Link>

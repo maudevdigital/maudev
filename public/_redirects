@@ -5,6 +5,14 @@
 /portafolio/*       /casos/:splat        301
 /sobre-nosotros     /nosotros            301
 
+# Versiones en inglés y portugués retiradas el 29 sep 2026.
+/en/contact         /contacto            301
+/pt/contato         /contacto            301
+/en                 /                    301
+/en/*               /                    301
+/pt                 /                    301
+/pt/*               /                    301
+
 # Rutas históricas sin contenido propio.
 /cotizador          /contacto             301
 /diagnostico-web    /contacto             301

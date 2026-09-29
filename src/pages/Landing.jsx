@@ -15,7 +15,6 @@ import { homeSeo } from "@/data/seo";
 export default function Landing() {
   useSeo({
     ...homeSeo,
-    alternates: { es: "/", en: "/en", pt: "/pt" },
     path: "/",
     image: "/og-image.png",
     // Solo entidades que existen y son visibles en la página: la organización,
