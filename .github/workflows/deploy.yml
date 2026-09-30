@@ -138,3 +138,10 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: frontend
           command: pages deploy dist --project-name=maudev --branch=${{ github.ref_name }}
+
+      # Avisa a Bing (IndexNow) qué páginas rastrear. Solo producción, y un fallo
+      # acá no tumba un despliegue que ya salió.
+      - name: Avisar a Bing (IndexNow)
+        if: github.ref_name == 'main'
+        continue-on-error: true
+        run: node scripts/indexnow.mjs

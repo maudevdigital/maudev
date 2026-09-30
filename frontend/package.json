@@ -17,7 +17,8 @@
     "capture": "node scripts/capture-portfolio.mjs",
     "gen:logo": "node scripts/gen-logo.mjs",
     "test:csp": "node scripts/validate-csp.mjs",
-    "test:deployed": "node scripts/validate-deployed.mjs"
+    "test:deployed": "node scripts/validate-deployed.mjs",
+    "indexnow": "node scripts/indexnow.mjs"
   },
   "dependencies": {
     "@fontsource/inter": "^5.3.0",
