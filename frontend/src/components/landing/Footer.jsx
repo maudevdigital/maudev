@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom";
-import { CalendarClock, Mail, MapPin, MessageCircle } from "lucide-react";
+import { Mail, MapPin, MessageCircle } from "lucide-react";
 import Logo from "@/components/landing/Logo";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
 import { CTA_MESSAGE } from "@/data/site";
-import { CAL_URL } from "@/data/site";
 import { listaCapacidades } from "@shared/oferta";
 import { trackAction } from "@/lib/MetaPixelTracker";
 
@@ -35,15 +34,6 @@ export default function Footer() {
                 className="footer-link inline-flex items-center gap-2"
               >
                 <MessageCircle className="h-4 w-4 shrink-0" aria-hidden="true" /> WhatsApp
-              </a>
-              <a
-                href={CAL_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => trackAction("agendar_click", { ubicacion: "footer" })}
-                className="footer-link inline-flex items-center gap-2"
-              >
-                <CalendarClock className="h-4 w-4 shrink-0" aria-hidden="true" /> Agendar 30 min
               </a>
             </div>
 

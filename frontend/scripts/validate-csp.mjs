@@ -86,7 +86,6 @@ try {
   await context.addInitScript(() => {
     localStorage.setItem("maudev_consent_v2", JSON.stringify({ version: 2, analytics: true, marketing: true }));
     localStorage.setItem("theme", "light");
-    sessionStorage.setItem("chat_seen", "1");
   });
 
   // La cabecera viaja en la respuesta del documento, como la pondrá Cloudflare.

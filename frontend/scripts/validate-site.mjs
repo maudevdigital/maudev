@@ -67,7 +67,6 @@ try {
   await context.addInitScript(() => {
     localStorage.setItem("maudev_consent_v2", JSON.stringify({ version: 2, analytics: false, marketing: false }));
     localStorage.setItem("theme", "light");
-    sessionStorage.setItem("chat_seen", "1");
   });
 
   for (const route of routes) {
@@ -219,7 +218,6 @@ try {
       if (consent) localStorage.setItem("maudev_consent_v2", JSON.stringify(consent));
       if (legacy) localStorage.setItem("maudev_consent_v1", legacy);
       localStorage.setItem("theme", "light");
-      sessionStorage.setItem("chat_seen", "1");
     }, [escenario.consent ?? null, escenario.legacy ?? null]);
 
     const consentPage = await consentContext.newPage();

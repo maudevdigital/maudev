@@ -323,7 +323,7 @@
   overflow: hidden;
   border-radius: 1rem;
   background: hsl(172 42% 20%);
-  padding: clamp(2rem, 7vw, 6rem);
+  padding: clamp(1.75rem, 4vw, 2.75rem);
 }
 
 .btn {
@@ -678,7 +678,68 @@ p { text-wrap: pretty; }
 .btn-ghost[aria-current="page"] { color: hsl(var(--primary)); border-color: hsl(var(--primary) / 0.4); }
 
 /* Partículas del hero y del cierre (ver ParticleField.jsx). */
-.hero-particles { z-index: -1; opacity: 0.36; mask-image: linear-gradient(90deg, transparent, black 70%, transparent); }
-.closing-particles { opacity: 0.3; }
+/* Una sola capa fija detrás de todo el sitio público: acompaña al desplazamiento
+   y queda bajo el contenido gracias al `isolation: isolate` de la página. Tenue
+   para no competir con el texto. */
+.fondo-particles { position: fixed; z-index: -1; opacity: 0.28; }
 .particle-field[data-paused="true"] .particle { animation-play-state: paused; }
 @media (prefers-reduced-motion: reduce) { .particle-field { display: none; } }
+
+/* Botón flotante de WhatsApp: abre el chat directo. Respeta la zona segura del
+   iPhone y queda bajo el aviso de cookies mientras este esté abierto. */
+.boton-whatsapp {
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 9999px;
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  box-shadow: 0 10px 26px hsl(var(--primary) / 0.32);
+  transition: transform 180ms cubic-bezier(0.2, 0.7, 0.3, 1), box-shadow 240ms ease;
+}
+.boton-whatsapp:focus-visible { outline: 3px solid hsl(var(--ring)); outline-offset: 3px; }
+.boton-whatsapp:active { transform: scale(0.94); transition-duration: 100ms; }
+@media (hover: hover) and (pointer: fine) {
+  .boton-whatsapp:hover { transform: translateY(-2px); box-shadow: 0 16px 34px hsl(var(--primary) / 0.4); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .boton-whatsapp { transition: none; }
+  .boton-whatsapp:hover, .boton-whatsapp:active { transform: none; }
+}
+@media print { .whatsapp-flotante { display: none; } }
+
+/* WhatsApp flotante con burbuja de invitación. */
+.whatsapp-flotante {
+  position: fixed;
+  right: 1.25rem;
+  bottom: calc(1.25rem + env(safe-area-inset-bottom));
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.75rem;
+}
+.whatsapp-burbuja {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.25rem;
+  max-width: 16rem;
+  padding: 0.75rem 0.5rem 0.75rem 1rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: 1rem 1rem 0.25rem 1rem;
+  background: hsl(var(--card));
+  box-shadow: 0 12px 30px hsl(var(--ink) / 0.14);
+  font-size: 0.875rem;
+  line-height: 1.4;
+  /* Nace desde el botón (abajo a la derecha), no desde el centro. */
+  transform-origin: bottom right;
+  animation: burbuja-entra 220ms cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+@keyframes burbuja-entra {
+  from { opacity: 0; transform: translateY(6px) scale(0.96); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .whatsapp-burbuja { animation-name: burbuja-aparece; }
+  @keyframes burbuja-aparece { from { opacity: 0; } }
+}

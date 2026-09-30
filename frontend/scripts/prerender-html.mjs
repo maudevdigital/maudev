@@ -72,7 +72,6 @@ try {
   await contexto.addInitScript(() => {
     localStorage.setItem("maudev_consent_v2", JSON.stringify({ version: 2, analytics: false, marketing: false }));
     localStorage.setItem("theme", "light");
-    sessionStorage.setItem("chat_seen", "1");
   });
 
   for (const ruta of rutas) {

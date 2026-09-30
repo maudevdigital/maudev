@@ -3,14 +3,12 @@ import { Link } from "react-router-dom";
 import { getFeaturedProjects } from "@/data/projects";
 import { trackAction } from "@/lib/MetaPixelTracker";
 import CtaButton from "@/components/landing/CtaButton";
-import ParticleField from "@/components/landing/ParticleField";
 
 const project = getFeaturedProjects()[0];
 
 export default function Hero() {
   return (
     <section className="hero-section" aria-labelledby="hero-title">
-      <ParticleField className="hero-particles" />
       <div className="site-container">
         <div className="hero-layout">
           <div className="hero-copy">

@@ -4,8 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="color-scheme" content="light dark" />
     <!-- Color de la barra superior del navegador móvil según preferencia del sistema -->
-    <meta name="theme-color" content="#faf8f5" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#121c1b" media="(prefers-color-scheme: dark)" />
+    <!-- Color de la barra del sistema en el celular (hora, batería). Lo fija el
+         script de abajo según el tema elegido, no según el del teléfono. -->
+    <meta name="theme-color" content="#faf8f5" />
     <script>
       // Tema claro/oscuro: respeta la elección manual del usuario (localStorage
       // "theme", seteado por el toggle del navbar). Si no hay elección guardada,
@@ -16,6 +17,9 @@
         try { stored = localStorage.getItem('theme'); } catch (e) {}
         var apply = function (isDark) {
           document.documentElement.classList.toggle('dark', isDark);
+          // Mismos valores que --background claro y oscuro (src/index.css).
+          var meta = document.querySelector('meta[name="theme-color"]');
+          if (meta) meta.setAttribute('content', isDark ? '#121c1b' : '#faf8f5');
         };
         apply(stored ? stored === 'dark' : mq.matches);
         var onSystemChange = function (e) {
@@ -30,11 +34,11 @@
     </script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Diseñamos y programamos sitios web rápidos y claros para empresas y emprendedores en Chile. Landing desde $100.000 y sitio corporativo desde $290.000, con precio cerrado por escrito." />
+    <meta name="description" content="Adecuación a la Ley 21.719, inteligencia artificial aplicada, desarrollo web y soporte para empresas en Chile. Precios publicados." />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://maudev.cl/" />
-    <meta property="og:title" content="Diseño y desarrollo de páginas web en Chile · Maudev" />
-    <meta property="og:description" content="Sitios web rápidos y claros para empresas en Chile. Precio cerrado por escrito, accesos a tu nombre y mantención mensual." />
+    <meta property="og:title" content="Ley 21.719, IA aplicada y desarrollo web en Chile · Maudev" />
+    <meta property="og:description" content="Adecuación a la Ley 21.719, inteligencia artificial aplicada, desarrollo web y soporte para empresas en Chile. Precios publicados." />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Maudev" />
     <meta property="og:locale" content="es_CL" />
@@ -43,10 +47,10 @@
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Diseño y desarrollo de páginas web en Chile · Maudev" />
-    <meta name="twitter:description" content="Sitios web rápidos y claros para empresas en Chile. Precio cerrado por escrito, accesos a tu nombre y mantención mensual." />
+    <meta name="twitter:title" content="Ley 21.719, IA aplicada y desarrollo web en Chile · Maudev" />
+    <meta name="twitter:description" content="Adecuación a la Ley 21.719, inteligencia artificial aplicada, desarrollo web y soporte para empresas en Chile. Precios publicados." />
     <meta name="twitter:image" content="https://maudev.cl/og-image.png" />
-    <title>Diseño y desarrollo de páginas web en Chile · Maudev</title>
+    <title>Ley 21.719, IA aplicada y desarrollo web en Chile · Maudev</title>
     <!-- Preconnect a orígenes críticos (acelera fuentes y datos → mejor LCP). -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

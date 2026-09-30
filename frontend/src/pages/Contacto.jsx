@@ -317,8 +317,7 @@ export default function Contacto() {
                 <h3 className="font-display text-xl font-bold tracking-[-0.02em]">Si prefieres no escribir un formulario</h3>
                 <p className="mt-4 leading-relaxed text-muted-foreground">
                   WhatsApp funciona igual de bien y suele ser más rápido para resolver una duda
-                  puntual. Y si prefieres conversarlo, puedes agendar treinta minutos directamente en
-                  el calendario, sin pasar por acá.
+                  puntual.
                 </p>
                 <p className="mt-4 leading-relaxed text-muted-foreground">
                   Los precios están publicados en la página de cada servicio (por ejemplo,{" "}

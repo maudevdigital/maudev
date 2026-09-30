@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { CalendarClock, KeyRound, Menu, Moon, Sun, X } from "lucide-react";
+import { KeyRound, Menu, Moon, Sun, X } from "lucide-react";
 import Logo from "@/components/landing/Logo";
 import CtaButton from "@/components/landing/CtaButton";
 import { headerActions } from "@/data/site";
@@ -128,6 +128,8 @@ export default function Navbar() {
     const next = !dark;
     setDark(next);
     document.documentElement.classList.toggle("dark", next);
+    // La barra del sistema en el celular sigue al tema elegido (ver index.html).
+    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", next ? "#121c1b" : "#faf8f5");
     try {
       localStorage.setItem("theme", next ? "dark" : "light");
     } catch {
@@ -146,7 +148,20 @@ export default function Navbar() {
         className="site-header-inner"
       >
         <div className="flex h-18 items-center justify-between gap-3">
-          <Link to="/" aria-label="Maudev, ir al inicio" className="group flex shrink-0 items-center gap-2.5">
+          <Link
+            to="/"
+            aria-label="Maudev, ir al inicio"
+            className="group flex shrink-0 items-center gap-2.5"
+            onClick={(event) => {
+              // Desde otra página, el router lleva a la portada y ScrollToTop la
+              // deja arriba. Ya en la portada, el enlace no navegaría: se sube.
+              if (pathname !== "/") return;
+              event.preventDefault();
+              window.history.replaceState(null, "", "/");
+              const suave = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+              window.scrollTo({ top: 0, behavior: suave ? "smooth" : "instant" });
+            }}
+          >
             <Logo size={28} className="text-primary transition-transform duration-200 group-hover:rotate-6" />
             <span className="text-[1.05rem] font-extrabold tracking-[-0.04em] text-foreground">
               mau<span className="text-primary">dev</span>
@@ -193,17 +208,6 @@ export default function Navbar() {
               <KeyRound className="h-4 w-4" aria-hidden="true" />
               <span className="hidden xl:inline">Portal clientes</span>
             </Link>
-            <a
-              href={headerActions.agendar.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={headerActions.agendar.label}
-              title={headerActions.agendar.label}
-              className="btn btn-ghost h-10 rounded-lg! px-3 text-sm xl:px-3.5"
-            >
-              <CalendarClock className="h-4 w-4" aria-hidden="true" />
-              <span className="hidden xl:inline">{headerActions.agendar.label}</span>
-            </a>
             <CtaButton size="md" context="header" label={headerActions.cotizar.label} className="h-10! px-5!" />
           </div>
 
@@ -270,15 +274,6 @@ export default function Navbar() {
 
               <div className="shrink-0 space-y-2.5 border-t border-border px-4 py-4">
                 <CtaButton size="lg" context="menu-movil" label={headerActions.cotizar.label} full />
-                <a
-                  href={headerActions.agendar.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn-ghost h-12 w-full rounded-lg! text-sm"
-                >
-                  <CalendarClock className="h-4 w-4" aria-hidden="true" />
-                  {headerActions.agendar.label}
-                </a>
               </div>
             </div>
           </nav>

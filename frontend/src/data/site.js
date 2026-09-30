@@ -9,12 +9,7 @@ export const founder = {
   linkedin: null,
 };
 
-// Agendar sale del sitio hacia Cal.com. Sin parámetros de fecha: dejarían el
-// calendario anclado a un día que ya pasó.
-export const CAL_URL = "https://cal.com/maudev/30min";
-
 export const headerActions = {
-  agendar: { label: "Agendar", href: CAL_URL },
   cotizar: { label: "Cotizar proyecto" },
 };
 

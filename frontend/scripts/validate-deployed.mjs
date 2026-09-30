@@ -19,7 +19,6 @@ for (const consent of [
   await ctx.addInitScript((v) => {
     localStorage.setItem("maudev_consent_v2", JSON.stringify(v));
     localStorage.setItem("theme", "light");
-    sessionStorage.setItem("chat_seen", "1");
   }, consent.valor);
 
   const page = await ctx.newPage();

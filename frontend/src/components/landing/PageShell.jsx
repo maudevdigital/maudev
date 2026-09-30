@@ -1,6 +1,7 @@
 import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
 import PointerGlow from "@/components/landing/PointerGlow";
+import ParticleField from "@/components/landing/ParticleField";
 import { cn } from "@/lib/utils";
 
 // Shell de página: Navbar + contenido + Footer sobre el fondo del sitio.
@@ -14,6 +15,7 @@ export default function PageShell({ children, className }) {
   return (
     <div className={cn("min-h-screen isolate bg-background text-foreground", className)}>
       <PointerGlow />
+      <ParticleField className="fondo-particles" />
       <Navbar />
       {children}
       <Footer />
