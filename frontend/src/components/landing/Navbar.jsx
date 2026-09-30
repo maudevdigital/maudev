@@ -130,6 +130,7 @@ export default function Navbar() {
     document.documentElement.classList.toggle("dark", next);
     // La barra del sistema en el celular sigue al tema elegido (ver index.html).
     document.querySelector('meta[name="theme-color"]')?.setAttribute("content", next ? "#121c1b" : "#faf8f5");
+    document.querySelector('meta[name="color-scheme"]')?.setAttribute("content", next ? "dark" : "light");
     try {
       localStorage.setItem("theme", next ? "dark" : "light");
     } catch {

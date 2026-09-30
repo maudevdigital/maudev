@@ -7,6 +7,8 @@ export interface Bindings {
   ACCESS_AUD: string; // "Application Audience (AUD) Tag" de la app de Access
   ADMIN_LOCAL?: string; // solo desarrollo: ver auth/admin.ts
   LIMITE_TOKEN?: RateLimit;
+  GITHUB_REPO: string; // "dueño/repositorio" para "Actualizar sitio"
+  GITHUB_TOKEN?: string; // secreto: token con permiso de Actions en ese repo
 }
 
 export interface SesionCliente {

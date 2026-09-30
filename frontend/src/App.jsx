@@ -18,6 +18,8 @@ const About = lazy(() => import('./pages/About'));
 const Contacto = lazy(() => import('./pages/Contacto'));
 const Ley21719 = lazy(() => import('./pages/Ley21719'));
 const Servicio = lazy(() => import('./pages/Servicio'));
+const Guias = lazy(() => import('./pages/Guias'));
+const Guia = lazy(() => import('./pages/Guia'));
 const Terminos = lazy(() => import('./pages/Terminos'));
 const Privacidad = lazy(() => import('./pages/Privacidad'));
 const EliminacionDatos = lazy(() => import('./pages/EliminacionDatos'));
@@ -30,6 +32,8 @@ const AdminClientes = lazy(() => import('./portal/admin/Clientes'));
 const AdminProyectos = lazy(() => import('./portal/admin/Proyectos'));
 const AdminContactos = lazy(() => import('./portal/admin/Contactos'));
 const AdminDerechos = lazy(() => import('./portal/admin/Derechos'));
+const AdminGuias = lazy(() => import('./portal/admin/Guias'));
+const AdminGuiaEditor = lazy(() => import('./portal/admin/GuiaEditor'));
 const AdminCliente = lazy(() => import('./portal/admin/Cliente'));
 const AdminAuditoria = lazy(() => import('./portal/admin/Auditoria'));
 
@@ -76,6 +80,8 @@ function App() {
             <Route path="/inteligencia-artificial" element={<Servicio id="ia" />} />
             <Route path="/desarrollo" element={<Servicio id="desarrollo" />} />
             <Route path="/soporte" element={<Servicio id="soporte" />} />
+            <Route path="/guias" element={<Guias />} />
+            <Route path="/guias/:slug" element={<Guia />} />
             <Route path="/casos" element={<Cases />} />
             <Route path="/casos/:projectId" element={<CasoEstudio />} />
             <Route path="/nosotros" element={<About />} />
@@ -92,6 +98,9 @@ function App() {
             <Route path="/portal/admin/proyectos" element={<AdminProyectos />} />
             <Route path="/portal/admin/contactos" element={<AdminContactos />} />
             <Route path="/portal/admin/derechos" element={<AdminDerechos />} />
+            <Route path="/portal/admin/guias" element={<AdminGuias />} />
+            <Route path="/portal/admin/guias/nueva" element={<AdminGuiaEditor />} />
+            <Route path="/portal/admin/guias/:id" element={<AdminGuiaEditor />} />
             <Route path="/portal/admin/clientes/:id" element={<AdminCliente />} />
             <Route path="/portal/admin/auditoria" element={<AdminAuditoria />} />
 

@@ -743,3 +743,29 @@ p { text-wrap: pretty; }
   .whatsapp-burbuja { animation-name: burbuja-aparece; }
   @keyframes burbuja-aparece { from { opacity: 0; } }
 }
+
+/* Texto de las guías (HTML generado desde Markdown). */
+.guia-contenido { font-size: 1.0625rem; line-height: 1.75; color: hsl(var(--foreground) / 0.9); }
+.guia-contenido > * + * { margin-top: 1.1em; }
+.guia-contenido h2 { margin-top: 2.2em; font-family: var(--font-display); font-size: 1.6rem; font-weight: 600; line-height: 1.2; letter-spacing: -0.02em; color: hsl(var(--foreground)); scroll-margin-top: 7rem; }
+.guia-contenido h3 { margin-top: 1.8em; font-size: 1.2rem; font-weight: 600; color: hsl(var(--foreground)); }
+.guia-contenido ul, .guia-contenido ol { padding-left: 1.3em; }
+.guia-contenido ul { list-style: disc; }
+.guia-contenido ol { list-style: decimal; }
+.guia-contenido li + li { margin-top: 0.45em; }
+.guia-contenido li::marker { color: hsl(var(--primary)); }
+.guia-contenido strong { color: hsl(var(--foreground)); font-weight: 600; }
+.guia-contenido a { color: hsl(var(--primary)); font-weight: 500; text-decoration: underline; text-underline-offset: 3px; }
+.guia-contenido code { padding: 0.1em 0.35em; border-radius: 0.3rem; background: hsl(var(--secondary)); font-family: var(--font-mono); font-size: 0.88em; }
+.guia-contenido table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+.guia-contenido th, .guia-contenido td { padding: 0.6rem 0.75rem; border-bottom: 1px solid hsl(var(--border)); text-align: left; vertical-align: top; }
+.guia-contenido th { font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: hsl(var(--muted-foreground)); }
+.guia-contenido blockquote { padding-left: 1rem; border-left: 3px solid hsl(var(--primary)); color: hsl(var(--muted-foreground)); }
+
+/* Barra del sistema en el celular. Safari de iOS 26 ya no lee theme-color: tiñe
+   la zona de la hora con el fondo de la página, así que el fondo va también en
+   <html>. color-scheme hace que Chrome y los controles nativos sigan el tema
+   ELEGIDO en el sitio, no el del teléfono. */
+html { background-color: hsl(var(--background)); color-scheme: light; }
+html.dark { color-scheme: dark; }
+

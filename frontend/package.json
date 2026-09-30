@@ -4,6 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "predev": "node scripts/descargar-guias.mjs",
+    "prebuild": "node scripts/descargar-guias.mjs",
     "dev": "vite",
     "build": "vite build",
     "postbuild": "node scripts/prerender-meta.mjs && node scripts/gen-sitemap.mjs",
@@ -21,6 +23,7 @@
     "@tailwindcss/vite": "^4.2.4",
     "clsx": "^2.1.1",
     "lucide-react": "^1.14.0",
+    "marked": "^18.0.14",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "react-router-dom": "^7.18.2",

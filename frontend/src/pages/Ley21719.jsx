@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Scale } from "lucide-react";
+import { ArrowRight, BookOpen, Info, Scale } from "lucide-react";
 import Breadcrumbs from "@/components/landing/Breadcrumbs";
 import FinalCta from "@/components/landing/FinalCta";
 import PageShell from "@/components/landing/PageShell";
@@ -8,6 +8,12 @@ import { capacidades } from "@shared/oferta";
 import Planes from "@/components/landing/Planes";
 import { useSeo } from "@/lib/useSeo";
 import { trackAction } from "@/lib/MetaPixelTracker";
+import guiasIndice from "@/data/guias-indice.json";
+
+const guias = guiasIndice.filter((g) => g.categoria === "ley-21719");
+const LEY_BCN = "https://www.bcn.cl/leychile/navegar?idNorma=1209272";
+// Cambia cuando cambie el estado de la ley (proyecto de prórroga, reglamentos).
+const ACTUALIZADO = "30 de septiembre de 2026";
 
 const oferta = capacidades["ley-21719"];
 const VIGENCIA = new Date("2026-12-01T00:00:00-03:00");
@@ -38,7 +44,7 @@ const preguntas = [
 const faqs = [
   { q: "¿La ley aplica a una PYME?", a: "Sí. Aplica a quien trata datos personales, sin importar el tamaño. Un formulario de contacto, una lista de clientes o un píxel de Meta ya son tratamiento de datos." },
   { q: "¿Maudev entrega asesoría legal?", a: "No. Hacemos la adecuación técnica: sitio, formularios, cookies, canal de derechos, seguridad y documentación. La interpretación legal y la redacción final de tus políticas le corresponden a un abogado, y te recomendamos uno si no tienes." },
-  { q: "¿Desde cuándo rige?", a: "Desde el 1 de diciembre de 2026. La ley se publicó el 13 de diciembre de 2024 y dio dos años para adecuarse." },
+  { q: "¿Desde cuándo rige?", a: "La fecha legal es el 1 de diciembre de 2026. El 1 de septiembre de 2026 el Gobierno ingresó un proyecto para postergarla al 1 de diciembre de 2027; mientras no se apruebe, la fecha no cambia." },
   { q: "¿Mi sitio lo hizo otra persona, igual pueden adecuarlo?", a: "Sí. El diagnóstico parte revisando lo que existe; si algún cambio requiere acceso que no tienes, lo decimos en el informe." },
   { q: "¿Qué pasa después de la adecuación?", a: "Cada nuevo formulario, herramienta o proveedor puede volver a abrir una brecha. El plan con mantención revisa eso todos los meses y gestiona las solicitudes ARCOP que lleguen." },
 ];
@@ -157,6 +163,18 @@ export default function Ley21719() {
               <a href="#autodiagnostico" className="btn btn-primary h-14 px-8 text-base">Hacer el autodiagnóstico gratis</a>
               <a href="#planes" className="btn btn-ghost h-14 px-8 text-base">Ver planes</a>
             </div>
+            {/* Estado de la ley: quien ya leyó de la prórroga desconfía de un contador que la ignora. */}
+            <div className="mt-10 flex max-w-2xl gap-3 rounded-xl border border-border bg-card p-4 text-sm" role="note">
+              <Info className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+              <p className="leading-relaxed text-muted-foreground">
+                <strong className="text-foreground">Proyecto de prórroga:</strong> el Gobierno propuso mover la vigencia al 1 de diciembre de 2027.
+                Mientras el Congreso no lo apruebe, la fecha sigue siendo el 1 de diciembre de 2026.{" "}
+                <Link to="/guias/prorroga-ley-21719" className="font-semibold text-primary hover:underline">Qué cambia y qué no</Link>
+              </p>
+            </div>
+            <p className="mt-4 font-mono text-xs text-muted-foreground">
+              Actualizado el {ACTUALIZADO} · <a href={LEY_BCN} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-primary">Texto oficial de la ley (BCN)</a>
+            </p>
           </div>
         </section>
 
@@ -208,6 +226,26 @@ export default function Ley21719() {
             </div>
           </div>
         </section>
+
+        {guias.length > 0 && (
+          <section className="section-pad border-t border-border" aria-labelledby="guias-ley">
+            <div className="site-container">
+              <span className="eyebrow">Guías</span>
+              <h2 id="guias-ley" className="section-title mt-4">Lo que tienes que saber, explicado.</h2>
+              <ul className="mt-10 grid gap-4 md:grid-cols-3">
+                {guias.map((g) => (
+                  <li key={g.slug}>
+                    <Link to={`/guias/${g.slug}`} className="panel-hover flex h-full flex-col rounded-2xl border border-border bg-card p-5">
+                      <BookOpen className="h-5 w-5 text-primary" aria-hidden="true" />
+                      <h3 className="mt-4 font-bold leading-snug">{g.titulo}</h3>
+                      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{g.descripcion}</p>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+        )}
 
         <section className="section-pad border-t border-border">
           <div className="site-container grid gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:gap-20">

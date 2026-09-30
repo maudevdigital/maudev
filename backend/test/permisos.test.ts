@@ -49,10 +49,11 @@ beforeAll(async () => {
   env = { ...proxy.env, ENTORNO: "local", ADMIN_LOCAL: ADMIN, LIMITE_TOKEN: undefined };
   const dir = join(import.meta.dirname, "../migrations");
   for (const archivo of readdirSync(dir).sort()) {
+    // Sentencias separadas por ";" al final de línea; solo se quitan las líneas
+    // que son comentario (el contenido Markdown de las guías trae "---").
     const sentencias = readFileSync(join(dir, archivo), "utf8")
-      .replace(/--.*$/gm, "")
-      .split(";")
-      .map((s) => s.trim())
+      .split(/;\s*\n/)
+      .map((s) => s.split("\n").filter((l) => !l.trim().startsWith("--")).join("\n").trim())
       .filter(Boolean);
     await env.DB.batch(sentencias.map((s) => env.DB.prepare(s)));
   }
@@ -214,5 +215,26 @@ describe("métricas del proyecto", () => {
       const r = await app.request(`${PROD}/api${ruta}`, { headers: { Cookie: s.cookie } }, { ...env, ENTORNO: "produccion" });
       expect(r.status).toBe(401);
     }
+  });
+
+  it("guías: el admin crea, edita y publica; lo público solo ve lo publicado", async () => {
+    const pub = async () => (await (await pedir("/publico/articulos")).json() as { articulos: { slug: string }[] }).articulos.map((a) => a.slug);
+    expect(await pub()).toEqual(expect.arrayContaining(["prorroga-ley-21719", "cookies-ley-21719", "formularios-derechos-arcop-ley-21719"]));
+
+    const nuevo = { slug: "guia-de-prueba", titulo: "Una guía de prueba para el panel", descripcion: "Descripción suficientemente larga para pasar la validación de cincuenta caracteres.", categoria: "general", contenido: "Contenido de prueba con más de cincuenta caracteres para que sea válido." };
+    const { id } = await (await comoAdmin("/admin/articulos", nuevo)).json() as { id: string };
+    expect(await pub()).not.toContain("guia-de-prueba"); // nace como borrador
+    expect((await comoAdmin("/admin/articulos", nuevo)).status).toBe(409); // slug repetido
+    expect((await comoAdmin(`/admin/articulos/${id}`, { ...nuevo, titulo: "Título editado de la guía" }, "PUT")).status).toBe(200);
+    expect((await comoAdmin(`/admin/articulos/${id}/estado`, { estado: "publicado" })).status).toBe(200);
+    expect(await pub()).toContain("guia-de-prueba");
+    expect((await comoAdmin("/admin/articulos", { ...nuevo, slug: "Mal Slug!" })).status).toBe(400);
+    expect((await comoAdmin("/admin/publicar-sitio", {})).status).toBe(501); // sin token en pruebas
+    expect((await comoAdmin(`/admin/articulos/${id}`, undefined, "DELETE")).status).toBe(200);
+
+    const a = await clienteConToken("Mu");
+    const s = await canjear(a.token);
+    const r = await app.request(`${PROD}/api/admin/articulos`, { headers: { Cookie: s.cookie } }, { ...env, ENTORNO: "produccion" });
+    expect(r.status).toBe(401);
   });
 });

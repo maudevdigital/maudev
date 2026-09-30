@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import { rutasIndexables as rutas } from "./paginas.mjs";
+import { paginas, rutasIndexables as rutas } from "./paginas.mjs";
 
 // Genera `dist/sitemap.xml` desde la misma fuente que el prerender.
 //
@@ -18,7 +18,11 @@ const dist = path.resolve(import.meta.dirname, "..", "dist");
 const xml = [
   '<?xml version="1.0" encoding="UTF-8"?>',
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-  ...rutas.map((ruta) => `  <url><loc>${origin}${ruta === "/" ? "/" : ruta}</loc></url>`),
+  // <lastmod> solo donde la fecha es real: la última edición de cada guía.
+  ...rutas.map((ruta) => {
+    const lastmod = paginas.find((p) => p.route === ruta)?.lastmod;
+    return `  <url><loc>${origin}${ruta === "/" ? "/" : ruta}</loc>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ""}</url>`;
+  }),
   "</urlset>",
   "",
 ].join("\n");

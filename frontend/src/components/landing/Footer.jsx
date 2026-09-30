@@ -56,6 +56,7 @@ export default function Footer() {
             <h2 className="footer-title">Empresa</h2>
             <ul className="mt-4 space-y-2.5">
               <li><Link to="/casos" className="footer-link">Casos</Link></li>
+              <li><Link to="/guias" className="footer-link">Guías</Link></li>
               <li><Link to="/nosotros" className="footer-link">Nosotros</Link></li>
               <li><Link to="/contacto" className="footer-link">Contacto</Link></li>
               <li><Link to="/portal/ingresar" className="footer-link">Portal clientes</Link></li>

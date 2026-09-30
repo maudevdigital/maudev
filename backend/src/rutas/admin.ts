@@ -225,6 +225,102 @@ admin.post("/derechos/:folio/responder", async (c) => {
   return c.json({ ok: true });
 });
 
+// ── Guías (artículos del sitio) ─────────────────────────────────────────────
+
+const CATEGORIAS = ["ley-21719", "ia", "desarrollo", "soporte", "general"] as const;
+const esquemaArticulo = z.object({
+  slug: z.string().trim().toLowerCase().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, "Solo minúsculas, números y guiones").max(80),
+  titulo: z.string().trim().min(10).max(120),
+  descripcion: z.string().trim().min(50, "La descripción para Google necesita al menos 50 caracteres").max(170),
+  categoria: z.enum(CATEGORIAS),
+  contenido: z.string().min(50).max(60000),
+});
+
+admin.get("/articulos", async (c) => {
+  const { results } = await c.env.DB.prepare(
+    "SELECT id, slug, titulo, categoria, estado, publicado_el, actualizado_el, length(contenido) AS largo FROM articulos ORDER BY actualizado_el DESC, titulo",
+  ).all();
+  return c.json({ articulos: results });
+});
+
+admin.get("/articulos/:id", async (c) => {
+  const a = await c.env.DB.prepare("SELECT * FROM articulos WHERE id = ?").bind(c.req.param("id")).first();
+  return a ? c.json({ articulo: a }) : noEncontrado(c);
+});
+
+admin.post("/articulos", async (c) => {
+  const cuerpo = await leer(c.req, esquemaArticulo);
+  if (!cuerpo.success) return c.json({ error: cuerpo.error.issues[0]?.message ?? "Datos inválidos" }, 400);
+  const d = cuerpo.data;
+  const id = nuevoId();
+  try {
+    await c.env.DB.prepare(
+      "INSERT INTO articulos (id, slug, titulo, descripcion, categoria, contenido, actualizado_el) VALUES (?, ?, ?, ?, ?, ?, ?)",
+    ).bind(id, d.slug, d.titulo, d.descripcion, d.categoria, d.contenido, hoyChile()).run();
+  } catch {
+    return c.json({ error: "Ya existe una guía con esa dirección (slug)" }, 409);
+  }
+  await auditar(c, "articulo.crear", { entidad: "articulo", entidadId: id, detalle: { slug: d.slug } });
+  return c.json({ id }, 201);
+});
+
+admin.put("/articulos/:id", async (c) => {
+  const id = c.req.param("id");
+  const cuerpo = await leer(c.req, esquemaArticulo);
+  if (!cuerpo.success) return c.json({ error: cuerpo.error.issues[0]?.message ?? "Datos inválidos" }, 400);
+  const d = cuerpo.data;
+  try {
+    const r = await c.env.DB.prepare(
+      "UPDATE articulos SET slug = ?, titulo = ?, descripcion = ?, categoria = ?, contenido = ?, actualizado_el = ? WHERE id = ?",
+    ).bind(d.slug, d.titulo, d.descripcion, d.categoria, d.contenido, hoyChile(), id).run();
+    if (!r.meta.changes) return noEncontrado(c);
+  } catch {
+    return c.json({ error: "Ya existe una guía con esa dirección (slug)" }, 409);
+  }
+  await auditar(c, "articulo.editar", { entidad: "articulo", entidadId: id, detalle: { slug: d.slug } });
+  return c.json({ ok: true });
+});
+
+admin.post("/articulos/:id/estado", async (c) => {
+  const id = c.req.param("id");
+  const cuerpo = await leer(c.req, z.object({ estado: z.enum(["borrador", "publicado"]) }));
+  if (!cuerpo.success) return c.json({ error: "Estado inválido" }, 400);
+  const r = await c.env.DB.prepare(
+    "UPDATE articulos SET estado = ?, publicado_el = CASE WHEN ? = 'publicado' THEN coalesce(publicado_el, ?) ELSE publicado_el END WHERE id = ?",
+  ).bind(cuerpo.data.estado, cuerpo.data.estado, hoyChile(), id).run();
+  if (!r.meta.changes) return noEncontrado(c);
+  await auditar(c, `articulo.${cuerpo.data.estado === "publicado" ? "publicar" : "despublicar"}`, { entidad: "articulo", entidadId: id });
+  return c.json({ ok: true });
+});
+
+admin.delete("/articulos/:id", async (c) => {
+  const id = c.req.param("id");
+  const r = await c.env.DB.prepare("DELETE FROM articulos WHERE id = ?").bind(id).run();
+  if (!r.meta.changes) return noEncontrado(c);
+  await auditar(c, "articulo.eliminar", { entidad: "articulo", entidadId: id });
+  return c.json({ ok: true });
+});
+
+// "Actualizar sitio": pide a GitHub que reconstruya y despliegue. El build
+// descarga las guías publicadas, así que un cambio de guía se ve en 2-3 minutos.
+admin.post("/publicar-sitio", async (c) => {
+  if (!c.env.GITHUB_TOKEN) {
+    return c.json({ error: "Falta configurar GITHUB_TOKEN en el Worker (ver docs/plan-servicios-portal.md)." }, 501);
+  }
+  const res = await fetch(`https://api.github.com/repos/${c.env.GITHUB_REPO}/actions/workflows/deploy.yml/dispatches`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${c.env.GITHUB_TOKEN}`,
+      Accept: "application/vnd.github+json",
+      "User-Agent": "maudev-api",
+    },
+    body: JSON.stringify({ ref: "main" }),
+  });
+  if (!res.ok) return c.json({ error: `GitHub respondió ${res.status}` }, 502);
+  await auditar(c, "sitio.actualizar");
+  return c.json({ ok: true });
+});
+
 // ── Auditoría ────────────────────────────────────────────────────────────────
 
 admin.get("/auditoria", async (c) => {

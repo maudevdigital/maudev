@@ -59,3 +59,7 @@ _legacy/
 .claude/
 .agents/
 skills-lock.json
+
+# Las genera scripts/descargar-guias.mjs antes de dev y build.
+frontend/src/data/guias.json
+frontend/src/data/guias-indice.json

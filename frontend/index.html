@@ -20,6 +20,8 @@
           // Mismos valores que --background claro y oscuro (src/index.css).
           var meta = document.querySelector('meta[name="theme-color"]');
           if (meta) meta.setAttribute('content', isDark ? '#121c1b' : '#faf8f5');
+          var esquema = document.querySelector('meta[name="color-scheme"]');
+          if (esquema) esquema.setAttribute('content', isDark ? 'dark' : 'light');
         };
         apply(stored ? stored === 'dark' : mq.matches);
         var onSystemChange = function (e) {

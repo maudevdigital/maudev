@@ -16,7 +16,8 @@
     "ADMINS": "contacto@maudev.cl,lucasmaulenr@gmail.com",
     // Se completan al crear la aplicación en Cloudflare Access:
     "ACCESS_EQUIPO": "maudevchile.cloudflareaccess.com",
-    "ACCESS_AUD": "d8f4dee20546d58261fb21e4dae97d42b1b24cd64e79fb8d588ed0a4302d1f1b"
+    "ACCESS_AUD": "d8f4dee20546d58261fb21e4dae97d42b1b24cd64e79fb8d588ed0a4302d1f1b",
+    "GITHUB_REPO": "maudevdigital/maudev"
   },
   // La misma base que ya usa workers/lead-intake: el backend la absorbe en la
   // entrega 2d y así no hay que mover datos.
@@ -44,7 +45,8 @@
         "ADMINS": "contacto@maudev.cl,lucasmaulenr@gmail.com",
         "ADMIN_LOCAL": "contacto@maudev.cl",
         "ACCESS_EQUIPO": "",
-        "ACCESS_AUD": ""
+        "ACCESS_AUD": "",
+        "GITHUB_REPO": "maudevdigital/maudev"
       },
       "d1_databases": [
         {

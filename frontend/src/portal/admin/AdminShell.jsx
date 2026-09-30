@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { ExternalLink, FolderKanban, History, Inbox, LayoutDashboard, LogOut, Scale, ShieldCheck, Users } from "lucide-react";
+import { ExternalLink, FileText, FolderKanban, History, Inbox, LayoutDashboard, LogOut, Scale, ShieldCheck, Users } from "lucide-react";
 import Logo from "@/components/landing/Logo";
 import { Aviso, Esqueleto } from "@/portal/PortalShell";
 import { api } from "@/portal/api";
@@ -15,6 +15,7 @@ const secciones = [
   { to: "/portal/admin/proyectos", label: "Proyectos", icono: FolderKanban },
   { to: "/portal/admin/contactos", label: "Contactos", icono: Inbox },
   { to: "/portal/admin/derechos", label: "Derechos ARCOP", icono: Scale },
+  { to: "/portal/admin/guias", label: "Guías", icono: FileText },
   { to: "/portal/admin/auditoria", label: "Auditoría", icono: History },
 ];
 

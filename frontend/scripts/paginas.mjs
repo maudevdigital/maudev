@@ -1,4 +1,5 @@
 import { capacidades } from "../../shared/oferta.js";
+import { readFileSync } from "node:fs";
 import { projects } from "../src/data/projects.js";
 
 // Fuente unica de las rutas del sitio.
@@ -14,6 +15,13 @@ import { projects } from "../src/data/projects.js";
 //
 // Todo lo que agregue una ruta —un servicio, un caso, una automatizacion— tiene
 // que entrar por aca y nada mas.
+
+// Las guías se publican desde el panel admin; scripts/descargar-guias.mjs deja
+// su índice antes del build. Sin archivo, no hay guías (y el build sigue).
+let guias = [];
+try {
+  guias = JSON.parse(readFileSync(new URL("../src/data/guias-indice.json", import.meta.url), "utf8"));
+} catch { /* sin guías descargadas */ }
 
 export const paginas = [
   ...Object.values(capacidades).map((c) => ({
@@ -51,6 +59,17 @@ export const paginas = [
     title: "Eliminación de datos · Maudev",
     description: "Cómo solicitar la eliminación de tus datos personales.",
   },
+  {
+    route: "/guias",
+    title: "Guías sobre la Ley 21.719 y tecnología para empresas · Maudev",
+    description: "Guías prácticas sobre la Ley 21.719 de datos personales: prórroga, cookies, formularios y derechos ARCOP, escritas desde la implementación técnica.",
+  },
+  ...guias.map((g) => ({
+    route: `/guias/${g.slug}`,
+    title: `${g.titulo} · Maudev`,
+    description: g.descripcion,
+    lastmod: g.actualizado_el,
+  })),
   ...projects.map((project) => ({
     route: `/casos/${project.id}`,
     title: `${project.title} · Caso de estudio · Maudev`,
