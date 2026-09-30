@@ -59,6 +59,14 @@ for (const page of pages) {
   await fs.writeFile(file, html);
 }
 
+// Cascarón del portal de clientes: la plantilla sin prerender y sin indexar.
+// Pages sirve /portal con este archivo y functions/portal/[[path]].js lo
+// entrega para cualquier /portal/... (sin archivo propio, Pages daría 404).
+let portalHtml = template.replace(/<title>[^<]*<\/title>/i, "<title>Portal de clientes · Maudev</title>");
+portalHtml = replaceMeta(portalHtml, "name", "robots", "noindex,nofollow");
+portalHtml = portalHtml.replace(/<link\s+rel="canonical"[^>]*>\s*/i, "");
+await fs.writeFile(path.join(dist, "portal.html"), portalHtml);
+
 const indexPath = path.join(dist, "index.html");
 const indexHtml = await fs.readFile(indexPath, "utf8");
 let homeHtml = indexHtml.replace(/<title>[^<]*<\/title>/i, `<title>${escapeHtml(homeSeo.title)}</title>`);
