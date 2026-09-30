@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { ExternalLink, FileText, FolderKanban, History, Inbox, LayoutDashboard, LogOut, Scale, ShieldCheck, Users } from "lucide-react";
 import Logo from "@/components/landing/Logo";
-import { Aviso, Esqueleto } from "@/portal/PortalShell";
 import { api } from "@/portal/api";
 import { useSeo } from "@/lib/useSeo";
 
@@ -44,9 +43,28 @@ export default function AdminShell({ titulo, children }) {
 
   useEffect(() => {
     api("/admin/yo").then(setYo).catch(setError);
+  }, []);
+  useEffect(() => {
     // En celular, la sección actual puede quedar fuera de la fila: se centra.
     filaMovil.current?.querySelector('[aria-current="page"]')?.scrollIntoView({ inline: "center", block: "nearest" });
-  }, []);
+  }, [yo]);
+
+  // Sin sesión de admin confirmada por el backend no se muestra nada del panel:
+  // ni menú ni secciones. En maudev.cl Cloudflare Access ya bloquea antes; esto
+  // cubre cualquier otro camino (un dominio sin Access, una sesión vencida).
+  if (error) {
+    return (
+      <div className="grid min-h-screen place-items-center bg-background px-4 text-center text-foreground">
+        <div>
+          <p className="font-semibold">No tienes acceso a esta página.</p>
+          <a href="/" className="mt-3 inline-block text-sm font-semibold text-primary hover:underline">Ir a maudev.cl</a>
+        </div>
+      </div>
+    );
+  }
+  if (!yo) {
+    return <div className="min-h-screen bg-background" aria-busy="true" aria-label="Verificando acceso" />;
+  }
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -57,17 +75,15 @@ export default function AdminShell({ titulo, children }) {
             <span className="font-mono text-xs uppercase tracking-[0.16em] text-muted-foreground">Admin</span>
           </Link>
           <div className="flex items-center gap-2">
-            {yo && (
-              <span className="hidden items-center gap-1.5 text-xs text-muted-foreground md:flex">
-                <ShieldCheck className="h-4 w-4 text-primary" aria-hidden="true" />
-                {yo.email}
-              </span>
-            )}
+            <span className="hidden items-center gap-1.5 text-xs text-muted-foreground md:flex">
+              <ShieldCheck className="h-4 w-4 text-primary" aria-hidden="true" />
+              {yo.email}
+            </span>
             <a href="/" className="btn btn-ghost h-9 px-3 text-sm" title="Ver el sitio">
               <ExternalLink className="h-4 w-4" aria-hidden="true" />
               <span className="hidden sm:inline">Ver sitio</span>
             </a>
-            {yo && !yo.local && (
+            {!yo.local && (
               <a href="/cdn-cgi/access/logout" className="btn btn-ghost h-9 px-3 text-sm" title="Cerrar sesión">
                 <LogOut className="h-4 w-4" aria-hidden="true" />
                 <span className="hidden sm:inline">Salir</span>
@@ -95,7 +111,7 @@ export default function AdminShell({ titulo, children }) {
               primero el código que llega a tu correo, y solo entran los correos autorizados.
             </div>
           )}
-          {error ? <Aviso tono="error">No tienes acceso al panel. {error.message}</Aviso> : yo ? children : <Esqueleto />}
+          {children}
         </main>
       </div>
     </div>

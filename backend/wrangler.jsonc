@@ -11,7 +11,11 @@
   "preview_urls": false,
   // Mismo dominio que el sitio: Pages sirve maudev.cl y este Worker atiende solo
   // /api/*. Mismo origen, así que las cookies __Host- funcionan sin CORS.
-  "routes": [{ "pattern": "maudev.cl/api/*", "zone_name": "maudev.cl" }],
+  "routes": [
+    { "pattern": "maudev.cl/api/*", "zone_name": "maudev.cl" },
+    // Todo www va a la versión sin www (ver src/index.ts).
+    { "pattern": "www.maudev.cl/*", "zone_name": "maudev.cl" }
+  ],
   "vars": {
     "SITIO": "https://maudev.cl",
     "ENTORNO": "produccion",

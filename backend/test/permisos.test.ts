@@ -237,4 +237,11 @@ describe("métricas del proyecto", () => {
     const r = await app.request(`${PROD}/api/admin/articulos`, { headers: { Cookie: s.cookie } }, { ...env, ENTORNO: "produccion" });
     expect(r.status).toBe(401);
   });
+
+  it("www.maudev.cl redirige a maudev.cl, también el panel", async () => {
+    const worker = (await import("../src/index")).default;
+    const r = await worker.fetch(new Request("https://www.maudev.cl/portal/admin?x=1"), env, {} as ExecutionContext);
+    expect(r.status).toBe(301);
+    expect(r.headers.get("location")).toBe("https://maudev.cl/portal/admin?x=1");
+  });
 });

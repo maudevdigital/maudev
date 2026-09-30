@@ -31,4 +31,16 @@ app.onError((err, c) => {
   return c.json({ error: "Error interno" }, 500);
 });
 
-export default { fetch: app.fetch };
+// www.maudev.cl → maudev.cl (301). Sin esto, www servía el sitio completo
+// duplicado para Google y el panel admin sin Cloudflare Access, que protege
+// solo maudev.cl.
+export default {
+  fetch(request: Request, env: Entorno["Bindings"], ctx: ExecutionContext) {
+    const url = new URL(request.url);
+    if (url.hostname === "www.maudev.cl") {
+      url.hostname = "maudev.cl";
+      return Response.redirect(url.toString(), 301);
+    }
+    return app.fetch(request, env, ctx);
+  },
+};
