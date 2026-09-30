@@ -20,6 +20,10 @@
 /servicios/*                     /desarrollo               301
 /precios                         /                         301
 
+# Página de enlaces de la bio de Instagram, retirada el 30 sep 2026.
+/ig                              /                         301
+/links                           /                         301
+
 # Versiones en inglés y portugués retiradas el 29 sep 2026.
 /en/contact         /contacto            301
 /pt/contato         /contacto            301

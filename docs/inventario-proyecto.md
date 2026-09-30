@@ -10,7 +10,10 @@ Leyenda: ✅ mantener · 🗑 eliminar · 🗜 compactar · ❓ decides tú
 `/precios`, automatizaciones, cotizador y multimoneda, con sus imágenes y videos),
 el inglés y el portugués, `remotion/`, `n8n/` y `docker-compose.yml` (el formulario
 envía al worker `lead-intake`, no a n8n), los generadores de carruseles y de la guía
-PDF, `validate-design.mjs`, `WorkProcess` y el botón genérico sin uso.
+PDF, `validate-design.mjs`, `WorkProcess` y el botón genérico sin uso. El 30 sep
+también: `/ig` y `/links` (301 a la portada), `api/maudev.js` (el formulario
+llama directo a `lib/leads.js`), `workers/meta-capi` (el sitio ya no le envía
+contactos; el píxel de Meta sigue) y 12 documentos de `docs/`.
 
 <details>
 <summary><b>0. Páginas públicas (18 rutas)</b></summary>
@@ -21,7 +24,6 @@ PDF, `validate-design.mjs`, `WorkProcess` y el botón genérico sin uso.
 - [ ] `/nosotros` — 🗜 el texto todavía habla de "estudio de diseño web"
 - [ ] `/contacto` — ✅
 - [ ] `/privacidad`, `/terminos`, `/eliminacion-datos` — ✅ legales (Meta exige la última)
-- [ ] `/ig` y `/links` (enlaces para la bio de Instagram) — ❓ ¿sigues usando Instagram?
 - [ ] `/blog/*` (301 o 410 del blog antiguo) — ✅ mientras Google recuerde esas URLs
 </details>
 
@@ -35,7 +37,7 @@ PDF, `validate-design.mjs`, `WorkProcess` y el botón genérico sin uso.
 <details>
 <summary><b>2. Raíz</b></summary>
 
-- [ ] `README.md` — 🗜 describe el sitio anterior; conviene reescribirlo con frontend/backend/shared
+- [ ] `README.md` — 🗜 describe el sitio anterior; conviene reescribirlo con frontend/backend/shared (y lo vigente del checklist de despliegue que se borró)
 - [ ] `.gitattributes`, `.gitignore` — ✅
 - [ ] `.github/workflows/deploy.yml` — ✅ pruebas del backend y despliegue del sitio
 - [ ] `.github/workflows/capture-portfolio.yml` — ✅ actualiza las capturas de los casos
@@ -43,17 +45,10 @@ PDF, `validate-design.mjs`, `WorkProcess` y el botón genérico sin uso.
 </details>
 
 <details>
-<summary><b>3. docs/ (13 archivos, ~2 MB de imágenes)</b></summary>
+<summary><b>3. docs/</b></summary>
 
 - [ ] `plan-servicios-portal.md` — ✅ plan vigente
 - [ ] `inventario-proyecto.md` — ✅ este archivo
-- [ ] `pagos-flow-lemon.md` — 🗜 dejar solo lo de Flow, que usará la entrega de pagos
-- [ ] `checklist-deploy.md` — 🗜 fusionar lo vigente en el README
-- [ ] `prompt-rediseno-figma.md` — 🗑 dijiste que no sirvió
-- [ ] `auditoria-post-deploy.md`, `revision-carpeta-por-carpeta.md`, `rediseno-experiencia-visual.md` — 🗑 históricos
-- [ ] `redesign/` (5 capturas, ~2 MB) y `prompts-imagenes.md` — 🗑 del rediseño anterior
-- [ ] `seo-keywords-atp.md` — ❓ palabras clave de la oferta anterior
-- [ ] `plan-ingresos-30-dias.md`, `catalogo-tech-reventa.md`, `flips-marketplace-valparaiso.md` — 🗑 personales, no son del sitio (sácalos a otra carpeta si los quieres)
 </details>
 
 <details>
@@ -73,12 +68,10 @@ PDF, `validate-design.mjs`, `WorkProcess` y el botón genérico sin uso.
 
 - [ ] `data/`: `paginas-servicio.js`, `projects.js`, `seo.js`, `site.js` — ✅
 - [ ] `pages/`: `Landing`, `Ley21719`, `Servicio` (plantilla), `Cases`, `CasoEstudio`, `Contacto`, `About`, legales — ✅
-- [ ] `pages/LinkInBio.jsx` — ❓ igual que `/ig` y `/links`
 - [ ] `components/landing/`: menú, pie, hero, servicios, planes, casos, preguntas, cierre, aviso de cookies, derechos, Turnstile — ✅
 - [ ] `components/landing/ParticleField`, `PointerGlow` — ✅ vuelven a pedido; el prerender no los guarda en el HTML
 - [ ] `components/landing/ChatWidget.jsx` — ❓ repite el botón de WhatsApp
-- [ ] `lib/MetaPixelTracker.jsx` y `workers/meta-capi/` — ❓ solo si pagas anuncios en Meta
-- [ ] `api/maudev.js` — 🗜 capa delgada sobre `lib/leads.js`; se puede fusionar
+- [ ] `lib/MetaPixelTracker.jsx` — ❓ el píxel de Meta: solo si pagas anuncios
 - [ ] `portal/` (cliente y admin) — ✅
 </details>
 
@@ -94,11 +87,9 @@ PDF, `validate-design.mjs`, `WorkProcess` y el botón genérico sin uso.
 <summary><b>7. workers/</b></summary>
 
 - [ ] `lead-intake/` (formulario, derechos, consentimiento, borrado diario) — ✅ hasta que el backend lo absorba (entrega 2d)
-- [ ] `meta-capi/` — ❓ igual que el píxel
 </details>
 
 ---
 
-**Decisiones abiertas (❓):** link in bio, ChatWidget, píxel de Meta + meta-capi y
-palabras clave. **Siguiente limpieza sugerida (🗑/🗜):** los documentos de `docs/` y
-reescribir el README.
+**Decisiones abiertas (❓):** ChatWidget y píxel de Meta. **Siguiente limpieza
+sugerida (🗜):** reescribir el README y actualizar el texto de `/nosotros`.

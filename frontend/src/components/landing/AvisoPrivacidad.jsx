@@ -59,7 +59,7 @@ export default function AvisoPrivacidad() {
             <div className="my-4 grid gap-3 sm:grid-cols-2">
               {[
                 { key: "analytics", title: "Analítica", text: "Google Analytics: visitas y uso del sitio." },
-                { key: "marketing", title: "Publicidad", text: "Meta Pixel y API de Conversiones: atribución de anuncios y contactos." },
+                { key: "marketing", title: "Publicidad", text: "Meta Pixel: atribución de anuncios y contactos." },
               ].map(({ key, title, text }) => (
                 <label key={key} className="flex cursor-pointer items-start gap-3 rounded-xl border border-border p-4">
                   <input type="checkbox" checked={preferences[key]} onChange={event => setPreferences(current => ({ ...current, [key]: event.target.checked }))} className="mt-1 h-5 w-5 shrink-0 accent-primary" />

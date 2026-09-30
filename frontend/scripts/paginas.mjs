@@ -51,12 +51,6 @@ export const paginas = [
     title: "Eliminación de datos · Maudev",
     description: "Cómo solicitar la eliminación de tus datos personales.",
   },
-  // Las dos direcciones sirven la MISMA pagina de enlaces (la de la bio de
-  // Instagram). Se prerenderizan porque tienen que responder 200, pero quedan
-  // fuera del sitemap: pedirle a Google que indexe dos URLs identicas es
-  // ofrecerle contenido duplicado, y ninguna de las dos existe para posicionar.
-  { route: "/ig", title: "Maudev · Enlaces", description: "Todo lo de Maudev en un solo lugar.", sitemap: false },
-  { route: "/links", title: "Maudev · Enlaces", description: "Todo lo de Maudev en un solo lugar.", sitemap: false },
   ...projects.map((project) => ({
     route: `/casos/${project.id}`,
     title: `${project.title} · Caso de estudio · Maudev`,

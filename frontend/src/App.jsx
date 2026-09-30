@@ -21,7 +21,6 @@ const Servicio = lazy(() => import('./pages/Servicio'));
 const Terminos = lazy(() => import('./pages/Terminos'));
 const Privacidad = lazy(() => import('./pages/Privacidad'));
 const EliminacionDatos = lazy(() => import('./pages/EliminacionDatos'));
-const LinkInBio = lazy(() => import('./pages/LinkInBio'));
 // Portal de clientes y panel admin: chunks aparte, nunca en el bundle del sitio.
 const PortalEntrar = lazy(() => import('./portal/cliente/Entrar'));
 const PortalResumen = lazy(() => import('./portal/cliente/Resumen'));
@@ -100,9 +99,6 @@ function App() {
             <Route path="/terminos" element={<Terminos />} />
             <Route path="/privacidad" element={<Privacidad />} />
             <Route path="/eliminacion-datos" element={<EliminacionDatos />} />
-
-            <Route path="/ig" element={<LinkInBio />} />
-            <Route path="/links" element={<LinkInBio />} />
 
             {/* Rutas fusionadas en la home. Se mantienen como redirect en cliente
                 por si alguien llega desde un link viejo; el 301 real lo hace

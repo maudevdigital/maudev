@@ -8,8 +8,8 @@ import SolicitudDerechos from "@/components/landing/SolicitudDerechos";
 // ─────────────────────────────────────────────────────────────────────────────
 // ELIMINACIÓN DE DATOS
 //
-// Esta URL es requisito de Meta para cualquier app que use sus APIs (el Pixel y
-// la Conversions API siguen activos), así que la página se mantiene.
+// Esta URL es requisito de Meta para usar el Pixel en anuncios, así que la
+// página se mantiene.
 //
 // ⚠️ REESCRITA: antes describía la automatización de respuestas automáticas en
 // Instagram/Facebook, que se dio de baja junto con el worker `ig-autopost`. Una

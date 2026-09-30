@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import { api } from "@/api/maudev";
+import { submitLead } from "@/lib/leads";
 import { trackLeadEvent, trackAction } from "@/lib/MetaPixelTracker";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
 
@@ -10,7 +10,7 @@ import { getWhatsAppUrl } from "@/lib/whatsapp";
 // viviendo en cada form (varían por formulario).
 //
 // submit({ lead, track, successMessage, whatsappFallback })
-//   lead:  objeto que se guarda (→ worker lead-intake vía api.entities.Lead.create)
+//   lead:  objeto que se guarda (→ worker lead-intake vía submitLead)
 //   track: opcional, payload para trackLeadEvent (Pixel + CAPI + GA4)
 //   successMessage: texto del toast de éxito. Pasar null para no mostrar toast
 //                   (cuando el form maneja su propio mensaje/redirección).
@@ -23,7 +23,7 @@ export function useLeadSubmit() {
   const submit = async ({ lead, track, successMessage, whatsappFallback } = {}) => {
     setLoading(true);
     try {
-      await api.entities.Lead.create(lead);
+      await submitLead(lead);
       if (track) await trackLeadEvent(track);
       setSent(true);
       if (successMessage !== null) {

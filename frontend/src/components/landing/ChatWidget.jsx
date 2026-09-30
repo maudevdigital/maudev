@@ -25,7 +25,7 @@ function detectSource(search) {
 }
 
 export default function ChatWidget() {
-  const { pathname, search } = useLocation();
+  const { search } = useLocation();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const triggerRef = useRef(null);
@@ -39,7 +39,6 @@ export default function ChatWidget() {
   });
 
   // Las opciones de contacto se abren únicamente a petición del visitante.
-  const hidden = pathname === "/links" || pathname === "/ig";
   useEffect(() => {
     if (!open) return;
     panelRef.current?.querySelector('button')?.focus();
@@ -52,8 +51,6 @@ export default function ChatWidget() {
     window.addEventListener("keydown", escape);
     return () => window.removeEventListener("keydown", escape);
   }, [open]);
-
-  if (hidden) return null;
 
   const close = () => setOpen(false);
   const toggle = () => {

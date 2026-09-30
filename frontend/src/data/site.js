@@ -9,13 +9,6 @@ export const founder = {
   linkedin: null,
 };
 
-// Se mantiene para el link-in-bio existente. No expresa cupos ni escasez.
-export const availability = {
-  open: true,
-  label: "Disponible para conversar",
-  period: "",
-};
-
 // Agendar sale del sitio hacia Cal.com. Sin parámetros de fecha: dejarían el
 // calendario anclado a un día que ya pasó.
 export const CAL_URL = "https://cal.com/maudev/30min";

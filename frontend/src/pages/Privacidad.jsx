@@ -248,7 +248,7 @@ const sections = [
             },
             {
               k: "Publicitarias",
-              v: "Meta Pixel y Meta CAPI. Miden si un anuncio se convirtió en contacto. Solo se activan si aceptas.",
+              v: "Meta Pixel. Mide si un anuncio se convirtió en contacto. Solo se activa si aceptas.",
             },
           ].map((r, i) => (
             <div key={i} className="rounded-lg border border-border/60 bg-card/50 p-3">
