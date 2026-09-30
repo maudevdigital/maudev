@@ -163,6 +163,9 @@ export default function Ley21719() {
               <a href="#autodiagnostico" className="btn btn-primary h-14 px-8 text-base">Hacer el autodiagnóstico gratis</a>
               <a href="#planes" className="btn btn-ghost h-14 px-8 text-base">Ver planes</a>
             </div>
+            <Link to="/ley-21719/revisor-cookies" className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline">
+              ¿Tu sitio carga cookies sin permiso? Revísalo gratis <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Link>
             {/* Estado de la ley: quien ya leyó de la prórroga desconfía de un contador que la ignora. */}
             <div className="mt-10 flex max-w-2xl gap-3 rounded-xl border border-border bg-card p-4 text-sm" role="note">
               <Info className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />

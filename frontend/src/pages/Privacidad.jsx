@@ -288,7 +288,7 @@ const sections = [
         </div>
         <p className="mt-4">
           Para ejercerlos, usa el <Link to="/eliminacion-datos#solicitud" className="text-primary hover:underline">formulario de solicitud</Link> o escribe a {mail}.{" "}
-          Respondemos dentro de 30 días corridos. No cobramos por esto. Solo te pediremos verificar tu identidad, para no entregarle tus datos a otra persona.
+          Respondemos dentro de 30 días corridos, y el bloqueo temporal lo aplicamos en 2 días hábiles. No cobramos por esto. Solo te pediremos verificar tu identidad, para no entregarle tus datos a otra persona.
         </p>
         <p>
           Si no quedas conforme con nuestra respuesta, puedes reclamar ante la Agencia de Protección de Datos Personales, el organismo fiscalizador creado por la Ley 21.719.

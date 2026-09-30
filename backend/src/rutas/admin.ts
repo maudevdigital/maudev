@@ -3,6 +3,7 @@ import { z } from "zod";
 import { getPlan } from "../../../shared/oferta.js";
 import { requiereAdmin } from "../auth/admin";
 import { proyectosDe } from "../proyectos";
+import { borrarVencidos } from "../retencion";
 import type { Entorno } from "../tipos";
 import { ahora, aleatorio, auditar, hoyChile, nuevoId, sha256 } from "../util";
 
@@ -17,6 +18,10 @@ admin.get("/yo", (c) => c.json({ email: c.get("admin"), local: c.env.ENTORNO ===
 
 // Tablero: lo que conviene ver apenas se entra.
 admin.get("/resumen", async (c) => {
+  // En segundo plano; en las pruebas no hay contexto de ejecución y se omite.
+  try {
+    c.executionCtx.waitUntil(borrarVencidos(c.env.DB).catch(() => {}));
+  } catch { /* sin ExecutionContext */ }
   const fila = await c.env.DB.prepare(
     `SELECT
        (SELECT count(*) FROM clientes WHERE archivado_en IS NULL) AS clientes,

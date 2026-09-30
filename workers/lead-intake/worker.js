@@ -88,8 +88,29 @@ const DERECHOS = {
   portabilidad: "Portabilidad",
   bloqueo: "Bloqueo",
 };
-// /privacidad promete responder dentro de 30 días corridos.
+// Plazos del artículo 11 de la Ley 21.719, los mismos que promete /privacidad:
+// 30 días corridos para responder, y 2 días hábiles para el bloqueo temporal.
 const PLAZO_RESPUESTA_DIAS = 30;
+const PLAZO_BLOQUEO_DIAS_HABILES = 2;
+
+// Fecha límite en hora de Chile (AAAA-MM-DD). Los días hábiles se cuentan
+// saltando sábados y domingos, sin descontar feriados: así el plazo registrado
+// nunca queda después del legal (a lo más, un día antes).
+function fechaLimite(tipo) {
+  const hoy = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Santiago" }).format(new Date());
+  const d = new Date(`${hoy}T12:00:00Z`);
+  if (tipo === "bloqueo") {
+    let restantes = PLAZO_BLOQUEO_DIAS_HABILES;
+    while (restantes > 0) {
+      d.setUTCDate(d.getUTCDate() + 1);
+      const dia = d.getUTCDay();
+      if (dia !== 0 && dia !== 6) restantes -= 1;
+    }
+  } else {
+    d.setUTCDate(d.getUTCDate() + PLAZO_RESPUESTA_DIAS);
+  }
+  return d.toISOString().slice(0, 10);
+}
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
 function corsHeaders(origin) {
@@ -184,7 +205,7 @@ async function recibirSolicitud(raw, env, cors, verificacion) {
   if (!email || !EMAIL_RE.test(email)) return json({ error: "Email inválido" }, 400, cors);
 
   const folio = crypto.randomUUID().slice(0, 8).toUpperCase();
-  const venceEl = new Date(Date.now() + PLAZO_RESPUESTA_DIAS * 86400000).toISOString().slice(0, 10);
+  const venceEl = fechaLimite(tipo);
 
   let stored = false;
   if (env.DB) {
@@ -231,18 +252,23 @@ async function registrarConsentimiento(raw, env, cors) {
   return json({ ok: true }, 200, cors);
 }
 
-export default {
-  // Cron diario (wrangler.toml). Los plazos son los de /privacidad; si cambian
-  // allá, cambian acá.
-  async scheduled(_event, env) {
-    await env.DB.batch([
-      env.DB.prepare("DELETE FROM leads WHERE created_at < datetime('now', '-12 months')"),
-      env.DB.prepare("DELETE FROM consentimientos WHERE creado_en < datetime('now', '-24 months')"),
-      env.DB.prepare("DELETE FROM solicitudes_derechos WHERE creado_en < datetime('now', '-24 months')"),
-    ]);
-  },
+// Borrado de lo que cumplió su plazo de conservación. Los plazos son los de
+// /privacidad; si cambian allá, cambian acá (y en backend/src/retencion.ts).
+//
+// No hay cron: la cuenta gratuita admite 5 y están ocupados. Corre en segundo
+// plano con cada envío que recibe este worker y cada vez que se abre el panel
+// admin, así que lo vencido se borra la próxima vez que hay actividad.
+async function borrarVencidos(env) {
+  await env.DB.batch([
+    env.DB.prepare("DELETE FROM leads WHERE created_at < datetime('now', '-12 months')"),
+    env.DB.prepare("DELETE FROM consentimientos WHERE creado_en < datetime('now', '-24 months')"),
+    env.DB.prepare("DELETE FROM solicitudes_derechos WHERE creado_en < datetime('now', '-24 months')"),
+  ]);
+}
 
-  async fetch(request, env) {
+export default {
+  async fetch(request, env, ctx) {
+    if (request.method === "POST" && env.DB) ctx.waitUntil(borrarVencidos(env).catch(() => {}));
     const origin = request.headers.get("Origin") || "";
     const cors = corsHeaders(origin);
 

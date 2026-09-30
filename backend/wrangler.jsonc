@@ -38,7 +38,8 @@
     }
   ],
   "ratelimits": [
-    { "name": "LIMITE_TOKEN", "namespace_id": "2001", "simple": { "limit": 10, "period": 60 } }
+    { "name": "LIMITE_TOKEN", "namespace_id": "2001", "simple": { "limit": 10, "period": 60 } },
+    { "name": "LIMITE_REVISOR", "namespace_id": "2002", "simple": { "limit": 6, "period": 60 } }
   ],
   "observability": { "enabled": true },
   // Solo para `npm run dev`. Sin la ruta de producción, wrangler no reescribe la

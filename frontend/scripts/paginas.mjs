@@ -60,6 +60,11 @@ export const paginas = [
     description: "Cómo solicitar la eliminación de tus datos personales.",
   },
   {
+    route: "/ley-21719/revisor-cookies",
+    title: "Revisor de cookies gratis para la Ley 21.719 · Maudev",
+    description: "Revisa gratis qué cookies, píxeles y terceros carga tu sitio antes del consentimiento, y qué corregir para la Ley 21.719. Sin registro.",
+  },
+  {
     route: "/guias",
     title: "Guías sobre la Ley 21.719 y tecnología para empresas · Maudev",
     description: "Guías prácticas sobre la Ley 21.719 de datos personales: prórroga, cookies, formularios y derechos ARCOP, escritas desde la implementación técnica.",

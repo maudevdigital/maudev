@@ -20,6 +20,7 @@ const Ley21719 = lazy(() => import('./pages/Ley21719'));
 const Servicio = lazy(() => import('./pages/Servicio'));
 const Guias = lazy(() => import('./pages/Guias'));
 const Guia = lazy(() => import('./pages/Guia'));
+const RevisorCookies = lazy(() => import('./pages/RevisorCookies'));
 const Terminos = lazy(() => import('./pages/Terminos'));
 const Privacidad = lazy(() => import('./pages/Privacidad'));
 const EliminacionDatos = lazy(() => import('./pages/EliminacionDatos'));
@@ -77,6 +78,7 @@ function App() {
 
             {/* Arquitectura comercial: una intención principal por página. */}
             <Route path="/ley-21719" element={<Ley21719 />} />
+            <Route path="/ley-21719/revisor-cookies" element={<RevisorCookies />} />
             <Route path="/inteligencia-artificial" element={<Servicio id="ia" />} />
             <Route path="/desarrollo" element={<Servicio id="desarrollo" />} />
             <Route path="/soporte" element={<Servicio id="soporte" />} />

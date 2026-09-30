@@ -34,7 +34,7 @@ export default function Derechos() {
 
   return (
     <AdminShell titulo="Derechos ARCOP">
-      <Encabezado titulo="Derechos ARCOP" bajada="Plazo legal: 30 días corridos. Verifica la identidad antes de entregar o modificar datos." />
+      <Encabezado titulo="Derechos ARCOP" bajada="Plazo legal: 30 días corridos (bloqueo temporal: 2 días hábiles). Verifica la identidad antes de entregar o modificar datos." />
       {error && <Aviso tono="error">{error.message}</Aviso>}
       <div className="overflow-x-auto rounded-xl border border-border bg-card">
         <table className="w-full min-w-[44rem] text-left text-sm">

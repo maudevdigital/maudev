@@ -202,7 +202,7 @@ export default function EliminacionDatos() {
           <section id="solicitud" className="mt-10 scroll-mt-28">
             <h2 className="mb-2 text-xl font-bold">Ejercer tus derechos</h2>
             <p className="mb-5 text-sm text-muted-foreground">
-              Acceso, rectificación, supresión, oposición, portabilidad o bloqueo. Recibes un folio y respondemos dentro de 30 días corridos. También puedes escribir a {mail}.
+              Acceso, rectificación, supresión, oposición, portabilidad o bloqueo. Recibes un folio y respondemos dentro de 30 días corridos; el bloqueo temporal, en 2 días hábiles. También puedes escribir a {mail}.
             </p>
             <SolicitudDerechos />
           </section>
