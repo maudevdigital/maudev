@@ -316,7 +316,19 @@ admin.post("/publicar-sitio", async (c) => {
     },
     body: JSON.stringify({ ref: "main" }),
   });
-  if (!res.ok) return c.json({ error: `GitHub respondió ${res.status}` }, 502);
+  if (!res.ok) {
+    // GitHub responde 404 tanto si el token no ve el repositorio como si lo ve
+    // pero le falta el permiso de Actions. Se distingue consultando el repo.
+    const repo = await fetch(`https://api.github.com/repos/${c.env.GITHUB_REPO}`, {
+      headers: { Authorization: `Bearer ${c.env.GITHUB_TOKEN}`, Accept: "application/vnd.github+json", "User-Agent": "maudev-api" },
+    });
+    const motivo = repo.status === 401
+      ? "El token no es válido o expiró: genera uno nuevo y cárgalo con wrangler secret put GITHUB_TOKEN."
+      : repo.status === 404
+        ? `El token no tiene acceso al repositorio ${c.env.GITHUB_REPO}: revisa "Repository access" y el dueño del token.`
+        : "El token ve el repositorio, pero le falta el permiso Actions: Read and write.";
+    return c.json({ error: `GitHub respondió ${res.status}. ${motivo}` }, 502);
+  }
   await auditar(c, "sitio.actualizar");
   return c.json({ ok: true });
 });
