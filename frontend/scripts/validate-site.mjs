@@ -363,12 +363,21 @@ try {
   );
 
 
-  // Sin efectos atmosféricos: se quitaron a propósito (lecciones de Supabase y
-  // Linear). Si alguien los devuelve, que sea una decisión y no un descuido.
-  assert(
-    await ctaPage.locator(".pointer-glow, .particle").count() === 0,
-    "Volvieron el foco de luz o las partículas, que se quitaron a propósito"
-  );
+  // El foco de luz que sigue al puntero y el halo de las partículas. Se vigilan
+  // porque ya desaparecieron dos veces en rediseños (la última a propósito, y
+  // volvieron a pedido): solo se notan moviendo el mouse.
+  assert(await ctaPage.locator(".pointer-glow").count() === 1, "Falta el foco de luz que sigue al puntero");
+  await ctaPage.mouse.move(400, 300);
+  await ctaPage.mouse.move(700, 420);
+  await ctaPage.waitForTimeout(500);
+  const foco = await ctaPage.evaluate(() => {
+    const capa = document.querySelector(".pointer-glow");
+    return { opacidad: Number(getComputedStyle(capa).opacity), mx: capa.style.getPropertyValue("--mx") };
+  });
+  assert(foco.opacidad > 0.9, `El foco no se enciende con el puntero encima (opacidad ${foco.opacidad})`);
+  assert(foco.mx === "700px", `El foco no sigue al puntero (--mx = "${foco.mx}")`);
+  const halo = await ctaPage.evaluate(() => getComputedStyle(document.querySelector(".particle")).boxShadow);
+  assert(halo && halo !== "none", "Partículas: perdieron el halo que les da profundidad");
 
   // Salto al contenido: el primer Tab de la página tiene que llevar ahí, y el
   // destino tiene que existir (sin main#contenido el enlace no hace nada).

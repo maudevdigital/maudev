@@ -92,7 +92,13 @@ try {
         return nodo && nodo.querySelector("h1") && !nodo.querySelector(".animate-spin");
       }, null, { timeout: 15000 });
 
-      const cuerpo = await pagina.evaluate(() => document.getElementById("root").innerHTML);
+      // Las partículas son decoración que el navegador genera al cargar (hasta
+      // 96 nodos por campo). Guardarlas en el HTML estático lo engordaba un 37 %
+      // sin que ningún rastreador las leyera: se vacían antes de capturar.
+      const cuerpo = await pagina.evaluate(() => {
+        document.querySelectorAll(".particle-field").forEach((campo) => campo.replaceChildren());
+        return document.getElementById("root").innerHTML;
+      });
       const archivo = archivoDe(ruta);
       const html = await fs.readFile(archivo, "utf8");
       if (!html.includes(MARCA)) {

@@ -1,4 +1,5 @@
 import Navbar from "@/components/landing/Navbar";
+import PointerGlow from "@/components/landing/PointerGlow";
 import Hero from "@/components/landing/Hero";
 import Capacidades from "@/components/landing/Capacidades";
 import CaseStudies from "@/components/landing/CaseStudies";
@@ -60,6 +61,7 @@ export default function Landing() {
 
   return (
     <div className="min-h-screen isolate bg-background text-foreground">
+      <PointerGlow />
       <Navbar />
       <main id="contenido" tabIndex={-1}>
         <Hero />

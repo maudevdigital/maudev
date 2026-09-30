@@ -210,6 +210,66 @@
 
 
 
+/* Foco de luz que sigue al puntero, en todo el sitio (ver PointerGlow.jsx).
+   Las coordenadas llegan por --mx / --my dentro de un requestAnimationFrame:
+   pointermove dispara decenas de veces por segundo.
+
+   La transición es de OPACIDAD y no de posición, porque animar la posición hace
+   que la luz "persiga" al cursor con retraso, que se ve peor que no tenerla.
+
+   Es una capa FIJA al viewport, así que acompaña también al desplazamiento. El
+   z-index negativo la deja bajo el contenido: para eso el contenedor de la
+   página lleva `isolation: isolate`, si no cae bajo su fondo opaco. */
+.pointer-glow {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  background: radial-gradient(
+    13rem 13rem at var(--mx, 50%) var(--my, 50%),
+    hsl(var(--primary) / 0.18),
+    hsl(var(--primary) / 0.06) 42%,
+    transparent 70%
+  );
+}
+
+/* Solo donde hay un puntero de verdad; en táctil no se instala ni el listener. */
+@media (hover: hover) and (pointer: fine) {
+  .pointer-glow[data-activo="true"] { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pointer-glow { display: none; }
+}
+
+/* Se animan transform y opacity, las dos propiedades que el compositor resuelve
+   sin volver a maquetar. El recorrido de cada punto viaja como variable inline
+   desde ParticleField. Con prefers-reduced-motion no se apaga la animación acá
+   sino el campo entero (.particle-field), que además se ahorra los nodos.
+
+   El halo y el latido de opacidad estaban y se habían perdido: sin ellos los
+   puntos se leen como polvo plano. Son lo que hace que el campo parezca tener
+   profundidad, y no cuestan nada —el halo es estático y la opacidad va por
+   compositor—. */
+.particle {
+  box-shadow: 0 0 8px 2px hsl(var(--primary) / 0.5);
+  will-change: transform, opacity;
+  animation-name: particleDrift;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+@keyframes particleDrift {
+  0%, 100% { transform: translate3d(0, 0, 0); opacity: 0.35; }
+  50% { transform: translate3d(var(--move-x, 0), var(--move-y, 0), 0); opacity: 1; }
+}
+
+.particles-on-dark .particle {
+  background: hsl(224 96% 78%);
+}
+
 .hero-title {
   max-width: 15ch;
   font-size: clamp(2.65rem, 4.6vw, 4.5rem);
@@ -620,3 +680,9 @@ p { text-wrap: pretty; }
 
 /* Página actual en el menú también para los botones fantasma. */
 .btn-ghost[aria-current="page"] { color: hsl(var(--primary)); border-color: hsl(var(--primary) / 0.4); }
+
+/* Partículas del hero y del cierre (ver ParticleField.jsx). */
+.hero-particles { z-index: -1; opacity: 0.36; mask-image: linear-gradient(90deg, transparent, black 70%, transparent); }
+.closing-particles { opacity: 0.3; }
+.particle-field[data-paused="true"] .particle { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) { .particle-field { display: none; } }
