@@ -415,33 +415,13 @@ try {
     "Cierre: desapareció la salida por WhatsApp, que es donde sí corresponde"
   );
 
-  // El foco de luz que sigue al puntero. Se vigila porque ya desapareció una
-  // vez en un rediseño, sin que nada lo notara: es de las cosas que solo se ven
-  // moviendo el mouse, así que ninguna revisión de capturas lo detecta.
-  const spot = ctaPage.locator(".pointer-glow");
-  assert(await spot.count() === 1, "Falta el foco de luz que sigue al puntero");
-  await ctaPage.mouse.move(400, 300);
-  await ctaPage.mouse.move(700, 420);
-  await ctaPage.waitForTimeout(500);
-  const foco = await ctaPage.evaluate(() => {
-    const capa = document.querySelector(".pointer-glow");
-    return { opacidad: Number(getComputedStyle(capa).opacity), mx: capa.style.getPropertyValue("--mx") };
-  });
-  assert(foco.opacidad > 0.9, `El foco no se enciende con el puntero encima (opacidad ${foco.opacidad})`);
-  assert(foco.mx === "700px", `El foco no sigue al puntero (--mx = "${foco.mx}")`);
 
-  // Y tiene que existir tambien fuera de la portada, que es lo que se pidio.
-  await ctaPage.goto(`${baseUrl}/precios`, { waitUntil: "domcontentloaded" });
-  await ctaPage.getByRole("heading", { level: 1 }).waitFor({ state: "visible" });
+  // Sin efectos atmosféricos: se quitaron a propósito (lecciones de Supabase y
+  // Linear). Si alguien los devuelve, que sea una decisión y no un descuido.
   assert(
-    await ctaPage.locator(".pointer-glow").count() === 1,
-    "El foco de luz solo existe en la portada: falta en las paginas internas"
+    await ctaPage.locator(".pointer-glow, .particle").count() === 0,
+    "Volvieron el foco de luz o las partículas, que se quitaron a propósito"
   );
-
-  // Las partículas conservan el halo: sin él se leen como polvo plano, y es lo
-  // primero que se pierde cuando alguien "simplifica" el CSS.
-  const halo = await ctaPage.evaluate(() => getComputedStyle(document.querySelector(".particle")).boxShadow);
-  assert(halo && halo !== "none", "Partículas: perdieron el halo que les da profundidad");
 
   // El número sale de un único lugar y admite reemplazo por variable de
   // entorno. Si alguien vuelve a escribirlo a mano en un componente, el día que

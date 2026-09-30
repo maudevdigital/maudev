@@ -144,7 +144,7 @@ export default function Ley21719() {
           <div className="site-container">
             <Breadcrumbs items={[{ label: "Ley 21.719" }]} />
             <span className="eyebrow">Ley 21.719 · Protección de datos personales</span>
-            <h1 className="mt-5 max-w-[18ch] text-5xl font-extrabold leading-[0.99] tracking-[-0.06em] sm:text-6xl lg:text-7xl">
+            <h1 className="mt-5 max-w-[18ch] text-5xl font-extrabold leading-[0.99] tracking-[-0.04em] sm:text-6xl lg:text-7xl">
               Tu sitio web también tiene que cumplir la nueva ley de datos.
             </h1>
             <p className="mt-8 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
@@ -193,7 +193,7 @@ export default function Ley21719() {
             <p className="mt-4 text-sm text-muted-foreground">Valores netos, más IVA. El monto final de la adecuación se fija en el diagnóstico.</p>
             <div className="mt-12 grid gap-6 lg:grid-cols-3">
               {oferta.planes.map((plan) => (
-                <article key={plan.id} className={`flex flex-col rounded-2xl border bg-card p-6 sm:p-8 ${plan.destacado ? "border-primary" : "border-border"}`}>
+                <article key={plan.id} className={`flex flex-col rounded-2xl border p-6 sm:p-8 ${plan.destacado ? "card-invertida border-transparent" : "border-border bg-card"}`}>
                   {plan.destacado && <span className="eyebrow">Recomendado</span>}
                   <h3 className="mt-2 text-2xl font-extrabold tracking-tight">{plan.nombre}</h3>
                   <p className="mt-3 text-xl font-bold text-primary">{precioPlan(plan)}</p>

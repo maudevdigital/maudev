@@ -52,7 +52,7 @@ export default function CasoEstudio() {
             <div className="grid items-end gap-10 lg:grid-cols-[1fr_0.7fr] lg:gap-20">
               <div>
                 <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-primary">{project.industry}</p>
-                <h1 className="mt-4 text-5xl font-extrabold tracking-[-0.06em] sm:text-6xl lg:text-7xl">{project.title}</h1>
+                <h1 className="mt-4 text-5xl font-extrabold tracking-[-0.04em] sm:text-6xl lg:text-7xl">{project.title}</h1>
                 <p className="mt-5 max-w-2xl text-xl leading-relaxed text-muted-foreground">{project.tagline}</p>
               </div>
               <div className="border-l border-border pl-5">

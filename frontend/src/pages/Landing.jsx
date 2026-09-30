@@ -1,5 +1,4 @@
 import Navbar from "@/components/landing/Navbar";
-import PointerGlow from "@/components/landing/PointerGlow";
 import Hero from "@/components/landing/Hero";
 import PlanTiers from "@/components/landing/PlanTiers";
 import SolutionsOverview from "@/components/landing/SolutionsOverview";
@@ -62,7 +61,6 @@ export default function Landing() {
 
   return (
     <div className="min-h-screen isolate bg-background text-foreground">
-      <PointerGlow />
       <Navbar />
       <main>
         <Hero />

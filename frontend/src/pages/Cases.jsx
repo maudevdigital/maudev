@@ -32,7 +32,7 @@ export default function Cases() {
           <div className="site-container">
             <Breadcrumbs items={[{ label: "Casos" }]} />
             <span className="eyebrow">Proyectos reales</span>
-            <h1 className="mt-5 max-w-[14ch] text-5xl font-extrabold leading-[0.99] tracking-[-0.06em] sm:text-6xl lg:text-7xl">El trabajo se entiende mejor cuando se ve funcionando.</h1>
+            <h1 className="mt-5 max-w-[14ch] text-5xl font-extrabold leading-[0.99] tracking-[-0.04em] sm:text-6xl lg:text-7xl">El trabajo se entiende mejor cuando se ve funcionando.</h1>
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
               Cada caso parte con un problema concreto y termina con una herramienta que el cliente puede usar y controlar.
             </p>

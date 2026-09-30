@@ -50,8 +50,6 @@ for (const consent of [
     pixel: Boolean(document.getElementById("maudev-pixel")),
     gtag: typeof window.gtag === "function",
     fbq: typeof window.fbq === "function",
-    glow: Boolean(document.querySelector(".pointer-glow")),
-    particulas: document.querySelectorAll(".particle").length,
   }));
 
   const debe = consent.valor.analytics;
@@ -62,7 +60,6 @@ for (const consent of [
 
   console.log(`\n── ${consent.nombre}`);
   console.log(`   GA ${estado.ga ? "sí" : "no"} · Pixel ${estado.pixel ? "sí" : "no"} · gtag ${estado.gtag} · fbq ${estado.fbq}`);
-  console.log(`   foco de luz: ${estado.glow ? "presente" : "AUSENTE"} · partículas: ${estado.particulas}`);
   console.log(`   violaciones CSP: ${violaciones.length} · errores de consola: ${errores.length}`);
   if (violaciones.length) console.log("   " + [...new Set(violaciones)].join("\n   "));
   if (errores.length) console.log("   " + [...new Set(errores)].slice(0, 5).join("\n   "));

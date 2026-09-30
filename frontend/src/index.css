@@ -25,6 +25,14 @@
   --color-success: hsl(var(--success));
   --color-error: hsl(var(--error));
   --color-ink: hsl(var(--ink));
+  --color-surface-2: hsl(var(--surface-2));
+  --color-surface-3: hsl(var(--surface-3));
+  /* Titulares a 600: sobre 700 se leen decorativos, no de ingeniería. Además
+     Inter solo se carga hasta 600; 800 era negrita sintetizada. */
+  --font-weight-extrabold: 600;
+  --font-weight-black: 600;
+  /* Tarjetas a 12px; los marcos de capturas usan 1rem explícito. */
+  --radius-2xl: 0.75rem;
   --font-display: 'Sora', 'Inter', sans-serif;
 }
 
@@ -53,6 +61,10 @@
     --success: 151 57% 33%;
     --error: 2 70% 45%;
     --ink: 174 32% 12%;
+    /* Escalera de superficies: la profundidad sale de capas, no de sombras.
+       card es la 1; la 2 para destacados y hover, la 3 para lo anidado. */
+    --surface-2: 150 17% 96%;
+    --surface-3: 150 14% 91%;
   }
 
   .dark {
@@ -73,6 +85,8 @@
     --success: 151 57% 52%;
     --error: 2 70% 60%;
     --ink: 174 32% 7%;
+    --surface-2: 174 16% 15%;
+    --surface-3: 174 14% 19%;
   }
 }
 
@@ -120,22 +134,28 @@
   padding-block: clamp(3.5rem, 6vw, 6rem);
 }
 
+/* Etiqueta de sección: mono, mayúsculas y tracking positivo, que contrasta con
+   el negativo de los titulares y la marca como taxonomía. El verde queda solo
+   en el punto: el acento se reserva para el botón principal y los datos. */
 .eyebrow {
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
   line-height: 1.5;
-  color: hsl(var(--primary));
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: hsl(var(--muted-foreground));
 }
 
 .eyebrow::before {
   content: "";
-  width: 0.45rem;
-  height: 0.45rem;
+  width: 0.4rem;
+  height: 0.4rem;
   border-radius: 50%;
-  background: currentColor;
+  background: hsl(var(--primary));
 }
 
 .eyebrow-on-dark {
@@ -143,19 +163,28 @@
 }
 
 /* El acento mantiene contraste también en bloques oscuros del tema claro. */
-.bg-ink, .final-cta {
+.bg-ink, .final-cta, .card-invertida {
   --primary: 160 40% 70%;
   --primary-foreground: 174 32% 12%;
   --ring: 160 40% 70%;
+}
+
+.card-invertida {
+  background: hsl(var(--ink));
+  color: hsl(40 26% 96%);
+  --foreground: 40 26% 96%;
+  --muted-foreground: 155 10% 72%;
+  --border: 174 12% 25%;
+  --input: 174 12% 40%;
 }
 
 .display-title {
   max-width: 13ch;
   font-size: clamp(2.5rem, 5vw, 4.5rem);
   font-family: var(--font-display);
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.1;
-  letter-spacing: -0.045em;
+  letter-spacing: -0.04em;
   text-wrap: balance;
 }
 
@@ -163,9 +192,9 @@
   max-width: 23ch;
   font-size: clamp(1.9rem, 3.2vw, 3rem);
   font-family: var(--font-display);
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.15;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.035em;
   text-wrap: balance;
 }
 
@@ -179,73 +208,15 @@
   padding-block: clamp(8rem, 11vw, 10rem) 0;
 }
 
-/* Foco de luz que sigue al puntero, en todo el sitio (ver PointerGlow.jsx).
-   Las coordenadas llegan por --mx / --my dentro de un requestAnimationFrame:
-   pointermove dispara decenas de veces por segundo.
 
-   La transición es de OPACIDAD y no de posición, porque animar la posición hace
-   que la luz "persiga" al cursor con retraso, que se ve peor que no tenerla.
-
-   Es una capa FIJA al viewport, así que acompaña también al desplazamiento. El
-   z-index negativo la deja bajo el contenido: para eso el contenedor de la
-   página lleva `isolation: isolate`, si no cae bajo su fondo opaco. */
-.pointer-glow {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.35s ease;
-  background: radial-gradient(
-    13rem 13rem at var(--mx, 50%) var(--my, 50%),
-    hsl(var(--primary) / 0.18),
-    hsl(var(--primary) / 0.06) 42%,
-    transparent 70%
-  );
-}
-
-/* Solo donde hay un puntero de verdad; en táctil no se instala ni el listener. */
-@media (hover: hover) and (pointer: fine) {
-  .pointer-glow[data-activo="true"] { opacity: 1; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .pointer-glow { display: none; }
-}
-
-/* Se animan transform y opacity, las dos propiedades que el compositor resuelve
-   sin volver a maquetar. El recorrido de cada punto viaja como variable inline
-   desde ParticleField. Con prefers-reduced-motion no se apaga la animación acá
-   sino el campo entero (.particle-field), que además se ahorra los nodos.
-
-   El halo y el latido de opacidad estaban y se habían perdido: sin ellos los
-   puntos se leen como polvo plano. Son lo que hace que el campo parezca tener
-   profundidad, y no cuestan nada —el halo es estático y la opacidad va por
-   compositor—. */
-.particle {
-  box-shadow: 0 0 8px 2px hsl(var(--primary) / 0.5);
-  will-change: transform, opacity;
-  animation-name: particleDrift;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: infinite;
-}
-
-@keyframes particleDrift {
-  0%, 100% { transform: translate3d(0, 0, 0); opacity: 0.35; }
-  50% { transform: translate3d(var(--move-x, 0), var(--move-y, 0), 0); opacity: 1; }
-}
-
-.particles-on-dark .particle {
-  background: hsl(224 96% 78%);
-}
 
 .hero-title {
   max-width: 15ch;
   font-size: clamp(2.65rem, 4.6vw, 4.5rem);
   font-family: var(--font-display);
   font-weight: 600;
-  line-height: 1.1;
-  letter-spacing: -0.055em;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
   text-wrap: balance;
 }
 
@@ -303,7 +274,7 @@
   justify-content: center;
   gap: 0.625rem;
   overflow: hidden;
-  border-radius: 0.75rem;
+  border-radius: 0.5rem;
   font-weight: 600;
   white-space: nowrap;
 
@@ -387,10 +358,10 @@
 .panel-hover {
   transition:
     border-color 260ms ease,
-    box-shadow 260ms ease;
+    background-color 260ms ease;
 }
 
-.panel-hover:hover { border-color: hsl(var(--primary) / 0.5); }
+.panel-hover:hover { background-color: hsl(var(--surface-2)); border-color: hsl(var(--input) / 0.6); }
 
 @media (prefers-reduced-motion: reduce) {
   .btn,
@@ -549,10 +520,18 @@ section[id] { scroll-margin-top: 7rem; }
 
 .hero-layout { display: grid; align-items: center; gap: 3rem; }
 .hero-layout > * { min-width: 0; }
-.hero-showcase {
-  padding: clamp(1rem, 2.4vw, 2rem);
-  border-radius: 1.75rem;
-  background: hsl(var(--secondary));
+.hero-showcase { position: relative; }
+/* Panel del portal superpuesto a la captura: el producto es el argumento. */
+.producto-panel {
+  position: relative;
+  margin-top: 1rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.75rem;
+  background: hsl(var(--card));
+  box-shadow: 0 8px 24px hsl(var(--ink) / 0.10);
+}
+@media (min-width: 1024px) {
+  .producto-panel { position: absolute; left: -2.5rem; top: 12rem; width: 18.5rem; margin-top: 0; }
 }
 .showcase-browser {
   overflow: hidden;
@@ -589,10 +568,6 @@ section[id] { scroll-margin-top: 7rem; }
 .site-header { position: fixed; inset: 0.75rem 0.75rem auto; z-index: 50; width: min(calc(100% - 1.5rem), 77rem); margin-inline: auto; border: 1px solid hsl(var(--border)); border-radius: 1.25rem; background: hsl(var(--card) / 0.94); backdrop-filter: blur(16px); box-shadow: 0 8px 28px hsl(var(--ink) / 0.07); }
 .site-header-inner { width: calc(100% - 1.5rem); margin-inline: auto; }
 .site-header:has([aria-expanded="true"]) { background: hsl(var(--card)); }
-.hero-particles { z-index: -1; opacity: 0.36; mask-image: linear-gradient(90deg, transparent, black 70%, transparent); }
-.closing-particles { opacity: 0.3; }
-.particle-field[data-paused="true"] .particle { animation-play-state: paused; }
-@media (prefers-reduced-motion: reduce) { .particle-field { display: none; } }
 .footer-catalog { padding-block: 1rem; border-top: 1px solid hsl(var(--border)); }
 .footer-catalog > summary { min-height: 2.75rem; align-content: center; font-size: 0.875rem; font-weight: 600; }
 

@@ -36,7 +36,7 @@ export default function About() {
             <div className="grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-20">
               <div>
                 <span className="eyebrow">Sobre Maudev</span>
-                <h1 className="mt-5 max-w-[13ch] text-5xl font-extrabold leading-[0.99] tracking-[-0.06em] sm:text-6xl lg:text-7xl">Tecnología entendible, desde la primera conversación.</h1>
+                <h1 className="mt-5 max-w-[13ch] text-5xl font-extrabold leading-[0.99] tracking-[-0.04em] sm:text-6xl lg:text-7xl">Tecnología entendible, desde la primera conversación.</h1>
               </div>
               <div className="flex flex-col justify-end">
                 <p className="text-lg leading-relaxed text-muted-foreground sm:text-xl">
