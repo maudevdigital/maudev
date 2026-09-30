@@ -1,169 +1,94 @@
 # Maudev
 
-Sitio de **Maudev** — automatización y software para empresas en Chile.
-React 19 + Vite + Tailwind CSS v4, desplegado en Cloudflare Pages.
+Sitio de [maudev.cl](https://maudev.cl), portal de clientes y panel admin.
+Maudev ofrece adecuación técnica a la Ley 21.719, inteligencia artificial
+aplicada, desarrollo web y soporte para empresas en Chile.
 
-**Sin backend propio.** El contenido (portafolio, automatizaciones, productos)
-vive en archivos versionados dentro de `src/data/`; los leads salen por webhook.
-
----
-
-## Desarrollo
-
-```bash
-npm install
-npm run dev
+```
+frontend/   sitio público, portal del cliente y panel admin (Vite + React)
+backend/    API en maudev.cl/api/* (Cloudflare Worker + Hono + D1)
+shared/     oferta.js: precios, planes y fases; lo leen el sitio y la API
+workers/    lead-intake: formulario, derechos ARCOP, consentimiento y borrado diario
+docs/       plan de la oferta y el portal, inventario del proyecto
 ```
 
-## Variables de entorno
+## Desarrollo local
 
-Copia `.env.local.example` a `.env.local`:
+```bash
+cd backend && npm install && npm run db:local && npm run dev   # API en 127.0.0.1:8787
+cd frontend && npm install && npm run dev                      # sitio en localhost:5173
+```
+
+- `frontend` reenvía `/api` al backend local (ver `vite.config.js`).
+- En local el panel admin (`/portal/admin`) no pide ingreso: el entorno `local`
+  de `backend/wrangler.jsonc` define un admin de desarrollo que solo funciona
+  en localhost. En producción lo protege Cloudflare Access.
+- Antes de `dev` y `build` se descargan las guías publicadas
+  (`scripts/descargar-guias.mjs`). Para usar las de tu base local:
+  `GUIAS_API=http://127.0.0.1:8787 npm run dev`.
+
+### Variables de entorno (`frontend/.env.local`)
+
+Copia `frontend/.env.local.example`:
 
 ```txt
-VITE_LEAD_WEBHOOK_URL=https://TU-N8N/webhook/maudev-lead
+VITE_LEAD_WEBHOOK_URL=https://maudev-lead-intake.<cuenta>.workers.dev
 VITE_TURNSTILE_SITE_KEY=0x4AAAAAAA_tu_site_key
-VITE_PSI_API_KEY=
 ```
 
-> **Formato.** Toda variable necesita su signo igual. Una línea suelta del tipo
-> `nombre valor` no se ignora: dotenv absorbe como parte de *ese* nombre todo lo
-> que venga después, y las variables siguientes dejan de existir sin ningún
-> aviso. Si una variable "no llega" al código, revisa esto antes que nada.
+Toda variable lleva su signo igual: una línea `nombre valor` hace que dotenv
+absorba el resto del archivo y las variables siguientes desaparezcan sin aviso.
+`VITE_LEAD_WEBHOOK_URL` es obligatoria: sin ella el formulario falla con un error
+explícito.
 
-`VITE_LEAD_WEBHOOK_URL` es **obligatoria**: ya no hay fallback (el worker
-`ig-autopost/notify-lead` se dio de baja). Si falta, el formulario de `/contacto`
-falla con un error explícito ("Lead webhook not configured") en vez de morir en
-silencio. El CTA principal es WhatsApp, que no depende de esto. Ver
-`src/lib/leads.js`.
-
----
-
-## Arquitectura
-
-### Conversión
-
-El CTA principal lleva al formulario breve de `/contacto`. WhatsApp se mantiene
-como alternativa directa en contacto y footer. `CtaButton.jsx` registra el
-contexto del clic; el formulario conserva UTM y envía el lead al webhook actual.
-
-### Rutas
-
-| Ruta | Qué es |
-|---|---|
-| `/` | Portada: posicionamiento, tres categorías, demostración, casos y CTA |
-| `/automatizacion` | Automatización de procesos para PYMEs |
-| `/software-a-medida` | Sistemas internos, portales y dashboards |
-| `/desarrollo-web` | Sitios web orientados a conversión y SEO técnico |
-| `/ecommerce` | Ecommerce conectado a pagos, inventario y pedidos |
-| `/casos` | Índice de proyectos reales |
-| `/casos/:projectId` | Caso de estudio con problema, solución y beneficio |
-| `/nosotros` | Forma de trabajo y responsable del servicio |
-| `/automatizaciones/:slug` | 8 landings de conversión (destino de los anuncios) |
-| `/contacto` | Formulario breve y acceso directo a WhatsApp |
-| `/precios` | Productos n8n autoservicio. **Fuera del navbar a propósito**: es otra audiencia (técnica, internacional, en USD) y mezclarla en la home diluye el mensaje |
-| `/terminos` `/privacidad` `/eliminacion-datos` | Legales — obligatorias para pautar en Meta |
-| `/ig` `/links` | Link in bio |
-
-Las rutas fusionadas redirigen con **301 desde `public/_redirects`** (eso es lo
-que lee Google) y además con `<Navigate>` en `App.jsx` para la navegación
-interna. Si agregas o quitas rutas, actualiza los dos lugares **y**
-`public/sitemap.xml`.
-
-### Secciones de la home
-
-`src/pages/Landing.jsx` compone, en este orden:
-
-```
-Presentación → Servicios → Proyectos destacados → Planes y cotizador → Proceso → FAQ → Contacto
-```
-
-El catálogo ampliado, las inclusiones de cada plan y el cotizador se despliegan
-a petición del visitante. El portafolio completo sigue en `/casos`. La ayuda
-flotante se abre manualmente. Los precios, monedas y envíos conservan sus
-fuentes de datos y mecanismos actuales.
-
-La dirección visual, el alcance y las capturas están en
-[`docs/rediseno-experiencia-visual.md`](docs/rediseno-experiencia-visual.md).
-Después de compilar, `npm run test:design` verifica los flujos del rediseño;
-`npm run test:design -- --screenshots` regenera las capturas en `docs/redesign/`.
-
----
-
-## Operación con n8n (fuera del sitio)
-
-Estos archivos de la raíz **no son parte del bundle web** — son para levantar y
-poblar el n8n self-hosted que recibe los leads y corre las automatizaciones:
-
-- `docker-compose.yml` — levanta n8n en local/VPS.
-- `n8n/lead-intake.json` — workflow para importar en n8n y recibir leads.
-
-Se usan a mano; no los invoca ningún build ni workflow de GitHub. Ver
-[`docs/`](docs/) para el resto del contexto operativo.
-
-## Scripts de generación de contenido
-
-Los generadores de `scripts/` (portadas de blog, carruseles, logo SEO y guía PDF)
-están registrados en `package.json` con el prefijo `gen:`. Ej.:
+## Pruebas
 
 ```bash
-npm run gen:logo
-npm run gen:carousel-w2
+cd backend && npx tsc --noEmit && npm test     # matriz de permisos contra D1 local
+cd frontend && npm run lint && npm run build && npm run prerender && npm test
 ```
 
-Producen media para redes; no forman parte del build del sitio.
+`frontend/npm test` recorre las rutas en un navegador (5 tamaños de pantalla,
+menú, formulario, consentimiento, precios, enlaces, sitemap) y valida la CSP.
+`npm run test:deployed` repite lo esencial contra maudev.cl.
 
-## Media
+## Despliegue
 
-- `public/social/` contiene **solo los 8 videos** que usan las landings de
-  automatizaciones, comprimidos a ~350 KB (720p, sin audio, porque van con
-  `muted`). Los originales en 1080×1920 están en `_media-archivo/`.
-- `_media-archivo/` está **gitignoreado**. Ahí viven los reels y carruseles de
-  Instagram, que no tienen por qué viajar en el bundle web.
-- `public/img/auto/` contiene las imágenes de respaldo de las landings de
-  automatizaciones. Sus prompts están en [`docs/prompts-imagenes.md`](docs/prompts-imagenes.md).
+Cada push a `main` corre `.github/workflows/deploy.yml`: primero las pruebas del
+backend y, si pasan, el build del sitio, el prerender, las validaciones y la
+publicación en Cloudflare Pages. El build corre en GitHub Actions, así que sus
+variables viven en *Settings → Secrets → Actions* del repositorio.
 
-> ⚠️ No vuelvas a poner media pesada en `public/`. Todo lo que esté ahí se
-> despliega en cada build. Fue el motivo de que el repo llegara a 771 MB.
+El backend se despliega aparte:
 
----
+```bash
+cd backend
+npm run db:remoto   # migraciones pendientes en D1
+npm run deploy      # Worker en maudev.cl/api/*
+```
 
-## Producción — Cloudflare Pages
+Secretos del Worker (`npx wrangler secret put NOMBRE`):
 
-- Framework preset: `Vite`
-- Build command: `npm run build`
-- Build output directory: `dist`
-- Variables de entorno: `VITE_LEAD_WEBHOOK_URL` y `VITE_TURNSTILE_SITE_KEY`
+| Secreto | Para qué |
+|---|---|
+| `GITHUB_TOKEN` | Botón "Actualizar sitio" del admin. Token fine-grained con *Actions: Read and write* solo en este repositorio. |
 
-Ojo: el build **no** corre en Cloudflare, corre en GitHub Actions, que le entrega
-a Pages la carpeta `dist` ya compilada. Las variables del build viven entonces en
-Settings → Secrets → Actions del repositorio; ponerlas en Pages no tiene efecto.
+## Contenido
 
-## Verificación anti-bots (Turnstile)
+- **Oferta y precios:** `shared/oferta.js`. Cambiar un precio ahí lo cambia en
+  el sitio, el SEO y las fases del portal.
+- **Textos de los servicios:** `frontend/src/data/paginas-servicio.js`.
+- **Guías (`/guias`):** se escriben en Markdown desde `/portal/admin/guias`. El
+  build las descarga desde la API y las convierte en HTML estático; publicar o
+  editar requiere luego "Actualizar sitio".
 
-El endpoint de leads es público. El worker valida Turnstile solo si existe
-`TURNSTILE_SECRET`, y el sitio manda el token solo si existe la site key, así que
-se enciende en dos pasos **y el orden importa**:
+## Seguridad
 
-1. Site key pública → secreto `VITE_TURNSTILE_SITE_KEY` en Actions. Desplegar y
-   comprobar que el formulario sigue enviando.
-2. Secret key → `cd workers/lead-intake && wrangler secret put TURNSTILE_SECRET`.
-
-Al revés el worker exige un token que el sitio todavía no manda y **todo envío
-responde 403**. Para apagarlo, quitar primero el secreto.
-
-El widget va en modo `interaction-only`: invisible salvo que Cloudflare pida
-interacción. Ver `src/lib/turnstile.js`.
-
-`public/_redirects` maneja los 301 y el fallback SPA.
-`public/_headers` maneja cache y seguridad.
-
----
-
-## Pendiente conocido
-
-**Los productos de `src/data/n8nProducts.js` y `src/data/automations.js` tienen
-`checkoutUrlCLP: null` y `checkoutUrlUSD: null`.** Es decir: no se pueden
-comprar. Stripe no opera en Chile, así que la vía es un Merchant of Record
-(Lemon Squeezy, Paddle o Gumroad), que cobra en cualquier moneda, se hace cargo
-del IVA internacional y transfiere a Chile. Ver
-[`docs/plan-ingresos-30-dias.md`](docs/plan-ingresos-30-dias.md).
+- **Admin:** Cloudflare Access delante de `/portal/admin` y `/api/admin`, y el
+  Worker verifica además el JWT de Access en cada petición.
+- **Clientes:** entran con un enlace único (`/portal/entrar#token`). En la base
+  se guarda solo el hash del token, que se canjea por una cookie `__Host-`
+  HttpOnly; revocarlo corta la sesión al instante.
+- **Formulario:** Turnstile se enciende en dos pasos y el orden importa.
+  Primero la site key en Actions (`VITE_TURNSTILE_SITE_KEY`) y desplegar; después
+  el secreto en el worker (`TURNSTILE_SECRET`). Al revés, todo envío responde 403.
