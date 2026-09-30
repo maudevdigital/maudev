@@ -101,9 +101,12 @@ export function useSeo({ title, description, path, image, type = "website", json
     setMeta("name", "robots", noindex ? "noindex,follow" : "index,follow");
 
     if (jsonLd) {
-      document.head.querySelectorAll('script[type="application/ld+json"][data-site-schema]').forEach(el => el.remove());
+      // Se quitan el esquema general y el de la página que dejó el prerender
+      // (data-seo), para no duplicarlo al montar.
+      document.head.querySelectorAll('script[type="application/ld+json"][data-site-schema], script[data-seo]').forEach(el => el.remove());
       const ld = document.createElement("script");
       ld.type = "application/ld+json";
+      ld.setAttribute("data-seo", "1");
       ld.text = ldKey;
       document.head.appendChild(ld);
       created.push(ld);

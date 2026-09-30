@@ -94,9 +94,15 @@ try {
       // Las partículas son decoración que el navegador genera al cargar (hasta
       // 96 nodos por campo). Guardarlas en el HTML estático lo engordaba un 37 %
       // sin que ningún rastreador las leyera: se vacían antes de capturar.
-      const cuerpo = await pagina.evaluate(() => {
+      const { cuerpo, esquemas } = await pagina.evaluate(() => {
         document.querySelectorAll(".particle-field").forEach((campo) => campo.replaceChildren());
-        return document.getElementById("root").innerHTML;
+        return {
+          cuerpo: document.getElementById("root").innerHTML,
+          // Datos estructurados propios de la página (FAQ, Servicio, Artículo):
+          // los inserta useSeo al montar, así que sin esto solo existían para
+          // quien ejecuta JavaScript.
+          esquemas: [...document.head.querySelectorAll("script[data-seo]")].map((s) => s.outerHTML).join(""),
+        };
       });
       const archivo = archivoDe(ruta);
       const html = await fs.readFile(archivo, "utf8");
@@ -104,7 +110,14 @@ try {
         fallos.push(`${ruta}: ${path.relative(root, archivo)} no tiene el <div id="root"> vacio`);
         continue;
       }
-      await fs.writeFile(archivo, html.replace(MARCA, `<div id="root">${cuerpo}</div>`));
+      let salida = html.replace(MARCA, `<div id="root">${cuerpo}</div>`);
+      if (esquemas) {
+        salida = salida
+          .replace(/<script type="application\/ld\+json" data-site-schema>[\s\S]*?<\/script>\s*/, "")
+          .replace("</head>", `${esquemas}
+  </head>`);
+      }
+      await fs.writeFile(archivo, salida);
       escritas += 1;
       bytes += Buffer.byteLength(cuerpo);
     } catch (error) {
