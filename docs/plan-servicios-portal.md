@@ -351,3 +351,17 @@ del plan contratado.
 - **3 Contenido editable** con publicar y versiones.
 - **4 Pagos con Flow, soporte y horas.**
 - Después: auditoría y limpieza (`docs/inventario-proyecto.md`).
+
+### Entrega 1 hecha (30 sep 2026)
+
+- Planes solo donde el servicio se estandariza: Ley 21.719 (3 planes) y Soporte
+  ($35.000 / $89.000 / $189.000 al mes, con 0 / 2 / 6 horas de cambios). IA
+  entra por un prototipo de $390.000 y un agente a medida desde $890.000.
+  Desarrollo no tiene planes: "desde $290.000", tres ejemplos de referencia y
+  precio cerrado tras el diagnóstico.
+- Menú de 5 enlaces y pie de 3 columnas, todo desde shared/oferta.js.
+- Oferta vieja retirada (19 servicios, /precios, automatizaciones, cotizador,
+  multimoneda) con 301 a su equivalente.
+- Por confirmar con el cliente real: soporte sin permanencia mínima (aviso de
+  30 días) y horas que no se acumulan de un mes a otro.
+

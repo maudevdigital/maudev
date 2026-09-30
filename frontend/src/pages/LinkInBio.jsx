@@ -12,7 +12,7 @@ const links = [
   { to: "/contacto", icon: Zap, label: "Pedir diagnóstico gratis", desc: "Respuesta en menos de 24h", primary: true },
   { to: "/automatizaciones", icon: Sparkles, label: "Automatizaciones", desc: "Agenda, boletas, cobros y más — con n8n" },
   { to: "/servicios", icon: Code2, label: "Servicios", desc: "Web, software y automatización" },
-  { to: "/precios", icon: Tag, label: "Precios", desc: "Transparentes, sin letra chica" },
+  { to: "/ley-21719", icon: Tag, label: "Ley 21.719", desc: "Adecua tu sitio a la nueva ley de datos" },
   { to: "/portafolio", icon: Briefcase, label: "Portafolio", desc: "Proyectos reales en producción" },
 ];
 

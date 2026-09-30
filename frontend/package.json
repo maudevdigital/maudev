@@ -11,13 +11,8 @@
     "lint": "eslint .",
     "test": "node scripts/validate-site.mjs && node scripts/validate-csp.mjs",
     "test:redirects": "node scripts/validate-redirects.mjs",
-    "test:design": "node scripts/validate-design.mjs",
     "preview": "vite preview",
     "capture": "node scripts/capture-portfolio.mjs",
-    "gen:carousel-w2": "node scripts/gen-carousel-w2.mjs",
-    "gen:carousel-w3": "node scripts/gen-carousel-w3.mjs",
-    "gen:carousel-w4": "node scripts/gen-carousel-w4.mjs",
-    "gen:guia-pdf": "node scripts/gen-guia-pdf.mjs",
     "gen:logo": "node scripts/gen-logo.mjs",
     "test:csp": "node scripts/validate-csp.mjs",
     "test:deployed": "node scripts/validate-deployed.mjs"
@@ -41,7 +36,6 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.5.0",
-    "pdfkit": "^0.19.1",
     "playwright": "^1.56.0",
     "sharp": "^0.35.3",
     "vite": "^8.0.10"

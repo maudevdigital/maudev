@@ -1,9 +1,24 @@
 # Redirecciones permanentes de la arquitectura anterior.
-/servicios          /desarrollo-web      301
-/automatizaciones   /automatizacion      301
 /portafolio         /casos               301
 /portafolio/*       /casos/:splat        301
 /sobre-nosotros     /nosotros            301
+
+# Oferta anterior (19 servicios, /precios y automatizaciones), retirada el
+# 30 sep 2026. Cada página va a su equivalente en la oferta nueva.
+/automatizacion                  /inteligencia-artificial  301
+/automatizaciones                /inteligencia-artificial  301
+/automatizaciones/*              /inteligencia-artificial  301
+/servicios/automatizacion        /inteligencia-artificial  301
+/servicios/integracion           /inteligencia-artificial  301
+/mantencion                      /soporte                  301
+/software-a-medida               /desarrollo               301
+/desarrollo-web                  /desarrollo               301
+/ecommerce                       /desarrollo               301
+/apps-moviles                    /desarrollo               301
+/diseno                          /desarrollo               301
+/servicios                       /desarrollo               301
+/servicios/*                     /desarrollo               301
+/precios                         /                         301
 
 # Versiones en inglés y portugués retiradas el 29 sep 2026.
 /en/contact         /contacto            301

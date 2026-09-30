@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Check, Scale } from "lucide-react";
+import { ArrowRight, Scale } from "lucide-react";
 import Breadcrumbs from "@/components/landing/Breadcrumbs";
 import FinalCta from "@/components/landing/FinalCta";
 import PageShell from "@/components/landing/PageShell";
-import { capacidades, precioPlan } from "@shared/oferta";
+import { capacidades } from "@shared/oferta";
+import Planes from "@/components/landing/Planes";
 import { useSeo } from "@/lib/useSeo";
 import { trackAction } from "@/lib/MetaPixelTracker";
 
@@ -115,8 +116,7 @@ export default function Ley21719() {
   const dias = diasParaVigencia();
 
   useSeo({
-    title: "Adecuación a la Ley 21.719 para empresas y PYMEs · Maudev",
-    description: "Adecuación técnica de tu sitio y formularios a la Ley 21.719 de datos personales: cookies, derechos ARCOP, seguridad y documentación. Precios publicados.",
+    ...oferta.seo,
     path: oferta.path,
     image: "/og-image.png",
     jsonLd: {
@@ -191,35 +191,7 @@ export default function Ley21719() {
             <span className="eyebrow">Planes</span>
             <h2 className="section-title mt-4">Precio publicado, alcance por escrito.</h2>
             <p className="mt-4 text-sm text-muted-foreground">Valores netos, más IVA. El monto final de la adecuación se fija en el diagnóstico.</p>
-            <div className="mt-12 grid gap-6 lg:grid-cols-3 lg:grid-rows-[auto_auto_auto_1fr_auto] lg:gap-y-0">
-              {oferta.planes.map((plan) => (
-                <article key={plan.id} className={`flex flex-col rounded-2xl border p-6 sm:p-8 lg:row-span-5 lg:grid lg:grid-rows-subgrid ${plan.destacado ? "card-invertida border-transparent" : "border-border bg-card"}`}>
-                  <div>
-                    {/* En los demás planes la etiqueta ocupa su lugar sin verse, para
-                        que los títulos queden a la misma altura. */}
-                    <span className={`eyebrow ${plan.destacado ? "" : "hidden lg:inline-flex lg:invisible"}`} aria-hidden={!plan.destacado}>Recomendado</span>
-                    <h3 className="mt-2 text-2xl font-extrabold tracking-tight">{plan.nombre}</h3>
-                  </div>
-                  <p className="cifra mt-3 text-xl font-bold text-primary">{precioPlan(plan)}</p>
-                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{plan.resumen}</p>
-                  <ul className="mb-8 mt-6 grid content-start gap-3 text-sm">
-                    {plan.incluye.map((item) => (
-                      <li key={item} className="flex gap-2.5">
-                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <Link
-                    to={`/contacto?plan=${plan.id}`}
-                    onClick={() => trackAction("cta_principal_click", { ubicacion: `plan-${plan.id}` })}
-                    className={`btn mt-auto h-12 px-6 text-sm ${plan.destacado ? "btn-primary" : "btn-ghost"}`}
-                  >
-                    Solicitar {plan.nombre.toLowerCase()}
-                  </Link>
-                </article>
-              ))}
-            </div>
+            <Planes planes={oferta.planes} />
           </div>
         </section>
 

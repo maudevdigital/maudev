@@ -1,7 +1,6 @@
 import Navbar from "@/components/landing/Navbar";
 import Hero from "@/components/landing/Hero";
-import PlanTiers from "@/components/landing/PlanTiers";
-import SolutionsOverview from "@/components/landing/SolutionsOverview";
+import Capacidades from "@/components/landing/Capacidades";
 import CaseStudies from "@/components/landing/CaseStudies";
 import WorkProcess from "@/components/landing/WorkProcess";
 import Faq, { faqs } from "@/components/landing/Faq";
@@ -29,7 +28,7 @@ export default function Landing() {
           url: "https://maudev.cl",
           logo: "https://maudev.cl/logo-1024.png",
           image: "https://maudev.cl/og-image.png",
-          description: "Diseño y desarrollo de páginas web para empresas en Chile, con mantención y automatización.",
+          description: "Adecuación a la Ley 21.719, inteligencia artificial aplicada, desarrollo web y soporte para empresas en Chile.",
           areaServed: { "@type": "Country", name: "Chile" },
           founder: { "@type": "Person", name: founder.name },
           contactPoint: {
@@ -64,9 +63,8 @@ export default function Landing() {
       <Navbar />
       <main id="contenido" tabIndex={-1}>
         <Hero />
-        <SolutionsOverview />
+        <Capacidades />
         <CaseStudies />
-        <PlanTiers />
         <WorkProcess />
         <Faq />
         <FinalCta />

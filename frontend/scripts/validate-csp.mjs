@@ -2,7 +2,6 @@ import { spawn } from "node:child_process";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { chromium } from "playwright";
-import { subservicios } from "../src/data/subservices.js";
 
 // Comprobación de la Content-Security-Policy.
 //
@@ -40,23 +39,21 @@ const nombreCabecera = soloReporte
   ? "content-security-policy-report-only"
   : "content-security-policy";
 
-// Una muestra ancha: portada, familias, un servicio de cada familia, casos,
-// legales y las que cargan widgets.
+// Una muestra ancha: portada, los cuatro servicios, casos, legales, el portal
+// y las que cargan widgets.
 const rutas = [
   "/",
   "/contacto",
-  "/precios",
   "/casos",
   "/casos/partsmr",
-  "/desarrollo-web",
-  "/apps-moviles",
-  "/diseno",
-  "/software-a-medida",
+  "/ley-21719",
+  "/inteligencia-artificial",
+  "/desarrollo",
+  "/soporte",
   "/nosotros",
   "/terminos",
   "/privacidad",
-  "/automatizaciones/agenda-automatica",
-  ...subservicios.slice(0, 4).map((s) => s.path),
+  "/portal/ingresar",
 ];
 
 const server = spawn(

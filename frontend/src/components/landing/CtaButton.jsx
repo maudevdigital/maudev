@@ -12,10 +12,7 @@ import { trackAction } from "@/lib/MetaPixelTracker";
 // `context` NO cambia el destino: solo dice desde qué sección se hizo clic, y
 // viaja en el evento de medición. Es lo que permite saber qué bloque de la
 // página es el que realmente empuja a contactar.
-//
-// (El comentario anterior decía que `context` precargaba un mensaje de
-// WhatsApp. Nunca lo hizo: este botón siempre llevó a /contacto. Quien sí
-// precarga el mensaje según lo elegido es el cotizador, vía data/quote.js.)
+
 // ─────────────────────────────────────────────────────────────────────────────
 
 const sizes = {

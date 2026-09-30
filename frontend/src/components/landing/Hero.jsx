@@ -12,13 +12,14 @@ export default function Hero() {
       <div className="site-container">
         <div className="hero-layout">
           <div className="hero-copy">
-            <span className="eyebrow">Estudio digital · Chile</span>
+            <span className="eyebrow">Tecnología para empresas · Chile</span>
             <h1 id="hero-title" className="hero-title mt-6">
-              Tu negocio,<br />su mejor <span className="text-muted-foreground">versión digital.</span>
+              Tu empresa, al día con <span className="text-muted-foreground">la ley, la IA y la web.</span>
             </h1>
             <p className="mt-6 max-w-lg text-lg leading-relaxed text-muted-foreground">
-              Diseñamos sitios web que explican lo que haces y facilitan que te contacten.
-              Te acompañamos desde la primera idea hasta la publicación.
+              Adecuamos tu sitio a la Ley 21.719, probamos inteligencia artificial con tus
+              datos y construimos sitios y sistemas a medida. Con precios publicados y un
+              portal donde ves avanzar tu proyecto.
             </p>
             {/* El hero recibe el tráfico más frío del sitio: alguien que leyó
                 una frase y todavía no sabe si servimos para lo suyo. Este botón
@@ -91,8 +92,8 @@ export default function Hero() {
           </div>
         </div>
         <div className="hero-footnote">
-          <span>De tu primera web a una operación conectada.</span>
-          <a href="#soluciones" className="inline-flex items-center gap-2 font-medium text-foreground hover:text-primary">
+          <span>Ley 21.719 · IA aplicada · Desarrollo · Soporte</span>
+          <a href="#servicios" className="inline-flex items-center gap-2 font-medium text-foreground hover:text-primary">
             Encuentra lo que necesitas <ArrowDown className="h-4 w-4" aria-hidden="true" />
           </a>
         </div>

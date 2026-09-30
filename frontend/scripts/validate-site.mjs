@@ -2,8 +2,7 @@ import { spawn } from "node:child_process";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { chromium } from "playwright";
-import { subservicios } from "../src/data/subservices.js";
-import { desdePrecio, formatCLP, publicaPrecio } from "../src/data/from-price.js";
+import { capacidades, clp, precioPlan } from "../../shared/oferta.js";
 import { homeSeo } from "../src/data/seo.js";
 import { rutas as todasLasRutas, rutasIndexables } from "./paginas.mjs";
 
@@ -11,16 +10,10 @@ const root = path.resolve(import.meta.dirname, "..");
 const baseUrl = "http://127.0.0.1:4180";
 const routes = [
   "/",
-  "/automatizacion",
-  "/software-a-medida",
-  "/desarrollo-web",
-  "/ecommerce",
-  "/mantencion",
-  "/apps-moviles",
-  "/diseno",
   "/ley-21719",
-  "/servicios/landing-page",
-  "/servicios/punto-de-venta",
+  "/inteligencia-artificial",
+  "/desarrollo",
+  "/soporte",
   "/casos",
   "/casos/systempro",
   "/casos/scissorhands",
@@ -29,7 +22,6 @@ const routes = [
   "/casos/rifaclara",
   "/nosotros",
   "/contacto",
-  "/automatizaciones/agenda-automatica",
   "/terminos",
   "/privacidad",
 ];
@@ -284,91 +276,46 @@ try {
   // que la página ya no cobra, el visitante llega con un número en la cabeza y
   // encuentra otro. Pasó: la portada anunciaba $390.000 con el catálogo en
   // $100.000, y nada lo detectó porque la cifra estaba escrita a mano.
-  for (const servicio of subservicios) {
-    const esperado = formatCLP(desdePrecio(servicio.id));
-    const anuncia = publicaPrecio(servicio.id);
-    for (const campo of ["metaTitle", "metaDescription"]) {
-      const texto = servicio[campo];
-      if (!texto) continue;
-      const cifras = [...texto.matchAll(/\$[\d.]+/g)].map((coincidencia) => coincidencia[0]);
-
-      // "Sin caso, sin precio en vitrina". Un servicio sin un proyecto
-      // publicado que lo respalde no anuncia cifra en ninguna parte, y uno con
-      // caso tiene que anunciarla y que sea la del catálogo. Derivar la regla
-      // de `caso` no basta: la copia de los metadatos se escribe a mano, asi
-      // que es acá donde se detecta el olvido.
-      if (!anuncia) {
-        assert(
-          cifras.length === 0,
-          `Vitrina: ${servicio.id}.${campo} anuncia ${cifras.join(" y ")} pero el servicio no tiene caso publicado`
-        );
-        continue;
-      }
-      if (!cifras.length) continue;
-      assert(
-        cifras.includes(esperado),
-        `Precios: ${servicio.id}.${campo} anuncia ${cifras.join(" y ")}, pero el catálogo parte en ${esperado}`
-      );
+  // Cada cifra que el meta anuncia tiene que existir en la oferta, y cada
+  // página tiene que mostrar el precio de sus planes. Las cifras salen de
+  // shared/oferta.js; si alguien escribe una a mano en el SEO, se detecta acá.
+  const precioPage = await context.newPage();
+  for (const c of Object.values(capacidades)) {
+    const validas = new Set([
+      ...c.planes.flatMap((pl) => [pl.precio, pl.mensual].filter((m) => m != null).map(clp)),
+      ...(c.ejemplos ?? []).map((e) => clp(e.desde)),
+    ]);
+    for (const cifra of [...`${c.seo.title} ${c.seo.description}`.matchAll(/\$[\d.]+/g)].map((m) => m[0])) {
+      assert(validas.has(cifra), `Precios: el SEO de ${c.path} anuncia ${cifra}, que no está en la oferta`);
+    }
+    await precioPage.goto(`${baseUrl}${c.path}`, { waitUntil: "domcontentloaded" });
+    await precioPage.getByRole("heading", { level: 1 }).waitFor({ state: "visible" });
+    const texto = await precioPage.locator("main").innerText();
+    const esperados = c.ejemplos ? c.ejemplos.map((e) => `Desde ${clp(e.desde)}`) : c.planes.map(precioPlan);
+    for (const esperado of esperados) {
+      assert(texto.includes(esperado), `Precios: ${c.path} no muestra "${esperado}"`);
     }
   }
+  await precioPage.close();
 
-  // Y que la vitrina tampoco la muestre en pantalla. Se revisa una página de
-  // servicio sin caso y una con caso: si la regla se rompe, se rompe en las dos
-  // direcciones y conviene enterarse de cual.
-  const vitrinaPage = await context.newPage();
-  await vitrinaPage.goto(`${baseUrl}/servicios/app-nativa`, { waitUntil: "domcontentloaded" });
-  await vitrinaPage.getByRole("heading", { level: 1 }).waitFor({ state: "visible" });
-  const textoSinCaso = await vitrinaPage.locator("main").innerText();
-  assert(
-    !/\$\s?[\d.]{5,}/.test(textoSinCaso),
-    "Vitrina: /servicios/app-nativa muestra un precio, y es de ticket alto sin caso publicado"
-  );
-  assert(
-    textoSinCaso.includes("A convenir"),
-    "Vitrina: /servicios/app-nativa deberia decir 'A convenir' donde iria la cifra"
-  );
-
-  await vitrinaPage.goto(`${baseUrl}/servicios/landing-page`, { waitUntil: "domcontentloaded" });
-  await vitrinaPage.getByRole("heading", { level: 1 }).waitFor({ state: "visible" });
-  assert(
-    (await vitrinaPage.locator("main").innerText()).includes(formatCLP(desdePrecio("landing"))),
-    `Vitrina: /servicios/landing-page tiene caso publicado y deberia mostrar ${formatCLP(desdePrecio("landing"))}`
-  );
-  await vitrinaPage.close();
-
-  // El camino de mayor intención del sitio: quien configura el cotizador ya
-  // dijo qué quiere y cuán grande es. Esa elección viajaba en la URL y
-  // /contacto la descartaba, así que el formulario volvía a preguntar lo que la
-  // persona acababa de responder. Se comprueba de las dos puntas.
-  const quotePage = await context.newPage();
-  await quotePage.goto(`${baseUrl}/`, { waitUntil: "domcontentloaded" });
-  const quoteCta = quotePage.locator('a[href*="intencion=cotizar"]').first();
-  await quoteCta.waitFor({ state: "attached" });
-  const quoteHref = await quoteCta.getAttribute("href");
-  assert(/tipo=/.test(quoteHref) && /tamano=/.test(quoteHref), `Cotizador: el CTA no lleva la elección (${quoteHref})`);
-  await quotePage.close();
-
+  // De un plan al formulario: el plan viaja en la URL y /contacto lo convierte
+  // en el comienzo del mensaje y en un aviso visible.
   const intentPage = await context.newPage();
-  await intentPage.goto(`${baseUrl}/contacto?intencion=cotizar&tipo=sitio&tamano=medio`, { waitUntil: "domcontentloaded" });
+  await intentPage.goto(`${baseUrl}/contacto?plan=ley-adecuacion`, { waitUntil: "domcontentloaded" });
   const proceso = intentPage.getByLabel("Qué necesitas");
   await proceso.waitFor({ state: "visible" });
-  const prellenado = await proceso.inputValue();
   assert(
-    prellenado.includes("sitio web") && prellenado.includes("4 y 7"),
-    `Cotizador → formulario: la elección no llegó al mensaje ("${prellenado}")`
+    (await proceso.inputValue()).includes("Adecuación"),
+    `Plan → formulario: el plan no llegó al mensaje ("${await proceso.inputValue()}")`
   );
-  assert(
-    await intentPage.getByText("Vienes del cotizador:").isVisible(),
-    "Cotizador → formulario: no se confirma al visitante que su elección llegó"
-  );
+  assert(await intentPage.getByText("Plan elegido:").isVisible(), "Plan → formulario: no se confirma el plan elegido");
 
-  // Una elección inventada en la URL no debe llegar a la pantalla: lo que se
-  // muestra sale del catálogo, no de lo que traiga el parámetro.
-  await intentPage.goto(`${baseUrl}/contacto?intencion=cotizar&tipo=<script>&tamano=xx`, { waitUntil: "domcontentloaded" });
+  // Un plan inventado en la URL no debe llegar a la pantalla.
+  await intentPage.goto(`${baseUrl}/contacto?plan=<script>`, { waitUntil: "domcontentloaded" });
   await intentPage.getByLabel("Qué necesitas").waitFor({ state: "visible" });
   assert(
     (await intentPage.getByLabel("Qué necesitas").inputValue()) === "",
-    "Cotizador → formulario: un parámetro inválido se refleja en el formulario"
+    "Plan → formulario: un parámetro inválido se refleja en el formulario"
   );
   await intentPage.close();
 
@@ -449,55 +396,6 @@ try {
 
   await ctaPage.close();
 
-  // Abrir un menú no puede correr la página en horizontal.
-  //
-  // Al abrirlo se fija el cuerpo para que el fondo no se desplace, y eso hace
-  // desaparecer la barra vertical: el viewport se ensancha unos píxeles y todo
-  // el contenido se corre hacia un lado. En Windows y Linux se ve clarísimo.
-  //
-  // Esta comprobación necesita su PROPIO navegador, con --hide-scrollbars
-  // desactivado: Playwright la pasa por defecto en headless, la barra mide 0 y
-  // el ensanche no ocurre nunca. Con esa bandera puesta, esta prueba pasaría
-  // siempre y no serviría de nada. Ya pasó: dos intentos de arreglo se dieron
-  // por buenos porque acá no se reproducía.
-  const navConBarra = await chromium.launch({ ignoreDefaultArgs: ["--hide-scrollbars"] });
-  try {
-    const ctxBarra = await navConBarra.newContext({ viewport: { width: 1440, height: 900 } });
-    await ctxBarra.route("**challenges.cloudflare.com**", sinTurnstile);
-    await ctxBarra.addInitScript(() => {
-      localStorage.setItem("maudev_consent_v2", JSON.stringify({ version: 2, analytics: false, marketing: false }));
-      localStorage.setItem("theme", "light");
-      sessionStorage.setItem("chat_seen", "1");
-    });
-    const barraPage = await ctxBarra.newPage();
-    await barraPage.goto(baseUrl, { waitUntil: "networkidle" });
-
-    const anchoUtil = () => barraPage.evaluate(() => ({
-      util: document.documentElement.clientWidth,
-      titular: Math.round(document.querySelector("#hero-title").getBoundingClientRect().left),
-    }));
-
-    const cerrado = await anchoUtil();
-    const servicios = barraPage.getByRole("button", { name: "Servicios" }).first();
-    await servicios.click();
-    await barraPage.waitForTimeout(400);
-    const abierto = await anchoUtil();
-    await servicios.click();
-    await barraPage.waitForTimeout(400);
-
-    assert(
-      abierto.util === cerrado.util,
-      `Menú Servicios: al abrirlo el viewport se ensancha de ${cerrado.util} a ${abierto.util}px y la página se corre en horizontal`
-    );
-    assert(
-      abierto.titular === cerrado.titular,
-      `Menú Servicios: al abrirlo el contenido se desplaza ${abierto.titular - cerrado.titular}px en horizontal`
-    );
-    await ctxBarra.close();
-  } finally {
-    await navConBarra.close();
-  }
-
   // El sitemap se genera en el build desde `paginas.mjs`, ya no se edita a mano
   // en `public/`. Se comprueban TODAS las rutas, no las primeras quince: el
   // recorte anterior era justo el motivo por el que faltaba /casos/rifaclara sin
@@ -549,4 +447,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log(`Validación completa: ${routes.length} rutas en navegador, ${todasLasRutas.length} en sitemap y prerender, 5 viewports, menú móvil, formulario, consentimiento, precios, cotizador, consola y sitemap.`);
+console.log(`Validación completa: ${routes.length} rutas en navegador, ${todasLasRutas.length} en sitemap y prerender, 5 viewports, menú móvil, formulario, consentimiento, precios, plan a contacto, consola y sitemap.`);

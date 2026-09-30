@@ -16,11 +16,15 @@ export const availability = {
   period: "",
 };
 
-export const CTA_LABEL = "Cotiza tu sitio web";
+// Agendar sale del sitio hacia Cal.com. Sin parámetros de fecha: dejarían el
+// calendario anclado a un día que ya pasó.
+export const CAL_URL = "https://cal.com/maudev/30min";
+
+export const headerActions = {
+  agendar: { label: "Agendar", href: CAL_URL },
+  cotizar: { label: "Cotizar proyecto" },
+};
+
+export const CTA_LABEL = "Cotiza tu proyecto";
 export const CTA_MESSAGE =
-  "Hola, vengo de maudev.cl y quiero cotizar un sitio web para mi negocio.";
-export const proofPoints = [
-  "Precio cerrado por escrito",
-  "El sitio y los accesos quedan a tu nombre",
-  "Entrega con plazo definido",
-];
+  "Hola, vengo de maudev.cl y quiero cotizar un proyecto.";

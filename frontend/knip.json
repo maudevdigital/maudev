@@ -9,5 +9,13 @@
   ],
   "ignoreDependencies": [
     "tailwindcss"
-  ]
+  ],
+  "paths": {
+    "@/*": [
+      "src/*"
+    ],
+    "@shared/*": [
+      "../shared/*"
+    ]
+  }
 }

@@ -34,7 +34,7 @@ for (const consent of [
   page.on("console", (m) => { if (m.type() === "error") errores.push(m.text()); });
   page.on("pageerror", (e) => errores.push(e.message));
 
-  const rutas = ["/", "/precios", "/contacto", "/servicios/landing-page", "/ley-21719"];
+  const rutas = ["/", "/contacto", "/ley-21719", "/inteligencia-artificial", "/desarrollo", "/soporte"];
   for (const r of rutas) {
     // domcontentloaded y no networkidle: /contacto nunca queda en silencio
     // porque el widget de Turnstile sondea a Cloudflare en segundo plano.

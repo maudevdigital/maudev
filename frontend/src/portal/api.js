@@ -1,7 +1,7 @@
 // Cliente de la API del portal. Mismo origen: la cookie de sesión (HttpOnly) y la
 // de Cloudflare Access viajan solas; ningún token se guarda en el navegador.
 
-export class ErrorApi extends Error {
+class ErrorApi extends Error {
   constructor(status, mensaje) {
     super(mensaje);
     this.status = status;

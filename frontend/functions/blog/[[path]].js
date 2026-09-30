@@ -19,32 +19,32 @@
 
 const PERMANENT = {
   // Intención: qué es / para qué sirve automatizar → página de automatización.
-  "que-es-una-automatizacion": "/automatizacion",
-  "5-procesos-que-toda-pyme-puede-automatizar": "/automatizacion",
-  "agentes-de-ia-y-automatizacion-para-pymes-2026": "/automatizacion",
-  "automatizacion-ia-pymes-2026": "/automatizacion",
-  "roi-automatizacion-procesos-empresa": "/automatizacion",
-  "chatbot-ia-whatsapp-pymes-2026": "/automatizacion",
-  "chatbots-de-whatsapp": "/automatizacion",
+  "que-es-una-automatizacion": "/inteligencia-artificial",
+  "5-procesos-que-toda-pyme-puede-automatizar": "/inteligencia-artificial",
+  "agentes-de-ia-y-automatizacion-para-pymes-2026": "/inteligencia-artificial",
+  "automatizacion-ia-pymes-2026": "/inteligencia-artificial",
+  "roi-automatizacion-procesos-empresa": "/inteligencia-artificial",
+  "chatbot-ia-whatsapp-pymes-2026": "/inteligencia-artificial",
+  "chatbots-de-whatsapp": "/inteligencia-artificial",
 
   // Intención: software a medida, su precio y sus alternativas.
-  "cuanto-cuesta-software-a-medida-2026": "/software-a-medida",
-  "como-se-calcula-precio-software-2026": "/software-a-medida",
-  "software-a-medida-vs-saas-2026": "/software-a-medida",
-  "software-a-medida-con-ia-en-2026-cuanto-cuesta-y-como-se-construye": "/software-a-medida",
-  "integraciones-software-valor-2026": "/software-a-medida",
-  "de-excel-a-un-dashboard": "/software-a-medida",
-  "mvp-lanzar-producto-minimo-2026": "/software-a-medida",
+  "cuanto-cuesta-software-a-medida-2026": "/desarrollo",
+  "como-se-calcula-precio-software-2026": "/desarrollo",
+  "software-a-medida-vs-saas-2026": "/desarrollo",
+  "software-a-medida-con-ia-en-2026-cuanto-cuesta-y-como-se-construye": "/desarrollo",
+  "integraciones-software-valor-2026": "/desarrollo",
+  "de-excel-a-un-dashboard": "/desarrollo",
+  "mvp-lanzar-producto-minimo-2026": "/desarrollo",
 
   // Intención: página web, su costo y cuándo conviene.
-  "cuanto-cuesta-una-pagina-web-en-chile-2026": "/desarrollo-web",
-  "landing-page-vs-sitio-web": "/desarrollo-web",
-  "por-que-tu-pyme-necesita-una-landing-page": "/desarrollo-web",
-  "wix-vs-pagina-web-a-medida-2026": "/desarrollo-web",
+  "cuanto-cuesta-una-pagina-web-en-chile-2026": "/desarrollo",
+  "landing-page-vs-sitio-web": "/desarrollo",
+  "por-que-tu-pyme-necesita-una-landing-page": "/desarrollo",
+  "wix-vs-pagina-web-a-medida-2026": "/desarrollo",
 
   // Intención: vender online, carrito y pagos.
-  "cuanto-cuesta-pagina-web-carrito-compras-2026": "/ecommerce",
-  "integrar-pagos-en-tu-web": "/ecommerce",
+  "cuanto-cuesta-pagina-web-carrito-compras-2026": "/desarrollo",
+  "integrar-pagos-en-tu-web": "/desarrollo",
 };
 
 const GONE_HTML = `<!doctype html>
@@ -84,7 +84,7 @@ const GONE_HTML = `<!doctype html>
     <h1>Este artículo ya no existe</h1>
     <p>Retiramos el blog para concentrarnos en lo que hacemos: automatizar procesos y construir software para empresas. Esta dirección no tiene reemplazo.</p>
     <div class="links">
-      <a class="primary" href="/automatizacion">Ver automatización</a>
+      <a class="primary" href="/inteligencia-artificial">Ver automatización</a>
       <a href="/">Ir al inicio</a>
     </div>
   </main>

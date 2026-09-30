@@ -1,5 +1,5 @@
 import { CalendarClock, MessageCircle } from "lucide-react";
-import { CAL_URL } from "@/data/catalog";
+import { CAL_URL } from "@/data/site";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
 import { trackAction } from "@/lib/MetaPixelTracker";
 

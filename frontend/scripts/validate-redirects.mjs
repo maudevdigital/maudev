@@ -19,15 +19,15 @@ const base = `http://127.0.0.1:${port}`;
 // un slug inventado (nadie debe caer en la portada con un 200).
 const expectations = [
   { url: "/blog", status: 410 },
-  { url: "/blog/que-es-una-automatizacion", status: 301, location: "/automatizacion" },
-  { url: "/blog/cuanto-cuesta-software-a-medida-2026", status: 301, location: "/software-a-medida" },
-  { url: "/blog/cuanto-cuesta-pagina-web-carrito-compras-2026", status: 301, location: "/ecommerce" },
+  { url: "/blog/que-es-una-automatizacion", status: 301, location: "/inteligencia-artificial" },
+  { url: "/blog/cuanto-cuesta-software-a-medida-2026", status: 301, location: "/desarrollo" },
+  { url: "/blog/cuanto-cuesta-pagina-web-carrito-compras-2026", status: 301, location: "/desarrollo" },
   { url: "/blog/checklist-seo-tecnico", status: 410 },
   { url: "/blog/seo-local-en-chile", status: 410 },
   { url: "/blog/slug-que-nunca-existio", status: 410 },
   // Las rutas vivas no pueden verse afectadas por la Function.
   { url: "/", status: 200 },
-  { url: "/automatizacion", status: 200 },
+  { url: "/inteligencia-artificial", status: 200 },
   { url: "/casos/systempro", status: 200 },
 ];
 

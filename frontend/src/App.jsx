@@ -12,15 +12,12 @@ import AvisoPrivacidad from '@/components/landing/AvisoPrivacidad';
 import Landing from './pages/Landing'; // eager: es la home (LCP) y la entrada más común
 
 // El resto se carga BAJO DEMANDA (code-splitting) → bundle inicial mucho menor.
-const AutomatizacionDetail = lazy(() => import('./pages/AutomatizacionDetail'));
 const CasoEstudio = lazy(() => import('./pages/CasoEstudio'));
-const ServicePage = lazy(() => import('./pages/ServicePage'));
-const SubservicePage = lazy(() => import('./pages/SubservicePage'));
 const Cases = lazy(() => import('./pages/Cases'));
 const About = lazy(() => import('./pages/About'));
 const Contacto = lazy(() => import('./pages/Contacto'));
-const Precios = lazy(() => import('./pages/Precios'));
 const Ley21719 = lazy(() => import('./pages/Ley21719'));
+const Servicio = lazy(() => import('./pages/Servicio'));
 const Terminos = lazy(() => import('./pages/Terminos'));
 const Privacidad = lazy(() => import('./pages/Privacidad'));
 const EliminacionDatos = lazy(() => import('./pages/EliminacionDatos'));
@@ -73,23 +70,13 @@ function App() {
 
             {/* Arquitectura comercial: una intención principal por página. */}
             <Route path="/ley-21719" element={<Ley21719 />} />
-            <Route path="/automatizacion" element={<ServicePage serviceKey="automatizacion" />} />
-            <Route path="/software-a-medida" element={<ServicePage serviceKey="software-a-medida" />} />
-            <Route path="/desarrollo-web" element={<ServicePage serviceKey="desarrollo-web" />} />
-            <Route path="/ecommerce" element={<ServicePage serviceKey="ecommerce" />} />
-            <Route path="/mantencion" element={<ServicePage serviceKey="mantencion" />} />
-            <Route path="/apps-moviles" element={<ServicePage serviceKey="apps-moviles" />} />
-            <Route path="/diseno" element={<ServicePage serviceKey="diseno" />} />
-
-            {/* Una página por servicio del catálogo. Generadas desde datos:
-                ver src/data/subservices.js */}
-            <Route path="/servicios/:slug" element={<SubservicePage />} />
+            <Route path="/inteligencia-artificial" element={<Servicio id="ia" />} />
+            <Route path="/desarrollo" element={<Servicio id="desarrollo" />} />
+            <Route path="/soporte" element={<Servicio id="soporte" />} />
             <Route path="/casos" element={<Cases />} />
             <Route path="/casos/:projectId" element={<CasoEstudio />} />
             <Route path="/nosotros" element={<About />} />
 
-            {/* Páginas de conversión: es donde aterrizan los anuncios */}
-            <Route path="/automatizaciones/:slug" element={<AutomatizacionDetail />} />
             {/* Compatibilidad en cliente; Cloudflare realiza el 301 real. */}
             <Route path="/portafolio/:projectId" element={<CasoEstudio />} />
             <Route path="/contacto" element={<Contacto />} />
@@ -100,10 +87,6 @@ function App() {
             <Route path="/portal/admin" element={<AdminClientes />} />
             <Route path="/portal/admin/clientes/:id" element={<AdminCliente />} />
             <Route path="/portal/admin/auditoria" element={<AdminAuditoria />} />
-
-            {/* Productos n8n autoservicio (audiencia distinta: técnica e internacional).
-                Fuera del navbar a propósito, para no competir con el CTA de la home. */}
-            <Route path="/precios" element={<Precios />} />
 
             {/* Legales: obligatorias para poder pautar en Meta */}
             <Route path="/terminos" element={<Terminos />} />
@@ -116,8 +99,8 @@ function App() {
             {/* Rutas fusionadas en la home. Se mantienen como redirect en cliente
                 por si alguien llega desde un link viejo; el 301 real lo hace
                 Cloudflare vía public/_redirects (eso es lo que lee Google). */}
-            <Route path="/servicios" element={<Navigate to="/desarrollo-web" replace />} />
-            <Route path="/automatizaciones" element={<Navigate to="/automatizacion" replace />} />
+            <Route path="/servicios" element={<Navigate to="/desarrollo" replace />} />
+            <Route path="/automatizaciones" element={<Navigate to="/inteligencia-artificial" replace />} />
             <Route path="/portafolio" element={<Navigate to="/casos" replace />} />
             <Route path="/sobre-nosotros" element={<Navigate to="/nosotros" replace />} />
 

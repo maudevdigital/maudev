@@ -129,8 +129,9 @@ export default function Cases() {
                   trabajo cambia menos de lo que parece entre un taller y una consultora.
                 </p>
                 <p className="mt-4 leading-relaxed text-muted-foreground">
-                  Los precios de cada servicio están publicados en{" "}
-                  <Link to="/precios" className="font-semibold text-primary hover:underline">la página de precios</Link>,
+                  Los precios están publicados en la página de cada servicio, desde{" "}
+                  <Link to="/desarrollo" className="font-semibold text-primary hover:underline">desarrollo</Link> hasta{" "}
+                  <Link to="/soporte" className="font-semibold text-primary hover:underline">soporte</Link>,
                   así que puedes estimar tu caso antes de escribir.
                 </p>
               </article>

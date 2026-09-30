@@ -3,35 +3,24 @@ import { CalendarClock, Mail, MapPin, MessageCircle } from "lucide-react";
 import Logo from "@/components/landing/Logo";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
 import { CTA_MESSAGE } from "@/data/site";
-import { CAL_URL, catalog } from "@/data/catalog";
+import { CAL_URL } from "@/data/site";
+import { listaCapacidades } from "@shared/oferta";
 import { trackAction } from "@/lib/MetaPixelTracker";
 
-// Las columnas de servicios salen del MISMO catálogo que el mega-menú del
-// header. Escritas a mano se desincronizaban: el footer seguía ofreciendo
-// cuatro servicios cuando el menú ya mostraba diecinueve, y no incluía
-// mantención, que es la página más nueva.
-//
-// Un footer con el catálogo completo no es decoración: es donde Google
-// encuentra las páginas profundas desde cualquier punto del sitio, y donde el
-// visitante que llegó por un enlace suelto descubre qué más existe.
-const columnas = catalog.map(({ id, label, items }) => ({
-  id,
-  label,
-  enlaces: items.map(({ title, href }) => [title, href]),
-}));
-
+// Tres columnas cortas: los mismos cuatro servicios del menú, la empresa y lo
+// legal. El catálogo de 19 servicios que vivía acá se retiró con la oferta vieja.
 export default function Footer() {
   return (
     <footer className="border-t border-border bg-secondary/55">
       <div className="site-container py-12 sm:py-16">
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.3fr_1.7fr_0.7fr]">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_0.7fr_0.7fr_0.7fr]">
           <div className="max-w-sm">
             <Link to="/" className="inline-flex items-center gap-2.5" aria-label="Maudev, inicio">
               <Logo size={30} className="text-primary" />
               <span className="text-lg font-extrabold tracking-[-0.04em]">mau<span className="text-primary">dev</span></span>
             </Link>
             <p className="mt-5 text-sm leading-relaxed text-muted-foreground">
-              Diseño y desarrollo de sitios web para empresas, con mantención y automatización cuando el negocio lo pide.
+              Adecuación a la Ley 21.719, inteligencia artificial aplicada, desarrollo web y soporte para empresas en Chile.
             </p>
 
             <div className="mt-6 flex flex-col items-start gap-2.5">
@@ -65,28 +54,30 @@ export default function Footer() {
           </div>
 
           <div>
-            <h2 className="footer-title mb-4">Explora nuestros servicios</h2>
-          {columnas.map(({ id, label, enlaces }) => (
-            <details key={id} className="footer-catalog">
-              <summary>{label}</summary>
-              <ul className="mt-3 grid gap-3 pb-2 sm:grid-cols-2">
-                {enlaces.map(([texto, href]) => (
-                  <li key={texto}>
-                    <Link to={href} className="footer-link">{texto}</Link>
-                  </li>
-                ))}
-              </ul>
-            </details>
-          ))}
+            <h2 className="footer-title">Servicios</h2>
+            <ul className="mt-4 space-y-2.5">
+              {listaCapacidades.map((c) => (
+                <li key={c.path}><Link to={c.path} className="footer-link">{c.navLabel}</Link></li>
+              ))}
+            </ul>
           </div>
 
           <div>
             <h2 className="footer-title">Empresa</h2>
             <ul className="mt-4 space-y-2.5">
-              <li><Link to="/casos" className="footer-link">Portafolio</Link></li>
+              <li><Link to="/casos" className="footer-link">Casos</Link></li>
               <li><Link to="/nosotros" className="footer-link">Nosotros</Link></li>
               <li><Link to="/contacto" className="footer-link">Contacto</Link></li>
-              <li><Link to="/precios" className="footer-link">Precios</Link></li>
+              <li><Link to="/portal/ingresar" className="footer-link">Portal clientes</Link></li>
+            </ul>
+          </div>
+
+          <div>
+            <h2 className="footer-title">Legal</h2>
+            <ul className="mt-4 space-y-2.5">
+              <li><Link to="/privacidad" className="footer-link">Privacidad</Link></li>
+              <li><Link to="/terminos" className="footer-link">Términos</Link></li>
+              <li><Link to="/eliminacion-datos" className="footer-link">Tus derechos</Link></li>
             </ul>
           </div>
         </div>
@@ -94,9 +85,6 @@ export default function Footer() {
         <div className="mt-12 flex flex-col gap-4 border-t border-border pt-6 text-xs text-muted-foreground lg:flex-row lg:items-center lg:justify-between">
           <p>© {new Date().getFullYear()} Maudev · Diseñado y programado acá, sin subcontratar.</p>
           <ul className="flex flex-wrap items-center gap-x-5 gap-y-2">
-            <li><Link to="/privacidad" className="footer-link">Privacidad</Link></li>
-            <li><Link to="/terminos" className="footer-link">Términos</Link></li>
-            <li><Link to="/eliminacion-datos" className="footer-link">Eliminación de datos</Link></li>
             <li>
               <button
                 type="button"

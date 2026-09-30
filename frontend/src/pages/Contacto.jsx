@@ -8,7 +8,7 @@ import { getWhatsAppUrl } from "@/lib/whatsapp";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { CTA_MESSAGE } from "@/data/site";
-import { describeQuoteIntent, readQuoteIntent } from "@/data/quote";
+import { getPlan } from "@shared/oferta";
 import { getLeadAttribution } from "@/lib/lead-tracking";
 import { trackAction } from "@/lib/MetaPixelTracker";
 import { useLeadSubmit } from "@/lib/useLeadSubmit";
@@ -31,12 +31,16 @@ export default function Contacto() {
   // Lo que el visitante ya eligió en el cotizador de la portada. Antes llegaba
   // en la URL y se descartaba: el formulario partía en blanco y volvía a
   // preguntar lo que la persona acababa de responder, que es donde se abandona.
-  const intencion = useMemo(() => readQuoteIntent(searchParams), [searchParams]);
+  // La URL la escribe cualquiera: solo se acepta un id de plan que exista.
+  const intencion = useMemo(() => {
+    const plan = getPlan(searchParams.get("plan"));
+    return plan ? { plan } : null;
+  }, [searchParams]);
 
   const [form, setForm] = useState(() => ({
     name: "",
     business: "",
-    process: describeQuoteIntent(intencion),
+    process: intencion ? `Me interesa el plan ${intencion.plan.nombre} de ${intencion.plan.capacidad}. ` : "",
     contact: "",
   }));
   const [honeypot, setHoneypot] = useState("");
@@ -56,18 +60,15 @@ export default function Contacto() {
   useEffect(() => {
     if (!intencion) return;
     trackAction("contacto_intencion", {
-      tipo: intencion.tipo?.id || intencion.plan?.id || "sin-tipo",
-      tamano: intencion.tamano?.id || "sin-tamano",
+      plan: intencion.plan.id,
     });
   }, [intencion]);
 
   // El mensaje precargado de WhatsApp arrastra lo elegido. Sin esto, quien
   // viene del cotizador abre el chat y tiene que explicar de nuevo, a mano, lo
   // que acaba de responder con dos botones.
-  const mensajeWhatsApp = intencion?.plan
+  const mensajeWhatsApp = intencion
     ? `Hola, vengo de maudev.cl. Me interesa el plan ${intencion.plan.nombre} de ${intencion.plan.capacidad}.`
-    : intencion?.tipo
-    ? `Hola, vengo de maudev.cl. Estuve viendo ${intencion.tipo.necesidad}${intencion.tamano ? ` de ${intencion.tamano.secciones}` : ""} y quiero cotizarlo.`
     : CTA_MESSAGE;
 
   useSeo({
@@ -162,8 +163,7 @@ export default function Contacto() {
         source: "contact_page",
         // Lo que eligió en el cotizador viaja con el lead y llega a la bandeja
         // de entrada junto al mensaje, en vez de quedarse en la URL.
-        quote_type: intencion?.tipo?.id || intencion?.plan?.id,
-        quote_size: intencion?.tamano?.id,
+        quote_type: intencion?.plan?.id,
         empresa_web: honeypot,
         status: "new",
         consent: true,
@@ -176,7 +176,7 @@ export default function Contacto() {
         // visitante: permite segmentar sin mandarle a Meta lo que redactó.
         params: {
           content_name: "Consulta de proyecto",
-          content_category: intencion?.tipo?.id || "sin-cotizador",
+          content_category: intencion?.plan?.capacidad || "sin-plan",
           source: "contact_page",
         },
       },
@@ -223,15 +223,13 @@ export default function Contacto() {
                   <form onSubmit={handleSubmit} onFocus={markStarted} noValidate>
                     <input type="text" name="empresa_web" value={honeypot} onChange={(event) => setHoneypot(event.target.value)} tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute left-[-9999px] h-0 w-0 opacity-0" />
 
-                    {/* Confirma que lo elegido en el cotizador llegó hasta acá.
-                        Sin esta línea, el visitante ve un formulario vacío y no
-                        tiene cómo saber que su elección no se perdió. */}
-                    {intencion?.tipo && (
+                    {/* Confirma que el plan elegido llegó hasta acá. Sin esta
+                        línea, el visitante no sabe si su elección se perdió. */}
+                    {intencion && (
                       <p className="mb-6 rounded-xl border border-primary/25 bg-primary/8 px-4 py-3 text-sm">
-                        <strong className="font-semibold">Vienes del cotizador:</strong>{" "}
+                        <strong className="font-semibold">Plan elegido:</strong>{" "}
                         <span className="text-muted-foreground">
-                          {intencion.tipo.label}
-                          {intencion.tamano ? ` · ${intencion.tamano.label} secciones` : ""}. Ajusta el mensaje si quieres.
+                          {intencion.plan.capacidad} · {intencion.plan.nombre}. Ajusta el mensaje si quieres.
                         </span>
                       </p>
                     )}
@@ -323,8 +321,9 @@ export default function Contacto() {
                   el calendario, sin pasar por acá.
                 </p>
                 <p className="mt-4 leading-relaxed text-muted-foreground">
-                  Los precios de todos los servicios están publicados en{" "}
-                  <Link to="/precios" className="font-semibold text-primary hover:underline">la página de precios</Link>,
+                  Los precios están publicados en la página de cada servicio (por ejemplo,{" "}
+                  <Link to="/ley-21719" className="font-semibold text-primary hover:underline">Ley 21.719</Link> o{" "}
+                  <Link to="/desarrollo" className="font-semibold text-primary hover:underline">desarrollo</Link>),
                   así que puedes hacerte una idea antes de contactarnos.
                 </p>
               </article>
