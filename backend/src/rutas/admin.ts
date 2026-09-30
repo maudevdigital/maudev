@@ -13,7 +13,22 @@ const noEncontrado = (c: { json: (b: unknown, s: 404) => Response }) => c.json({
 const leer = async <T extends z.ZodType>(req: { json: () => Promise<unknown> }, esquema: T) =>
   esquema.safeParse(await req.json().catch(() => null));
 
-admin.get("/yo", (c) => c.json({ email: c.get("admin") }));
+admin.get("/yo", (c) => c.json({ email: c.get("admin"), local: c.env.ENTORNO === "local" }));
+
+// Tablero: lo que conviene ver apenas se entra.
+admin.get("/resumen", async (c) => {
+  const fila = await c.env.DB.prepare(
+    `SELECT
+       (SELECT count(*) FROM clientes WHERE archivado_en IS NULL) AS clientes,
+       (SELECT count(*) FROM proyectos WHERE estado = 'activo') AS proyectos_activos,
+       (SELECT count(*) FROM fases f JOIN proyectos p ON p.id = f.proyecto_id
+         WHERE p.estado = 'activo' AND f.estado = 'por_aprobar') AS por_aprobar,
+       (SELECT count(*) FROM fases f JOIN proyectos p ON p.id = f.proyecto_id
+         WHERE p.estado = 'activo' AND f.estado != 'completada' AND f.estimada_el < ?) AS fases_atrasadas,
+       (SELECT count(*) FROM tokens_acceso WHERE revocado_en IS NULL AND ultimo_uso_en > ?) AS accesos_7_dias`,
+  ).bind(hoyChile(), ahora() - 7 * 86400).first();
+  return c.json(fila);
+});
 
 // ── Clientes ─────────────────────────────────────────────────────────────────
 

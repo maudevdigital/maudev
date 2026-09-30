@@ -28,6 +28,7 @@ const LinkInBio = lazy(() => import('./pages/LinkInBio'));
 // Portal de clientes y panel admin: chunks aparte, nunca en el bundle del sitio.
 const PortalEntrar = lazy(() => import('./portal/cliente/Entrar'));
 const PortalResumen = lazy(() => import('./portal/cliente/Resumen'));
+const PortalIngresar = lazy(() => import('./portal/cliente/Ingresar'));
 const AdminClientes = lazy(() => import('./portal/admin/Clientes'));
 const AdminCliente = lazy(() => import('./portal/admin/Cliente'));
 const AdminAuditoria = lazy(() => import('./portal/admin/Auditoria'));
@@ -79,6 +80,7 @@ function App() {
 
             <Route path="/portal" element={<PortalResumen />} />
             <Route path="/portal/entrar" element={<PortalEntrar />} />
+            <Route path="/portal/ingresar" element={<PortalIngresar />} />
             <Route path="/portal/admin" element={<AdminClientes />} />
             <Route path="/portal/admin/clientes/:id" element={<AdminCliente />} />
             <Route path="/portal/admin/auditoria" element={<AdminAuditoria />} />

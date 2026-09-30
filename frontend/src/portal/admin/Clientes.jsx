@@ -1,19 +1,21 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
-import PortalShell, { Aviso } from "@/portal/PortalShell";
+import AdminShell from "@/portal/admin/AdminShell";
+import { Aviso } from "@/portal/PortalShell";
 import { api, fecha } from "@/portal/api";
 
 // /portal/admin — Cloudflare Access pide el login antes de cargar esta página.
 export default function Clientes() {
   const navegar = useNavigate();
   const [lista, setLista] = useState(null);
+  const [tablero, setTablero] = useState(null);
   const [error, setError] = useState(null);
   const [form, setForm] = useState({ nombre: "", email: "" });
   const [guardando, setGuardando] = useState(false);
 
   const cargar = useCallback(() => api("/admin/clientes").then((d) => setLista(d.clientes)).catch(setError), []);
-  useEffect(() => { cargar(); }, [cargar]);
+  useEffect(() => { cargar(); api("/admin/resumen").then(setTablero).catch(() => {}); }, [cargar]);
 
   const crear = async (e) => {
     e.preventDefault();
@@ -29,7 +31,7 @@ export default function Clientes() {
   };
 
   return (
-    <PortalShell titulo="Clientes">
+    <AdminShell titulo="Clientes">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <span className="eyebrow">Admin</span>
@@ -37,6 +39,23 @@ export default function Clientes() {
         </div>
         <Link to="/portal/admin/auditoria" className="btn btn-ghost h-10 px-4 text-sm">Auditoría</Link>
       </div>
+
+      {tablero && (
+        <div className="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-5">
+          {[
+            ["Clientes", tablero.clientes],
+            ["Proyectos activos", tablero.proyectos_activos],
+            ["Por aprobar", tablero.por_aprobar],
+            ["Fases atrasadas", tablero.fases_atrasadas, tablero.fases_atrasadas > 0],
+            ["Accesos (7 días)", tablero.accesos_7_dias],
+          ].map(([etiqueta, valor, alerta]) => (
+            <div key={etiqueta} className="rounded-xl border border-border bg-card p-4">
+              <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-muted-foreground">{etiqueta}</p>
+              <p className={`mt-1 text-2xl font-extrabold ${alerta ? "text-destructive" : ""}`}>{valor}</p>
+            </div>
+          ))}
+        </div>
+      )}
 
       {error && <div className="mt-6"><Aviso tono="error">{error.message}</Aviso></div>}
 
@@ -68,6 +87,6 @@ export default function Clientes() {
           </tbody>
         </table>
       </div>
-    </PortalShell>
+    </AdminShell>
   );
 }

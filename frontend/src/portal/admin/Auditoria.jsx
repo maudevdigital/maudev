@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import PortalShell, { Aviso } from "@/portal/PortalShell";
+import AdminShell from "@/portal/admin/AdminShell";
+import { Aviso } from "@/portal/PortalShell";
 import { api } from "@/portal/api";
 
 export default function Auditoria() {
@@ -16,7 +17,7 @@ export default function Auditoria() {
   }, [cliente]);
 
   return (
-    <PortalShell titulo="Auditoría">
+    <AdminShell titulo="Auditoría">
       <Link to={cliente ? `/portal/admin/clientes/${cliente}` : "/portal/admin"} className="text-sm font-semibold text-primary hover:underline">← Volver</Link>
       <h1 className="mt-4 text-4xl font-extrabold tracking-[-0.04em]">Auditoría</h1>
       <p className="mt-2 text-sm text-muted-foreground">Últimos 200 cambios{cliente ? " de este cliente" : ""}.</p>
@@ -31,6 +32,6 @@ export default function Auditoria() {
         ))}
         {eventos?.length === 0 && <li className="text-muted-foreground">Sin eventos.</li>}
       </ol>
-    </PortalShell>
+    </AdminShell>
   );
 }

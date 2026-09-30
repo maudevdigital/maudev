@@ -187,4 +187,14 @@ describe("métricas del proyecto", () => {
     const aud = await (await comoAdmin(`/admin/auditoria?cliente=${a.id}`)).json() as { eventos: { accion: string }[] };
     expect(aud.eventos.map((e) => e.accion)).toEqual(expect.arrayContaining(["cliente.crear", "token.crear", "proyecto.crear", "fase.actualizar", "cliente.ingreso"]));
   });
+
+  it("el tablero del admin cuenta clientes y proyectos, y el cliente no lo ve", async () => {
+    const t = await (await comoAdmin("/admin/resumen")).json() as Record<string, number>;
+    expect(t.clientes).toBeGreaterThan(0);
+    expect(t.proyectos_activos).toBeGreaterThan(0);
+    const a = await clienteConToken("Kappa");
+    const s = await canjear(a.token);
+    const r = await app.request(`${PROD}/api/admin/resumen`, { headers: { Cookie: s.cookie } }, { ...env, ENTORNO: "produccion" });
+    expect(r.status).toBe(401);
+  });
 });

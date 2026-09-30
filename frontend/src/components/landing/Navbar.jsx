@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { CalendarClock, ChevronDown, Menu, Moon, Sun, X } from "lucide-react";
+import { CalendarClock, ChevronDown, KeyRound, Menu, Moon, Sun, X } from "lucide-react";
 import Logo from "@/components/landing/Logo";
 import CtaButton from "@/components/landing/CtaButton";
 import CurrencySwitcher from "@/components/landing/CurrencySwitcher";
@@ -234,7 +234,7 @@ export default function Navbar() {
 
             <Link
               to="/ley-21719"
-              className="rounded-lg px-3 py-2 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               Ley 21.719
             </Link>
@@ -270,14 +270,27 @@ export default function Navbar() {
               {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </button>
             <CurrencySwitcher />
+            {/* Entrada para clientes con su enlace o código de acceso. */}
+            {/* Entre 1024 y 1280 px no cabe el texto: queda el ícono con su nombre accesible. */}
+            <Link
+              to="/portal/ingresar"
+              aria-label="Portal clientes"
+              title="Portal clientes"
+              className="btn btn-ghost h-10 rounded-lg! px-3 text-sm xl:px-3.5"
+            >
+              <KeyRound className="h-4 w-4" aria-hidden="true" />
+              <span className="hidden xl:inline">Portal clientes</span>
+            </Link>
             <a
               href={headerActions.agendar.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn btn-ghost h-10 rounded-lg! px-3.5 text-sm"
+              aria-label={headerActions.agendar.label}
+              title={headerActions.agendar.label}
+              className="btn btn-ghost h-10 rounded-lg! px-3 text-sm xl:px-3.5"
             >
               <CalendarClock className="h-4 w-4" aria-hidden="true" />
-              {headerActions.agendar.label}
+              <span className="hidden xl:inline">{headerActions.agendar.label}</span>
             </a>
             <CtaButton size="md" context="header" label={headerActions.cotizar.label} className="h-10! px-5!" />
           </div>
@@ -395,6 +408,10 @@ export default function Navbar() {
                 </Link>
                 <Link to="/contacto" className="border-b border-border py-3.5 text-lg font-bold tracking-tight text-foreground">
                   Contacto
+                </Link>
+                <Link to="/portal/ingresar" className="flex items-center gap-2 border-b border-border py-3.5 text-lg font-bold tracking-tight text-foreground">
+                  <KeyRound className="h-4 w-4 text-primary" aria-hidden="true" />
+                  Portal clientes
                 </Link>
                 <CurrencySwitcher className="pt-5" />
               </div>

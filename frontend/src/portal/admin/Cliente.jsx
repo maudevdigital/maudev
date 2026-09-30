@@ -2,7 +2,8 @@ import { useCallback, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
-import PortalShell, { Aviso, Barra } from "@/portal/PortalShell";
+import AdminShell from "@/portal/admin/AdminShell";
+import { Aviso, Barra } from "@/portal/PortalShell";
 import { ESTADOS_FASE, api, fecha } from "@/portal/api";
 import { planes } from "@shared/oferta";
 
@@ -65,13 +66,13 @@ export default function Cliente() {
     if (r) { setEnlace(r.enlace); setToken({ etiqueta: "", dias: "" }); }
   };
 
-  if (error) return <PortalShell titulo="Cliente"><Aviso tono="error">{error.message}</Aviso></PortalShell>;
-  if (!datos) return <PortalShell titulo="Cliente"><Aviso>Cargando…</Aviso></PortalShell>;
+  if (error) return <AdminShell titulo="Cliente"><Aviso tono="error">{error.message}</Aviso></AdminShell>;
+  if (!datos) return <AdminShell titulo="Cliente"><Aviso>Cargando…</Aviso></AdminShell>;
   const { cliente, tokens, proyectos } = datos;
   const archivado = Boolean(cliente.archivado_en);
 
   return (
-    <PortalShell titulo={cliente.nombre}>
+    <AdminShell titulo={cliente.nombre}>
       <Link to="/portal/admin" className="text-sm font-semibold text-primary hover:underline">← Clientes</Link>
       <div className="mt-4 flex flex-wrap items-end justify-between gap-4">
         <div>
@@ -163,6 +164,6 @@ export default function Cliente() {
           </div>
         </Seccion>
       </div>
-    </PortalShell>
+    </AdminShell>
   );
 }

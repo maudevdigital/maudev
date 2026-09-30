@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Check, Circle, Clock, Hourglass } from "lucide-react";
 import PortalShell, { Aviso, Barra } from "@/portal/PortalShell";
 import { ESTADOS_FASE, api } from "@/portal/api";
@@ -56,9 +57,12 @@ export default function Resumen() {
   const [datos, setDatos] = useState(null);
   const [error, setError] = useState(null);
 
+  const navegar = useNavigate();
   useEffect(() => {
-    api("/cliente/resumen").then(setDatos).catch(setError);
-  }, []);
+    api("/cliente/resumen")
+      .then(setDatos)
+      .catch((e) => (e.status === 401 ? navegar("/portal/ingresar", { replace: true }) : setError(e)));
+  }, [navegar]);
 
   const salir = async () => {
     await api("/auth/salir", { metodo: "POST" }).catch(() => {});

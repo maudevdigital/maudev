@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PortalShell, { Aviso } from "@/portal/PortalShell";
 import { api } from "@/portal/api";
 
@@ -33,7 +33,7 @@ export default function Entrar() {
         {error ? (
           <Aviso tono="error">
             <p className="font-semibold">{error}</p>
-            <p className="mt-2 text-muted-foreground">Escríbenos a contacto@maudev.cl y te enviamos un enlace nuevo.</p>
+            <p className="mt-2 text-muted-foreground">Escríbenos a contacto@maudev.cl y te enviamos un enlace nuevo, o <Link to="/portal/ingresar" className="font-semibold text-primary hover:underline">pega tu enlace aquí</Link>.</p>
           </Aviso>
         ) : (
           <Aviso>Verificando tu acceso…</Aviso>
