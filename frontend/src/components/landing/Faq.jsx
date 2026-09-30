@@ -1,28 +1,20 @@
 
 export const faqs = [
   {
-    q: "¿Cuánto demora un proyecto?",
-    a: "Depende del alcance. Una landing puede estar publicada en una a dos semanas; un sitio corporativo toma entre tres y cinco. La propuesta deja las etapas y la fecha de entrega por escrito antes de empezar.",
+    q: "¿Los precios publicados son finales?",
+    a: "Son montos desde, netos, más IVA. El precio exacto queda por escrito después del diagnóstico y no cambia durante el proyecto.",
   },
   {
-    q: "¿Cómo se calcula el precio?",
-    a: "Se calcula según el proceso, las integraciones, las excepciones y el nivel de diseño necesario. Primero definimos el alcance y después entregamos un precio cerrado para ese alcance.",
+    q: "¿Mi empresa tiene que cumplir la Ley 21.719?",
+    a: "Sí, si trata datos personales: un formulario de contacto o una lista de clientes ya cuentan. Rige desde el 1 de diciembre de 2026.",
   },
   {
-    q: "¿Hay pagos mensuales?",
-    a: "El desarrollo no exige una mensualidad. Algunos servicios externos (hosting, mensajería o pasarelas de pago) sí pueden tener costos propios, que se informan antes de implementar.",
+    q: "¿Cómo sigo el avance de mi proyecto?",
+    a: "Con el portal de clientes: recibes un enlace de acceso y ves las fases, lo que está por aprobar y las horas de soporte usadas.",
   },
   {
-    q: "¿Qué ocurre después de la entrega?",
-    a: "Implementamos, documentamos y explicamos el uso. El proyecto incluye una garantía de funcionamiento y puedes contratar soporte posterior si lo necesitas.",
-  },
-  {
-    q: "¿Pueden conectarse sistemas que ya utilizo?",
-    a: "Muchas veces sí, mediante sus APIs o conectores disponibles. Lo comprobamos durante el diagnóstico antes de prometer una integración.",
-  },
-  {
-    q: "¿Trabajan con empresas fuera de Chile?",
-    a: "Sí. El trabajo puede realizarse de forma remota. La propuesta aclara moneda, facturación, horarios y servicios disponibles para cada país.",
+    q: "¿Todo queda a nombre de mi empresa?",
+    a: "Sí. Dominio, hosting, código y accesos se crean a tu nombre. Si cambias de proveedor, te llevas todo.",
   },
 ];
 

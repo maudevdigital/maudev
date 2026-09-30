@@ -3,7 +3,6 @@ import PointerGlow from "@/components/landing/PointerGlow";
 import Hero from "@/components/landing/Hero";
 import Capacidades from "@/components/landing/Capacidades";
 import CaseStudies from "@/components/landing/CaseStudies";
-import WorkProcess from "@/components/landing/WorkProcess";
 import Faq, { faqs } from "@/components/landing/Faq";
 import FinalCta from "@/components/landing/FinalCta";
 import Footer from "@/components/landing/Footer";
@@ -67,7 +66,6 @@ export default function Landing() {
         <Hero />
         <Capacidades />
         <CaseStudies />
-        <WorkProcess />
         <Faq />
         <FinalCta />
       </main>

@@ -38,7 +38,6 @@ dist-ssr
 .temp
 
 # Remotion render outputs
-remotion/out
 
 # Media pesada de redes sociales (no se despliega; vive fuera del bundle)
 _media-archivo/
@@ -48,14 +47,10 @@ _media-archivo/
 .wrangler/
 
 # Remotion: dependencias y renders
-remotion/node_modules/
-remotion/out/
 
 # Remotion: audio fuente (música + voces). Pesa ~38 MB y NO se despliega
 # (Cloudflare solo publica dist/). Se regenera con los scripts gen-*-voices.mjs
 # y gen-music.mjs. Vive local, no tiene por qué viajar en el repo.
-remotion/public/*.wav
-remotion/public/*.mp3
 
 # Backend antiguo (Supabase + panel admin), conservado como referencia
 _legacy/

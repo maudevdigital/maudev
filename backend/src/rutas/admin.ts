@@ -25,8 +25,11 @@ admin.get("/resumen", async (c) => {
          WHERE p.estado = 'activo' AND f.estado = 'por_aprobar') AS por_aprobar,
        (SELECT count(*) FROM fases f JOIN proyectos p ON p.id = f.proyecto_id
          WHERE p.estado = 'activo' AND f.estado != 'completada' AND f.estimada_el < ?) AS fases_atrasadas,
-       (SELECT count(*) FROM tokens_acceso WHERE revocado_en IS NULL AND ultimo_uso_en > ?) AS accesos_7_dias`,
-  ).bind(hoyChile(), ahora() - 7 * 86400).first();
+       (SELECT count(*) FROM tokens_acceso WHERE revocado_en IS NULL AND ultimo_uso_en > ?) AS accesos_7_dias,
+       (SELECT count(*) FROM leads WHERE created_at > datetime('now', '-7 days')) AS contactos_7_dias,
+       (SELECT count(*) FROM solicitudes_derechos WHERE respondida_el IS NULL) AS derechos_pendientes,
+       (SELECT count(*) FROM solicitudes_derechos WHERE respondida_el IS NULL AND vence_el <= date(?, '+5 days')) AS derechos_por_vencer`,
+  ).bind(hoyChile(), ahora() - 7 * 86400, hoyChile()).first();
   return c.json(fila);
 });
 
@@ -170,6 +173,55 @@ admin.patch("/fases/:id", async (c) => {
      WHERE id = ?`,
   ).bind(estado ?? null, estimada_el !== undefined ? 1 : 0, estimada_el ?? null, estado ?? null, hoy, estado ?? null, id).run();
   await auditar(c, "fase.actualizar", { entidad: "fase", entidadId: id, clienteId: fila.cliente_id, detalle: cuerpo.data });
+  return c.json({ ok: true });
+});
+
+// ── Proyectos de todos los clientes ─────────────────────────────────────────
+
+admin.get("/proyectos", async (c) => {
+  const { results } = await c.env.DB.prepare(
+    `SELECT p.id, p.nombre, p.plan_id, p.estado, p.creado_en, p.cliente_id, cl.nombre AS cliente,
+       count(f.id) AS fases,
+       sum(f.estado = 'completada') AS completadas,
+       sum(f.estado = 'por_aprobar') AS por_aprobar,
+       sum(f.estado != 'completada' AND f.estimada_el < ?) AS atrasadas,
+       (SELECT nombre FROM fases x WHERE x.proyecto_id = p.id AND x.estado != 'completada' ORDER BY orden LIMIT 1) AS fase_actual
+     FROM proyectos p JOIN clientes cl ON cl.id = p.cliente_id
+     LEFT JOIN fases f ON f.proyecto_id = p.id
+     GROUP BY p.id ORDER BY p.estado = 'activo' DESC, p.creado_en DESC`,
+  ).bind(hoyChile()).all<Record<string, number | string>>();
+  return c.json({
+    proyectos: results.map((p) => ({ ...p, avance: p.fases ? Math.round((Number(p.completadas) / Number(p.fases)) * 100) : 0 })),
+  });
+});
+
+// ── Contactos del formulario y solicitudes de derechos ──────────────────────
+// Los escribe workers/lead-intake; acá solo se leen. Antes existían únicamente
+// en el correo de aviso.
+
+admin.get("/contactos", async (c) => {
+  const { results } = await c.env.DB.prepare(
+    `SELECT id, name, email, whatsapp, interest, message, page_path, referrer, utm_source, utm_campaign, created_at
+     FROM leads ORDER BY id DESC LIMIT 200`,
+  ).all();
+  return c.json({ contactos: results });
+});
+
+admin.get("/derechos", async (c) => {
+  const { results } = await c.env.DB.prepare(
+    `SELECT folio, tipo, nombre, email, detalle, vence_el, respondida_el, creado_en
+     FROM solicitudes_derechos ORDER BY respondida_el IS NOT NULL, vence_el LIMIT 200`,
+  ).all();
+  return c.json({ solicitudes: results, hoy: hoyChile() });
+});
+
+// Marca la solicitud como respondida (la respuesta en sí se envía por correo).
+admin.post("/derechos/:folio/responder", async (c) => {
+  const folio = c.req.param("folio");
+  const r = await c.env.DB.prepare("UPDATE solicitudes_derechos SET respondida_el = ? WHERE folio = ? AND respondida_el IS NULL")
+    .bind(hoyChile(), folio).run();
+  if (!r.meta.changes) return noEncontrado(c);
+  await auditar(c, "derecho.responder", { entidad: "solicitud_derecho", entidadId: folio });
   return c.json({ ok: true });
 });
 

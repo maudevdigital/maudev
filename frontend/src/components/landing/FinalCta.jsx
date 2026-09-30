@@ -27,8 +27,6 @@ export default function FinalCta() {
         <div className="final-cta relative overflow-hidden">
           <ParticleField className="closing-particles" />
 
-
-
           <div className="relative">
             <span className="eyebrow text-white/80!">Conversemos</span>
             <h2
@@ -37,13 +35,10 @@ export default function FinalCta() {
             >
               Tu próxima etapa empieza con una conversación.
             </h2>
-            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/80">
-              Sin formularios largos ni presentación de ventas. Una conversación para ver si lo que necesitas se puede resolver y con qué presupuesto.
-            </p>
 
             <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
               <a
-                href={getWhatsAppUrl("Hola, vengo de maudev.cl y quiero conversar sobre un sitio web para mi negocio.")}
+                href={getWhatsAppUrl("Hola, vengo de maudev.cl y quiero conversar sobre un proyecto.")}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => trackAction("whatsapp_click", { ubicacion: "cta-final" })}

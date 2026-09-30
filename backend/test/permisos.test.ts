@@ -197,4 +197,22 @@ describe("métricas del proyecto", () => {
     const r = await app.request(`${PROD}/api/admin/resumen`, { headers: { Cookie: s.cookie } }, { ...env, ENTORNO: "produccion" });
     expect(r.status).toBe(401);
   });
+
+  it("el admin ve proyectos, contactos y derechos, y el cliente no", async () => {
+    await env.DB.prepare("INSERT INTO leads (name, email, interest) VALUES ('Ana', 'ana@x.cl', 'Ley 21.719')").run();
+    await env.DB.prepare("INSERT INTO solicitudes_derechos (folio, tipo, email, vence_el) VALUES ('ABC12345', 'acceso', 'b@x.cl', '2026-10-30')").run();
+    const pr = await (await comoAdmin("/admin/proyectos")).json() as { proyectos: { avance: number; cliente: string }[] };
+    expect(pr.proyectos.length).toBeGreaterThan(0);
+    expect(pr.proyectos[0]).toHaveProperty("cliente");
+    const ct = await (await comoAdmin("/admin/contactos")).json() as { contactos: { email: string }[] };
+    expect(ct.contactos.some((x) => x.email === "ana@x.cl")).toBe(true);
+    expect((await comoAdmin("/admin/derechos/ABC12345/responder", {})).status).toBe(200);
+    expect((await comoAdmin("/admin/derechos/ABC12345/responder", {})).status).toBe(404); // ya respondida
+    const a = await clienteConToken("Lambda");
+    const s = await canjear(a.token);
+    for (const ruta of ["/admin/proyectos", "/admin/contactos", "/admin/derechos"]) {
+      const r = await app.request(`${PROD}/api${ruta}`, { headers: { Cookie: s.cookie } }, { ...env, ENTORNO: "produccion" });
+      expect(r.status).toBe(401);
+    }
+  });
 });

@@ -65,7 +65,7 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          # Webhook de n8n para los leads del formulario (Settings → Secrets).
+          # URL del worker que recibe los leads del formulario (Settings → Secrets).
           # Obligatoria y ahora crítica: ya no hay fallback y, desde que el hero
           # y el bloque de planes llevan al formulario, es el camino principal
           # de contacto del sitio. Si falta, /contacto falla explícitamente (ver

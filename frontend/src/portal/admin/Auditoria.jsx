@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import AdminShell from "@/portal/admin/AdminShell";
+import AdminShell, { Encabezado } from "@/portal/admin/AdminShell";
 import { Aviso } from "@/portal/PortalShell";
 import { api } from "@/portal/api";
 
@@ -18,11 +18,10 @@ export default function Auditoria() {
 
   return (
     <AdminShell titulo="Auditoría">
-      <Link to={cliente ? `/portal/admin/clientes/${cliente}` : "/portal/admin"} className="text-sm font-semibold text-primary hover:underline">← Volver</Link>
-      <h1 className="mt-4 text-4xl font-extrabold tracking-[-0.04em]">Auditoría</h1>
-      <p className="mt-2 text-sm text-muted-foreground">Últimos 200 cambios{cliente ? " de este cliente" : ""}.</p>
+      {cliente && <Link to={`/portal/admin/clientes/${cliente}`} className="text-sm font-semibold text-primary hover:underline">← Volver al cliente</Link>}
+      <Encabezado titulo="Auditoría" bajada={`Últimos 200 cambios${cliente ? " de este cliente" : ""}.`} />
       {error && <div className="mt-6"><Aviso tono="error">{error.message}</Aviso></div>}
-      <ol className="mt-8 grid gap-2 font-mono text-xs">
+      <ol className="grid gap-2 font-mono text-xs">
         {eventos?.map((e) => (
           <li key={e.id} className="grid gap-1 rounded-lg border border-border bg-card p-3 sm:grid-cols-[11rem_12rem_1fr]">
             <span className="text-muted-foreground">{new Date(e.creado_en * 1000).toLocaleString("es-CL")}</span>

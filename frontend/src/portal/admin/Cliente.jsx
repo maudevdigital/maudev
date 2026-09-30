@@ -73,7 +73,7 @@ export default function Cliente() {
 
   return (
     <AdminShell titulo={cliente.nombre}>
-      <Link to="/portal/admin" className="text-sm font-semibold text-primary hover:underline">← Clientes</Link>
+      <Link to="/portal/admin/clientes" className="text-sm font-semibold text-primary hover:underline">← Clientes</Link>
       <div className="mt-4 flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="text-4xl font-extrabold tracking-[-0.04em]">{cliente.nombre}</h1>

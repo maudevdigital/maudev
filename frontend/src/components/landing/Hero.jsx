@@ -19,9 +19,8 @@ export default function Hero() {
               Tu empresa, al día con <span className="text-muted-foreground">la ley, la IA y la web.</span>
             </h1>
             <p className="mt-6 max-w-lg text-lg leading-relaxed text-muted-foreground">
-              Adecuamos tu sitio a la Ley 21.719, probamos inteligencia artificial con tus
-              datos y construimos sitios y sistemas a medida. Con precios publicados y un
-              portal donde ves avanzar tu proyecto.
+              Ley 21.719, inteligencia artificial y desarrollo web para empresas en Chile.
+              Precios publicados y un portal para seguir tu proyecto.
             </p>
             {/* El hero recibe el tráfico más frío del sitio: alguien que leyó
                 una frase y todavía no sabe si servimos para lo suyo. Este botón
@@ -48,10 +47,6 @@ export default function Hero() {
             </p>
           </div>
           <div className="hero-showcase">
-            <div className="flex items-center justify-between gap-3 px-1 pb-5 text-sm">
-              <span className="font-medium">Ideas que ya están en línea</span>
-              <span className="rounded-full bg-card/80 px-3 py-1 text-xs text-muted-foreground">Proyecto real</span>
-            </div>
             <Link to={`/casos/${project.id}`} className="showcase-browser group block" aria-label={`Conocer el proyecto ${project.title}`}>
               <div className="flex items-center gap-1.5 border-b border-border bg-card px-4 py-3" aria-hidden="true">
                 <span className="h-2 w-2 rounded-full bg-border" />
@@ -92,12 +87,6 @@ export default function Hero() {
               </ul>
             </div>
           </div>
-        </div>
-        <div className="hero-footnote">
-          <span>Ley 21.719 · IA aplicada · Desarrollo · Soporte</span>
-          <a href="#servicios" className="inline-flex items-center gap-2 font-medium text-foreground hover:text-primary">
-            Encuentra lo que necesitas <ArrowDown className="h-4 w-4" aria-hidden="true" />
-          </a>
         </div>
       </div>
     </section>

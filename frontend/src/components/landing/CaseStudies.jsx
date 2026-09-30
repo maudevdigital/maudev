@@ -14,9 +14,6 @@ export default function CaseStudies() {
           <div className="max-w-3xl">
             <span className="eyebrow">Trabajo comprobable</span>
             <h2 id="casos-title" className="section-title mt-4">Menos promesas. Más trabajo real.</h2>
-            <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-              Proyectos publicados y funcionando hoy, explicados por el problema que resolvían y lo que cambió después.
-            </p>
           </div>
           <Link to="/casos" className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:underline">
             Ver todos los casos <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -26,7 +23,7 @@ export default function CaseStudies() {
         <div className="grid gap-6 sm:grid-cols-2">
           {featured.map((project) => (
             <article key={project.id} className="panel panel-solid group flex snap-start flex-col">
-              <div className="relative aspect-[16/10] overflow-hidden border-b border-border bg-secondary">
+              <div className="relative aspect-[16/8] overflow-hidden border-b border-border bg-secondary">
                 <img
                   src={project.image}
                   alt={`Vista del proyecto ${project.title}`}
@@ -34,7 +31,7 @@ export default function CaseStudies() {
                   height="2560"
                   loading="lazy"
                   decoding="async"
-                  className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.025]"
+                  className="h-full w-full object-cover object-top transition-transform duration-300 ease-out group-hover:scale-[1.025]"
                 />
                 {project.url && (
                   <a

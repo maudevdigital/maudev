@@ -10,7 +10,7 @@ import { useSeo } from "@/lib/useSeo";
 // el tráfico de RRSS en acciones del sitio.
 const links = [
   { to: "/contacto", icon: Zap, label: "Pedir diagnóstico gratis", desc: "Respuesta en menos de 24h", primary: true },
-  { to: "/automatizaciones", icon: Sparkles, label: "Automatizaciones", desc: "Agenda, boletas, cobros y más — con n8n" },
+  { to: "/inteligencia-artificial", icon: Sparkles, label: "IA aplicada", desc: "Agentes y lectura de documentos, con tus datos" },
   { to: "/servicios", icon: Code2, label: "Servicios", desc: "Web, software y automatización" },
   { to: "/ley-21719", icon: Tag, label: "Ley 21.719", desc: "Adecua tu sitio a la nueva ley de datos" },
   { to: "/portafolio", icon: Briefcase, label: "Portafolio", desc: "Proyectos reales en producción" },
@@ -51,7 +51,7 @@ export default function LinkInBio() {
             <Link
               key={l.to}
               to={l.to}
-              className={`group flex items-center gap-4 rounded-2xl border p-4 transition-all ${
+              className={`group flex items-center gap-4 rounded-2xl border p-4 transition-colors ${
                 l.primary
                   ? "border-primary/40 bg-primary/10 glow-cyan hover:bg-primary/15"
                   : "border-border bg-card hover:border-primary/40"
@@ -73,7 +73,7 @@ export default function LinkInBio() {
               href={getWhatsAppUrl("Hola, los encontré en sus redes y quiero saber más.")}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-center gap-4 rounded-2xl border border-border bg-card p-4 hover:border-[#25D366]/50 transition-all"
+              className="group flex items-center gap-4 rounded-2xl border border-border bg-card p-4 hover:border-[#25D366]/50 transition-colors"
             >
               <div className="h-11 w-11 shrink-0 rounded-xl flex items-center justify-center bg-[#25D366]/10 border border-[#25D366]/30">
                 <MessageCircle className="h-5 w-5 text-[#25D366]" />

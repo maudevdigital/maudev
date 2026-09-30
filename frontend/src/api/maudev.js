@@ -1,5 +1,5 @@
 // Capa de datos del sitio (sin backend). Los casos se sirven desde los archivos
-// locales del repo (versionados en git); los leads salen por el webhook de n8n
+// locales del repo (versionados en git); los leads salen al worker de captación (workers/lead-intake)
 // (ver lib/leads.js). Se conserva la MISMA forma `api.entities.X.method` para no
 // tocar los componentes que ya la consumen.
 
@@ -45,7 +45,7 @@ export const api = {
   entities: {
     Project: localEntity(projects, getProjectById),
     Lead: {
-      // Único método con efecto: envía el lead al webhook de n8n.
+      // Único método con efecto: envía el lead al worker de captación.
       create: async (payload) => submitLead(payload),
     },
   },

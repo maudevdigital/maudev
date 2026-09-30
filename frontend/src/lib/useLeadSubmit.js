@@ -10,7 +10,7 @@ import { getWhatsAppUrl } from "@/lib/whatsapp";
 // viviendo en cada form (varían por formulario).
 //
 // submit({ lead, track, successMessage, whatsappFallback })
-//   lead:  objeto que se guarda (→ webhook n8n vía api.entities.Lead.create)
+//   lead:  objeto que se guarda (→ worker lead-intake vía api.entities.Lead.create)
 //   track: opcional, payload para trackLeadEvent (Pixel + CAPI + GA4)
 //   successMessage: texto del toast de éxito. Pasar null para no mostrar toast
 //                   (cuando el form maneja su propio mensaje/redirección).
