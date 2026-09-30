@@ -50,6 +50,22 @@ function App() {
     <>
       <Router>
         <ScrollToTop />
+        {/* Primer elemento enfocable de cada página: con teclado o lector de
+            pantalla se salta el menú de un Tab. Mueve el foco al <main> en vez de
+            cambiar la URL, que el router interpretaría como navegación. */}
+        <a
+          href="#contenido"
+          className="skip-link"
+          onClick={(e) => {
+            const destino = document.getElementById('contenido');
+            if (!destino) return;
+            e.preventDefault();
+            destino.focus();
+            destino.scrollIntoView();
+          }}
+        >
+          Saltar al contenido
+        </a>
         <SoloSitio><MetaPixelTracker /></SoloSitio>
         <Suspense fallback={<Spinner />}>
           <Routes>

@@ -62,7 +62,7 @@ export default function Landing() {
   return (
     <div className="min-h-screen isolate bg-background text-foreground">
       <Navbar />
-      <main>
+      <main id="contenido" tabIndex={-1}>
         <Hero />
         <SolutionsOverview />
         <CaseStudies />

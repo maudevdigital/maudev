@@ -223,7 +223,7 @@ export default function Navbar() {
                 onClick={() => setMega((v) => !v)}
                 aria-expanded={mega}
                 aria-controls="mega-servicios"
-                className={`flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+                className={`flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring ${
                   mega ? "text-foreground" : "text-muted-foreground hover:text-foreground"
                 }`}
               >
@@ -234,7 +234,7 @@ export default function Navbar() {
 
             <Link
               to="/ley-21719"
-              className="whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring"
             >
               Ley 21.719
             </Link>
@@ -243,7 +243,7 @@ export default function Navbar() {
               href="/#casos"
               onClick={(event) => goToSection(event, "casos")}
               aria-current={active === "casos" ? "true" : undefined}
-              className={`rounded-lg px-3 py-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+              className={`rounded-lg px-3 py-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring ${
                 active === "casos" ? "text-primary" : "text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -253,7 +253,7 @@ export default function Navbar() {
             <a
               href="/#planes"
               onClick={(event) => goToSection(event, "planes")}
-              className="rounded-lg px-3 py-2 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="rounded-lg px-3 py-2 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring"
             >
               Planes
             </a>
@@ -265,7 +265,7 @@ export default function Navbar() {
               type="button"
               onClick={toggleTheme}
               aria-label={dark ? "Usar tema claro" : "Usar tema oscuro"}
-              className="grid h-10 w-10 place-items-center rounded-xl border border-border text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="grid h-10 w-10 place-items-center rounded-xl border border-border text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring"
             >
               {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </button>
@@ -300,7 +300,7 @@ export default function Navbar() {
               type="button"
               onClick={toggleTheme}
               aria-label={dark ? "Usar tema claro" : "Usar tema oscuro"}
-              className="grid h-10 w-10 place-items-center rounded-xl border border-border text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="grid h-11 w-11 place-items-center rounded-xl border border-border text-muted-foreground focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring"
             >
               {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </button>
@@ -310,7 +310,7 @@ export default function Navbar() {
               aria-expanded={open}
               aria-controls="menu-movil"
               aria-label={open ? "Cerrar menú" : "Abrir menú"}
-              className="grid h-10 w-10 place-items-center rounded-xl border border-border text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="grid h-11 w-11 place-items-center rounded-xl border border-border text-foreground focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring"
             >
               {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
@@ -335,7 +335,7 @@ export default function Navbar() {
                         <Link
                           to={href}
                           onClick={() => setMega(false)}
-                          className="group flex gap-3 rounded-lg p-2.5 transition-colors hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                          className="group flex gap-3 rounded-lg p-2.5 transition-colors hover:bg-secondary focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring"
                         >
                           <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-md border border-border text-primary transition-colors group-hover:border-primary/40">
                             <Icon className="h-3.5 w-3.5" aria-hidden="true" />

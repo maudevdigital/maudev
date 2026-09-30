@@ -45,7 +45,7 @@ export default function FinalCta() {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => trackAction("whatsapp_click", { ubicacion: "cta-final" })}
-                className="inline-flex h-14 items-center justify-center gap-2.5 rounded-xl bg-white px-7 font-semibold text-ink transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                className="inline-flex h-14 items-center justify-center gap-2.5 rounded-xl bg-white px-7 font-semibold text-ink transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-white"
               >
                 <MessageCircle className="h-5 w-5 shrink-0" aria-hidden="true" />
                 Hablar por WhatsApp
@@ -55,7 +55,7 @@ export default function FinalCta() {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => trackAction("agendar_click", { ubicacion: "cta-final" })}
-                className="inline-flex h-14 items-center justify-center gap-2.5 rounded-xl border border-white/25 px-6 font-semibold text-white transition-colors hover:border-white/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                className="inline-flex h-14 items-center justify-center gap-2.5 rounded-xl border border-white/25 px-6 font-semibold text-white transition-colors hover:border-white/50 focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-white"
               >
                 <CalendarClock className="h-5 w-5 shrink-0" aria-hidden="true" />
                 Agendar 30 min

@@ -188,7 +188,7 @@ export default function Contacto() {
 
   return (
     <PageShell>
-      <main>
+      <main id="contenido" tabIndex={-1}>
         <section className="pb-20 pt-30 sm:pt-36 lg:pb-28 lg:pt-42">
           <div className="site-container">
             <Breadcrumbs items={[{ label: "Contacto" }]} />

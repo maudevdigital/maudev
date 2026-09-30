@@ -65,7 +65,7 @@ export default function ServicePage({ serviceKey }) {
 
   return (
     <PageShell>
-      <main>
+      <main id="contenido" tabIndex={-1}>
         <section className="relative overflow-hidden pb-20 pt-30 sm:pt-36 lg:pb-28 lg:pt-42">
           <div className="site-container relative">
             <Breadcrumbs items={[{ label: service.navLabel }]} />

@@ -89,7 +89,7 @@ export default function TierModal({ nivel, onClose }) {
             type="button"
             onClick={onClose}
             aria-label="Cerrar"
-            className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-border text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-border text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring"
           >
             <X className="h-4 w-4" aria-hidden="true" />
           </button>
@@ -103,7 +103,7 @@ export default function TierModal({ nivel, onClose }) {
               type="button"
               onClick={() => setFamilia(id)}
               aria-pressed={familia === id}
-              className={`shrink-0 rounded-lg border px-3.5 py-1.5 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+              className={`shrink-0 rounded-lg border px-3.5 py-1.5 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring ${
                 familia === id
                   ? "border-primary bg-primary/10 text-primary"
                   : "border-border text-muted-foreground hover:text-foreground"
@@ -162,7 +162,7 @@ export default function TierModal({ nivel, onClose }) {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => trackAction("whatsapp_click", { ubicacion: "modal-subservicio", servicio: servicio.id, nivel: nivel.id })}
-                className="mt-auto inline-flex items-center gap-1.5 pt-5 text-xs font-bold text-primary transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="mt-auto inline-flex items-center gap-1.5 pt-5 text-xs font-bold text-primary transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring"
               >
                 <MessageCircle className="h-3.5 w-3.5" aria-hidden="true" />
                 Cotizar por WhatsApp

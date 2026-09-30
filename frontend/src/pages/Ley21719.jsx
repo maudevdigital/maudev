@@ -74,7 +74,7 @@ function Autodiagnostico() {
                   type="button"
                   aria-pressed={respuestas[i] === valor}
                   onClick={() => responder(i, valor)}
-                  className={`h-10 min-w-16 rounded-lg border px-4 text-sm font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+                  className={`h-11 min-w-16 rounded-lg border px-4 text-sm font-bold transition-colors focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring ${
                     respuestas[i] === valor ? "border-primary bg-primary text-primary-foreground" : "border-border hover:border-primary"
                   }`}
                 >
@@ -139,7 +139,7 @@ export default function Ley21719() {
 
   return (
     <PageShell>
-      <main>
+      <main id="contenido" tabIndex={-1}>
         <section className="pb-20 pt-30 sm:pt-36 lg:pb-28 lg:pt-42">
           <div className="site-container">
             <Breadcrumbs items={[{ label: "Ley 21.719" }]} />

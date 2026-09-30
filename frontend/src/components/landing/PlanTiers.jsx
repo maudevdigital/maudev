@@ -127,7 +127,7 @@ export default function PlanTiers() {
                   setAbierto(nivel);
                   trackAction("plan_subservicios", { plan: id });
                 }}
-                className="group mt-5 inline-flex items-center gap-2 text-sm font-bold text-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="group mt-5 inline-flex items-center gap-2 text-sm font-bold text-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring"
               >
                 Explorar este plan
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />

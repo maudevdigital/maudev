@@ -27,7 +27,7 @@ export default function Cases() {
 
   return (
     <PageShell>
-      <main>
+      <main id="contenido" tabIndex={-1}>
         <section className="pb-16 pt-30 sm:pt-36 lg:pb-24 lg:pt-42">
           <div className="site-container">
             <Breadcrumbs items={[{ label: "Casos" }]} />

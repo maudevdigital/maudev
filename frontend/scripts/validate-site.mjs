@@ -423,6 +423,22 @@ try {
     "Volvieron el foco de luz o las partículas, que se quitaron a propósito"
   );
 
+  // Salto al contenido: el primer Tab de la página tiene que llevar ahí, y el
+  // destino tiene que existir (sin main#contenido el enlace no hace nada).
+  await ctaPage.goto(`${baseUrl}/ley-21719`, { waitUntil: "domcontentloaded" });
+  await ctaPage.getByRole("heading", { level: 1 }).waitFor({ state: "visible" });
+  await ctaPage.keyboard.press("Tab");
+  assert(
+    await ctaPage.evaluate(() => document.activeElement?.classList.contains("skip-link")),
+    "El primer Tab ya no lleva a 'Saltar al contenido'"
+  );
+  await ctaPage.keyboard.press("Enter");
+  assert(
+    await ctaPage.evaluate(() => document.activeElement?.id === "contenido"),
+    "'Saltar al contenido' no mueve el foco al contenido principal"
+  );
+  await ctaPage.goto(`${baseUrl}/`, { waitUntil: "domcontentloaded" });
+
   // El número sale de un único lugar y admite reemplazo por variable de
   // entorno. Si alguien vuelve a escribirlo a mano en un componente, el día que
   // exista el número de empresa ese punto se queda con el personal.

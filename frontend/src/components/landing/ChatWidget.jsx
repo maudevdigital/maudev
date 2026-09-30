@@ -158,7 +158,7 @@ export default function ChatWidget() {
         aria-label={open ? "Cerrar chat" : "Abrir chat"}
         aria-expanded={open}
         aria-controls="contact-options"
-        className="relative flex h-13 w-13 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-lg shadow-black/25 transition-transform hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+        className="relative flex h-13 w-13 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-lg shadow-black/25 transition-transform hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring focus-visible:ring-offset-2"
       >
         {open ? <X className="h-5 w-5" /> : <MessageCircle className="h-5.5 w-5.5" />}
       </button>

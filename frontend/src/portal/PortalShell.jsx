@@ -16,7 +16,7 @@ export default function PortalShell({ titulo, acciones, children }) {
           <div className="flex items-center gap-2">{acciones}</div>
         </div>
       </header>
-      <main className="site-container py-10 sm:py-14">{children}</main>
+      <main id="contenido" tabIndex={-1} className="site-container py-10 sm:py-14">{children}</main>
     </div>
   );
 }

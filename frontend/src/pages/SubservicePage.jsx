@@ -95,7 +95,7 @@ export default function SubservicePage() {
 
   return (
     <PageShell>
-      <main>
+      <main id="contenido" tabIndex={-1}>
         <section className="relative overflow-hidden pb-16 pt-30 sm:pt-36">
           <div className="site-container relative">
             <Breadcrumbs items={[{ label: familia.label, href: familia.pagina }, { label: servicio.nombre }]} />

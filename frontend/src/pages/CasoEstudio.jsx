@@ -42,7 +42,7 @@ export default function CasoEstudio() {
 
   return (
     <PageShell>
-      <main>
+      <main id="contenido" tabIndex={-1}>
         <section className="pb-14 pt-30 sm:pt-36 lg:pt-42">
           <div className="site-container">
             <Breadcrumbs items={[{ label: "Casos", href: "/casos" }, { label: project.title }]} />

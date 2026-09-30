@@ -56,7 +56,7 @@ export default function CaseStudies() {
                 <Link
                   to={`/casos/${project.id}`}
                   onClick={() => trackAction("caso_exito_click", { proyecto: project.id, ubicacion: "home" })}
-                  className="mt-auto inline-flex items-center gap-2 pt-5 text-sm font-bold text-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  className="mt-auto inline-flex items-center gap-2 pt-5 text-sm font-bold text-primary hover:underline focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring"
                 >
                   Ver caso <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Link>

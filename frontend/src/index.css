@@ -287,7 +287,7 @@
 }
 
 .btn:focus-visible {
-  outline: 2px solid hsl(var(--ring));
+  outline: 3px solid hsl(var(--ring));
   outline-offset: 3px;
 }
 
@@ -395,7 +395,7 @@
 .faq-item summary::-webkit-details-marker { display: none; }
 .faq-item summary:hover { color: hsl(var(--primary)); }
 .faq-item[open] summary { color: hsl(var(--primary)); }
-.faq-item summary:focus-visible { outline: 2px solid hsl(var(--ring)); outline-offset: 4px; }
+.faq-item summary:focus-visible { outline: 3px solid hsl(var(--ring)); outline-offset: 4px; }
 
 .faq-item summary::after {
   content: "";
@@ -510,7 +510,7 @@ html {
 
 /* Jerarquía y superficies del rediseño. */
 a:focus-visible, button:focus-visible, summary:focus-visible {
-  outline: 2px solid hsl(var(--ring));
+  outline: 3px solid hsl(var(--ring));
   outline-offset: 4px;
 }
 
@@ -580,4 +580,27 @@ section[id] { scroll-margin-top: 7rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+}
+
+/* Salto al contenido: invisible hasta recibir foco con el teclado. */
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 100;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  font-weight: 600;
+  transform: translateY(-200%);
+}
+.skip-link:focus { transform: none; }
+main:focus { outline: none; }
+
+/* Pantallas táctiles: todo lo que se toca mide al menos 44 px (WCAG 2.5.5). */
+@media (pointer: coarse) {
+  .btn,
+  select,
+  input:not([type="checkbox"]):not([type="radio"]) { min-height: 2.75rem; }
 }

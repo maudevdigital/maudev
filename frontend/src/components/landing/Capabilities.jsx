@@ -89,7 +89,7 @@ export default function Capabilities() {
               <Link
                 to={href}
                 onClick={() => trackAction("capacidad_click", { capacidad: id })}
-                className="group mt-auto inline-flex items-center gap-1.5 border-t border-border pt-4 text-xs font-bold text-primary transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="group mt-auto inline-flex items-center gap-1.5 border-t border-border pt-4 text-xs font-bold text-primary transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring"
               >
                 Ver página completa
                 <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />

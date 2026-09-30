@@ -32,7 +32,7 @@ const Opcion = ({ activo, onClick, children }) => (
     type="button"
     onClick={onClick}
     aria-pressed={activo}
-    className={`min-h-11 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+    className={`min-h-11 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring ${
       activo
         ? "border-primary bg-primary/10 text-primary"
         : "border-border text-muted-foreground hover:border-primary/40 hover:text-foreground"
