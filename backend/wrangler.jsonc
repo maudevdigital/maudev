@@ -31,5 +31,29 @@
   "ratelimits": [
     { "name": "LIMITE_TOKEN", "namespace_id": "2001", "simple": { "limit": 10, "period": 60 } }
   ],
-  "observability": { "enabled": true }
+  "observability": { "enabled": true },
+  // Solo para `npm run dev`. Sin la ruta de producción, wrangler no reescribe la
+  // URL a maudev.cl y el atajo de admin local (auth/admin.ts) puede exigir
+  // localhost. ADMIN_LOCAL existe únicamente acá: nunca llega a producción.
+  "env": {
+    "local": {
+      "routes": [],
+      "vars": {
+        "SITIO": "http://127.0.0.1:5173",
+        "ENTORNO": "local",
+        "ADMINS": "contacto@maudev.cl,lucasmaulenr@gmail.com",
+        "ADMIN_LOCAL": "contacto@maudev.cl",
+        "ACCESS_EQUIPO": "",
+        "ACCESS_AUD": ""
+      },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "maudev-leads",
+          "database_id": "fd24eb0f-0d69-4215-9ed7-5da04126e728",
+          "migrations_dir": "migrations"
+        }
+      ]
+    }
+  }
 }

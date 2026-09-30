@@ -4,7 +4,7 @@ import { getPlan } from "../../../shared/oferta.js";
 import { requiereAdmin } from "../auth/admin";
 import { proyectosDe } from "../proyectos";
 import type { Entorno } from "../tipos";
-import { ahora, aleatorio, auditar, nuevoId, sha256 } from "../util";
+import { ahora, aleatorio, auditar, hoyChile, nuevoId, sha256 } from "../util";
 
 export const admin = new Hono<Entorno>();
 admin.use("*", requiereAdmin);
@@ -146,7 +146,7 @@ admin.patch("/fases/:id", async (c) => {
   if (!fila) return noEncontrado(c);
 
   const { estado, estimada_el } = cuerpo.data;
-  const hoy = new Date().toISOString().slice(0, 10);
+  const hoy = hoyChile();
   await c.env.DB.prepare(
     `UPDATE fases SET
        estado = coalesce(?, estado),

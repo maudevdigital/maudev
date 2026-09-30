@@ -3,6 +3,9 @@ import type { Entorno } from "./tipos";
 
 export const ahora = () => Math.floor(Date.now() / 1000);
 
+/** Fecha de hoy en Chile (AAAA-MM-DD). En UTC, desde las 21:00 ya sería mañana. */
+export const hoyChile = () => new Intl.DateTimeFormat("en-CA", { timeZone: "America/Santiago" }).format(new Date());
+
 /** Texto aleatorio en base64url. 32 bytes para secretos, 12 para ids. */
 export function aleatorio(bytes = 32): string {
   const b = crypto.getRandomValues(new Uint8Array(bytes));

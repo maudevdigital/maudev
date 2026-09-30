@@ -1,6 +1,6 @@
 import { lazy, Suspense } from "react"
 import { Toaster } from "sonner"
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import ScrollToTop from './lib/ScrollToTop';
 import MetaPixelTracker from './lib/MetaPixelTracker';
@@ -25,6 +25,18 @@ const Terminos = lazy(() => import('./pages/Terminos'));
 const Privacidad = lazy(() => import('./pages/Privacidad'));
 const EliminacionDatos = lazy(() => import('./pages/EliminacionDatos'));
 const LinkInBio = lazy(() => import('./pages/LinkInBio'));
+// Portal de clientes y panel admin: chunks aparte, nunca en el bundle del sitio.
+const PortalEntrar = lazy(() => import('./portal/cliente/Entrar'));
+const PortalResumen = lazy(() => import('./portal/cliente/Resumen'));
+const AdminClientes = lazy(() => import('./portal/admin/Clientes'));
+const AdminCliente = lazy(() => import('./portal/admin/Cliente'));
+const AdminAuditoria = lazy(() => import('./portal/admin/Auditoria'));
+
+// El portal no mide ni ofrece chat: ahí se ven datos de clientes, y ni el píxel
+// ni la analítica tienen nada que hacer con esas pantallas.
+function SoloSitio({ children }) {
+  return useLocation().pathname.startsWith('/portal') ? null : children;
+}
 
 const Spinner = () => (
   <div className="fixed inset-0 flex items-center justify-center">
@@ -37,7 +49,7 @@ function App() {
     <>
       <Router>
         <ScrollToTop />
-        <MetaPixelTracker />
+        <SoloSitio><MetaPixelTracker /></SoloSitio>
         <Suspense fallback={<Spinner />}>
           <Routes>
             <Route path="/" element={<Landing />} />
@@ -65,6 +77,12 @@ function App() {
             <Route path="/portafolio/:projectId" element={<CasoEstudio />} />
             <Route path="/contacto" element={<Contacto />} />
 
+            <Route path="/portal" element={<PortalResumen />} />
+            <Route path="/portal/entrar" element={<PortalEntrar />} />
+            <Route path="/portal/admin" element={<AdminClientes />} />
+            <Route path="/portal/admin/clientes/:id" element={<AdminCliente />} />
+            <Route path="/portal/admin/auditoria" element={<AdminAuditoria />} />
+
             {/* Productos n8n autoservicio (audiencia distinta: técnica e internacional).
                 Fuera del navbar a propósito, para no competir con el CTA de la home. */}
             <Route path="/precios" element={<Precios />} />
@@ -88,8 +106,10 @@ function App() {
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </Suspense>
-        <ChatWidget />
-        <AvisoPrivacidad />
+        <SoloSitio>
+          <ChatWidget />
+          <AvisoPrivacidad />
+        </SoloSitio>
       </Router>
       <Toaster richColors position="top-right" />
     </>

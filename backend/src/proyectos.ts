@@ -1,3 +1,5 @@
+import { hoyChile } from "./util";
+
 // Métricas de proyecto: las mismas para la ficha del admin y para el portal del
 // cliente, así los dos ven exactamente el mismo avance.
 
@@ -27,7 +29,7 @@ export async function proyectosDe(db: D1Database, clienteId: string) {
        WHERE p.cliente_id = ? ORDER BY f.orden`,
     ).bind(clienteId),
   ]);
-  const hoy = new Date().toISOString().slice(0, 10);
+  const hoy = hoyChile();
 
   return (proyectos.results as unknown as FilaProyecto[]).map((p) => {
     const suyas = (fases.results as (Fase & { proyecto_id: string })[]).filter((f) => f.proyecto_id === p.id);
