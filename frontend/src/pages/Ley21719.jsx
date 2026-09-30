@@ -169,7 +169,10 @@ export default function Ley21719() {
               <p className="leading-relaxed text-muted-foreground">
                 <strong className="text-foreground">Proyecto de prórroga:</strong> el Gobierno propuso mover la vigencia al 1 de diciembre de 2027.
                 Mientras el Congreso no lo apruebe, la fecha sigue siendo el 1 de diciembre de 2026.{" "}
-                <Link to="/guias/prorroga-ley-21719" className="font-semibold text-primary hover:underline">Qué cambia y qué no</Link>
+                {/* Solo si la guía se publicó: el enlace depende de lo que haya en el admin. */}
+                {guias.some((g) => g.slug === "prorroga-ley-21719") && (
+                  <Link to="/guias/prorroga-ley-21719" className="font-semibold text-primary hover:underline">Qué cambia y qué no</Link>
+                )}
               </p>
             </div>
             <p className="mt-4 font-mono text-xs text-muted-foreground">

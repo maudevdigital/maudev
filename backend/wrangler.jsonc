@@ -3,7 +3,11 @@
   "name": "maudev-api",
   "main": "src/index.ts",
   "compatibility_date": "2026-09-29",
-  "workers_dev": false,
+  // workers.dev activo: el build del sitio en GitHub Actions descarga las guías
+  // desde ahí, porque la protección contra bots de la zona maudev.cl bloquea las
+  // IPs de GitHub. El admin sigue exigiendo el JWT de Access (auth/admin.ts) y
+  // la cookie de cliente es __Host- de maudev.cl: no viaja a este dominio.
+  "workers_dev": true,
   "preview_urls": false,
   // Mismo dominio que el sitio: Pages sirve maudev.cl y este Worker atiende solo
   // /api/*. Mismo origen, así que las cookies __Host- funcionan sin CORS.

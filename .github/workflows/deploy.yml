@@ -72,6 +72,8 @@ jobs:
           # src/lib/leads.js) y solo queda el respaldo por WhatsApp del aviso de
           # error.
           VITE_LEAD_WEBHOOK_URL: ${{ secrets.VITE_LEAD_WEBHOOK_URL }}
+          # Guías publicadas desde el admin (ver backend/wrangler.jsonc, workers_dev).
+          GUIAS_API: https://maudev-api.maudevchile.workers.dev
           # Site key PÚBLICA de Turnstile. Si falta, el sitio no carga el widget
           # y funciona como siempre. Ojo con el orden: poner el secreto en el
           # worker sin esta variable deja todo envío en 403.
