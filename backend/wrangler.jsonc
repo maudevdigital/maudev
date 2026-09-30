@@ -13,10 +13,10 @@
     "ENTORNO": "produccion",
     // Correos con permiso de admin, separados por coma. Además de estar acá,
     // tienen que pasar Cloudflare Access (ver docs/plan-servicios-portal.md §8.1).
-    "ADMINS": "contacto@maudev.cl",
+    "ADMINS": "contacto@maudev.cl,lucasmaulenr@gmail.com",
     // Se completan al crear la aplicación en Cloudflare Access:
-    "ACCESS_EQUIPO": "",
-    "ACCESS_AUD": ""
+    "ACCESS_EQUIPO": "maudevchile.cloudflareaccess.com",
+    "ACCESS_AUD": "d8f4dee20546d58261fb21e4dae97d42b1b24cd64e79fb8d588ed0a4302d1f1b"
   },
   // La misma base que ya usa workers/lead-intake: el backend la absorbe en la
   // entrega 2d y así no hay que mover datos.
