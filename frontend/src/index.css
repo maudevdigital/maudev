@@ -604,3 +604,19 @@ main:focus { outline: none; }
   select,
   input:not([type="checkbox"]):not([type="radio"]) { min-height: 2.75rem; }
 }
+
+/* Párrafos sin palabras huérfanas al final. */
+p { text-wrap: pretty; }
+
+/* Cifras alineadas: precios, métricas y porcentajes no bailan al cambiar. */
+.cifra { font-variant-numeric: tabular-nums; }
+
+/* Esqueleto de carga: la forma de lo que viene, no un texto "Cargando…". */
+.esqueleto { border-radius: 0.5rem; background: hsl(var(--secondary)); }
+@media (prefers-reduced-motion: no-preference) {
+  .esqueleto { animation: esqueleto 1.4s ease-in-out infinite; }
+}
+@keyframes esqueleto { 50% { opacity: 0.55; } }
+
+/* Página actual en el menú también para los botones fantasma. */
+.btn-ghost[aria-current="page"] { color: hsl(var(--primary)); border-color: hsl(var(--primary) / 0.4); }

@@ -10,7 +10,7 @@ export const faqs = [
   },
   {
     q: "¿Hay pagos mensuales?",
-    a: "El desarrollo no exige una mensualidad. Algunos servicios externos —como hosting, mensajería o pasarelas de pago— sí pueden tener costos propios, que se informan antes de implementar.",
+    a: "El desarrollo no exige una mensualidad. Algunos servicios externos (hosting, mensajería o pasarelas de pago) sí pueden tener costos propios, que se informan antes de implementar.",
   },
   {
     q: "¿Qué ocurre después de la entrega?",

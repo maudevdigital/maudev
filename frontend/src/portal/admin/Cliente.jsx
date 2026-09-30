@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import AdminShell from "@/portal/admin/AdminShell";
-import { Aviso, Barra } from "@/portal/PortalShell";
+import { Aviso, Barra, Esqueleto } from "@/portal/PortalShell";
 import { ESTADOS_FASE, api, fecha } from "@/portal/api";
 import { planes } from "@shared/oferta";
 
@@ -67,7 +67,7 @@ export default function Cliente() {
   };
 
   if (error) return <AdminShell titulo="Cliente"><Aviso tono="error">{error.message}</Aviso></AdminShell>;
-  if (!datos) return <AdminShell titulo="Cliente"><Aviso>Cargando…</Aviso></AdminShell>;
+  if (!datos) return <AdminShell titulo="Cliente"><Esqueleto filas={2} /></AdminShell>;
   const { cliente, tokens, proyectos } = datos;
   const archivado = Boolean(cliente.archivado_en);
 

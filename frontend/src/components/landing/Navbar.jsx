@@ -234,7 +234,10 @@ export default function Navbar() {
 
             <Link
               to="/ley-21719"
-              className="whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring"
+              aria-current={pathname === "/ley-21719" ? "page" : undefined}
+              className={`whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring ${
+                pathname === "/ley-21719" ? "text-primary" : "text-muted-foreground hover:text-foreground"
+              }`}
             >
               Ley 21.719
             </Link>
@@ -275,6 +278,7 @@ export default function Navbar() {
             <Link
               to="/portal/ingresar"
               aria-label="Portal clientes"
+              aria-current={pathname.startsWith("/portal") ? "page" : undefined}
               title="Portal clientes"
               className="btn btn-ghost h-10 rounded-lg! px-3 text-sm xl:px-3.5"
             >

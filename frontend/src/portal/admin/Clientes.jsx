@@ -51,7 +51,7 @@ export default function Clientes() {
           ].map(([etiqueta, valor, alerta]) => (
             <div key={etiqueta} className="rounded-xl border border-border bg-card p-4">
               <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-muted-foreground">{etiqueta}</p>
-              <p className={`mt-1 text-2xl font-extrabold ${alerta ? "text-destructive" : ""}`}>{valor}</p>
+              <p className={`cifra mt-1 text-2xl font-extrabold ${alerta ? "text-destructive" : ""}`}>{valor}</p>
             </div>
           ))}
         </div>
@@ -83,7 +83,7 @@ export default function Clientes() {
               </tr>
             ))}
             {lista?.length === 0 && <tr><td colSpan={4} className="p-6 text-muted-foreground">Todavía no hay clientes.</td></tr>}
-            {!lista && !error && <tr><td colSpan={4} className="p-6 text-muted-foreground">Cargando…</td></tr>}
+            {!lista && !error && [0, 1, 2].map((i) => <tr key={i} aria-hidden="true"><td colSpan={4} className="p-4"><div className="esqueleto h-8" /></td></tr>)}
           </tbody>
         </table>
       </div>

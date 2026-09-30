@@ -88,8 +88,8 @@ export default function Cases() {
                   dirección real, y puedes abrirla y recorrerla tú mismo.
                 </p>
                 <p className="mt-4 leading-relaxed text-muted-foreground">
-                  Una maqueta inventada se vería mejor —no tuvo cliente, ni presupuesto, ni un dueño
-                  cambiando de opinión a mitad de camino— y por eso mismo no diría nada sobre cómo
+                  Una maqueta inventada se vería mejor, porque no tuvo cliente, ni presupuesto, ni un
+                  dueño cambiando de opinión a mitad de camino. Por eso mismo no diría nada sobre cómo
                   trabajamos.
                 </p>
               </article>
@@ -124,8 +124,8 @@ export default function Cases() {
               <article className="border-t border-border py-8">
                 <h3 className="font-display text-xl font-bold tracking-[-0.02em]">Si tu rubro no está acá</h3>
                 <p className="mt-4 leading-relaxed text-muted-foreground">
-                  No significa que no se pueda. Las preguntas que hay que resolver —qué vendes, cómo
-                  te contactan, qué pasa después— son las mismas en casi todos los negocios, y el
+                  No significa que no se pueda. Las preguntas que hay que resolver (qué vendes, cómo
+                  te contactan, qué pasa después) son las mismas en casi todos los negocios, y el
                   trabajo cambia menos de lo que parece entre un taller y una consultora.
                 </p>
                 <p className="mt-4 leading-relaxed text-muted-foreground">

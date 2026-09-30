@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ShieldCheck } from "lucide-react";
-import PortalShell, { Aviso } from "@/portal/PortalShell";
+import PortalShell, { Aviso, Esqueleto } from "@/portal/PortalShell";
 import { api } from "@/portal/api";
 
 // Marco del panel admin. El login lo hace Cloudflare Access antes de que esta
@@ -34,7 +34,7 @@ export default function AdminShell({ titulo, children }) {
           primero el código que llega a tu correo, y solo entran los correos autorizados.
         </div>
       )}
-      {error ? <Aviso tono="error">No tienes acceso al panel. {error.message}</Aviso> : yo ? children : <Aviso>Verificando acceso…</Aviso>}
+      {error ? <Aviso tono="error">No tienes acceso al panel. {error.message}</Aviso> : yo ? children : <Esqueleto />}
     </PortalShell>
   );
 }

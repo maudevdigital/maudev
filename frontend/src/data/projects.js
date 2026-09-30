@@ -29,7 +29,7 @@ export const projects = [
     problem_en:
       "School, club and charity raffles still run on a notebook and a WhatsApp group: numbers sold twice, reservations nobody remembers, and a draw decided by the very person running it. The money comes in anyway, but buyers have no way to know the result was clean, and organisers have no way to prove it.",
     solution:
-      "Una página por rifa con la grilla de números en vivo: se reserva sin crear cuenta, el número queda bloqueado para el resto al instante y quien compra recibe un boleto con código. Quien organiza cobra como siempre y solo confirma los pagos en su panel. A la hora señalada la rifa se cierra sola y el ganador sale de un número aleatorio público que todavía no existía cuando se congeló la lista de participantes, así que nadie —tampoco la plataforma— podía saberlo antes. Todo lo que ocurre queda en un registro encadenado que al terminar se sella en la cadena de Bitcoin, y cualquiera puede rehacer la comprobación en su propio navegador o con herramientas externas.",
+      "Una página por rifa con la grilla de números en vivo: se reserva sin crear cuenta, el número queda bloqueado para el resto al instante y quien compra recibe un boleto con código. Quien organiza cobra como siempre y solo confirma los pagos en su panel. A la hora señalada la rifa se cierra sola y el ganador sale de un número aleatorio público que todavía no existía cuando se congeló la lista de participantes, así que nadie, tampoco la plataforma, podía saberlo antes. Todo lo que ocurre queda en un registro encadenado que al terminar se sella en la cadena de Bitcoin, y cualquiera puede rehacer la comprobación en su propio navegador o con herramientas externas.",
     summarySolution: "Grilla en vivo, cierre automático y sorteo con azar público, con un registro sellado que cualquiera verifica.",
     solution_en:
       "One page per raffle with a live number grid: buyers reserve without creating an account, the number locks for everyone else instantly, and each buyer gets a coded ticket. The organiser collects money as usual and just confirms payments in their dashboard. At the set time the raffle closes itself, and the winner comes from a public random number that didn't yet exist when the list of entries was frozen — so nobody, the platform included, could know it in advance. Everything that happens goes into a chained log that is stamped onto the Bitcoin blockchain when the raffle ends, and anyone can re-run the check in their own browser or with outside tools.",
@@ -53,7 +53,7 @@ export const projects = [
     tagline: "Barbería de 25 años que agenda por WhatsApp",
     tagline_en: "A 25-year-old barbershop that books over WhatsApp",
     description:
-      "Sitio de una barbería tradicional de Quilpué, funcionando desde 2001. Muestra servicios con precio, galería de cortes reales, trayectoria y opiniones de clientes — y canaliza todo hacia una sola acción: escribir por WhatsApp para tomar hora.",
+      "Sitio de una barbería tradicional de Quilpué, funcionando desde 2001. Muestra servicios con precio, galería de cortes reales, trayectoria y opiniones de clientes, y canaliza todo hacia una sola acción: escribir por WhatsApp para tomar hora.",
     description_en:
       "Website for a traditional barbershop in Quilpué, running since 2001. It shows services with prices, a gallery of real haircuts, its history and customer reviews — and funnels everything into a single action: message on WhatsApp to book.",
     problem:

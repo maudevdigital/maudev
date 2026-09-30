@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Check, Circle, Clock, Hourglass } from "lucide-react";
-import PortalShell, { Aviso, Barra } from "@/portal/PortalShell";
+import PortalShell, { Aviso, Barra, Esqueleto } from "@/portal/PortalShell";
 import { ESTADOS_FASE, api } from "@/portal/api";
 
 const ICONOS = { completada: Check, en_curso: Clock, por_aprobar: Hourglass, pendiente: Circle };
@@ -13,7 +13,7 @@ function Metrica({ etiqueta, valor, alerta }) {
   return (
     <div className="rounded-xl border border-border bg-card p-5">
       <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">{etiqueta}</p>
-      <p className={`mt-2 text-3xl font-extrabold tracking-tight ${alerta ? "text-destructive" : ""}`}>{valor}</p>
+      <p className={`cifra mt-2 text-3xl font-extrabold tracking-tight ${alerta ? "text-destructive" : ""}`}>{valor}</p>
     </div>
   );
 }
@@ -80,7 +80,7 @@ export default function Resumen() {
           <p className="mt-2 text-muted-foreground">Si necesitas un enlace nuevo, escríbenos a contacto@maudev.cl.</p>
         </Aviso>
       )}
-      {!error && !datos && <Aviso>Cargando…</Aviso>}
+      {!error && !datos && <Esqueleto filas={2} />}
       {datos && (
         <>
           <span className="eyebrow">Portal de clientes</span>
